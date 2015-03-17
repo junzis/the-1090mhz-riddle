@@ -6,19 +6,6 @@ This is a small research project conducted by Junzi Sun, Jacco Hoekstra and Joos
 So, we created this guide, along with a decoder written in python.
 
 
-Content
-----------
-
-The main focus of the guide is on reading different types of messages, understanding the information in the message, and decoding/computing aircraft status.
-
-.. toctree::
-   :maxdepth: 3
-
-   introduction
-   decoding
-   tips
-
-
 Documents, code, and data
 -------------------------
 
@@ -46,9 +33,6 @@ We are a group at TuDelft working on aircraft operations and controls.
 * Joost EllerBroek, Assoc. Prof.     
 
 
-
-
-
 References
 ----------
 
@@ -59,3 +43,15 @@ A few great sources were used during the creation of the guide and software:
 * `A Very Simple ADSB Receiver, by Edward John Cardew <http://www.lll.lu/~edward/edward/adsb/VerySimpleADSBreceiver.html>`_
 * ADS-B for Dummies, by EuroControl
 
+
+Content
+----------
+
+The main focus of the guide is on reading different types of messages, understanding the information in the message, and decoding/computing aircraft status.
+
+.. toctree::
+   :maxdepth: 3
+
+   introduction
+   decoding
+   tips
