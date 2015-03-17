@@ -1,69 +1,60 @@
-Complete Guide on Decoding ADS-B Messages
-=========================================
+A Guide on Decoding ADS-B Messages
+==================================
 
-This is a small research project conducted by Junzi Sun, Jacco Hoekstra and Joost EllerBroek, at TuDelft. While we are trying to experimenting with ADS-B data collected from our receiver, we found out that there were not many documents explaining in detail the entire cycle of decoding the ADS-B message. We created this guide for everyone who have the same questions, along with a Python library code which is free to use.
+This is a small research project conducted by Junzi Sun, Jacco Hoekstra and Joost EllerBroek, at TuDelft. While we were trying to work with ADS-B data collected from our receiver, we notice that there are very few documents available which can explain the ADS-B data comprehensively. 
+
+So, we created this guide, along with a decoder written in python.
 
 
 Content
 ----------
 
-We will only touch briefly the hardware setup and configuration to capture ADS-B signal. The main focus will be from the raw binary/hexadecimal message into useful position, velocity, and other information of the aircraft.
+The main focus of the guide is on reading different types of messages, understanding the information in the message, and decoding/computing aircraft status.
 
-1. Introduction: Mode S, Hardware setup, ADS-B, and the messages
-2. Decoding messages
-	* Aircraft identification
-	* Airborne and Surface positions
-		* Understanding the CPR (Compact Position Reporting) format
-		* Calculating Lat/Lon from CPR form frames
-	* Airborne velocity
-3. Summary and Codes
+.. toctree::
+   :maxdepth: 3
+
+   introduction
+   decoding
 
 
-Doc, code, and data
--------------------
+Documents, code, and data
+-------------------------
 
 This guide document is shared on GitHub and ReadTheDoc. Please feel free to help us improving it.
 
 Links to this guide document:
 
-	[Insert GitHub link here]
-	[Insert ReadTheDoc link here]
+* (GitHub) https://github.com/junzis/adsb-decode-guide
+* (Document) http://adsb-decode-guide.readthedocs.org/
 
 
-You can download the python codes related with this document, as well as example data message from the following GitHub repository:
+You can download from GitHub the python decoder, as well as some data samples we collected:
 
-	[Insert GitHub link here]
+* https://github.com/junzis/py-adsb-decoder
 
 
 
 About us
------------
+--------
 
-Junzi Sun, PhD Student
-Jacco Heokstra, Prof.
-Joost EllerBroek, Assoc. Prof.
+We are a group at TuDelft working on aircraft operations and controls.
 
-Department of Control and Operation, Aerospace Engineering Faculty, TuDelft
+* Junzi Sun, PhD Student     
+* Jacco Heokstra, Prof.     
+* Joost EllerBroek, Assoc. Prof.     
+
+
 
 
 
 References
--------------
+----------
 
 A few great sources were used during the creation of the guide and software:
 
 * `ICAO ADS-B Guide <http://www.icao.int/SAM/eDocuments/ADSB%20Guide%20Vs1.2%20English.pdf>`_
-* 	`Dump1090 Project <https://github.com/antirez/dump1090>`_
-*  `A Very Simple ADSB Receiver, by Edward John Cardew <http://www.lll.lu/~edward/edward/adsb/VerySimpleADSBreceiver.html>`_
+* `Dump1090 Project <https://github.com/antirez/dump1090>`_
+* `A Very Simple ADSB Receiver, by Edward John Cardew <http://www.lll.lu/~edward/edward/adsb/VerySimpleADSBreceiver.html>`_
 * ADS-B for Dummies, by EuroControl
 
-
-
-Pages
-=====
-
-.. toctree::
-   :maxdepth: 2
-
-   intro
-   decode
