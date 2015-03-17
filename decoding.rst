@@ -1,5 +1,5 @@
-Decoding ADS-B Message
-======================
+Decoding
+========
 
 In this section we will explain how to read bits in different types of ADS-B messages, decode and calculate information, such as aircraft ID, position, speed, and heading.
 
@@ -282,6 +282,8 @@ Altitude of aircraft in the data frame is much easier to be computed. The bits i
          Q-bit
 
 This Q-bit indicates whether the altitude can be decoded. If the value is zero, we will exit the calculation. Then the altitude value is computed from the rest of the bits. 
+
+*Off the topic: really don't understand why someone wanted to put this bit in the middle...*
 
 After removing Q-bit:
 ::
