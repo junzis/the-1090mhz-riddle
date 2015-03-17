@@ -23,12 +23,12 @@ ADS-B
 An ADS-B message is 120 bits long, following is an example:
 ::
 
-  HEX format:
-  8D4840D6202CC371C32CE0576098
-
   BIN format:
   10001101010010000100000011010110001000000010110011000011
   01110001110000110010110011100000010101110110000010011000
+
+  HEX format:
+  8D4840D6202CC371C32CE0576098
   
 
 This table lists the key bits of a message:
@@ -42,15 +42,21 @@ This table lists the key bits of a message:
 +----------+----------+----------+------------------------+
 | 9        | 32       | ICAO24   | ICAO aircraft address  |
 +----------+----------+----------+------------------------+
-| 33       | 37       | TC       | Type Code              |
+| 33       | 88       | DATA     | Data frame             |
++----------+----------+----------+------------------------+
+| 89       | 112      | PC       | Parity check           |
 +----------+----------+----------+------------------------+
 
 
 The type of the message can be identified by checking its Downlink Format (DF), bit 1 to 5. For ADS-B message, we need: DF = 17 (in decimal), or 10001 (in binary),
 
-Once we exam the DF, in order to know what is inside of an ADS-B message, we also need to compute the Type Code (TC), located from bit 33 to 37 (5 bits)
+Within the data frame, another import value is the Type Code. it tells what is inside of the data frame, it is located from bit 33 to 37 (5 bits)
 
-From bit 9 to 32, those are the unique ICAO24 address of the aircraft.
++----------+----------+----------+------------------------+
+| Bit from | Bit to   | Abbr.    | Name                   |
++==========+==========+==========+========================+
+| 33       | 37       | TC       | Type Code              |
++----------+----------+----------+------------------------+
 
 
 ADS-B message types

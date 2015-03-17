@@ -16,6 +16,7 @@ The main focus of the guide is on reading different types of messages, understan
 
    introduction
    decoding
+   tips
 
 
 Documents, code, and data
