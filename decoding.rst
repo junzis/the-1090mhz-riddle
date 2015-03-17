@@ -373,7 +373,9 @@ There are many parameters in the the velocity message. From left to rights, the 
 |             | barometric + sign                |
 +-------------+----------------------------------+
 
-For calculating the speed and heading we need four value, East-West Velocity ``V(ew)``, East-West Velocity Sign ``S(ew)``, North-South Velocity ``V(ns)``, North-South Velocity Sign ``S(ns)``. And pay attention on the directions (signs) in the calculation.
+*NOTE: If you are also refering an interenet document called "ADS-B for Dummies" by EuroControl, be very aware, the information table in that document is NOT correct !! The bits for velocities and sign were ordered wrong in that document.*
+
+For calculating the speed and heading we need four values, East-West Velocity ``V(ew)``, East-West Velocity Sign ``S(ew)``, North-South Velocity ``V(ns)``, North-South Velocity Sign ``S(ns)``. And pay attention on the directions (signs) in the calculation.
 
 .. math::
 
