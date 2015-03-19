@@ -39,7 +39,7 @@ Those two values confirm that the message is good for decoding aircraft identifi
 Next, we are decoding the data frame containing the aircraft callsign (identification). In order to get the callsign, a look-up table is needed for mapping index numbers to letters:
 ::
 
-  [?ABCDEFGHIJKLMNOPQRSTUVWXYZ????? ???????????????0123456789??????]
+  '#ABCDEFGHIJKLMNOPQRSTUVWXYZ#####_###############0123456789######'
 
 
 In our message data frame, it is easy to decode following:
@@ -50,41 +50,45 @@ In our message data frame, it is easy to decode following:
   DEC:           |   11     12     13     49     48     50     51     32
   LTR:           |   K      L      M      1      0      2      3      _
 
-  Note: "_" represent the space above
-
 
 So now we have the aircraft ID here: **KLM1023**
 
 
-Following is the calculation implemented in python code.
+Following is the calculation implemented in Python:
 
 .. code-block:: python
 
   def hex2bin(hexstr):
-      length = len(hexstr)*4
-      binstr = bin(int(hexstr, 16))[2:]
-      while ((len(binstr)) < length):
-        binstr = '0' + binstr
-      return binstr
+    length = len(hexstr)*4
+    binstr = bin(int(hexstr, 16))[2:]
+    while ((len(binstr)) < length):
+      binstr = '0' + binstr
+    return binstr
 
   def bin2int(binstr):
-      return int(binstr, 2)
+    return int(binstr, 2)
 
-  data = "202CC371C32CE0"
-  ais_charset = '?ABCDEFGHIJKLMNOPQRSTUVWXYZ????? ???????????????0123456789??????'
-  databin = hex2bin(data)
+  charset = '#ABCDEFGHIJKLMNOPQRSTUVWXYZ#####_###############0123456789######'
+
+  msg = "8D4840D6202CC371C32CE0576098"
+  msgbin = hex2bin(msg)
+  csbin = msgbin[40:96]
 
   csbin = databin[8:]  # get the callsign part
 
   callsign = ''
-  callsign = ais_charset[ bin2int(csbin[0:6]) ]
-  callsign += ais_charset[ bin2int(csbin[6:12]) ]
-  callsign += ais_charset[ bin2int(csbin[12:18]) ]
-  callsign += ais_charset[ bin2int(csbin[18:24]) ]
-  callsign += ais_charset[ bin2int(csbin[24:30]) ]
-  callsign += ais_charset[ bin2int(csbin[30:36]) ]
-  callsign += ais_charset[ bin2int(csbin[36:42]) ]
-  callsign += ais_charset[ bin2int(csbin[42:48]) ]
+  callsign += charset[ bin2int(csbin[0:6]) ]
+  callsign += charset[ bin2int(csbin[6:12]) ]
+  callsign += charset[ bin2int(csbin[12:18]) ]
+  callsign += charset[ bin2int(csbin[18:24]) ]
+  callsign += charset[ bin2int(csbin[24:30]) ]
+  callsign += charset[ bin2int(csbin[30:36]) ]
+  callsign += charset[ bin2int(csbin[36:42]) ]
+  callsign += charset[ bin2int(csbin[42:48]) ]
+
+  # clean string, remove spaces and marks, if any.
+  cs = cs.replace('_', '')
+  cs = cs.replace('#', '')
 
   print callsign
 
@@ -121,7 +125,7 @@ For example, two following messages are received:
 Convert both messages to binary strings:
 ::
 
-  | DF    | CA  | ICAO24 ADDRESS           | TC    |     | Altitude     | T | F | CPR Latitude      | CPR Longitude     |                          |
+  | DF    | CA  | ICAO24 ADDRESS           | TC    |     | Altitude     |   | F | CPR Latitude      | CPR Longitude     |                          |
   |-------|-----|--------------------------|-------|-----|--------------|---|---|-------------------|-------------------|--------------------------|
   | 10001 | 101 | 010000000110001000011101 | 01011 | 000 | 110000111000 | 0 | 0 | 10110101101001000 | 01100100010101100 | 001010000110001110100111 |
   | 10001 | 101 | 010000000110001000011101 | 01011 | 000 | 110000111000 | 0 | 1 | 10010000110101110 | 01100010000010010 | 011010010010101011010110 |
@@ -138,9 +142,6 @@ At each frame, Bit-54 (title F) determine whether it is odd or even:
   1 -> Odd frame
 
 
-*Bit-53 (title T) shows whether it is synchronized with the UTC time. It's not used in our calculation.*
-
-
 Calculate latitude and longitude
 ********************************
 
@@ -153,24 +154,27 @@ Let's frist seperate the CPR latitude and longitude bits in both messages. And t
 
   | F | CPR Latitude      | CPR Longitude     |
   |---|-------------------|-------------------|
-  | 0 | 10110101101001000 | 01100100010101100 |
+  | 0 | 10110101101001000 | 01100100010101100 |  -> newest frame received
   | 1 | 10010000110101110 | 01100010000010010 |
 
 
 **Step 1: Convert the binary string to decimal value**
 ::
 
-  cprLat0 = 93000
-  cprLon0 = 51372
-  cprLat0 = 74158
-  cprLon0 = 50194
+  LAT_CPR_EVEN: 93000 / 131072 -> 0.7095
+  LON_CPR_EVEN: 51372 / 131072 -> 0.3919
+  LAT_CPR_ODD:  74158 / 131072 -> 0.5658
+  LON_CPR_ODD:  50194 / 131072 -> 0.3829
+
+
+131072 is 2^17 since CPR latitude and longitude are encoded in 17 bits. The values represent the percentages.
 
 
 **Step 2: Calculate the Latitude Index j, using following equation**
 
 .. math::
 
-  j = floor\left ( \frac{(59 * cprLat0 - 60 * cprLat0}{131072} + 0.5  \right )
+  j = floor\left ( 59 * Lat_{CPR-E} - 60 * Lat_{CPR-O} + 0.5  \right )
 
 
 ::
@@ -183,92 +187,133 @@ Let's frist seperate the CPR latitude and longitude bits in both messages. And t
 First, two constants will be used:
 ::
 
-  airDLat0 = 360.0 / 60
-  airDLat1 = 360.0 / 59
+  DLat_EVEN = 360.0 / 60
+  DLat_ODD  = 360.0 / 59
 
 Then we can use the following equations to compute the relative latitudes:
 
 .. math::
 
-  rLat0 = airDLat0 * mod(j, 60) + \frac{crpLat0}{131072}
+  Lat_{E} = DLat_{E} * mod(j, 60) + Lat_{CPR-E}
 
-.. math::
+  \qquad Lat_{E} = Lat_{E} - 360  \quad \text{if } (Lat_{E} \geq 270)
 
- rLat0 =
-  \begin{cases}
-   rLat0 -360  & \text{if } (rLat0 \geq 270) \\
-   rLat0       & \text{else}
-  \end{cases}
+  Lat_{O} = DLat_{O} * mod(j, 59) + Lat_{CPR-O}
 
-.. math::
+  \qquad Lat_{O} = Lat_{O} - 360  \quad \text{if } (Lat_{O} \geq 270)
 
-  rLat1 = airDLat1 * mod(j, 59) + \frac{crpLat1}{131072}
-
-.. math::
-
- rLat1 =
-  \begin{cases}
-   rLat1 -360  & \text{if } (rLat1 \geq 270) \\
-   rLat1       & \text{else}
-  \end{cases}
-
-If a relative latitude results are greater than 270, it means the aircraft is at southern hemisphere. Then a substraction of 360 is applied.
+If a relative latitude results are greater than 270, it means the aircraft is at southern hemisphere. Then a substraction of 360 is applied. 131072 is 2^17 since CPR latitude and longitude are encoded in 17 bits.
 
 Here, we have:
 ::
 
-  rLat0 = 52.2572021484
-  rLat1 = 52.2657801741
+  Lat_EVEN = 52.25720214843750
+  Lat_ODD  = 52.26578017412606
 
 
-**Step 4: Check relative latitudes, and get aircraft true latitude**
+Then, we need to check if `Lat_EVEN` and `Lat_ODD` are in the same latitude zone. If not, simply make an exit here; wait for new data, the run the computation again.
 
-After previous calculation, we still need to check if `rLat0` and `rLat1` are in the same latitude zone. If not, simply make an exit here; wait for new CPR data frames, the run the computation again.
+There are 60 latitude zones pre-computed. You may refer to the python source code to see how latitudes degrees are divided into different zones. We have a function `NL()` retrieving the ``NL`` value In our case, both value are in latitude zone `36`, good to continue.
 
-There are 60 latitude zones pre-computed. You may refer to the python source code to see how latitudes degrees are divided into different zones. We have a function `cprNL()` retrieving the ``NL`` value In our case, both value are in latitude zone `36`, good to continue.
-
-In order to find a better latitude value ``lat`` from ``lat0`` and ``lat1``, we need to have a look the time stamp of both odd and even frames. The newest one is used:
+The final Latitude is chosen by the time stamp of the frames, the newest one is used:
 
 .. math::
 
-  lat =
+  Lat =
   \begin{cases}
-   lat0     & \text{if } (rLat0_{time} \geq rLat1_{time}) \\
-   lat1     & \text{else}
+   Lat_{E}     & \text{if } (T_{0} \geq T_{1}) \\
+   Lat_{O}     & \text{else}
   \end{cases}
+
+In our case:
+::
+
+  Lat = Lat_EVEN = 52.25720214843750
 
 
 **Step 5: Calculate longitude**
 
-In order to compute the longitude, we need to get the ``N(i)`` and longitude index ``m``. ``N(i)`` is computed using ``cprN()`` function, which also look into the latitude zone table; together with the latest ``rLat`` frame (``rLat0`` or ``rLat1``, depends which is the newest).
+In order to ge the longitude, we need to first compute the longitude index ``m``, and ``ni`` with ``N()`` function, which also look into the latitude zone table
 
 .. math::
 
-  N(i) =
+  ni =
   \begin{cases}
-   cprN(rLat0, 0)     & \text{if } (rLat0_{time} \geq rLat1_{time}) \\
-   cprN(rLat1, 1)     & \text{else}
+   N(Lat_{E}, 0)     & \text{if } (T_{0} \geq T_{1}) \\
+   N(Lat_{O}, 1)     & \text{else}
   \end{cases}
 
-.. math::
-
-  m = floor\left ( \frac{cprLon0 * (cprNL(lat)-1) - cprLon1 * cprNL(lat)}{131072} + 0.5  \right )
-
-Before continuing compute the longitude, another fuction ``cprDLon()`` is introduction to convert the ``N(i)`` to number of degree: ``360.0 / N(i)``. longitude is then calculated:
-
-.. math::
-
-  lon =
+  m =
   \begin{cases}
-   (360.0 / N(i)) * ( Mod(m, ni) + cprLon0 / 131072)     & \text{if } (rLat0_{time} \geq rLat1_{time}) \\
-   (360.0 / N(i)) * ( Mod(m, ni) + cprLon1 / 131072)     & \text{else}
+   floor\left [ Lon_{CPR-E} * (NL(Lat_{E})-1) - Lon_{CPR-O} * NL(Lat_{E}) + 0.5  \right ]     & \text{if } (T_{0} \geq T_{1}) \\
+   floor\left [ Lon_{CPR-E} * (NL(Lat_{O})-1) - Lon_{CPR-O} * NL(Lat_{O}) + 0.5  \right ]     & \text{else}
   \end{cases}
 
-So now we have both latitude and longitude of the aircraft:
+
+Longitude is then calculated:
+
+.. math::
+
+  Lon =
+  \begin{cases}
+   \frac{360.0}{ni} * ( Mod(m, ni) + Lon_{CPR-E} )  & \text{if } (T_{0} \geq T_{1}) \\
+   \frac{360.0}{ni} * ( Mod(m, ni) + Lon_{CPR-O} ) & \text{else}
+  \end{cases}
+
+  Lon = Lon - 360  \quad \text{if } (Lon \geq 180)
+
+**Step 6: So now we have the final coordinate of the aircraft**
+
 ::
 
-  lat: 52.26578017412606 
-  lon: 3.938912527901786
+  Lat: 52.25720 
+  Lon:  3.91937
+
+Following is the calculation implemented in Python:
+
+.. code-block:: python
+
+  def cpr2position(cprlat0, cprlat1, cprlon0, cprlon1, t0, t1):
+    cprlat_even = cprlat0 / 131072.0
+    cprlat_odd  = cprlat1 / 131072.0
+    cprlon_even = cprlon0 / 131072.0
+    cprlon_odd  = cprlon0 / 131072.0
+
+    air_d_lat_even = 360.0 / 60 
+    air_d_lat_odd = 360.0 / 59 
+
+    # compute latitude index 'j'
+    j = int(59 * cprlat_even - 60 * cprlat_odd + 0.5)
+
+    lat_even = float(air_d_lat_even * (j % 60 + cprlat_even))
+    lat_odd  = float(air_d_lat_odd  * (j % 59 + cprlat_odd))
+
+    if lat_even >= 270:
+      lat_even = lat_even - 360
+    
+    if lat_odd >= 270:
+      lat_odd = lat_odd - 360
+
+    # check if both are in the same latidude zone, exit if not
+    if cprNL(lat_even) != cprNL(lat_odd):
+      return None
+
+    # compute ni, longitude index m, and longitude
+    if (t0 > t1):
+      ni = cprN(lat_even, 0)
+      m = math.floor( cprlon_even * (cprNL(lat_even)-1) - cprlon_odd * cprNL(lat_even) + 0.5 ) 
+      lon = (360.0 / ni) * (m % ni + cprlon_even)
+      lat = lat_even
+    else:
+      ni = cprN(lat_odd, 1)
+      m = math.floor( cprlon_even * (cprNL(lat_odd)-1) - cprlon_odd * cprNL(lat_odd) + 0.5 ) 
+      lon = (360.0 / ni) * (m % ni + cprlon_odd)
+      lat = lat_odd
+
+    if lon > 180:
+      lon = lon - 360
+
+    return [lat, lon]
 
 
 Calculate altitude
@@ -281,7 +326,7 @@ Altitude of aircraft in the data frame is much easier to be computed. The bits i
           ^
          Q-bit
 
-This Q-bit indicates whether the altitude can be decoded. If the value is zero, we will exit the calculation. Then the altitude value is computed from the rest of the bits. 
+This Q-bit (Bit 48) indicates whether the altitude can be decoded. If the value is zero, we will exit the calculation. If one, then the altitude value can be computed from the rest of the bits. 
 
 *Off the topic: really don't understand why someone wanted to put this bit in the middle...*
 
@@ -294,7 +339,7 @@ The final altitude value will be:
 
 .. math::
 
-  alt = N * 25 - 1000 & \text { (ft.)}
+  Alt = N * 25 - 1000 & \text { (ft.)}
 
 In the example, the altitude at which aircraft is flying is:
 ::
@@ -307,8 +352,8 @@ The position
 So finally, we have all three value (LAT/LON/ALT) of the aircraft position:
 ::
 
-  LAT: 52.17578
-  LON:  3.93891
+  LAT: 52.25720 
+  LAT:  3.91937
   ALT: 38000 ft
 
 
@@ -330,8 +375,10 @@ For example, following message is received:
   |-------|-----|--------------------------|-------|-------
   | 10001 | 101 | 010000000110001000011101 | 10011 | ......
 
-We can confirm the DF=17 and TC=19. Good to decode the velocity. Next, let's extract the data frame:
+We can confirm the DF=17 and TC=19. Good to decode the velocity. Next, let's extract the DATA frame part:
 ::
+
+  HEX: 99454F9E0004A7
 
   |  TC   | ST  | IC | IFR | VU  | S-EW | V-EW       | S-NS | V-NS       | V-rate sign source | TI | GHD sign   |
   |-------|-----|----|-----|-----|------|------------|------|------------|--------------------|----|------------|

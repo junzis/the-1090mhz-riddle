@@ -1,10 +1,9 @@
 Introduction
 ============
 
-Hardware
---------
-
-[TODO: add an introduction of the hardware used for the project here]
+.. Hardware
+.. --------
+.. TODO: add an introduction of the hardware used for the project here
 
 
 Mode S
