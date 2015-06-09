@@ -194,11 +194,11 @@ Then we can use the following equations to compute the relative latitudes:
 
 .. math::
 
-  Lat_{E} = DLat_{E} * ( mod(j, 60) + Lat_{CPR-E} )
+  Lat_{E} = DLat_{E} * (mod(j, 60) + Lat_{CPR-E})
 
   \qquad Lat_{E} = Lat_{E} - 360  \quad \text{if } (Lat_{E} \geq 270)
 
-  Lat_{O} = DLat_{O} * ( mod(j, 59) + Lat_{CPR-O} )
+  Lat_{O} = DLat_{O} * (mod(j, 59) + Lat_{CPR-O})
 
   \qquad Lat_{O} = Lat_{O} - 360  \quad \text{if } (Lat_{O} \geq 270)
 
