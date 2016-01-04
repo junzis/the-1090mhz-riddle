@@ -7,7 +7,7 @@ Two different types of the position messages (odd and even frames) are needed to
 
 The advantage of CPR is that it uses less bits to encode the position information. The dis-advantage is obviously the complexity for decoding.
 
-An aircraft position message has ``DateFrame: 17``, and ``TypeCode: from 9 to 18``. 
+An aircraft position message has ``DownlinkFormat: 17``, and ``TypeCode: from 9 to 18``. 
 
 
 Determine an odd and even frame
