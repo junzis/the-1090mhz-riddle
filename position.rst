@@ -1,13 +1,13 @@
-Decode Airborne Positions
-=========================
+Airborne Positions
+==================
 
 Decoding the positions of the aircraft is a bit complicated. Naturally, we would assume to read latitude and longitude directly from the data frame. Unfortunately its not that simple...
 
-In fact, two different types of the position messages (odd and even frames) are needed to find out the LAT and LON of the aircraft. The position is described in so called Compact Position Reporting (CPR) format, which is hard to understand, and not well documented.
+Two different types of the position messages (odd and even frames) are needed to find out the LAT and LON of the aircraft. The position is described in so Compact Position Reporting (CPR) format. They are not many easy to read documents on CPR encoding and decoding though.
 
-The advantage of CPR is that it uses less bits to encode the position information. The dis-advantage is obviously the complexity of calculation.
+The advantage of CPR is that it uses less bits to encode the position information. The dis-advantage is obviously the complexity for decoding.
 
-An aircraft position message has ``DF: 17``, and ``TC: from 9 to 18``. 
+An aircraft position message has ``DateFrame: 17``, and ``TypeCode: from 9 to 18``. 
 
 
 Determine an odd and even frame
@@ -244,7 +244,6 @@ Altitude of aircraft in the data frame is much easier to be computed. The bits i
 
 This Q-bit (Bit 48) indicates whether the altitude can be decoded. If the value is zero, we will exit the calculation. If one, then the altitude value can be computed from the rest of the bits. 
 
-*Off the topic: really don't understand why someone wanted to put this bit in the middle...*
 
 After removing Q-bit:
 ::

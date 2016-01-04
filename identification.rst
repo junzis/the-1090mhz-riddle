@@ -1,5 +1,5 @@
-Decode Aircraft Identification
-==============================
+Aircraft Identification
+=======================
 
 An aircraft identification message has ``DF: 17``, and ``TC: 1 to 4``. 
 

@@ -1,5 +1,5 @@
-Decode Airborne Velocity
-========================
+Airborne Velocity
+=================
 
 Aircraft velocity are composed by speed and heading information.
 
