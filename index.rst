@@ -53,5 +53,7 @@ The main focus of the guide is on reading different types of messages, understan
    :maxdepth: 3
 
    introduction
-   decoding
+   decode-id
+   decode-position
+   decode-velocity
    tips
