@@ -68,9 +68,27 @@ By looking at the DF and TC we can quickly understand what kind of information i
 +=====+==========+=================================+
 | 17  | 1 to 4   | Aircraft identification         |
 +-----+----------+---------------------------------+
-| 17  | 9 to 18  | Aircraft position               |
+| 17  | 5 to  8  | Surface position                |
 +-----+----------+---------------------------------+
-| 17  | 19       | Aircraft velocities             |
+| 17  | 9 to 18  | Airborne position (Baro Alt)    |
++-----+----------+---------------------------------+
+| 17  | 19       | Airborne velocities             |
++-----+----------+---------------------------------+
+| 17  | 20 to 22 | Airborne position (GNSS Height) |
++-----+----------+---------------------------------+
+| 17  | 23       | Test message                    |
++-----+----------+---------------------------------+
+| 17  | 24       | Surface system status           |
++-----+----------+---------------------------------+
+| 17  | 25 to 27 | Reserved                        |
++-----+----------+---------------------------------+
+| 17  | 28       | Extended squitter AC status     |
++-----+----------+---------------------------------+
+| 17  | 29       | Target state and status (V.2)   |
++-----+----------+---------------------------------+
+| 17  | 30       | Reserved                        |
++-----+----------+---------------------------------+
+| 17  | 31       | Aircraft Operation status       |
 +-----+----------+---------------------------------+
 
 Note that within different type of the messages, the configurations of the bits in data frame are different. In next chapter, those will be explained in detail.
