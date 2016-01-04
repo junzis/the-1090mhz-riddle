@@ -125,17 +125,22 @@ For example, two following messages are received:
 Convert both messages to binary strings:
 ::
 
-  | DF    | CA  | ICAO24 ADDRESS           | TC    |     | Altitude     |   | F | CPR Latitude      | CPR Longitude     |                          |
-  |-------|-----|--------------------------|-------|-----|--------------|---|---|-------------------|-------------------|--------------------------|
-  | 10001 | 101 | 010000000110001000011101 | 01011 | 000 | 110000111000 | 0 | 0 | 10110101101001000 | 01100100010101100 | 001010000110001110100111 |
-  | 10001 | 101 | 010000000110001000011101 | 01011 | 000 | 110000111000 | 0 | 1 | 10010000110101110 | 01100010000010010 | 011010010010101011010110 |
+  | DF    | CA  | ICAO24 ADDRESS           | DATA                                                                          | CRC                      |
+  |                                        | TC    | *1 |*2 | Altitude     |   |*3 | CPR Latitude      | CPR Longitude     |                          |
+  |-------|-----|--------------------------|-------|----|---|--------------------------------------------------------------|--------------------------|
+  | 10001 | 101 | 010000000110001000011101 | 01011 | 00 | 0 | 110000111000 | 0 | 0 | 10110101101001000 | 01100100010101100 | 001010000110001110100111 |
+  | 10001 | 101 | 010000000110001000011101 | 01011 | 00 | 0 | 110000111000 | 0 | 1 | 10010000110101110 | 01100010000010010 | 011010010010101011010110 |
 
+
+- *1: Surveilance Status 
+- *2: NIC Supplement-B (useful when determin NIC 2/3 and 8/9, combine with TC) 
+- *3: ODD/EVEN flag
 
 
 In both message we can find: ``DF=17`` and ``TC=11``, with the same ICAO24 address ``40621D``. So those two frames are valid for decoding the positions of this aircraft.
 
 
-At each frame, Bit-54 (title F) determine whether it is odd or even:
+At each frame, Bit-54 determine whether it is odd or even:
 ::
 
   0 -> Even frame
