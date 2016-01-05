@@ -1,9 +1,21 @@
 Airborne Velocity
 =================
 
-Aircraft velocity are composed by speed and heading information.
+There are two different message types for velocities that has been determined by
+a subtype bits of the message. With subtype 1 and 2, surface velocity (ground speed)
+is reported. While with subtype 3 and 4, aircraft airspeed are reported.
 
-An aircraft velocity message has ``DF: 17``, ``TC: 19``.
+In real world, very few of the subtype 3 or 4 messages are reported. In our setup, we
+only received **0.3%** of these message with regard to subtype 1 (subtype 2 seems never used).
+
+An aircraft velocity message has ``DF: 17``, ``TC: 19``. and the subtype code are represented
+in bits 38 to 40. Now, we can decode those messages.
+
+
+Velocity Messsage (Subtype 1 or 2)
+----------------------------------
+
+Aircraft velocity are composed by speed and heading information.
 
 For example, following message is received:
 ::
