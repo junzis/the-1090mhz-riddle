@@ -17,6 +17,7 @@ The main focus of the guide is on reading different types of messages, understan
    identification
    position
    velocity
+   nicnac
    tips
 
 
