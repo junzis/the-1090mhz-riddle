@@ -1,7 +1,7 @@
 ADS-B Decoding Guide
 ====================
 
-This is a small research project conducted by Junzi Sun at TuDelft. While we were trying to work with ADS-B data collected from our receiver, we notice that there are very few documents available which can explain the ADS-B data comprehensively. So, we created this guide, along with a decoder written in python.
+This is a small research project conducted by `Junzi Sun <http://junzisun.com>`_ at TuDelft. While we were trying to work with ADS-B data collected from our receiver, we notice that there are very few documents available which can explain the ADS-B data comprehensively. So, we created this guide, along with a decoder written in python. Have Fun!
 
 Table of Content
 ----------------
