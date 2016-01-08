@@ -16,9 +16,8 @@ represent the position integrity and velocity accuracy respectively.
 
 Before dive into decoding and interpolation, let's introduce two parameters:
 
-- ``Rc``: Horizontal Containment Radius Limit, used for position, interpolated
-- ``from ``NICp`` number HFOM``: Horizontal Figure of Merit, used for velocity,
-- ``interpolated from ``NACv`` number
+- ``Rc``: Horizontal Containment Radius Limit, interpolated from ``NICp`` number 
+- ``HFOM``: Horizontal Figure of Merit, interpolated from ``NACv`` number
 
 
 NIC and Rc
@@ -105,4 +104,4 @@ positions.
 NAC and HFOM
 ------------
 
-Let's take the velocity message back here.
+NAC is reported in the Airborne Velocity Message.
