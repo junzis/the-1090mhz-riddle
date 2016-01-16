@@ -47,8 +47,8 @@ About us
 We are a group at TuDelft working on aircraft operations and controls.
 
 * Junzi Sun, PhD Student     
-* Jacco Heokstra, Prof.     
-* Joost EllerBroek, Assoc. Prof.     
+* Jacco Hoekstra, Prof.dr.ir   
+* Joost EllerBroek, Dr.ir     
 
 
 References
