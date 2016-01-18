@@ -16,9 +16,12 @@ are represented in bits 38 to 40. Now, we can decode those messages.
 Decoding message subtype 1 or 2
 --------------------------------
 
-In subtype 1 or 2, the aircraft velocity contains speed and heading information.
-The speed and heading are also decomposed into North-South, and East-West
-components.
+Subtype 1 (subsonic) or 2 (supersonic), are broadcast when ground velocity
+information are available. The aircraft velocity contains speed and heading
+information. The speed and heading are also decomposed into North-South, and
+East-West components.
+
+Note: The following decoding only apply to Subtype 1 (subsonic).
 
 For example, following message is received:
 
@@ -174,11 +177,15 @@ in barometric pressure altitude or geometric altitude:
 Decoding message subtype 3 or 4
 -------------------------------
 
-Subtype 3 or 4 messages are rare. As stated previously, we only received about
-0.3% of those messages from all the velocity reports. However, the information
-contains airspeed of aircraft, which can be an interesting parameter in some
-researches. The structure of the message is similar to previous one. Let's take
-a close look at an example for decoding here.
+Subtype 3 (subsonic) or 3 (supersonic), are broadcast when ground speed
+information are NOT available, while airspeed is available. Subtype 3 or 4
+messages are rare. As stated previously, we only received about 0.3% of those
+messages from all the velocity reports. However, the information contains
+airspeed of aircraft, which can be an interesting parameter in some
+researches. The structure of the message is similar to previous one. Let's
+take a close look at an example for decoding here.
+
+Note: The following decoding only apply to Subtype 3 (subsonic).
 
 ::
 
