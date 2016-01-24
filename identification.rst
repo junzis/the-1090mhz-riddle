@@ -68,7 +68,7 @@ Following is the calculation implemented in Python:
 
   msg = "8D4840D6202CC371C32CE0576098"
   msgbin = hex2bin(msg)
-  databin = msgbin[32:88]
+  databin = msgbin[32:88]   # python start from 0
 
   # get the callsign part
   csbin = databin[8:]  
