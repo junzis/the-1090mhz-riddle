@@ -1,6 +1,6 @@
 # ADS-B Decoding Guide
 
-This is a small project on ADS-B decoding, conducted by Junzi Sun, Jacco Hoekstra and Joost EllerBroek (TuDelft).
+A practical guide on ADS-B decoding.
 
 The doc is written in reStructuredText and hosted at ReadTheDoc: 
 
