@@ -19,7 +19,7 @@ https://en.wikipedia.org/wiki/Secondary_surveillance_radar#Mode_S
 ADS-B
 -----
 
-An ADS-B message is 120 bits long, following is an example:
+An ADS-B message is 112 bits long, following is an example:
 ::
 
   BIN format:
