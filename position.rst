@@ -2,25 +2,25 @@ Airborne Positions
 ==================
 
 Decoding the positions of the aircraft is a bit complicated. Naturally, we
-would assume to read latitude and longitude directly from the data frame.
-Unfortunately its not that simple...
+would expect to read latitude and longitude directly from the data frame.
+Unfortunately, it's not that simple...
 
 Two different types of the position messages (odd and even frames) are needed to
-find out the LAT and LON of the aircraft. The position is described in so
-Compact Position Reporting (CPR) format. They are not many easy to read
-documents on CPR encoding and decoding though.
+find out the LAT and LON of the aircraft. The position is described in the
+Compact Position Reporting (CPR) format. There are not many easy to read
+documents on CPR encoding and decoding, though.
 
-The advantage of CPR is that it uses less bits to encode the position
-information. The dis-advantage is obviously the complexity for decoding.
+The advantage of CPR is that it uses fewer bits to encode the position
+information. The disadvantage is the complexity of decoding it.
 
-An aircraft position message has ``DownlinkFormat: 17``, and ``TypeCode: from 9
+An aircraft position message has ``DownlinkFormat: 17`` and ``TypeCode: from 9
 to 18``.
 
 
-Determine an odd and even frame
+Determine whether the frame is "odd" or "even"
 -------------------------------
 
-For example, two following messages are received:
+For example, the two following messages are received:
 ::
 
   8D40621D58C382D690C8AC2863A7
@@ -44,22 +44,24 @@ Convert both messages to binary strings:
 
 
 
-Bits representation are:
+Message components:
 
 +-----------+---------+---------+----------------------------------+
-| MSG Bits  | N bits  | Abbr    | Content                          |
+| MSG bits  | # bits  | Abbr    | Content                          |
 +===========+=========+=========+==================================+
+| 1-5       | 5       | DF      | Downlink format                  |
++-----------+---------+---------+----------------------------------+
 | 33-37     | 5       | TC      | Type code                        |
 +-----------+---------+---------+----------------------------------+
-| 38-39     | 2       | ST      | Surveillance status              |
+| 38-39     | 2       | SS      | Surveillance status              |
 +-----------+---------+---------+----------------------------------+
-| 40        | 1       | NICsb   | NIC suppliment-B                 |
+| 40        | 1       | NICsb   | NIC supplement-B                 |
 +-----------+---------+---------+----------------------------------+
 | 41-52     | 12      | ALT     | Altitude                         |
 +-----------+---------+---------+----------------------------------+
 | 53        | 1       | T       | Time                             |
 +-----------+---------+---------+----------------------------------+
-| 54        | 1       | CPR-F   | CPR odd/even flag                |
+| 54        | 1       | F       | CPR odd/even frame flag          |
 +-----------+---------+---------+----------------------------------+
 | 55-71     | 17      | LAT-CPR | Latitude in CPR format           |
 +-----------+---------+---------+----------------------------------+
@@ -67,12 +69,12 @@ Bits representation are:
 +-----------+---------+---------+----------------------------------+
 
 
-In both message we can find: ``DF=17`` and ``TC=11``, with the same ICAO24
-address ``40621D``. So those two frames are valid for decoding the positions of
+In both messages we can find ``DF=17`` and ``TC=11``, with the same ICAO24
+address ``40621D``. So, those two frames are valid for decoding the positions of
 this aircraft.
 
 
-At each frame, Bit-54 determine whether it is odd or even:
+For each frame, bit 54 determines whether it is an "odd" or "even" frame:
 ::
 
   0 -> Even frame
@@ -82,14 +84,14 @@ At each frame, Bit-54 determine whether it is odd or even:
 Calculate latitude and longitude
 --------------------------------
 
-There are a few documents explain in detail the math behind the CPR. for
-example: `A document from Eurocontrol <http://www.eurocontrol.int/eec/gallery/co
+There are a few documents that explain in detail the math behind the CPR. For
+example: `a document from Eurocontrol <http://www.eurocontrol.int/eec/gallery/co
 ntent/public/document/eec/report/1995/002_Aircraft_Position_Report_using_DGPS_Mo
-de-S.pdf>`_. Our foucus is on decoding, hence the reversing of those math
+de-S.pdf>`_. Our focus is on decoding, hence the reversing of those math
 equations.
 
-Let's frist seperate the CPR latitude and longitude bits in both messages. And
-the steps after will guide you to calculate LAT/LON of the aircraft. 
+Let's first separate the CPR latitude and longitude bits in both messages.
+The steps after will guide you to calculate the LAT/LON of the aircraft. 
 
 ::
 
@@ -109,12 +111,14 @@ Step 1: Convert the binary string to decimal value
   LON_CPR_ODD:  50194 / 131072 -> 0.3829
 
 
-131072 is 2^17 since CPR latitude and longitude are encoded in 17 bits. The
-values represent the percentages.
+Since CPR latitude and longitude are encoded in 17 bits, 131072 (2^17) is the maximum value. The
+resulting values from the calculations represent the percentages of that maximum value.
 
 
-Step 2: Calculate the Latitude Index j, using following equation
+Step 2: Calculate the latitude index j
 ****************************************************************
+
+Use the following equation:
 
 .. math::
 
@@ -147,9 +151,8 @@ Then we can use the following equations to compute the relative latitudes:
 
   \qquad Lat_{O} = Lat_{O} - 360  \quad \text{if } (Lat_{O} \geq 270)
 
-If a relative latitude results are greater than 270, it means the aircraft is at
-southern hemisphere. Then a substraction of 360 is applied. 131072 is 2^17 since
-CPR latitude and longitude are encoded in 17 bits.
+If a relative latitude result is greater than 270, it means that the aircraft is in
+the southern hemisphere. If this is the case, subtract 360 from the value.
 
 Here, we have:
 ::
@@ -158,16 +161,17 @@ Here, we have:
   Lat_ODD  = 52.26578017412606
 
 
-Then, we need to check if `Lat_EVEN` and `Lat_ODD` are in the same latitude
-zone. If not, simply make an exit here; wait for new data, the run the
+Then, we need to check if ``Lat_EVEN`` and ``Lat_ODD`` are in the same latitude
+zone. If not, simply exit here, wait for new data, then run the
 computation again.
 
-There are 60 latitude zones pre-computed. You may refer to the python source
-code to see how latitudes degrees are divided into different zones. We have a
-function `NL()` retrieving the ``NL`` value In our case, both value are in
-latitude zone `36`, good to continue.
+There are 60 latitude zones pre-computed. You may refer to the Python source
+code `here <https://github.com/junzis/py-adsb-decoder/blob/master/decoder.py>`_
+to see how latitude degrees are divided into different zones. We have a
+function ``NL()`` retrieving the ``NL`` value. In our case, both values are in
+latitude zone 36, so we can continue.
 
-The final Latitude is chosen by the time stamp of the frames, the newest one is
+The final latitude is chosen depending on the time stamp of the frames--the newest one is
 used:
 
 .. math::
@@ -187,9 +191,9 @@ In our case:
 Step 4: Calculate longitude
 ***************************
 
-In order to ge the longitude, we need to first compute the longitude index
-``m``, and ``ni`` with ``N()`` function, which also look into the latitude zone
-table
+In order to get the longitude, we need to first compute the longitude index
+``m``, and ``ni`` with ``N()`` function, which also looks into the latitude zone
+table.
 
 .. math::
 
@@ -219,7 +223,7 @@ Longitude is then calculated:
   Lon = Lon - 360  \quad \text{if } (Lon \geq 180)
 
 
-Step 5: So now we have the final coordinate of the aircraft
+Step 5: Combine the coordinates to get the position of the aircraft
 ***********************************************************
 
 
@@ -253,7 +257,7 @@ Following is the calculation implemented in Python:
     if lat_odd >= 270:
       lat_odd = lat_odd - 360
 
-    # check if both are in the same latidude zone, exit if not
+    # check if both are in the same latitude zone, exit if not
     if cprNL(lat_even) != cprNL(lat_odd):
       return None
 
@@ -278,19 +282,20 @@ Following is the calculation implemented in Python:
 Calculate altitude
 ------------------
 
-Altitude of aircraft in the data frame is much easier to be computed. The bits
-in the altitude field (either odd or even frame) are as following: ::
+The altitude of the aircraft is much easier to compute from the data frame. The bits
+in the altitude field (either odd or even frame) are as following:
+::
 
   1100001 1 1000
           ^
          Q-bit
 
-This Q-bit (Bit 48) indicates whether the altitude is encoded in 25 or 100 ft
-increment. (0->100ft, 1->25ft) 
+This Q-bit (bit 48) indicates whether the altitude is encoded in multiples of
+25 or 100 ft (0: 100 ft, 1: 25 ft).
 
 For Q = 1, we can calculate the altitude as following:
 
-First, removing Q-bit
+First, remove the Q-bit
 ::
 
   N = 1100001 1000 => 1560 (in decimal)
@@ -301,19 +306,19 @@ The final altitude value will be:
 
   Alt = N * 25 - 1000 & \text { (ft.)}
 
-In the example, the altitude at which aircraft is flying is:
+In this example, the altitude at which aircraft is flying is:
 ::
   
   1560 * 25 - 1000 = 38000 ft.
 
-Note, the altitude has the accuracy of 25ft when Q-bit is 1. And can provide
-altitude from -1000 to +50175 ft.
+Note that the altitude has the accuracy of +/- 25 ft when the Q-bit is 1, and the
+value can represent altitude from -1000 to +50175 ft.
 
 The position
 ------------
-So finally, we have all three value (LAT/LON/ALT) of the aircraft position:
+Finally, we have all three components (latitude/longitude/altitude) of the aircraft position:
 ::
 
-  LAT: 52.25720 
-  LAT:  3.91937
-  ALT: 38000 ft
+  LAT: 52.25720 (degrees N)
+  LON:  3.91937 (degrees E)
+  ALT:    38000 ft
