@@ -6,18 +6,12 @@ Introduction
 .. TODO: add an introduction of the hardware used for the project here
 
 
-Mode S
-------
-
-Mode S is the signal carrying the ADS-B data from aircrafts. Modulation and demodulation of Mode S signal is out of scope of this guide. From our antenna and  A/D converter, we are able to receive the encoded messages to a Linux agent. Our focuses are from this point on; working with those data.
-
-If you are interested on digging deeper on the Mode S signal, a good starting point is to have a look at this Wikipedia page, and follow the references:
-
-https://en.wikipedia.org/wiki/Secondary_surveillance_radar#Mode_S
-
-
 ADS-B
 -----
+
+ADS-B is short for Automatic Dependent Surveillance–Broadcast. it is a satellite based survillance system. Aircraft position, velocity, together with identification are transmitted through Mode-S Extended Squitter (1090 MHz).
+
+Majority of the aircraft nowadays are broadcasting ADS-B messages constantly. There are many ways you can set up you own receiver and antenna to start tapping into those signals (DVB-T usb stick, ModeSBeast, Raspberry Pi, RadarScape, etc). 
 
 An ADS-B message is 120 bits long, following is an example:
 ::
@@ -92,4 +86,10 @@ By looking at the DF and TC we can quickly understand what kind of information i
 +-----+----------+---------------------------------+
 
 Note that within different type of the messages, the configurations of the bits in data frame are different. In next chapter, those will be explained in detail.
+
+
+ADS-B Checksum
+--------------
+
+ADS-B uses cyclic redundancy check to validate the correctness of received message. The parity check bits are the last 6 bytes (bit 89 to 112)
 
