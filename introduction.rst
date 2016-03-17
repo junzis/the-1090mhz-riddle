@@ -13,7 +13,7 @@ ADS-B is short for Automatic Dependent Surveillance–Broadcast. it is a satelli
 
 Majority of the aircraft nowadays are broadcasting ADS-B messages constantly. There are many ways you can set up you own receiver and antenna to start tapping into those signals (DVB-T usb stick, ModeSBeast, Raspberry Pi, RadarScape, etc). 
 
-An ADS-B message is 120 bits long, following is an example:
+An ADS-B message is 112 bits long, following is an example:
 ::
 
   BIN format:

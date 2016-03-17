@@ -25,7 +25,7 @@ Note that TC is inside of the DATA frame. DF and TC can be easily calculated:
 ::
 
   DF: 10001 -> 17
-  TC: 00010 -> 4
+  TC: 0010 -> 4
 
 
 Those two values confirm that the message is good for decoding aircraft identification.
@@ -52,11 +52,13 @@ Following is the calculation implemented in Python:
 
 .. code-block:: python
 
+  from math import log
+
+  #convert input hex into bin and fill zero in front of the str
   def hex2bin(hexstr):
-    length = len(hexstr)*4
-    binstr = bin(int(hexstr, 16))[2:]
-    while ((len(binstr)) < length):
-      binstr = '0' + binstr
+    scale = 16
+    num_of_bits = len(hexstr)*log(scale, 2)
+    binstr = bin(int(hexstr, scale))[2:].zfill(int(num_of_bits))
     return binstr
 
   def bin2int(binstr):
@@ -66,11 +68,13 @@ Following is the calculation implemented in Python:
 
   msg = "8D4840D6202CC371C32CE0576098"
   msgbin = hex2bin(msg)
-  csbin = msgbin[40:96]
+  databin = msgbin[32:88]   # python start from 0
 
-  csbin = databin[8:]  # get the callsign part
+  # get the callsign part
+  csbin = databin[8:]  
 
-  callsign = ''
+  # convert callsign by charset
+  callsign = ''     
   callsign += charset[ bin2int(csbin[0:6]) ]
   callsign += charset[ bin2int(csbin[6:12]) ]
   callsign += charset[ bin2int(csbin[12:18]) ]
@@ -81,7 +85,8 @@ Following is the calculation implemented in Python:
   callsign += charset[ bin2int(csbin[42:48]) ]
 
   # clean string, remove spaces and marks, if any.
-  cs = cs.replace('_', '')
-  cs = cs.replace('#', '')
+  chars_to_remove = ['_', '#']
+  cs = callsign.translate(None, ''.join(chars_to_remove))
 
-  print callsign
+  #print callsign
+  print cs
