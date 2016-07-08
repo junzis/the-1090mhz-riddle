@@ -18,6 +18,7 @@ The main focus of the guide is on reading different types of messages, understan
    velocity
    nicnac
    tips
+   modes-ehs
 
 
 Documents, code, and data
