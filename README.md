@@ -8,4 +8,4 @@ http://adsb-decode-guide.readthedocs.org
 
 A python implementation of decoder is also accessible at:
 
-https://github.com/junzis/py-adsb-decoder
+https://github.com/junzis/pyModeS
