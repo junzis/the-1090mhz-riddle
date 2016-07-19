@@ -8,9 +8,6 @@ The main focus of the guide is on reading different types of messages, understan
 .. toctree::
     :maxdepth: 3
     :numbered:
-    :titlesonly:
-    :glob:
-    :hidden:
 
     self
     introduction

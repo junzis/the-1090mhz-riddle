@@ -37,12 +37,3 @@ More than just ADS-B data
 -------------------------
 
 Usually the ADS-B data are presented live through a stream from a server (receiver). In order to have a good robust program, you will also need to do some low level networking programming to make sure the date are correctly received. Python - of course - has a great Socket library that can be used easily.
-
-
-What's next?
-============
-
-Our research goes far beyond the decoding the ADS-B messages. The goal of this research of Junzi is to collect large amount of aircraft data from ADS-B signals, and then using data mining methods to understand, improve, and maybe even create aircraft performance models.
-
-If you are interested, or you have any question regarding the decoding process, please feel free to contact Junzi Sun (j.sun-1[at]tudelft.nl)
-
