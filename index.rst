@@ -3,26 +3,30 @@ ADS-B Decoding Guide
 
 This is a small research project conducted by `Junzi Sun <http://junzisun.com>`_ at TuDelft. While we were trying to work with ADS-B data collected from our receiver, we notice that there are very few documents available which can explain the ADS-B data comprehensively. So, we created this guide, along with a decoder written in python (https://github.com/junzis/pyModeS). Have Fun!
 
-Table of Content
-----------------
-
 The main focus of the guide is on reading different types of messages, understanding the information in the message, and decoding/computing aircraft status.
 
 .. toctree::
-   :maxdepth: 3
+    :maxdepth: 3
+    :numbered:
+    :titlesonly:
+    :glob:
+    :hidden:
 
-   self
-   introduction
-   identification
-   position
-   velocity
-   nicnac
-   tips
-   modes-ehs
+    self
+    introduction
+    identification
+    position
+    velocity
+    nicnac
+    tips
+    modes-ehs
 
+
+Apendix
+-------
 
 Documents, code, and data
--------------------------
+*************************
 
 This guide document is shared on GitHub and ReadTheDoc. Please feel free to help us improving it.
 
@@ -38,12 +42,12 @@ You can download from GitHub the python decoder, as well as some data samples we
 
 
 Contact
--------
+*******
 Feel free to drop me a messages at: **j.sun-1[at]tudelft.nl**
 
 
 About us
---------
+********
 
 We are a group at TuDelft working on aircraft operations and controls.
 
@@ -53,7 +57,7 @@ We are a group at TuDelft working on aircraft operations and controls.
 
 
 References
-----------
+**********
 
 Some good source of documents:
 
