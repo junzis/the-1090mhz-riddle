@@ -169,15 +169,17 @@ in message bit-69:
   0 -> UP
   1 -> Down
 
-The actual vertical rate ``Vr`` is the binary representation of the decimal
-value in **feet/minute** (ft/min). In our example:
+The actual vertical rate ``Vr`` is the value of bits 70-78, minus 1, and then 
+multiplied by 64 in **feet/minute** (ft/min). In our example:
 
 ::
 
-  Vr: 000001110 => 14
+  Vr-bits: 000001110 = 14
+  Vr: (14 - 1) x 64 => 832 fpm
   S-Vr: 0 => Down / Descending
 
-So we see a descending aircraft at 14 ft/min rate of descend.
+
+So we see a descending aircraft at 832 ft/min rate of descend.
 
 The Vertical Rate Source (VrSrc) field determine whether if it is a measurement
 in barometric pressure altitude or geometric altitude:
