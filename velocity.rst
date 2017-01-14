@@ -193,7 +193,7 @@ in barometric pressure altitude or geometric altitude:
 Decoding message subtype 3 or 4
 -------------------------------
 
-Subtype 3 (subsonic) or 3 (supersonic), are broadcast when ground speed
+Subtype 3 (subsonic) or 4 (supersonic), are broadcast when ground speed
 information are NOT available, while airspeed is available. Subtype 3 or 4
 messages are rare. As stated previously, we only received about 0.3% of those
 messages from all the velocity reports. However, the information contains
