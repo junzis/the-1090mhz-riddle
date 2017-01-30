@@ -34,9 +34,9 @@ This table lists the key bits of a message:
 +----------+------------+----------+----------------------------------------+
 | 24       | 9- 32      | ICAO     | ICAO aircraft address                  |
 +----------+------------+----------+----------------------------------------+
-| 3        | 33 - 37    | TC       | Type code                              |
+| 56       | 33 - 88    | DATA     | Data                                   |
 +----------+------------+----------+----------------------------------------+
-| 51       | 38 - 88    | DATA     | Data                                   |
+|          | [33 - 37]  | [TC]     | Type code                              |
 +----------+------------+----------+----------------------------------------+
 | 24       | 89 - 112   | PI       | Parity/Interrogator ID                 |
 +----------+------------+----------+----------------------------------------+
@@ -55,9 +55,9 @@ Example:
   BIN  | 10001  101 | 010010000100 | [00100]0000010110011000011011 | 010101110110
        |            | 000011010110 | 10001110000110010110011100000 | 000010011000
   -----+------------+--------------+-------------------------------+--------------
-  DEC  |  15    5   |              | [4]  [...................]    |
+  DEC  |  15    5   |              | [4] .......................   |
   -----+------------+--------------+-------------------------------+--------------
-          DF    CA     ICAO          [TC] [------ DATA -------]       PI
+          DF    CA     ICAO          [TC] ------ DATA ----------    PI
     
 
 Any ADS-B must start with the Downlink Format 17 (10001 in binary code) for the first 5 bits. Bits 6-8 are used as additional identifier, which has different meanings within different types of ADS-B message.
@@ -67,10 +67,10 @@ Any ADS-B must start with the Downlink Format 17 (10001 in binary code) for the 
 ADS-B message types
 -------------------
 
-To identify what information is contained in a ADS-B message. We need to take a look at the `Type Code` of the message, indicated at bits 33 - 37 of the ADS-B message
+To identify what information is contained in a ADS-B message. We need to take a look at the ``Type Code`` of the message, indicated at bits 33 - 37 of the ADS-B message (or first 5 bits of the ``DATA`` segment)
 
 
-Following are the relationship between each `Type Code` and its information contained in the `DATA` segment:
+Following are the relationship between each ``Type Code`` and its information contained in the ``DATA`` segment:
 
 +----------+-----------------------------------------+
 | TC       | Content                                 |
@@ -93,7 +93,7 @@ Following are the relationship between each `Type Code` and its information cont
 ADS-B Checksum
 --------------
 
-ADS-B uses cyclic redundancy check to validate the correctness of received message, where the last 24 bits are the parity. Following pseudo-code describes the CRC process:
+ADS-B uses cyclic redundancy check to validate the correctness of received message, where the last 24 bits are the parity bits. Following pseudo-code describes the CRC process:
 
 ::
   
