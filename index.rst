@@ -15,7 +15,6 @@ The main focus of the guide is on reading different types of messages, understan
     position
     velocity
     nicnac
-    tips
     modes-ehs
 
 
