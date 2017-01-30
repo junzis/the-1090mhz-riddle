@@ -12,85 +12,32 @@ For example:
 The structure of the message is:
 ::
 
-  |    | ICAO24 |      DATA      |  CRC   |
-  |----|--------|----------------|--------|
-  | 8D | 4840D6 | 202CC371C32CE0 | 576098 |
+  
+       DF--- CA-  ICAO--  DATA------------------  PI---- 
+  HEX: 8   D      4840D6  2   0     2CC371C32CE0  576098
+  BIN: 10001|101  ******  00100|000 ************  ******
+  DEC: 17   |4            4     0
+                          TC    *  
 
-  | DF    | CA  | ICAO24 ADDRESS           | TC    |     | ->
-  |-------|-----|--------------------------|-------|-----| ->
-  | 10001 | 101 | 010010000100000011010110 | 00100 | 000 | ->
+Note that ``Type Code`` is inside of the DATA frame (first 5 bits). With ``DF=17`` and ``TC=4``, we can confirm this is a aircraft identification message. Aircraft ``callsign`` then can be decoded.
 
-    ->| Data                                             | CRC                      |
-    ->|--------------------------------------------------|--------------------------|
-    ->| 001011001100001101110001110000110010110011100000 | 010101110110000010011000 |
+Additionally, a lookup table is needed convert the numbers to characters. It is defines as follows, Where the ``#`` is not used, and ``_`` represents a sepration.
 
-
-Note that TC is inside of the DATA frame. DF and TC can be easily calculated:
 ::
 
-  DF: 10001 -> 17
-  TC: 0010 -> 4
+  #ABCDEFGHIJKLMNOPQRSTUVWXYZ#####_###############0123456789######
 
 
-Those two values confirm that the message is good for decoding aircraft identification.
 
-Next, we are decoding the data frame containing the aircraft callsign (identification). In order to get the callsign, a look-up table is needed for mapping index numbers to letters:
+In previous example message, it is easy to decode the ``Data`` segment:
 ::
 
-  '#ABCDEFGHIJKLMNOPQRSTUVWXYZ#####_###############0123456789######'
-
-
-In our message data frame, it is easy to decode following:
-::
-
-  HEX: 202CC371C32CE0
+  HEX: 20          2CC371C32CE0
   BIN: 00100 000 | 001011 001100 001101 110001 110000 110010 110011 100000
   DEC:           |   11     12     13     49     48     50     51     32
   LTR:           |   K      L      M      1      0      2      3      _
 
 
-So now we have the aircraft ID here: **KLM1023**
+So the final aircraft callsign decoded is: **KLM1023_**
 
-
-Following is the calculation implemented in Python:
-
-.. code-block:: python
-
-  from math import log
-
-  #convert input hex into bin and fill zero in front of the str
-  def hex2bin(hexstr):
-    scale = 16
-    num_of_bits = len(hexstr)*log(scale, 2)
-    binstr = bin(int(hexstr, scale))[2:].zfill(int(num_of_bits))
-    return binstr
-
-  def bin2int(binstr):
-    return int(binstr, 2)
-
-  charset = '#ABCDEFGHIJKLMNOPQRSTUVWXYZ#####_###############0123456789######'
-
-  msg = "8D4840D6202CC371C32CE0576098"
-  msgbin = hex2bin(msg)
-  databin = msgbin[32:88]   # python start from 0
-
-  # get the callsign part
-  csbin = databin[8:]  
-
-  # convert callsign by charset
-  callsign = ''     
-  callsign += charset[ bin2int(csbin[0:6]) ]
-  callsign += charset[ bin2int(csbin[6:12]) ]
-  callsign += charset[ bin2int(csbin[12:18]) ]
-  callsign += charset[ bin2int(csbin[18:24]) ]
-  callsign += charset[ bin2int(csbin[24:30]) ]
-  callsign += charset[ bin2int(csbin[30:36]) ]
-  callsign += charset[ bin2int(csbin[36:42]) ]
-  callsign += charset[ bin2int(csbin[42:48]) ]
-
-  # clean string, remove spaces and marks, if any.
-  chars_to_remove = ['_', '#']
-  cs = callsign.translate(None, ''.join(chars_to_remove))
-
-  #print callsign
-  print cs
+For detailed codes in python, refer to the pyModeS library function: ``pyModeS.adsb.callsign()``
