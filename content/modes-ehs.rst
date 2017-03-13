@@ -23,6 +23,7 @@ There are a few challenges to decode those information:
     50: A00015B7801DBB3BE00CF7B8856D
     60: A0000294B409D117224C47609A81
 
+
 Downlink Format and message structure
 -------------------------------------
 DF 20 and DF 21 are used for downlink messages.
@@ -53,14 +54,21 @@ The message is structured as following, where the digit represents the number of
   MB:     message, Comm-B
   AP/DP:  address/parity or data/parity
 
-Except the DF, the first 32 bits does not contain useful information for decode the message. The exact definitions can be found in ICAO annex 10 (Aeronatutical Telecommunications).
+Except the DF, the first 32 bits does not contain useful information for decode the message. The exact definitions can be found in ICAO annex 10 (Aeronautical Telecommunications).
+
 
 Parity and ICAO address recovery
 --------------------------------
 
-Unlike ADS-B, the ICAO address is not broadcast along with the EHS messages. One would have to "decode" the ICAO address before decoding the message.
+Unlike ADS-B, the ICAO address is not broadcast along with the EHS messages. We will have to "decode" the ICAO address before decoding other information, and ICAO is hidden in the message and checksum. 
 
-ICAO is hidden in the message and checksum. For DF 4, 5, 20, 21, message parity field is produced by XOR ICAO bits with the checksum of data bits from CRC, as following. So to recover the ICAO bits, simply reverse XOR process as following:
+Mode-S uses two types of parity checksum Address Parity (AP) and Data Parity (DP). Majority of the time Address Parity is used.
+
+
+Address Parity
+**************
+
+For AP, message parity field is produced by XOR ICAO with message data CRC checksum. So, to recover the ICAO bits, simply reverse XOR process will work, shown as follows:
 
 ::
 
@@ -79,19 +87,22 @@ ICAO is hidden in the message and checksum. For DF 4, 5, 20, 21, message parity 
                                      +------------------+
 
 
-Take an example message:
+An example:
 ::
 
   Message:      A0001838CA380031440000F24177
 
   Data:         A0001838CA380031440000
-  Parity:       F24177
+  Parity:                             F24177
 
   Encode data:  CE2CA7
 
   ICAO:    [F24177] XOR [CE2CA7] => [3C6DD0]
 
-For the implementation of CRC encoder, refer to the pyModeS libaray ``pyModeS.util.crc(msg, encode=True)``
+For the implementation of CRC encoder, refer to the pyModeS library ``pyModeS.util.crc(msg, encode=True)``
+
+.. Data parity
+
 
 
 BDS (Comm-B Data Selector)
@@ -114,7 +125,7 @@ Here are some BDS codes that we are interested, where additional parameters abou
 
 BDS 2,0 (Aircraft identification)
 ---------------------------------
-Similar to ADS-B aircraft identification message, the callsign of aircraft can be decode in the same way. For the 56 MB (message, Comm-B) field, information decodes as follows:
+Similar to ADS-B aircraft identification message, the callsign of aircraft can be decode in the same way. For the 56-bit MB (message, Comm-B) field, information decodes as follows:
 
 ::
 
@@ -148,7 +159,7 @@ Example:
 BDS 4,0 (Selected aircraft intention)
 -------------------------------------
 
-In BDS 4,0, information such as aircraft select altitude and barometric pressire settings are given. The 56-bit MB filed is structure as following:
+In BDS 4,0, information such as aircraft select altitude and barometric pressure settings are given. The 56-bit MB filed is structure as following:
 
 
 ::
@@ -186,13 +197,13 @@ In BDS 4,0, information such as aircraft select altitude and barometric pressire
   |                                       |  47  |      |
   +---------------------------------------+------+------+
   | Status                                |  48  |  1   |
-  |   -> next 3 fileds                    |      |      |
+  |   -> next 3 fields                    |      |      |
   +---------------------------------------+------+------+
   | Mode: VNAV                            |  49  |  1   |
   +---------------------------------------+------+------+
   | Mode: Alt hold                        |  50  |  1   |
   +---------------------------------------+------+------+
-  | Mode: Appraoch                        |  51  |  1   |
+  | Mode: Approach                        |  51  |  1   |
   +---------------------------------------+------+------+
   | Reserved                              |  52  |  2   |
   |   -> set to ZEROS                     |  53  |      |
@@ -200,10 +211,10 @@ In BDS 4,0, information such as aircraft select altitude and barometric pressire
   | Status                                |  54  |  1   |
   +---------------------------------------+------+------+
   | Target alt source                     |  55  |  2   |
-  |   -> 00: Unkown                       |      |      |
+  |   -> 00: Unknown                      |      |      |
   |   -> 01: Aircraft altitude            |      |      |
   |   -> 10: FCU/MCP selected altitude    |      |      |
-  |   -> 11: FMS seleted altitude         |  56  |      |
+  |   -> 11: FMS selected altitude        |  56  |      |
   +---------------------------------------+------+------+
 
 

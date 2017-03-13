@@ -10,12 +10,13 @@ The main focus of the guide is on reading different types of messages, understan
     :numbered:
 
     self
-    introduction
-    identification
-    position
-    velocity
-    nicnac
-    modes-ehs
+    content/introduction
+    content/identification
+    content/cpr
+    content/position_airborne
+    content/velocity
+    content/nicnac
+    content/modes-ehs
 
 
 Apendix
