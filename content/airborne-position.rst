@@ -34,7 +34,7 @@ Two types of the position messages (odd and even frames) are broadcast alternate
 2. Knowing previous position, using only one message (aka. locally unambiguous position)
 
 
-Note: The definition of functions `NL(lat)`, `floor(x)`, and `mod(x,y)` are described in CPR chapter
+Note: The definition of functions ``NL(lat)``, ``floor(x)``, and ``mod(x,y)`` are described in CPR chapter
 
 
 Globally unambiguous position (decoding with two messages)
@@ -143,7 +143,7 @@ make sure the latitude is within range ``[-90, +90]``:
 .. math::
 
   Lat_{even} &= Lat_{even} - 360  \quad \text{if } (Lat_{even} \geq 270)
-  
+
   Lat_{odd} &= Lat_{odd} - 360  \quad \text{if } (Lat_{odd} \geq 270)
 
 
@@ -166,7 +166,7 @@ In the example:
   Lat = Lat_EVEN = 52.25720
 
 
-Check the latitude zone consistency 
+Check the latitude zone consistency
 **************************************
 
 Compute ``NL(Lat_E)`` and ``NL(Lat_O)``. If not the same, two positions are located at different latitude zones. Computation of a global longitude is not
@@ -247,7 +247,7 @@ The final altitude value will be:
 
 In this example, the altitude at which aircraft is flying is:
 ::
-  
+
   1560 * 25 - 1000 = 38000 ft.
 
 Note that the altitude has the accuracy of +/- 25 ft when the Q-bit is 1, and the value can represent altitude from -1000 to +50175 ft.
@@ -353,7 +353,7 @@ The structure of message is:
 ::
 
   8D40621D58C382D690C8AC2863A7
-  
+
   |    | ICAO24 |      DATA      |  CRC   |
   |----|--------|----------------|--------|
   | 8D | 40621D | 58C382D690C8AC | 2863A7 |
@@ -389,7 +389,7 @@ Run the calculation, the same result will be decoded:
 ::
 
   d_lat:  6
-  j:      8 
+  j:      8
   lat:    52.25720
   m:      0
   d_lon:  10

@@ -8,9 +8,9 @@ Example
 
 An easy example to understand the principle behind CPR:
 
-Imaging the world is constructed by 16 grid, which we have divided into two level, each level are encoded with two bits. Higher level in color are `00` (yellow), `01` (blue), `10` (red), `11` (green). And within each color grid, the lower levels are also encoded similarly.
+Imaging the world is constructed by 16 grid, which we have divided into two level, each level are encoded with two bits. Higher level in color are ``00`` (yellow), ``01`` (blue), ``10`` (red), ``11`` (green). And within each color grid, the lower levels are also encoded similarly.
 
-Then each grid can be represented as 4 digit from `0000` to `1111`. Now, we want to describe the movement indicated as the arrows in the green grids `1100 -> 1101`, but we only have 3 bits to encode each position.
+Then each grid can be represented as 4 digit from ``0000`` to ``1111``. Now, we want to describe the movement indicated as the arrows in the green grids ``1100 -> 1101``, but we only have 3 bits to encode each position.
 
 .. image:: ../images/illustration-cpr-1.svg
   :width: 472px
@@ -23,9 +23,9 @@ It is easy to see that the high 2 bits appeared in all positions, so we can defi
   1. The last two bits shall represent the local position
   2. The combination of first digit from two messages defines the higher grid
 
-The then two message can be sent as `1 00 -> 1 01`
+The then two message can be sent as ``1 00 -> 1 01``
 
-From lower bits `00 -> 01`, we have four different possibility of movement as show in dashed arrows, and from the two first bit combination `11`, we know the the arrow shall represent the movement in the green grids:
+From lower bits ``00 -> 01``, we have four different possibility of movement as show in dashed arrows, and from the two first bit combination ``11``, we know the the arrow shall represent the movement in the green grids:
 
 .. image:: ../images/illustration-cpr-2.svg
   :width: 332px

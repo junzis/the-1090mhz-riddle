@@ -13,8 +13,8 @@ The main focus of the guide is on reading different types of messages, understan
     content/introduction
     content/identification
     content/cpr
-    content/position_airborne
-    content/velocity
+    content/airborne-position
+    content/airborne-velocity
     content/nicnac
     content/modes-ehs
 
@@ -48,9 +48,9 @@ About us
 
 We are a group at TuDelft working on aircraft operations and controls.
 
-* Junzi Sun, PhD Student     
-* Jacco Hoekstra, Prof.dr.ir   
-* Joost EllerBroek, Dr.ir     
+* Junzi Sun, PhD Student
+* Jacco Hoekstra, Prof.dr.ir
+* Joost EllerBroek, Dr.ir
 
 
 References
@@ -63,4 +63,3 @@ Some good source of documents:
 * `ICAO ADS-B Guide <http://www.icao.int/SAM/eDocuments/ADSB%20Guide%20Vs1.2%20English.pdf>`_
 * `Dump1090 Project <https://github.com/antirez/dump1090>`_
 * `A Very Simple ADSB Receiver, <http://www.lll.lu/~edward/edward/adsb/VerySimpleADSBreceiver.html>`_
-
