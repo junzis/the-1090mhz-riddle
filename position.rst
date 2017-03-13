@@ -1,8 +1,92 @@
+Compact Position Reporting (CPR)
+================================
+
+The position information in ADS-B messages is encoded in a compact position reporting (CPR) format. The general idea behind CPR is to be able to encoding more coordinate decimals using less bits. It is archive by trading global position ambiguity and time with local position accuracy.
+
+Example
+-------
+
+An easy example to demonstrate the principle behind CPR:
+
+Imaging the world is constructed by 16 grid, which we have divided into two level, each level are encoded with two bits. Higher level in color are `00` (yellow), `01` (blue), `10` (red), `11` (green). And within each color grid, the lower levels are also encoded similarly.
+
+Then each grid can be represented as 4 digit from `0000` to `1111`. Now, we want to describe the movement indicated as the arrows in the green grids `1100 -> 1101`, but we only have 3 bits to encode each position.
+
+.. image:: images/illustration-cpr-1.svg
+   :height: 300px
+
+
+It is easy to see that the high 2 bits appeared in all positions, so we can define a structure to do the following:
+
+::
+
+  1. The last two bits shall represent the local position
+  2. The combination of first digit from two messages defines the higher grid
+
+The then two message can be sent as `1 00 -> 1 01`
+
+From lower bits `00 -> 01`, we have four different possibility of movement as show in dashed arrows, and from the two first bit combination `11`, we know the the arrow shall represent the movement in the green grids:
+
+.. image:: images/illustration-cpr-2.svg
+   :height: 300px
+
+
+CPR
+---
+
+The actual CPR algorithm of course is more complicated, but the principle is very similar to previous example. If only one message is given, it is possible to find multiple solutions that are spaced around the world. The combination of two (different types of) messages will yield the final result.
+
+In CPR encoding, the earth is divided in many zones (similar to the grid in previous example). And the encoding algorithm is also more complicated (described in later section). First, we will list some of the parameters and common functions used in the decoding process here.
+
+NZ
+**
+
+Number of geographic latitude zones between equator and a pole. It is set to ``NZ = 15`` for Mode-S CPR encoding
+
+floor(x)
+********
+
+the floor function ``floor(x)`` defines as the greatest integer value k, such that ``k<=x``, for example:
+::
+    floor(5.6) = 5
+    floor(-5.6) = -6
+
+
+mod(x, y)
+*********
+
+the modulus function ``mod(x, y)`` return:
+
+.. math::
+
+  x - y \cdot floor(\frac{x}{y})
+
+where ``y`` can not be zero
+
+
+NL(lat)
+*******
+
+Denotes the "number of longitude zones" function, given the latitude angle ``lat``. The returned integer value is constrained within ``[1, 59]``, calculated as:
+
+
+.. math::
+
+  \text{NL}(lat) = floor \left( \frac{2 \pi}{\arccos(1 - \frac{1-\cos(\frac{\pi}{2 \cdot \text{NZ}})}{\cos^2(\frac{\pi}{180} \cdot \text{lat})}) } \right)
+
+For latitudes that are close to equator or poles, following value is returned:
+::
+  lat = 0     ->    NL = 59
+  lat = +87   ->    NL = 2
+  lat = -87   ->    NL = 2
+  lat > +87   ->    NL = 1
+  lat < -87   ->    NL = 1
+
+
 Airborne Positions
 ==================
 
-An aircraft position message has ``DownlinkFormat: 17`` and ``TypeCode: from 9
-to 18``.
+An aircraft airborne position message has ``DownlinkFormat: 17`` and ``TypeCode: from 9 to 18``.
 
 Messages are composed as following:
 
@@ -29,19 +113,19 @@ Messages are composed as following:
 +-----------+---------+---------+----------------------------------+
 
 
-Decoding the positions of the aircraft is a bit complicated. Naturally, we
-would expect to read latitude and longitude directly from the data frame.
-Unfortunately, it's not that simple...
+Two types of the position messages (odd and even frames) are broadcast alternately. There are two different ways to decode an airborne position base on these messages:
 
-Two different types of the position messages (odd and even frames) are needed
-to find out the LAT and LON of the aircraft. The position is described in the
-Compact Position Reporting (CPR) format. The advantage of CPR is that we can
-use fewer bits to encode position with higher resolution. However this results
-the complexity of decoding process.
+1. Unknown position, using both type of messages (aka. globally unambiguous position)
+2. Knowing previous position, using only one message (aka. locally unambiguous position)
 
 
-First, "odd" or "even" message?
--------------------------------
+
+Globally unambiguous position (decoding with two messages)
+--------------------------------------------------------------------
+
+
+odd" or "even" message?
+**************************
 
 For each frame, bit 54 determines whether it is an "odd" or "even" frame:
 ::
@@ -62,130 +146,53 @@ For example, the two following messages are received:
   | 8D | 40621D | 58C386435CC412 | 692AD6 |
 
 
+  Data in binary:
 
-Convert both messages to binary strings:
-::
-
-  | DF    | CA  | ICAO24 ADDRESS           | DATA                                    ->
-  |=======|=====|==========================|========================================
-  |                                        | TC    | SS | NICsb | ALT          | T | ->
-  |-------|-----|--------------------------|-------|----|-------|--------------|---| ->
-  | 10001 | 101 | 010000000110001000011101 | 01011 | 00 | 0     | 110000111000 | 0 | ->
-  | 10001 | 101 | 010000000110001000011101 | 01011 | 00 | 0     | 110000111000 | 0 | ->
+  | DATA                                                                              |
+  |===================================================================================|
+  | TC    | SS | NICsb | ALT          | T | F | CPR-LAT           | CPR-LON           |
+  |-------|----|-------|--------------|---|---|-------------------|-------------------|
+  | 01011 | 00 | 0     | 110000111000 | 0 | 0 | 10110101101001000 | 01100100010101100 |
+  | 01011 | 00 | 0     | 110000111000 | 0 | 1 | 10010000110101110 | 01100010000010010 |
 
 
-    ->  Data (cont.)                                | CRC                      |
-    ->  ============================================|==========================|
-    ->  | F | LAT-CPR           | LON-CPR           |                          |
-    ->  |---|-------------------|-------------------|--------------------------|
-    ->  | 0 | 10110101101001000 | 01100100010101100 | 001010000110001110100111 |
-    ->  | 1 | 10010000110101110 | 01100010000010010 | 011010010010101011010110 |
+In both messages we can find ``DF=17`` and ``TC=11``, with the same ICAO24 address ``40621D``. So, those two frames are valid for decoding the positions of this aircraft. Assume the first message is the newest message received.
 
 
-In both messages we can find ``DF=17`` and ``TC=11``, with the same ICAO24
-address ``40621D``. So, those two frames are valid for decoding the positions of
-this aircraft.
-
-
-
-
-CPR parameters and functions
-----------------------------
-
-First, we denotes some of the parameters and common functions used in the
-decoding process here.
-
-NZ
-**
-
-Number of geographic latitude zones between equator and a pole. It is set to
-``NZ = 15`` for Mode-S CPR encoding
-
-floor(x)
-********
-
-the floor function ``floor(x)`` defines as the greatest integer value k, such that
-``k<=x``, for example:
-::
-    floor(5.6) = 5
-    floor(-5.6) = -6
-
-mod(x, y)
-*********
-
-the modulus function ``mod(x, y)`` return:
-
-.. math::
-
-  x - y \cdot floor(\frac{x}{y})
-
-where ``y`` can not be zero
-
-
-NL(lat)
-*******
-
-Denotes the "number of longitude zones" function, given the latitude angle
-``lat``. The returned integer value is constrained within ``[1, 59]``,
-calculated as:
-
-
-.. math::
-
-  \text{NL}(lat) = floor \left( \frac{2 \pi}{\arccos(1 - \frac{1-\cos(\frac{\pi}{2 \cdot \text{NZ}})}{\cos^2(\frac{\pi}{180} \cdot \text{lat})}) } \right)
-
-For latitudes that are close to equator or poles, following value is returned:
-::
-  lat = 0     ->    NL = 59
-  lat = +87   ->    NL = 2
-  lat = -87   ->    NL = 2
-  lat > +87   ->    NL = 1
-  lat < -87   ->    NL = 1
-
-
-
-Latitude/Longitude calculation
-------------------------------
-
-There are a few technical documents that explain in detail the math behind the
-CPR. For example: `a document from Eurocontrol
-<http://www.eurocontrol.int/eec/gallery/co ntent/public/document/eec/report/19
-95/002_Aircraft_Position_Report_using_DGPS_Mo de-S.pdf>`_.
-
-Let's first separate the CPR latitude and longitude bits in both messages.
-The steps after will guide you to calculate the LAT/LON of the aircraft. 
-
+The CPR representation of coordinates
+****************************************
 ::
 
   | F | CPR Latitude      | CPR Longitude     |
   |---|-------------------|-------------------|
   | 0 | 10110101101001000 | 01100100010101100 |  -> newest frame received
   | 1 | 10010000110101110 | 01100010000010010 |
+  |---|-------------------|-------------------|
+
+  In decimal:
+
+  |---|-------------------|-------------------|
+  | 0 | 93000             | 51372             |
+  | 1 | 74158             | 50194             |
+  |---|-------------------|-------------------|
+
+  CPR_LAT_EVEN: 93000 / 131072 -> 0.7095
+  CPR_LON_EVEN: 51372 / 131072 -> 0.3919
+  CPR_LAT_ODD:  74158 / 131072 -> 0.5658
+  CPR_LON_ODD:  50194 / 131072 -> 0.3829
 
 
-Step 1: Convert the binary string to decimal value
-**************************************************
-::
-
-  LAT_CPR_EVEN: 93000 / 131072 -> 0.7095
-  LON_CPR_EVEN: 51372 / 131072 -> 0.3919
-  LAT_CPR_ODD:  74158 / 131072 -> 0.5658
-  LON_CPR_ODD:  50194 / 131072 -> 0.3829
+Since CPR latitude and longitude are encoded in 17 bits, 131072 (2^17) is the maximum value.
 
 
-Since CPR latitude and longitude are encoded in 17 bits, 131072 (2^17) is the
-maximum value. The resulting values from the calculations represent the
-percentages of that maximum value.
-
-
-Step 2: Calculate the latitude index j
-****************************************************************
+Calculate the latitude index j
+*********************************
 
 Use the following equation:
 
 .. math::
 
-  j = floor\left ( 59 \cdot Lat_{cprE} - 60 \cdot Lat_{cprO} + \frac{1}{2}  \right )
+  j = floor \left( 59 \cdot Lat_{cprEven} - 60 \cdot Lat_{cprOdd} + \frac{1}{2}  \right)
 
 
 ::
@@ -193,34 +200,34 @@ Use the following equation:
   j = 8
 
 
-Step 3: Latitude
-****************
+Calculate latitude
+*********************
 
 First, two constants will be used:
 
 .. math::
 
-  DLat_{E} &= \frac{360}{4 \times NZ} = \frac{360}{60}
+  dLat_{even} &= \frac{360}{4 \cdot NZ} = \frac{360}{60}
 
-  DLat_{O} &= \frac{360}{4 \times NZ - 1}  = \frac{360}{59}
+  dLat_{odd} &= \frac{360}{4 \cdot NZ - 1}  = \frac{360}{59}
 
 
 Then we can use the following equations to compute the relative latitudes:
 
 .. math::
 
-  Lat_{E} &= DLat_{E} * (mod(j, 60) + Lat_{cprE})
+  Lat_{even} &= dLat_{even} \cdot (mod(j, 60) + Lat_{cprEven})
 
-  Lat_{O} &= DLat_{O} * (mod(j, 59) + Lat_{cprO})
+  Lat_{odd} &= dLat_{odd} \cdot (mod(j, 59) + Lat_{cprOdd})
 
 For southern hemisphere, values will fall from 270 to 360 degrees. we need to
 make sure the latitude is within range ``[-90, +90]``:
 
 .. math::
 
-  Lat_{E} &= Lat_{E} - 360  \quad \text{if } (Lat_{E} \geq 270)
+  Lat_{even} &= Lat_{even} - 360  \quad \text{if } (Lat_{even} \geq 270)
   
-  Lat_{O} &= Lat_{O} - 360  \quad \text{if } (Lat_{O} \geq 270)
+  Lat_{odd} &= Lat_{odd} - 360  \quad \text{if } (Lat_{odd} \geq 270)
 
 
 Final latitude is chosen depending on the time stamp of the frames--the newest one is
@@ -230,8 +237,8 @@ used:
 
   Lat =
   \begin{cases}
-   Lat_{E}     & \text{if } (T_{E} \geq T_{O}) \\
-   Lat_{O}     & \text{else}
+   Lat_{even}     & \text{if } (T_{even} \geq T_{odd}) \\
+   Lat_{odd}     & \text{else}
   \end{cases}
 
 In the example:
@@ -242,43 +249,40 @@ In the example:
   Lat = Lat_EVEN = 52.25720
 
 
-Step 4: Check
-*************
+Check the latitude zone consistency 
+**************************************
 
-Compute ``NL(Lat_E)`` and ``NL(Lat_O)``. If not the same, two positions are
-located at different latitude zones. Computation of a global longitude is not
-possible. exit the calculation and wait for new messages.
-
-If two values are the same, we proceed to longitude calculation.
+Compute ``NL(Lat_E)`` and ``NL(Lat_O)``. If not the same, two positions are located at different latitude zones. Computation of a global longitude is not
+possible. exit the calculation and wait for new messages. If two values are the same, we proceed to longitude calculation.
 
 
-Step 5: Longitude
-***************************
+Calculate longitude
+**********************
 
 If the even frame come latest ``T_EVEN > T_ODD``:
 
 .. math::
 
-  ni &= max \left( NL(Lat_{E}), 1 \right)
+  ni &= max \left( NL(Lat_{even}), 1 \right)
 
-  DLon &= \frac{360}{ni}
+  dLon &= \frac{360}{ni}
 
-  m &= floor\left ( Lon_{cprE} \cdot [NL(Lat_{E})-1] - Lon_{cprO} \cdot NL(Lat_{E}) + \frac{1}{2}  \right )
+  m &= floor \left( Lon_{cprEven} \cdot [NL(Lat_{even})-1] - Lon_{cprOdd} \cdot NL(Lat_{even}) + \frac{1}{2}  \right)
 
-  Lon &= DLon \cdot \left( mod(m, ni) + Lon_{cprE} \right)
+  Lon &= dLon \cdot \left( mod(m, ni) + Lon_{cprEven} \right)
 
 
 In case where the odd frame come latest ``T_EVEN < T_ODD``:
 
 .. math::
 
-  ni &= max \left( NL(Lat_{O})-1, 1 \right)
+  ni &= max \left( NL(Lat_{odd})-1, 1 \right)
 
-  DLon &= \frac{360}{ni}
+  dLon &= \frac{360}{ni}
 
-  m &= floor\left ( Lon_{cprE} \cdot [NL(Lat_{O})-1] - Lon_{cprO} \cdot NL(Lat_{O}) + \frac{1}{2}  \right )
+  m &= floor \left( Lon_{cprEven} \cdot [NL(Lat_{odd})-1] - Lon_{cprOdd} \cdot NL(Lat_{odd}) + \frac{1}{2}  \right)
 
-  Lon &= DLon \cdot \left( mod(m, ni) + Lon_{cprO} \right)
+  Lon &= dLon \cdot \left( mod(m, ni) + Lon_{cprOdd} \right)
 
 
 if the result is larger than 180 degrees:
@@ -299,19 +303,17 @@ Here is a Python implemented: https://github.com/junzis/pyModeS/blob/faf4313/pyM
 
 
 
-Altitude Calculation
---------------------
+Calculate altitude
+******************
 
-The altitude of the aircraft is much easier to compute from the data frame. The bits
-in the altitude field (either odd or even frame) are as following:
+The altitude of the aircraft is much easier to compute from the data frame. The bits in the altitude field (either odd or even frame) are as following:
 ::
 
   1100001 1 1000
           ^
          Q-bit
 
-This Q-bit (bit 48) indicates whether the altitude is encoded in multiples of
-25 or 100 ft (0: 100 ft, 1: 25 ft).
+This Q-bit (bit 48) indicates whether the altitude is encoded in multiples of 25 or 100 ft (0: 100 ft, 1: 25 ft).
 
 For Q = 1, we can calculate the altitude as following:
 
@@ -331,16 +333,147 @@ In this example, the altitude at which aircraft is flying is:
   
   1560 * 25 - 1000 = 38000 ft.
 
-Note that the altitude has the accuracy of +/- 25 ft when the Q-bit is 1, and the
-value can represent altitude from -1000 to +50175 ft.
+Note that the altitude has the accuracy of +/- 25 ft when the Q-bit is 1, and the value can represent altitude from -1000 to +50175 ft.
 
 
 
 The final position
-------------------
+******************
+
 Finally, we have all three components (latitude/longitude/altitude) of the aircraft position:
 ::
 
   LAT: 52.25720 (degrees N)
   LON:  3.91937 (degrees E)
   ALT:    38000 ft
+
+
+Locally unambiguous position (decoding with one message)
+----------------------------------------------------------
+
+This method gives the possibility of decoding aircraft using only one message knowing a reference position. This method compute the latitude index (j) and longitude index (m) based on such reference, and can be used with either type of the messages.
+
+
+The reference position
+**************************
+The reference position should be close to the actual position (eg. position of aircraft previously decoded, or the location of ADS-B antenna), and must be **within 180 NM** range.
+
+
+Calculate dLat
+**************
+
+.. math::
+
+  dLat =
+  \begin{cases}
+   \frac{360}{4 \cdot NZ} = \frac{360}{60}          & \text{if even message}  \\
+   \frac{360}{4 \cdot NZ - 1}  = \frac{360}{59}     & \text{if odd message}
+  \end{cases}
+
+
+
+Calculate the latitude index j
+*********************************
+
+.. math::
+
+  j = floor(\frac{Lat_{ref}}{dLat}) + floor \left( \frac{mod(Lat_{ref}, dLat)}{dLat}  - Lat_{cpr}  + \frac{1}{2} \right)
+
+
+
+Calculate latitude
+*********************
+
+.. math::
+
+  Lat = dLat \cdot (j + Lat_{cpr})
+
+
+
+Calculate dLon
+**************
+
+.. math::
+
+  dLon =
+  \begin{cases}
+   \frac{360}{NL(Lat)}    & \text{if } NL(Lat) > 0  \\
+   360                    & \text{if } NL(Lat) = 0
+  \end{cases}
+
+
+Calculate longitude index m
+****************************
+
+.. math::
+
+  m = floor(\frac{Lon_{ref}}{dLon}) + floor \left( \frac{mod(Lon_{ref}, dLon)}{dLon}  - Lon_{cpr}  + \frac{1}{2}  \right)
+
+
+Calculate longitude
+*********************
+
+.. math::
+
+  Lon = dLon \cdot (m + Lon_{cpr})
+
+
+Example
+*******
+
+For the same example message:
+::
+
+  8D40621D58C382D690C8AC2863A7
+
+  Reference position:
+    LAT: 52.258
+    LON:  3.918
+
+
+
+The structure of message is:
+::
+
+  8D40621D58C382D690C8AC2863A7
+  
+  |    | ICAO24 |      DATA      |  CRC   |
+  |----|--------|----------------|--------|
+  | 8D | 40621D | 58C382D690C8AC | 2863A7 |
+
+
+  Data in binary:
+
+  | DATA                                                                              |
+  |===================================================================================|
+  | TC    | SS | NICsb | ALT          | T | F | CPR-LAT           | CPR-LON           |
+  |-------|----|-------|--------------|---|---|-------------------|-------------------|
+  | 01011 | 00 | 0     | 110000111000 | 0 | 0 | 10110101101001000 | 01100100010101100 |
+
+
+  CPR representation:
+
+  | F | CPR Latitude      | CPR Longitude     |
+  |---|-------------------|-------------------|
+  | 0 | 10110101101001000 | 01100100010101100 |
+  |---|-------------------|-------------------|
+
+  In decimal:
+
+  |---|-------------------|-------------------|
+  | 0 | 93000             | 51372             |
+  |---|-------------------|-------------------|
+
+  CPR_LAT: 93000 / 131072 -> 0.7095
+  CPR_LON: 51372 / 131072 -> 0.3919
+
+
+Run the calculation, the same result will be decoded:
+::
+
+  d_lat:  6
+  j:      8 
+  lat:    52.25720
+  m:      0
+  d_lon:  10
+  lon:    3.91937
