@@ -13,7 +13,7 @@ Imaging the world is constructed by 16 grid, which we have divided into two leve
 Then each grid can be represented as 4 digit from `0000` to `1111`. Now, we want to describe the movement indicated as the arrows in the green grids `1100 -> 1101`, but we only have 3 bits to encode each position.
 
 .. image:: images/illustration-cpr-1.svg
-   :height: 300px
+  :width: 472px
 
 
 It is easy to see that the high 2 bits appeared in all positions, so we can define a structure to do the following:
@@ -28,7 +28,7 @@ The then two message can be sent as `1 00 -> 1 01`
 From lower bits `00 -> 01`, we have four different possibility of movement as show in dashed arrows, and from the two first bit combination `11`, we know the the arrow shall represent the movement in the green grids:
 
 .. image:: images/illustration-cpr-2.svg
-   :height: 300px
+  :width: 332px
 
 
 CPR
