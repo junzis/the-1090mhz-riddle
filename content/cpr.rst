@@ -1,7 +1,7 @@
 Compact Position Reporting
 ==========================
 
-The position information in ADS-B messages is encoded in a compact position reporting (CPR) format. The general idea behind CPR is to be able to encoding more coordinate decimals using less bits. It is archive by trading global position ambiguity and time with local position accuracy.
+The position information in ADS-B messages is encoded in a compact position reporting (CPR) format. The general idea behind CPR is to be able to encode more coordinate decimals using less bits. It is achieved by trading global position ambiguity and time with local position accuracy.
 
 Example
 -------
