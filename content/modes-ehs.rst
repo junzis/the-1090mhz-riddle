@@ -60,7 +60,7 @@ Except the DF, the first 32 bits does not contain useful information for decode 
 Parity and ICAO address recovery
 --------------------------------
 
-Unlike ADS-B, the ICAO address is not broadcast along with the EHS messages. We will have to "decode" the ICAO address before decoding other information, and ICAO is hidden in the message and checksum. 
+Unlike ADS-B, the ICAO address is not broadcast along with the EHS messages. We will have to "decode" the ICAO address before decoding other information, and ICAO is hidden in the message and checksum.
 
 Mode-S uses two types of parity checksum Address Parity (AP) and Data Parity (DP). Majority of the time Address Parity is used.
 
@@ -243,3 +243,200 @@ An example:
 
 BDS 4,4 (Meteorological routine air report)
 -------------------------------------------
+
+under construction
+
+BDS 5,0 (Track and turn report)
+-------------------------------------------
+
+Within the BDS 5,0 message, five different types of aircraft states are given, mostly related with the turns:
+
+- roll angle
+- true track angle
+- ground speed
+- track angle rate
+- true airspeend
+
+The 56-bit MB filed is structure as following:
+
+::
+
+   FIELD                                   START  N-BITS
+                                           (END)
+  +---------------------------------------+------+------+
+  | Status                                |  1   |  1   |
+  +---------------------------------------+------+------+
+  | Sign, 1 -> left wing down             |  1   |  1   |
+  +---------------------------------------+------+------+
+  | Roll angle                            |  3   |  9   |
+  |                                       |      |      |
+  | range = [-90, 90] degrees             |      |      |
+  |                                       |      |      |
+  | LSB: 45/256 degree                    |  11  |      |
+  +---------------------------------------+------+------+
+  | Status                                |  12  |  1   |
+  +---------------------------------------+------+------+
+  | Sign, 1 -> west                       |  13  |  1   |
+  +---------------------------------------+------+------+
+  | True track angle                      |  14  |  10  |
+  |                                       |      |      |
+  | range = [-180, 180] degrees           |      |      |
+  |                                       |      |      |
+  | LSB: 90/512 degree                    |  23  |      |
+  +---------------------------------------+------+------+
+  | Status                                |  24  |  1   |
+  +---------------------------------------+------+------+
+  | Ground speed                          |  25  |  10  |
+  |                                       |      |      |
+  | range = [0, 2046] knots               |      |      |
+  |                                       |      |      |
+  | LSB: 2 knots                          |  34  |      |
+  +---------------------------------------+------+------+
+  | Status                                |  35  |  1   |
+  +---------------------------------------+------+------+
+  | Sign, 1 -> negative value             |  36  |  1   |
+  +---------------------------------------+------+------+
+  | Track angle rate                      |  37  |  9   |
+  |                                       |      |      |
+  | range = [-16, 16] degrees             |      |      |
+  |                                       |      |      |
+  | LSB: 8/256 degree / second            |  45  |      |
+  +---------------------------------------+------+------+
+  | Status                                |  46  |  1   |
+  +---------------------------------------+------+------+
+  | True airspeed                         |  47  |  10  |
+  |                                       |      |      |
+  | range = [0, 2046] knots               |      |      |
+  |                                       |      |      |
+  | LSB: 2 knots                          |  56  |      |
+  +---------------------------------------+------+------+
+
+An example:
+
+::
+
+  MSG:  A000139381951536E024D4CCF6B5
+  MB:           81951536E024D4
+
+  ---------------------------------------------------------------------------------
+  MB BIN:   1 0 000001100 1 0 1010001010 1 0011011011 1 0 000000100 1 0011010100
+  ---------------------------------------------------------------------------------
+  STATUS:   1
+  SIGN:       +
+  ROLL:         12 (x45/256)
+  ---------------------------------------------------------------------------------
+  STATUS:                 1
+  SIGN:                     +
+  TRACK ANGLE:                650 (x90/512)
+  ---------------------------------------------------------------------------------
+  STATUS:                                1
+  GROUND SPEED:                            219 (x2)
+  ---------------------------------------------------------------------------------
+  STATUS:                                             1
+  SIGN:                                                +
+  TRACK ANGLE RATE:                                      4 (x8/256)
+  ---------------------------------------------------------------------------------
+  STATUS:                                                           1
+  TRUE AIRSPEED:                                                      212 (x2)
+  ---------------------------------------------------------------------------------
+  FINAL:      2.1 deg      114.3 deg       438 kt      0.1 deg/s     424 kt
+  ---------------------------------------------------------------------------------
+
+Of course, all fields are not always available in each of DBS 5,0 message. For those information that are not available, status bits are set to 0.
+
+
+BDS 6,0 (Heading and speed report)
+-------------------------------------------
+
+Within the BDS 6,0 message, five different types of aircraft states are given:
+
+- magnetic heading
+- indicated airspeed
+- Mach number
+- barometric altitude rate
+- inertial vertical rate
+
+The 56-bit MB filed is structure as following:
+
+::
+
+   FIELD                                   START  N-BITS
+                                           (END)
+  +---------------------------------------+------+------+
+  | Status                                |  1   |  1   |
+  +---------------------------------------+------+------+
+  | Sign, 1 -> West                       |  1   |  1   |
+  +---------------------------------------+------+------+
+  | Magnetic heading                      |  3   |  10  |
+  |                                       |      |      |
+  | range = [-180, 180] degrees           |      |      |
+  |                                       |      |      |
+  | LSB: 90/512 degree                    |  12  |      |
+  +---------------------------------------+------+------+
+  | Status                                |  13  |  1   |
+  +---------------------------------------+------+------+
+  | Indicated airspeed                    |  14  |  10  |
+  |                                       |      |      |
+  | range = [0, 1023] knots               |      |      |
+  |                                       |      |      |
+  | LSB: 1 knots                          |  23  |      |
+  +---------------------------------------+------+------+
+  | Status                                |  24  |  1   |
+  +---------------------------------------+------+------+
+  | Mach number                           |  25  |  10  |
+  |                                       |      |      |
+  | range = [0, 4.092] Mach               |      |      |
+  |                                       |      |      |
+  | LSB: 2.048 / 512 Mach                 |  34  |      |
+  +---------------------------------------+------+------+
+  | Status                                |  35  |  1   |
+  +---------------------------------------+------+------+
+  | SIGN 1 -> Below                       |  36  |  1   |
+  +---------------------------------------+------+------+
+  | Barometric altitude rate              |  37  |  9   |
+  |                                       |      |      |
+  | range = [-16384, 16352] ft/min        |      |      |
+  |                                       |      |      |
+  | LSB: 32 ft/min                        |  45  |      |
+  +---------------------------------------+------+------+
+  | Status                                |  46  |  1   |
+  +---------------------------------------+------+------+
+  | SIGN 1 -> Below                       |  47  |  1   |
+  +---------------------------------------+------+------+
+  | Inertial altitude rate                |  48  |  9   |
+  |                                       |      |      |
+  | range = [-16384, 16352] ft/min        |      |      |
+  |                                       |      |      |
+  | LSB: 32 ft/min                        |  56  |      |
+  +---------------------------------------+------+------+
+
+An example:
+
+::
+
+  MSG:  A000029CFFBAA11E2004727281F1
+  MB:           FFBAA11E200472
+
+  ---------------------------------------------------------------------------------
+  MB BIN:   1 1 1111111011 1 0101010000 1 0001111000 1 0 000000000 1 0 001110010
+  ---------------------------------------------------------------------------------
+  STATUS:   1
+  SIGN:       -
+  HEADING:      1019 (x90/512)
+  ---------------------------------------------------------------------------------
+  STATUS:                  1
+  IAS:                       336
+  ---------------------------------------------------------------------------------
+  STATUS:                               1
+  MACH:                                   120 (x2.048/512)
+  ---------------------------------------------------------------------------------
+  STATUS:                                             1
+  SIGN:                                                +
+  VERTIVAL RATE - BARO:                                  0 (x32)
+  ---------------------------------------------------------------------------------
+  STATUS:                                                         1
+  SIGN:                                                             -
+  VERTICAL RATE - INERTIAL:                                           114 (x32)
+  ---------------------------------------------------------------------------------
+  FINAL:      -179.1 deg     336 kt      0.48 Mach     0 ft/min     -3648 ft/min
+  ---------------------------------------------------------------------------------
