@@ -129,7 +129,7 @@ So, now we have the speed and heading of our example:
   V_{sn} = - (160 - 1) = -159
 
   v = 159.20 (kt)
-  h = 2.88 (deg)
+  h = 182.88 (deg)
 
 
 Vertical Rate
