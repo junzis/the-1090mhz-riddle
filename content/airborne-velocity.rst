@@ -108,7 +108,7 @@ The Speed (v) and heading (h) with unit `knot` and `degree` can be computed as f
 
 .. math::
 
-  h = arctan \left( \frac{V_{we}}{V_{sn}} \right) \cdot \frac{360}{2\pi}  \quad \text{(deg)}
+  h = arctan2 \left( V_{we}, V_{sn} \right) \cdot \frac{360}{2\pi}  \quad \text{(deg)}
 
 In case of an negative value here, we will simply add 360 degrees.
 
