@@ -73,7 +73,7 @@ Denotes the "number of longitude zones" function, given the latitude angle ``lat
 
 .. math::
 
-  \text{NL}(lat) = floor \left( \frac{2 \pi}{\arccos(1 - \frac{1-\cos(\frac{\pi}{2 \cdot \text{NZ}})}{\cos^2(\frac{\pi}{180} \cdot \text{lat})}) } \right)
+  \text{NL}(lat) = floor \left( \frac{2 \pi}{\arccos\left(1 - \frac{1 - \cos\left(\frac{\pi}{2 \cdot \text{NZ}}\right)}{\cos^2\left(\frac{\pi}{180} \cdot \text{lat}\right)}\right) } \right)
 
 For latitudes that are close to equator or poles, following value is returned:
 ::
