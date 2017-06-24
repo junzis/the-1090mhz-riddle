@@ -220,7 +220,7 @@ The detail bits representations are:
 Heading
 *******
 
-``S_hdg makes the status of heading data:
+``S_hdg`` makes the status of heading data:
 
 ::
 
