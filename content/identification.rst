@@ -1,7 +1,7 @@
 Aircraft Identification
 =======================
 
-An aircraft identification message has ``DF: 17``, and ``TC: 1 to 4``, the 56-bit ``DATA`` field is configured as follows:
+An aircraft identification message has ``DF: 17 or 18``, and ``TC: 1 to 4``, the 56-bit ``DATA`` field is configured as follows:
 
 ::
 
