@@ -1,7 +1,7 @@
 Airborne Positions
 ==================
 
-An aircraft airborne position message has ``DownlinkFormat: 17`` and ``TypeCode: from 9 to 18``.
+An aircraft airborne position message has ``DownlinkFormat: 17 or 18`` and ``TypeCode: from 9 to 18``.
 
 Messages are composed as following:
 
