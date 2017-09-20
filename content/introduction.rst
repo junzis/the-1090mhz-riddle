@@ -28,7 +28,7 @@ This table lists the key bits of a message:
 +----------+------------+----------+----------------------------------------+
 | nBits    | Bits       | Abbr.    | Name                                   |
 +==========+============+==========+========================================+
-| 5        | 1 - 5      | DF       | Downlink Format (17)                   |
+| 5        | 1 - 5      | DF       | Downlink Format (17 or 18)             |
 +----------+------------+----------+----------------------------------------+
 | 3        | 6 - 8      | CA       | Capability (additional identifier)     |
 +----------+------------+----------+----------------------------------------+
@@ -60,7 +60,7 @@ Example:
           DF    CA     ICAO          [TC] ------ DATA ----------    PI
     
 
-Any ADS-B must start with the Downlink Format 17 (10001 in binary code) for the first 5 bits. Bits 6-8 are used as additional identifier, which has different meanings within different types of ADS-B message.
+Any ADS-B must start with the Downlink Format 17 or 18 (10001 or 10010 in binary code) for the first 5 bits. Bits 6-8 are used as additional identifier, which has different meanings within different types of ADS-B message.
 
 
 
