@@ -7,7 +7,7 @@ Type 2 and 4 are for supersonic aircraft. So, before we have another commercial 
 
 In real world, very few of subtype 3 messages are reported. In our setup, we only received **0.3%** of these message with regard to subtype 1.
 
-An aircraft velocity message has ``DF: 17``, ``TC: 19``. and the subtype code are represented in bits 38 to 40. Now, we can decode those messages.
+An aircraft velocity message has ``DF: 17 or 18``, ``TC: 19``. and the subtype code are represented in bits 38 to 40. Now, we can decode those messages.
 
 
 Subtype 1 (Ground Speed)
