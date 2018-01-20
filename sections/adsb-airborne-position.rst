@@ -1,7 +1,7 @@
 Airborne Positions
-==================
+------------------
 
-An aircraft airborne position message has ``DownlinkFormat: 17 or 18`` and ``TypeCode: from 9 to 18``.
+An aircraft airborne position message has ``Downlink Format: 17 or 18`` and ``Type Code: from 9 to 18``.
 
 Messages are composed as following:
 
@@ -38,21 +38,19 @@ Note: The definition of functions ``NL(lat)``, ``floor(x)``, and ``mod(x,y)`` ar
 
 
 Globally unambiguous position (decoding with two messages)
---------------------------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 odd" or "even" message?
 **************************
 
-For each frame, bit 54 determines whether it is an "odd" or "even" frame:
-::
+For each frame, bit 54 determines whether it is an "odd" or "even" frame: ::
 
   0 -> Even frame
   1 -> Odd frame
 
 
-For example, the two following messages are received:
-::
+For example, the two following messages are received: ::
 
   8D40621D58C382D690C8AC2863A7
   8D40621D58C386435CC412692AD6
@@ -109,7 +107,7 @@ Use the following equation:
 
 .. math::
 
-  j = floor \left( 59 \cdot Lat_{cprEven} - 60 \cdot Lat_{cprOdd} + \frac{1}{2}  \right)
+  j = floor \left( 59 \cdot \mathrm{Lat}_\mathrm{cprEven} - 60 \cdot \mathrm{Lat}_\mathrm{cprOdd} + \frac{1}{2}  \right)
 
 
 ::
@@ -124,27 +122,27 @@ First, two constants will be used:
 
 .. math::
 
-  dLat_{even} &= \frac{360}{4 \cdot NZ} = \frac{360}{60}
+  \mathrm{dLat}_\mathrm{even} &= \frac{360}{4 \cdot NZ} = \frac{360}{60}
 
-  dLat_{odd} &= \frac{360}{4 \cdot NZ - 1}  = \frac{360}{59}
+  \mathrm{dLat}_\mathrm{odd} &= \frac{360}{4 \cdot NZ - 1}  = \frac{360}{59}
 
 
 Then we can use the following equations to compute the relative latitudes:
 
 .. math::
 
-  Lat_{even} &= dLat_{even} \cdot (mod(j, 60) + Lat_{cprEven})
+  \mathrm{Lat}_\mathrm{even} &= \mathrm{dLat}_\mathrm{even} \cdot [mod(j, 60) + \mathrm{Lat}_\mathrm{cprEven}]
 
-  Lat_{odd} &= dLat_{odd} \cdot (mod(j, 59) + Lat_{cprOdd})
+  \mathrm{Lat}_\mathrm{odd} &= \mathrm{dLat}_\mathrm{odd} \cdot [mod(j, 59) + \mathrm{Lat}_\mathrm{cprOdd}]
 
 For southern hemisphere, values will fall from 270 to 360 degrees. we need to
 make sure the latitude is within range ``[-90, +90]``:
 
 .. math::
 
-  Lat_{even} &= Lat_{even} - 360  \quad \text{if } (Lat_{even} \geq 270)
+  \mathrm{Lat}_\mathrm{even} &= \mathrm{Lat}_\mathrm{even} - 360  \quad \text{if } (\mathrm{Lat}_\mathrm{even} \geq 270)
 
-  Lat_{odd} &= Lat_{odd} - 360  \quad \text{if } (Lat_{odd} \geq 270)
+  \mathrm{Lat}_\mathrm{odd} &= \mathrm{Lat}_\mathrm{odd} - 360  \quad \text{if } (\mathrm{Lat}_\mathrm{odd} \geq 270)
 
 
 Final latitude is chosen depending on the time stamp of the frames--the newest one is
@@ -152,10 +150,10 @@ used:
 
 .. math::
 
-  Lat =
+  \mathrm{Lat} =
   \begin{cases}
-   Lat_{even}     & \text{if } (T_{even} \geq T_{odd}) \\
-   Lat_{odd}     & \text{else}
+   \mathrm{Lat}_\mathrm{even}     & \text{if } (T_\mathrm{even} \geq T_\mathrm{odd}) \\
+   \mathrm{Lat}_\mathrm{odd}     & \text{else}
   \end{cases}
 
 In the example:
@@ -180,33 +178,33 @@ If the even frame come latest ``T_EVEN > T_ODD``:
 
 .. math::
 
-  ni &= max \left( NL(Lat_{even}), 1 \right)
+  ni &= max \left( NL(\mathrm{Lat}_\mathrm{even}), 1 \right)
 
-  dLon &= \frac{360}{ni}
+  \mathrm{dLon} &= \frac{360}{ni}
 
-  m &= floor \left( Lon_{cprEven} \cdot [NL(Lat_{even})-1] - Lon_{cprOdd} \cdot NL(Lat_{even}) + \frac{1}{2}  \right)
+  m &= floor \left\{ Lon_\mathrm{cprEven} \cdot [NL(\mathrm{Lat}_\mathrm{even})-1] - Lon_\mathrm{cprOdd} \cdot NL(\mathrm{Lat}_\mathrm{even}) + \frac{1}{2}  \right\}
 
-  Lon &= dLon \cdot \left( mod(m, ni) + Lon_{cprEven} \right)
+  \mathrm{Lon} &= \mathrm{dLon} \cdot \left( mod(m, ni) + Lon_\mathrm{cprEven} \right)
 
 
 In case where the odd frame come latest ``T_EVEN < T_ODD``:
 
 .. math::
 
-  ni &= max \left( NL(Lat_{odd})-1, 1 \right)
+  ni &= max \left( NL(\mathrm{Lat}_\mathrm{odd})-1, 1 \right)
 
-  dLon &= \frac{360}{ni}
+  \mathrm{dLon} &= \frac{360}{ni}
 
-  m &= floor \left( Lon_{cprEven} \cdot [NL(Lat_{odd})-1] - Lon_{cprOdd} \cdot NL(Lat_{odd}) + \frac{1}{2}  \right)
+  m &= floor \left\{ Lon_\mathrm{cprEven} \cdot [NL(\mathrm{Lat}_\mathrm{odd})-1] - Lon_\mathrm{cprOdd} \cdot NL(\mathrm{Lat}_\mathrm{odd}) + \frac{1}{2}  \right\}
 
-  Lon &= dLon \cdot \left( mod(m, ni) + Lon_{cprOdd} \right)
+  \mathrm{Lon} &= \mathrm{dLon} \cdot \left( mod(m, ni) + Lon_\mathrm{cprOdd} \right)
 
 
 if the result is larger than 180 degrees:
 
 .. math::
 
-  Lon = Lon - 360  \quad \text{if } (Lon \geq 180)
+  \mathrm{Lon} = \mathrm{Lon} - 360  \quad \text{if } (\mathrm{Lon} \geq 180)
 
 
 
@@ -243,7 +241,7 @@ The final altitude value will be:
 
 .. math::
 
-  Alt = N * 25 - 1000 \text { (ft.)}
+  Alt = N \cdot 25 - 1000 \quad \text{(ft.)}
 
 In this example, the altitude at which aircraft is flying is:
 ::
@@ -266,7 +264,7 @@ Finally, we have all three components (latitude/longitude/altitude) of the aircr
 
 
 Locally unambiguous position (decoding with one message)
-----------------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This method gives the possibility of decoding aircraft using only one message knowing a reference position. This method compute the latitude index (j) and longitude index (m) based on such reference, and can be used with either type of the messages.
 
@@ -294,7 +292,7 @@ Calculate the latitude index j
 
 .. math::
 
-  j = floor(\frac{Lat_{ref}}{dLat}) + floor \left( \frac{mod(Lat_{ref}, dLat)}{dLat}  - Lat_{cpr}  + \frac{1}{2} \right)
+  j = floor \left (\frac{\mathrm{Lat}_{ref}}{dLat} \right) + floor \left( \frac{mod(\mathrm{Lat}_{ref}, dLat)}{dLat}  - \mathrm{Lat}_\mathrm{cpr}  + \frac{1}{2} \right)
 
 
 
@@ -303,7 +301,7 @@ Calculate latitude
 
 .. math::
 
-  Lat = dLat \cdot (j + Lat_{cpr})
+  \mathrm{Lat} = dLat \cdot (j + \mathrm{Lat}_\mathrm{cpr})
 
 
 
@@ -312,7 +310,7 @@ Calculate dLon
 
 .. math::
 
-  dLon =
+  \mathrm{dLon} =
   \begin{cases}
    \frac{360}{NL(Lat)}    & \text{if } NL(Lat) > 0  \\
    360                    & \text{if } NL(Lat) = 0
@@ -324,7 +322,7 @@ Calculate longitude index m
 
 .. math::
 
-  m = floor(\frac{Lon_{ref}}{dLon}) + floor \left( \frac{mod(Lon_{ref}, dLon)}{dLon}  - Lon_{cpr}  + \frac{1}{2}  \right)
+  m = floor \left( \frac{Lon_{ref}}{\mathrm{dLon}} \right) + floor \left( \frac{mod(Lon_{ref}, \mathrm{dLon})}{\mathrm{dLon}}  - Lon_\mathrm{cpr}  + \frac{1}{2}  \right)
 
 
 Calculate longitude
@@ -332,7 +330,7 @@ Calculate longitude
 
 .. math::
 
-  Lon = dLon \cdot (m + Lon_{cpr})
+  Lon = \mathrm{dLon} \cdot (m + Lon_\mathrm{cpr})
 
 
 Example

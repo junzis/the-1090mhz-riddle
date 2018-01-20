@@ -1,5 +1,5 @@
-NIC / NAC
-=======================
+Integrity and Accuracy
+----------------------
 
 NIC, NAC, NUC, and SIL, those acronyms do sound confusing. They are measurement
 for the integrity,  accuracy, or uncertainties of the position measurement from
@@ -16,12 +16,12 @@ represent the position integrity and velocity accuracy respectively.
 
 Before dive into decoding and interpolation, let's introduce two parameters:
 
-- ``Rc``: Horizontal Containment Radius Limit, interpolated from ``NICp`` number 
+- ``Rc``: Horizontal Containment Radius Limit, interpolated from ``NICp`` number
 - ``HFOM``: Horizontal Figure of Merit, interpolated from ``NACv`` number
 
 
 NIC and Rc
------------
+~~~~~~~~~~~
 
 Bring back the message from position decoding previously:
 
@@ -108,6 +108,6 @@ positions.
 
 
 NAC and HFOM
-------------
+~~~~~~~~~~~~
 
 NAC is reported in the Airborne Velocity Message.

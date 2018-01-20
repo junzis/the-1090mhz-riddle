@@ -1,10 +1,10 @@
 Compact Position Reporting
-==========================
+--------------------------
 
 The position information in ADS-B messages is encoded in a compact position reporting (CPR) format. The general idea behind CPR is to be able to encode more coordinate decimals using less bits. It is achieved by trading global position ambiguity and time with local position accuracy.
 
 Example
--------
+~~~~~~~
 
 An easy example to understand the principle behind CPR:
 
@@ -32,7 +32,7 @@ From lower bits ``00 -> 01``, we have four different possibility of movement as 
 
 
 The CPR and functions
----------------------
+~~~~~~~~~~~~~~~~~~~~~
 
 The actual CPR algorithm of course is more complicated, but the principle is very similar to previous example. If only one message is given, it is possible to find multiple solutions that are spaced around the world. The combination of two (different types of) messages will yield the final result.
 

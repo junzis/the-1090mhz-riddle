@@ -1,5 +1,5 @@
 Airborne Velocity
-=================
+-----------------
 
 There are two different types of messages for velocities, determined by  3-bit subtype in the message. With subtype 1 and 2, surface velocity  (ground speed) is reported. And in subtype 3 and 4, aircraft airspeed are reported.
 
@@ -11,7 +11,7 @@ An aircraft velocity message has ``DF: 17 or 18``, ``TC: 19``. and the subtype c
 
 
 Subtype 1 (Ground Speed)
-------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 Subtype 1 (subsonic, ground speed), are broadcast when ground velocity information are available. The aircraft velocity contains speed and heading information. The speed and heading are also decomposed into North-South, and East-West components.
 
@@ -162,7 +162,7 @@ The Vertical Rate Source (VrSrc) field determine whether if it is a measurement 
 
 
 Subtype 3 (Airspeed)
--------------------------
+~~~~~~~~~~~~~~~~~~~~
 
 Subtype 3 (subsonic, aripseed), are broadcast when ground speed information are NOT available, while airspeed is available. The structure of the message is similar to previous one. Let's take a close look at an example for decoding here.
 

@@ -1,17 +1,12 @@
+ADS-B (Automatic Dependent Surveillance – Broadcast)
+====================================================
+
 Introduction
-============
-
-.. Hardware
-.. --------
-.. TODO: add an introduction of the hardware used for the project here
-
-
-ADS-B
------
+------------
 
 ADS-B is short for Automatic Dependent Surveillance–Broadcast. it is a satellite based surveillance system. Aircraft position, velocity, together with identification are transmitted through Mode-S Extended Squitter (1090 MHz).
 
-Majority of the aircraft nowadays are broadcasting ADS-B messages constantly. There are many ways you can set up you own receiver and antenna to start tapping into those signals (DVB-T usb stick, ModeSBeast, Raspberry Pi, RadarScape, etc). 
+Majority of the aircraft nowadays are broadcasting ADS-B messages constantly. There are many ways you can set up you own receiver and antenna to start tapping into those signals (DVB-T usb stick, ModeSBeast, Raspberry Pi, RadarScape, etc).
 
 
 An ADS-B message is 112 bits long, and consist of 5 parts:
@@ -32,7 +27,7 @@ This table lists the key bits of a message:
 +----------+------------+----------+----------------------------------------+
 | 3        | 6 - 8      | CA       | Capability (additional identifier)     |
 +----------+------------+----------+----------------------------------------+
-| 24       | 9- 32      | ICAO     | ICAO aircraft address                  |
+| 24       | 9 - 32     | ICAO     | ICAO aircraft address                  |
 +----------+------------+----------+----------------------------------------+
 | 56       | 33 - 88    | DATA     | Data                                   |
 +          +------------+----------+----------------------------------------+
@@ -46,7 +41,7 @@ Example:
 ::
 
   Raw message in hexadecimal:
-  8D4840D6202CC371C32CE0576098  
+  8D4840D6202CC371C32CE0576098
 
 
   -----+------------+--------------+-------------------------------+--------------
@@ -58,14 +53,23 @@ Example:
   DEC  |  17    5   |              | [4] .......................   |
   -----+------------+--------------+-------------------------------+--------------
           DF    CA     ICAO          [TC] ------ DATA ----------    PI
-    
+
 
 Any ADS-B must start with the Downlink Format 17 or 18 (10001 or 10010 in binary code) for the first 5 bits. Bits 6-8 are used as additional identifier, which has different meanings within different types of ADS-B message.
 
 
+ICAO address
+~~~~~~~~~~~~
+
+In each ADS-B message, the sender (originated aircraft) can be identified using the icao address. It is located from 9 to 32 bits in binary (or 3 to 8 in hexadecimal). In above example, it is ``4840D6`` or ``010010000100``.
+
+An unique ICAO address is assigned to each Mode-S transponder of an aircraft. Thus this is a unique identifier for aircraft. You can use the query tool (`World Aircraft Database <https://junzis.com/adb/>`_) from mode-s.org to find out more about the aircraft wiht the ICAO address. For instance, using previous ICAO ``4840D6`` example will return the result of a ``Fokker 70`` (wow, it must be one of last in its kind in operation) with registration of ``PH-KZD``.
+
+In addition, you can down the datebase from aforementioned website in CSV format.
+
 
 ADS-B message types
--------------------
+~~~~~~~~~~~~~~~~~~~
 
 To identify what information is contained in a ADS-B message. We need to take a look at the ``Type Code`` of the message, indicated at bits 33 - 37 of the ADS-B message (or first 5 bits of the ``DATA`` segment)
 
@@ -91,12 +95,12 @@ Following are the relationship between each ``Type Code`` and its information co
 
 
 ADS-B Checksum
---------------
+~~~~~~~~~~~~~~~
 
 ADS-B uses cyclic redundancy check to validate the correctness of received message, where the last 24 bits are the parity bits. Following pseudo-code describes the CRC process:
 
 ::
-  
+
   GENERATOR = 1111111111111010000001001
 
   MSG = binary(8D4840D6202CC371C32CE0576098)    # 112 bits
@@ -118,5 +122,13 @@ A comprehensive documentation on Mode-S parity coding can be found:
 
 ::
 
-  Gertz, Jeffrey L. Fundamentals of mode s parity coding. No. ATC-117. 
-  MASSACHUSETTS INST OF TECH LEXINGTON LINCOLN LAB, 1984. APA 
+  Gertz, Jeffrey L. Fundamentals of mode s parity coding. No. ATC-117.
+  MASSACHUSETTS INST OF TECH LEXINGTON LINCOLN LAB, 1984. APA
+
+
+.. include:: sections/adsb-identification.rst
+.. include:: sections/compact-position-report.rst
+.. include:: sections/adsb-airborne-position.rst
+.. include:: sections/adsb-airborne-velocity.rst
+.. include:: sections/adsb-surface-movment.rst
+.. include:: sections/adsb-integrity-accuracy.rst

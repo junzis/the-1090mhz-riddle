@@ -1,0 +1,27 @@
+pre {
+  padding: 10px 15px;
+}
+
+div.sphinxsidebar ul li.toctree-l1 > a {
+  font-size: 14px;
+}
+
+div.sphinxsidebar ul li.toctree-l2 > a {
+  font-size: 13px;
+}
+
+div.sphinxsidebar ul li.toctree-l3 > a {
+  font-size: 12px;
+}
+
+div.section {
+  margin-bottom: 30px
+}
+
+div.section h2 {
+  border-bottom: 1px solid;
+}
+
+div.sphinxsidebar {
+  border-right: 1px dashed #cccccc;
+}

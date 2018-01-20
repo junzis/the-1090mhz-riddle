@@ -1,38 +1,39 @@
+
 Aircraft Identification
-=======================
+-----------------------
 
 An aircraft identification message has ``DF: 17 or 18``, and ``TC: 1 to 4``, the 56-bit ``DATA`` field is configured as follows:
 
 ::
 
-  +---------+---------+---------+---------+---------+---------+---------+---------+---------+---------+
-  |  TC (5) |  EC (3) |  C1 (6) |  C2 (6) |  C3 (6) |  C4 (6) |  C5 (6) |  C6 (6) |  C7 (6) |  C8 (6) |
-  +---------+---------+---------+---------+---------+---------+---------+---------+---------+---------+
+  +--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+
+  | TC (5) | EC (3) | C1 (6) | C2 (6) | C3 (6) | C4 (6) | C5 (6) | C6 (6) | C7 (6) | C8 (6) |
+  +--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+
 
   TC: Type code
   EC: Emitter category
-  C*: Charactor
+  C*: A character
 
 
-For decode charactors, a lookup table is needed for mapping numbers to characters. It is defines as follows, where the ``#`` is not used, and ``_`` represents a sepration.
+For decode characters, a lookup table is needed for mapping numbers to characters. It is defines as follows, where the ``#`` is not used, and ``_`` represents a separation.
 
 ::
 
   #ABCDEFGHIJKLMNOPQRSTUVWXYZ#####_###############0123456789######
 
-In summary, characters and there decimal reprsentations are:
+In summary, characters and there decimal representations are:
 ::
 
-  A - Z :   1 - 26 
+  A - Z :   1 - 26
   0 - 9 :  48 - 57
       _ :  32
 
 
-The ``EC`` value in combination with ``TC`` value defines the category of the aircraft (such as: heavy, large, small, light, glider, etc.). When ``EC`` is set to zeros, such information is not avaiable.
+The ``EC`` value in combination with ``TC`` value defines the category of the aircraft (such as: heavy, large, small, light, glider, etc.). When ``EC`` is set to zeros, such information is not available.
 
 
 Example
--------
+~~~~~~~
 
 For example:
 ::
@@ -43,12 +44,12 @@ For example:
 The structure of the message is:
 ::
 
-  
-       DF--- CA-  ICAO--  DATA------------------  PI---- 
+
+       DF--- CA-  ICAO--  DATA------------------  PI----
   HEX: 8   D      4840D6  2   0     2CC371C32CE0  576098
   BIN: 10001|101  ******  00100|000 ************  ******
   DEC: 17   |4            4     0
-                          TC    *  
+                          TC    *
 
 Note that ``Type Code`` is inside of the DATA frame (first 5 bits). With ``DF=17`` and ``TC=4``, we can confirm this is a aircraft identification message. Aircraft ``callsign`` then can be decoded.
 
