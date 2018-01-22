@@ -5,7 +5,7 @@ The 1090MHz Riddle
 The book about decoding Mode-S and ADS-B data
 ------------------------------------------------------------
 
-Access the online book at: `mode-s.org <https://mode-s.org>`_
+Access the online book at: `mode-s.org <http://mode-s.org>`_
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Begun with a frustration on the lack of technical public information on ADS-B and Mode-S in the year of 2015, I created an live online document to recorded my understanding of ADS-B data. Previously, this was known as `"ADS-B Decoding Guide" <http://adsb-decode-guide.readthedocs.org/>`_ project. Together with the tutorial, we also developed its related python library, the `pyModeS <https://github.com/junzis/pyModeS>`_. With time, I received many feedbacks, compliments, and contributions from open-source community users.
