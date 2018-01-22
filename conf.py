@@ -68,6 +68,7 @@ html_theme_options = {
     'sidebar_width': '300px',
     'fixed_sidebar': True,
     'sidebar_collapse': False,
+    'sidebar_includehidden': True
 }
 
 html_sidebars = {

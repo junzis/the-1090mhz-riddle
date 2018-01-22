@@ -1,13 +1,8 @@
-ADS-B (Automatic Dependent Surveillance – Broadcast)
-====================================================
-
 Introduction
 ------------
 
-ADS-B is short for Automatic Dependent Surveillance–Broadcast. it is a satellite based surveillance system. Aircraft position, velocity, together with identification are transmitted through Mode-S Extended Squitter (1090 MHz).
-
-Majority of the aircraft nowadays are broadcasting ADS-B messages constantly. There are many ways you can set up you own receiver and antenna to start tapping into those signals (DVB-T usb stick, ModeSBeast, Raspberry Pi, RadarScape, etc).
-
+Message structure
+~~~~~~~~~~~~~~~~~
 
 An ADS-B message is 112 bits long, and consist of 5 parts:
 
@@ -124,11 +119,3 @@ A comprehensive documentation on Mode-S parity coding can be found:
 
   Gertz, Jeffrey L. Fundamentals of mode s parity coding. No. ATC-117.
   MASSACHUSETTS INST OF TECH LEXINGTON LINCOLN LAB, 1984. APA
-
-
-.. include:: sections/adsb-identification.rst
-.. include:: sections/compact-position-report.rst
-.. include:: sections/adsb-airborne-position.rst
-.. include:: sections/adsb-airborne-velocity.rst
-.. include:: sections/adsb-surface-movment.rst
-.. include:: sections/adsb-integrity-accuracy.rst
