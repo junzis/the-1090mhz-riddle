@@ -5,13 +5,16 @@ ADS-B is short for Automatic Dependent Surveillance–Broadcast. it is a satelli
 
 Majority of the aircraft nowadays are broadcasting ADS-B messages constantly. There are many ways you can set up you own receiver and antenna to start tapping into those signals (DVB-T usb stick, ModeSBeast, Raspberry Pi, RadarScape, etc).
 
+--------------------------------
+
+**Chapter structure**
 
 .. toctree::
-    :maxdepth: 1
+    :maxdepth: 2
 
-    introduction
-    identification
-    compact-position-report
-    airborne-position
-    airborne-velocity
-    integrity-accuracy
+    adsb/introduction
+    adsb/identification
+    adsb/compact-position-report
+    adsb/airborne-position
+    adsb/airborne-velocity
+    adsb/advance

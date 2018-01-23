@@ -84,7 +84,7 @@ html_sidebars = {
 
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
-html_title = "The 1090MHz Riddle Book"
+html_title = "The 1090MHz Riddle (Decode ADS-B and Mode-S)"
 
 # A shorter title for the navigation bar.  Default is the same as html_title.
 #html_short_title = None
@@ -186,8 +186,8 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-  (master_doc, 'adsb-decode-guide.tex', 'ADS-B Decoding Guide',
-   'Junzi Sun', 'manual'),
+  (master_doc, 'the-1090mhz-riddle.tex', 'The 1090MHz Riddle',
+   'Junzi Sun', 'howto'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of

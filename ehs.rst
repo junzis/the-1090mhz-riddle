@@ -23,11 +23,15 @@ This part of the book covers only a selected common type of EHS messages. For a 
 https://github.com/junzis/pyModeS/blob/master/pyModeS/ehs.py
 
 
-.. toctree::
-    :maxdepth: 1
+--------------------------------
 
-    introduction
-    bds20-identification
-    bds40-intention
-    bds50-track-n-turn
-    bds60-airspeed
+**Chapter structure:**
+
+.. toctree::
+    :maxdepth: 2
+
+    ehs/introduction
+    ehs/bds20-identification
+    ehs/bds40-intention
+    ehs/bds50-track-n-turn
+    ehs/bds60-airspeed

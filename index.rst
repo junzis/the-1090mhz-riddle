@@ -23,8 +23,8 @@ Table of content
     :maxdepth: 2
     :numbered:
 
-    adsb/index
-    ehs/index
+    adsb
+    ehs
 
 
 Related resources
