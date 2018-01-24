@@ -66,9 +66,9 @@ html_theme_options = {
     'font_size': '16px',
     'page_width': '1200px',
     'sidebar_width': '300px',
-    'fixed_sidebar': True,
+    'fixed_sidebar': False,
     'sidebar_collapse': False,
-    'sidebar_includehidden': True
+    'sidebar_includehidden': True,
 }
 
 html_sidebars = {
