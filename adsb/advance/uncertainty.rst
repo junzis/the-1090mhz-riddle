@@ -8,11 +8,10 @@ NIC, NAC, NUC, and SIL, those acronyms do sound confusing. They are categorical 
   - Values: 0 - 9
   - Version 0, 1, and 2
 
-- ``NUCv``: Navigation Uncertainty Category - Velocity
+- ``NUCr``: Navigation Uncertainty Category - Velocity (Rate)
 
   - Values: 0 - 4
-  - Version 0, 1, and 2
-  - a.k.a. NUCr, Navigation Uncertainty Category - Rate
+  - Version 0
 
 - ``NIC``: Navigation Integrity Category
 
@@ -22,6 +21,11 @@ NIC, NAC, NUC, and SIL, those acronyms do sound confusing. They are categorical 
 - ``NACp``: Navigation Accuracy Category - Position
 
   - Values: 0 - 11
+  - Version 1 and 2
+
+- ``NACv``: Navigation Accuracy Category - Velocity
+
+  - Values: 0 - 4
   - Version 1 and 2
 
 - ``SIL``: Surveillance Integrity Level
@@ -37,10 +41,10 @@ For each category name, specific values are given corresponding to the numerical
   - 95% Containment Radius - Horizontal (``RCu``)
   - 95% Containment Radius - Vertical (``RCv``)
 
-- ``NUCv``:
+- ``NUCr``:
 
   - 95% Horizontal Velocity Error (``HVE``)
-  - 95% Vetical Velocity Error (``VVE``)
+  - 95% Vertical Velocity Error (``VVE``)
 
 - ``NIC``:
 
@@ -50,15 +54,19 @@ For each category name, specific values are given corresponding to the numerical
 
 - ``NACp``:
 
-  - 95% horizontal accuracy bounds
+  - 95% horizontal accuracy bounds, Estimated Position Uncertainty (``EPU``)
 
-    - a.k.a. Estimated Position Uncertainty (``EPU``)
     - a.k.a. Horizontal Figure of Merit (``HFOM``)
 
-  - 95% vertical accuracy bounds
+  - 95% vertical accuracy bounds, Vertical Estimated Position Uncertainty (``VEPU``)
 
-    - a.k.a. Vertical Estimated Position Uncertainty (V``EPU)
     - a.k.a. Vertical Figure of Merit (``VFOM``)
+
+- ``NACv``:
+
+  - 95% horizontal accuracy bounds for velocity, Horizontal Figure of Merit (``HFOMr``)
+  - 95% vertical accuracy bounds for velocity, Vertical Figure of Merit (``VFOMr``)
+
 
 - ``SIL``:
 
@@ -68,13 +76,15 @@ For each category name, specific values are given corresponding to the numerical
 
 Depending on the ADS-B versions, the bits to uncover these values maybe different. We are going to address the uncertainty measures by ADS-B versions.
 
+  To understand about these versions, first take a look at the `ADS-B version chapter <version.html>`__.
+
 Version 0
 ~~~~~~~~~
 
 NUCp
 ****
 
-In ADS-B ``Version 0``, the accuracy is express as **Navigation Uncertainty Category - position** (NUCp). It is directly related (one-to-one relationship) with ``Type Code``, as follows:
+In ADS-B ``Version 0``, the accuracy is express as **Navigation Uncertainty Category - position** (``NUCp``). It is directly related (one-to-one relationship) with ``Type Code``, as follows:
 
 +------+---+------------------+------------------------------------------------+-------------------+
 |      |   | Surface position | Airborne position                              | Airborne position |
@@ -142,7 +152,7 @@ In the case of  airborne position with GNSS height (``TC=20-22``), ``HPL`` and `
 NUCv
 ****
 
-The ``NUCv`` bits are located at the airborne velocity message, ``TC=19``, message bit 43-45 (or payload bit 11-13). It defines the 95% of the error in horizontal and vertical speed.
+The **Navigation Uncertainty Category - velocity** (``NUCv``) it is used to indicate the uncertainty of the horizontal and vertical speeds. Related bits are located at the airborne velocity message, ``TC=19``, message bit 43-45 (or payload bit 11-13). It defines the 95% of the error in horizontal and vertical speed.
 
 +------+-------------+------------------------+
 | NUCp | HVE (95%)   | VVE (95%)              |
@@ -166,7 +176,9 @@ Version 1
 NIC
 ***
 
-In ADS-B Version 1, the ``NUCp`` value is still kept, but has been moved to the new "operation status messages" (``TC=31``). Instead, **Navigation Integrity Category** (``NIC``) is introduced to provide more levels of uncertainty definitions. Specificly, for ``Type Code``: ``7`` and ``11``, two ``NIC`` levels present in each code. In order to distinguish these two different levels, a **NIC Supplement Bit** (``NICs``) is introduced in "operation status messages" ``TC=31``  (message bit 76 or payload bit 44). The relation of TC, NIC, and Rc are list in following tables.
+In ADS-B Version 1, **Navigation Integrity Category** (``NIC``) is introduced to provide more levels of uncertainty definitions. The ``NUCp`` value is still kept, but has been moved to the new "operation status messages" (``TC=31``).
+
+As for ``NIC``, in ``Type Code``: ``7`` and ``11``, two ``NIC`` levels present in each code. In order to distinguish these two different levels, a **NIC Supplement Bit** (``NICs``) is introduced in "operation status messages" ``TC=31``  (message bit 76 or payload bit 44). The relation of TC, NIC, and Rc are list in following tables.
 
 For surface position (``TC=5-8``)
 
@@ -247,39 +259,59 @@ With ``NACp``, one can find out the 95% horizontal and vertical accuracy bounds 
 
 For ADS-B, ``NACp`` is also indicated in the operational status messages (``TC=31``). ``NACp`` and corresponding ``EPU``/``VEPU`` are:
 
-+------+--------------------+--------+
-| NACp | EPU                | VEPU   |
-+======+====================+========+
-|  11  | < 3 m              | < 4 m  |
-+------+--------------------+--------+
-|  10  | < 10 m             | < 15 m |
-+------+--------------------+--------+
-|  9   | < 30 m             | < 45 m |
-+------+--------------------+--------+
-|  8   | < 0.05 NM (93 m)   |        |
-+------+--------------------+--------+
-|  7   | < 0.1 NM (185 m)   |        |
-+------+--------------------+--------+
-|  6   | < 0.3 NM (556 m)   |        |
-+------+--------------------+--------+
-|  5   | < 0.5 NM (926 m)   |        |
-+------+--------------------+--------+
-|  4   | < 1.0 NM (1852 m)  |        |
-+------+--------------------+--------+
-|  3   | < 2 NM (3704 m)    |        |
-+------+--------------------+--------+
-|  2   | < 4 NM (7408 m)    |        |
-+------+--------------------+--------+
-|  1   | < 10 NM (18520 km) |        |
-+------+--------------------+--------+
-|  0   | > 10 NM or Unknown |        |
-+------+--------------------+--------+
++------+--------------------+-------------+
+| NACp | HFU (HFOM)         | VEPU (VFOM) |
++======+====================+=============+
+|  11  | < 3 m              | < 4 m       |
++------+--------------------+-------------+
+|  10  | < 10 m             | < 15 m      |
++------+--------------------+-------------+
+|  9   | < 30 m             | < 45 m      |
++------+--------------------+-------------+
+|  8   | < 0.05 NM (93 m)   |             |
++------+--------------------+-------------+
+|  7   | < 0.1 NM (185 m)   |             |
++------+--------------------+-------------+
+|  6   | < 0.3 NM (556 m)   |             |
++------+--------------------+-------------+
+|  5   | < 0.5 NM (926 m)   |             |
++------+--------------------+-------------+
+|  4   | < 1.0 NM (1852 m)  |             |
++------+--------------------+-------------+
+|  3   | < 2 NM (3704 m)    |             |
++------+--------------------+-------------+
+|  2   | < 4 NM (7408 m)    |             |
++------+--------------------+-------------+
+|  1   | < 10 NM (18520 km) |             |
++------+--------------------+-------------+
+|  0   | > 10 NM or Unknown |             |
++------+--------------------+-------------+
+
+
+NACv
+****
+
+The **Navigation Accuracy Category - Velocity** (``NACv``) is introduced in ``Version 1`` to replace the ``NUCv`` from ``Version 0``. The bits are located at the same location and has the same definitions of values. It can be found in airborne velocity message, ``TC=19``, message bit 43-45 (or payload bit 11-13). It defines the 95% of the error in horizontal and vertical speed.
+
++------+-------------+------------------------+
+| NAVc | HFOMr (95%) | VFOMr (95%)            |
++======+=============+========================+
+|  0   | unknown     | unknown                |
++------+-------------+------------------------+
+|  1   | < 10 m/s    | < 15.2 m/s (50 pfs)    |
++------+-------------+------------------------+
+|  2   | < 3 m/s     | < 4.5 m/s (15 fps)     |
++------+-------------+------------------------+
+|  3   | < 1 m/s     | < 1.5 m/s (5 fps)      |
++------+-------------+------------------------+
+|  4   | < 0.3 m/s   | < 0.46 m/s (1.5 fps)   |
++------+-------------+------------------------+
 
 
 SIL
 ***
 
-On the other hand, Surveillance Integrity Level (``SIL``) is introduced in ``Version 1`` to indicate the probability of measurement exceeding the containment radius horizontally (``PE_RCu``) and vertically (``PE_VPL``).
+On the other hand, **Surveillance Integrity Level** (``SIL``) is introduced in ``Version 1`` to indicate the probability of measurement exceeding the containment radius horizontally (``PE_RCu``) and vertically (``PE_VPL``).
 
 ``SIL`` value can be found in two different locations:
 
@@ -392,6 +424,13 @@ NACp
 ****
 
 NACp in ``Version 2`` remains the same as in ``Version 1``.
+
+
+NACv
+****
+
+NACv in ``Version 2`` remains the same as in ``Version 1``.
+
 
 SIL
 ***

@@ -16,7 +16,7 @@ The same as ADS-B, in all Mode-S messages, the first 5 bit contains the Downlink
 
 The message is structured as following, where the digit represents the number of binary digits:
 
-::
+.. code-block:: text
 
   +--------+--------+--------+--------+-------------+------------------+------------+
   |  DF 5  |  FS 3  |  DR 5  |  UM 6  |    AC 13    |       MB 56      |  AP/DP 24  |
@@ -48,25 +48,26 @@ Address Parity
 
 For AP, message parity field is produced by XOR ICAO with message data CRC checksum. So, to recover the ICAO bits, simply reverse XOR process will work, shown as follows:
 
-::
+.. code-block:: text
 
-  +-------------------------------+  +------------------+
-  |   DATA FIELD (32 OR 88 BIT)   |  |   PARITY BITS    |
-  +--------------+----------------+  +------------------+
+  +-------------------------------+  +--------------------+
+  |   DATA FIELD (32 OR 88 BIT)   |  |    PARITY BITS     |
+  +--------------+----------------+  +--------------------+
                  |
                  |                           XOR
                  v
-  +--------------+-----------+       +------------------+
-  |          ENCODER         |  +--> | CHECKSUM (24BIT) |
-  +--------------------------+       +------------------+
+  +--------------+-----------+       +--------------------+
+  |          ENCODER         |  +--> | CHECKSUM (24 BITS) |
+  +--------------------------+       +--------------------+
                                               ||
-                                     +------------------+
-                                     |   ICAO (24BIT)   |
-                                     +------------------+
+                                     +--------------------+
+                                     |   ICAO (24 BITS)   |
+                                     +--------------------+
 
 
 An example:
-::
+
+.. code-block:: text
 
   Message:      A0001838CA380031440000F24177
 
@@ -91,7 +92,8 @@ In simply words, BDS is a number (usually a 2-digit hexadecimal) that defines th
 When SSR interrogates aircraft, a BDS code is included in request message ( Uplink Format - UF 4, 5, 20, or 21). This BDS code are then used by the aircraft transponder to register the type of message to be sent. But when the downlink message is transmitted, its BDS code is not included in the message (because the SSR knows what kind message it requested). Good new for them, but challenges for us.
 
 Here are some BDS codes that we are interested, where additional parameters about aircraft can be found:
-::
+
+.. code-block:: text
 
   BDS 2,0   Aircraft identification
   BDS 2,1   Aircraft and airline registration markings

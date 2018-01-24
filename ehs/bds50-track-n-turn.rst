@@ -11,11 +11,11 @@ Within the BDS 5,0 message, five different types of aircraft states are given, m
 
 The 56-bit MB filed is structure as following:
 
-::
+.. code-block:: text
 
-   FIELD                                   START  N-BITS
-                                           (END)
   +---------------------------------------+------+------+
+  | FIELD                                 | MB   |N-BITS|
+  +=======================================+======+======+
   | Status                                |  1   |  1   |
   +---------------------------------------+------+------+
   | Sign, 1 -> left wing down             |  1   |  1   |
@@ -65,7 +65,7 @@ The 56-bit MB filed is structure as following:
 
 An example:
 
-::
+.. code-block:: text
 
   MSG:  A000139381951536E024D4CCF6B5
   MB:           81951536E024D4

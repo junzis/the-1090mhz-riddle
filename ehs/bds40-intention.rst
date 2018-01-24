@@ -4,11 +4,11 @@ Selected intention (BDS 4,0)
 In BDS 4,0, information such as aircraft select altitude and barometric pressure settings are given. The 56-bit MB filed is structure as following:
 
 
-::
+.. code-block:: text
 
-   FIELD                                   START  N-BITS
-                                           (END)
   +---------------------------------------+------+------+
+  | FIELD                                 | MB   |N-BITS|
+  +=======================================+======+======+
   | Status                                |  1   |  1   |
   +---------------------------------------+------+------+
   | MCP/FCU selected altitude             |  2   |  12  |   **
@@ -62,7 +62,7 @@ In BDS 4,0, information such as aircraft select altitude and barometric pressure
 
 An example:
 
-::
+.. code-block:: text
 
   MSG:  A000029C85E42F313000007047D3
   MB:           85E42F31300000

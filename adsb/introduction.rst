@@ -33,7 +33,8 @@ This table lists the key bits of a message:
 
 
 Example:
-::
+
+.. code-block:: text
 
   Raw message in hexadecimal:
   8D4840D6202CC371C32CE0576098
@@ -94,7 +95,7 @@ ADS-B Checksum
 
 ADS-B uses cyclic redundancy check to validate the correctness of received message, where the last 24 bits are the parity bits. Following pseudo-code describes the CRC process:
 
-::
+.. code-block:: python
 
   GENERATOR = 1111111111111010000001001
 

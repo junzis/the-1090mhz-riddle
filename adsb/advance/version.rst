@@ -7,27 +7,29 @@ Since the beginning of ADS-B, there have been three different versions (to my kn
 
 There are three versions implemented so far, starting from Version 0, then  Version 1 around 2008 and Version 2 around 2012. Major changes in Version 1 and Version 2 are listed as follows:
 
-1. From ``Version 0`` to ``Version 1``:
+From ``Version 0`` to ``Version 1``:
 
-  - Added ``Type Code`` 28, 19, and 31 messages
-    - ``TC=28``: Aircraft status - Emergency/priority status and ACAS RA Broadcast
-    - ``TC=29``: Target state and status
-    - ``TC=31``: Operational status
+- Added ``Type Code`` 28, 19, and 31 messages
 
-  - Introduced the "Navigation integrity category (``NIC``)" and "Surveillance integrity level (``SIL``)" in addition to the "Navigation accuracy category (``NAC``)" from the ``Version 0``
-    - Type Code and an NIC Supplement bit (``NICs``) is used to define the NIC
-    - NIC Supplement bit included in ``TC=31`` messages
+  - ``TC=28``: Aircraft status - Emergency/priority status and ACAS RA Broadcast
+  - ``TC=29``: Target state and status
+  - ``TC=31``: Operational status
 
-  - ADS-B version number included in ``TC=31``
+- Introduced the "Navigation integrity category (``NIC``)" and "Surveillance integrity level (``SIL``)" in addition to the "Navigation accuracy category (``NAC``)" from the ``Version 0``
 
-2. From ``Version 1`` to ``Version 2``:
+  - Type Code and an NIC Supplement bit (``NICs``) is used to define the NIC
+  - NIC Supplement bit included in ``TC=31`` messages
 
-  - Re-defined the structure and content of ``TC=28``, ``TC=29``, and ``TC=31`` messages.
-  - Introduced two additional NIC Supplement Bit
-  - ``NICa`` is defined in operational status messages (``TC=31``)
-  - ``NICb`` is defined in airborne position messages (``TC=9-18``)
-  - ``NICc`` is defined in operational status messages (``TC=31``)
-  - Introduced an additional "Horizontal Containment Radius (``Rc``)" within ``NIC=6`` / ``TC=13``
+- The ADS-B version number is now indicated in operation status message ``TC=31``
+
+From ``Version 1`` to ``Version 2``:
+
+- Re-defined the structure and content of ``TC=28``, ``TC=29``, and ``TC=31`` messages.
+- Introduced two additional NIC Supplement Bit
+- ``NICa`` is defined in operational status messages (``TC=31``)
+- ``NICb`` is defined in airborne position messages (``TC=9-18``)
+- ``NICc`` is defined in operational status messages (``TC=31``)
+- Introduced an additional "Horizontal Containment Radius (``Rc``)" within ``NIC=6`` / ``TC=13``
 
 
 Identify the ADS-B Version

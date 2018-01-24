@@ -17,7 +17,7 @@ Subtype 1 (subsonic, ground speed), are broadcast when ground velocity informati
 
 For example, following message is received:
 
-::
+.. code-block:: text
 
   Message: 8D485020994409940838175B284F
 
@@ -166,7 +166,7 @@ Subtype 3 (Airspeed)
 
 Subtype 3 (subsonic, aripseed), are broadcast when ground speed information are NOT available, while airspeed is available. The structure of the message is similar to previous one. Let's take a close look at an example for decoding here.
 
-::
+.. code-block:: text
 
   Message: 8DA05F219B06B6AF189400CBC33F
 

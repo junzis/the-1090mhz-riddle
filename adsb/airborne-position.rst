@@ -50,7 +50,9 @@ For each frame, bit 54 determines whether it is an "odd" or "even" frame: ::
   1 -> Odd frame
 
 
-For example, the two following messages are received: ::
+For example, the two following messages are received:
+
+.. code-block:: text
 
   8D40621D58C382D690C8AC2863A7
   8D40621D58C386435CC412692AD6
@@ -76,7 +78,7 @@ In both messages we can find ``DF=17`` and ``TC=11``, with the same ICAO24 addre
 
 The CPR representation of coordinates
 ****************************************
-::
+.. code-block:: text
 
   | F | CPR Latitude      | CPR Longitude     |
   |---|-------------------|-------------------|
@@ -337,7 +339,8 @@ Example
 *******
 
 For the same example message:
-::
+
+.. code-block:: text
 
   8D40621D58C382D690C8AC2863A7
 
@@ -348,7 +351,8 @@ For the same example message:
 
 
 The structure of message is:
-::
+
+.. code-block:: text
 
   8D40621D58C382D690C8AC2863A7
 
