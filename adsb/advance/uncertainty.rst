@@ -84,7 +84,7 @@ Version 0
 NUCp
 ****
 
-In ADS-B ``Version 0``, the accuracy is express as **Navigation Uncertainty Category - position** (``NUCp``). It is directly related (one-to-one relationship) with ``Type Code``, as follows:
+In ADS-B ``Version 0``, the accuracy is expressed as **Navigation Uncertainty Category - position** (``NUCp``). It is directly related (one-to-one relationship) with ``Type Code``, as follows:
 
 +------+---+------------------+------------------------------------------------+-------------------+
 |      |   | Surface position | Airborne position                              | Airborne position |
@@ -250,7 +250,7 @@ In addition to ``NIC``, **Navigation Accuracy Category - Position** (``NACp``) i
 - ``TC=31``, operational status message, message bit 77-80 (or payload bit 45-48)
 
 
-With ``NACp``, one can find out the 95% horizontal and vertical accuracy bounds (``EPU`` and ``VEPU``, or ``HFOM`` and ``VFOM``). ``NACp`` and ``NIC`` usually share the same value, and their values are closed related.
+With ``NACp``, one can find out the 95% horizontal and vertical accuracy bounds (``EPU`` and ``VEPU``, or ``HFOM`` and ``VFOM``). ``NACp`` and ``NIC`` usually share the same value, and their values are closely related.
 
 .. math::
 
@@ -291,7 +291,7 @@ For ADS-B, ``NACp`` is also indicated in the operational status messages (``TC=3
 NACv
 ****
 
-The **Navigation Accuracy Category - Velocity** (``NACv``) is introduced in ``Version 1`` to replace the ``NUCv`` from ``Version 0``. The bits are located at the same location and has the same definitions of values. It can be found in airborne velocity message, ``TC=19``, message bit 43-45 (or payload bit 11-13). It defines the 95% of the error in horizontal and vertical speed.
+The **Navigation Accuracy Category - Velocity** (``NACv``) is introduced in ``Version 1`` to replace the ``NUCv`` from ``Version 0``. The bits are located at the same location and have the same definitions of values. It can be found in airborne velocity message, ``TC=19``, message bit 43-45 (or payload bit 11-13). It defines the 95% of the error in horizontal and vertical speed.
 
 +------+-------------+------------------------+
 | NAVc | HFOMr (95%) | VFOMr (95%)            |
@@ -344,7 +344,7 @@ NIC
 
 In ADS-B ``Version 2``, levels of accuracies are further divided by two addition ``NIC`` supplement bits. In ``Version 2``, we call them NIC Supplement Bit A (``NICa``),  NIC Supplement Bit B (``NICb``), and  NIC Supplement Bit C (``NICc``).
 
-- ``NICa`` is in the same location as in ADS-B ``Version 1``, which located in the operational status message ``TC=31`` (message bit 76 or payload bit 44).
+- ``NICa`` is in the same location as in ADS-B ``Version 1``, which is located in the operational status message ``TC=31`` (message bit 76 or payload bit 44).
 - ``NICb`` is located in the airborne position message (``TC=9-18``, message bit 40 or payload bit 8), where the "single antenna flag" was located in previous ADS-B versions.
 - ``NICc`` is also located in the operational status message ``TC=31`` (message bit 52 or payload bit 20).
 
@@ -435,7 +435,7 @@ NACv in ``Version 2`` remains the same as in ``Version 1``.
 SIL
 ***
 
-In ``Version 2``, an additional **SIL supplement bit** (``SILs``) is introduced to distinguish the value is based on per flight hour or per sample.
+In ``Version 2``, an additional **SIL supplement bit** (``SILs``) is introduced to distinguish if the value is based on per flight hour or per sample.
 
 The same as in ``Version 1``, ``SIL`` value can be found in two different locations:
 

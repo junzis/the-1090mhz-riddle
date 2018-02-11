@@ -3,7 +3,7 @@ Airborne Positions
 
 An aircraft airborne position message has ``Downlink Format: 17 or 18`` and ``Type Code: from 9 to 18``.
 
-Messages are composed as following:
+Messages are composed as follows:
 
 +-----------+---------+---------+----------------------------------+
 | MSG bits  | # bits  | Abbr    | Content                          |
@@ -30,11 +30,11 @@ Messages are composed as following:
 
 Two types of the position messages (odd and even frames) are broadcast alternately. There are two different ways to decode an airborne position base on these messages:
 
-1. Unknown position, using both type of messages (aka. globally unambiguous position)
-2. Knowing previous position, using only one message (aka. locally unambiguous position)
+1. Unknown position, using both type of messages (aka globally unambiguous position)
+2. Knowing previous position, using only one message (aka locally unambiguous position)
 
 
-Note: The definition of functions ``NL(lat)``, ``floor(x)``, and ``mod(x,y)`` are described in CPR chapter
+Note: The definition of functions ``NL(lat)``, ``floor(x)``, and ``mod(x,y)`` are described in the CPR chapter.
 
 
 Globally unambiguous position (decoding with two messages)
@@ -137,8 +137,8 @@ Then we can use the following equations to compute the relative latitudes:
 
   \mathrm{Lat}_\mathrm{odd} &= \mathrm{dLat}_\mathrm{odd} \cdot [mod(j, 59) + \mathrm{Lat}_\mathrm{cprOdd}]
 
-For southern hemisphere, values will fall from 270 to 360 degrees. we need to
-make sure the latitude is within range ``[-90, +90]``:
+For the southern hemisphere, values will fall from 270 to 360 degrees. We need to
+make sure the latitude is within the range ``[-90, +90]``:
 
 .. math::
 
@@ -170,13 +170,13 @@ Check the latitude zone consistency
 **************************************
 
 Compute ``NL(Lat_E)`` and ``NL(Lat_O)``. If not the same, two positions are located at different latitude zones. Computation of a global longitude is not
-possible. exit the calculation and wait for new messages. If two values are the same, we proceed to longitude calculation.
+possible. Exit the calculation and wait for new messages. If two values are the same, we proceed to longitude calculation.
 
 
 Calculate longitude
 **********************
 
-If the even frame come latest ``T_EVEN > T_ODD``:
+If the even frame comes latest ``T_EVEN > T_ODD``:
 
 .. math::
 
@@ -189,7 +189,7 @@ If the even frame come latest ``T_EVEN > T_ODD``:
   \mathrm{Lon} &= \mathrm{dLon} \cdot \left( mod(m, ni) + Lon_\mathrm{cprEven} \right)
 
 
-In case where the odd frame come latest ``T_EVEN < T_ODD``:
+In case where the odd frame comes latest ``T_EVEN < T_ODD``:
 
 .. math::
 
@@ -216,14 +216,14 @@ In the example:
   Lon:  3.91937
 
 
-Here is a Python implemented: https://github.com/junzis/pyModeS/blob/faf4313/pyModeS/adsb.py#L166
+Here is a Python implementation: https://github.com/junzis/pyModeS/blob/faf4313/pyModeS/adsb.py#L166
 
 
 
 Calculate altitude
 ******************
 
-The altitude of the aircraft is much easier to compute from the data frame. The bits in the altitude field (either odd or even frame) are as following:
+The altitude of the aircraft is much easier to compute from the data frame. The bits in the altitude field (either odd or even frame) are as follows:
 ::
 
   1100001 1 1000
@@ -232,7 +232,7 @@ The altitude of the aircraft is much easier to compute from the data frame. The 
 
 This Q-bit (bit 48) indicates whether the altitude is encoded in multiples of 25 or 100 ft (0: 100 ft, 1: 25 ft).
 
-For Q = 1, we can calculate the altitude as following:
+For Q = 1, we can calculate the altitude as follows:
 
 First, remove the Q-bit
 ::
@@ -245,12 +245,12 @@ The final altitude value will be:
 
   Alt = N \cdot 25 - 1000 \quad \text{(ft.)}
 
-In this example, the altitude at which aircraft is flying is:
+In this example, the altitude at which the aircraft is flying is:
 ::
 
   1560 * 25 - 1000 = 38000 ft.
 
-Note that the altitude has the accuracy of +/- 25 ft when the Q-bit is 1, and the value can represent altitude from -1000 to +50175 ft.
+Note that the altitude has the accuracy of +/- 25 ft when the Q-bit is 1, and the value can represent altitudes from -1000 to +50175 ft.
 
 
 
@@ -268,12 +268,12 @@ Finally, we have all three components (latitude/longitude/altitude) of the aircr
 Locally unambiguous position (decoding with one message)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This method gives the possibility of decoding aircraft using only one message knowing a reference position. This method compute the latitude index (j) and longitude index (m) based on such reference, and can be used with either type of the messages.
+This method gives the possibility of decoding aircraft using only one message knowing a reference position. This method computes the latitude index (j) and the longitude index (m) based on such reference, and can be used with either type of the messages.
 
 
 The reference position
 **************************
-The reference position should be close to the actual position (eg. position of aircraft previously decoded, or the location of ADS-B antenna), and must be **within 180 NM** range.
+The reference position should be close to the actual position (eg. position of aircraft previously decoded, or the location of ADS-B antenna), and must be **within a 180 NM** range.
 
 
 Calculate dLat
@@ -350,7 +350,7 @@ For the same example message:
 
 
 
-The structure of message is:
+The structure of the message is:
 
 .. code-block:: text
 
