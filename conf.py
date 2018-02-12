@@ -79,6 +79,7 @@ html_sidebars = {
         'sourcelink.html',
         'searchbox.html',
         # 'donate.html',
+        'related.html',
     ]
 }
 
