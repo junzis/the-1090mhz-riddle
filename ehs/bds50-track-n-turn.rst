@@ -9,7 +9,7 @@ Within the BDS 5,0 message, five different types of aircraft states are given, m
 - track angle rate
 - true airspeed
 
-The 56-bit MB filed is structure as following:
+The 56-bit MB field is structured as follows:
 
 .. code-block:: text
 
@@ -94,4 +94,4 @@ An example:
   FINAL:      2.1 deg      114.3 deg       438 kt      0.1 deg/s     424 kt
   ---------------------------------------------------------------------------------
 
-Of course, all fields are not always available in each of DBS 5,0 message. For those information that are not available, status bits are set to 0.
+Of course, all fields are not always available in each of DBS 5,0 message. For the information that is not available, status bits are set to 0.

@@ -1,7 +1,7 @@
 Selected intention (BDS 4,0)
 -------------------------------------
 
-In BDS 4,0, information such as aircraft select altitude and barometric pressure settings are given. The 56-bit MB filed is structure as following:
+In BDS 4,0, information such as aircraft selected altitude and barometric pressure settings are given. The 56-bit MB field is structured as follows:
 
 
 .. code-block:: text

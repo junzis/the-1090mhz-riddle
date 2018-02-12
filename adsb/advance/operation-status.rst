@@ -1,7 +1,7 @@
 Aircraft Operation Status
 =========================
 
-Operation status message is introduced since the ``Version 1`` of ADS-B. And there are also slightly differences in the structure of Aircraft Operation Messages between Version 1 and 2.
+Operation status message is introduced since the ``Version 1`` of ADS-B. And there are also slight differences in the structure of Aircraft Operation Messages between Version 1 and 2.
 
   To understand about these versions, first take a look at the `ADS-B version chapter <version.html>`__.
 

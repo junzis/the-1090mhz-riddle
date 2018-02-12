@@ -6,7 +6,7 @@ Downlink Format and message structure
 
 DF 20 and DF 21 are used for downlink messages.
 
-The same as ADS-B, in all Mode-S messages, the first 5 bit contains the Downlink Format. The same identification process can be used for discover EHS messages. So the EHS messages starting bits are:
+The same as ADS-B, in all Mode-S messages, the first 5 bits contain the Downlink Format. The same identification process can be used to discover EHS messages. So the EHS messages starting bits are:
 
 ::
 
@@ -14,7 +14,7 @@ The same as ADS-B, in all Mode-S messages, the first 5 bit contains the Downlink
   DF21 - 10101
 
 
-The message is structured as following, where the digit represents the number of binary digits:
+The message is structured as follows, where the digit represents the number of binary digits:
 
 .. code-block:: text
 
@@ -32,7 +32,7 @@ The message is structured as following, where the digit represents the number of
   MB:     message, Comm-B
   AP/DP:  address/parity or data/parity
 
-Except the DF, the first 32 bits does not contain useful information for decode the message. The exact definitions can be found in ICAO annex 10 (Aeronautical Telecommunications).
+Except for the DF, the first 32 bits do not contain useful information to decode the message. The exact definitions can be found in ICAO annex 10 (Aeronautical Telecommunications).
 
 
 Parity and ICAO address recovery
@@ -46,7 +46,7 @@ Mode-S uses two types of parity checksum Address Parity (AP) and Data Parity (DP
 Address Parity
 **************
 
-For AP, message parity field is produced by XOR ICAO with message data CRC checksum. So, to recover the ICAO bits, simply reverse XOR process will work, shown as follows:
+For AP, the message parity field is produced by XOR ICAO with message data CRC checksum. So, to recover the ICAO bits, simply reversing the XOR process will work, shown as follows:
 
 .. code-block:: text
 
@@ -78,7 +78,7 @@ An example:
 
   ICAO:    [F24177] XOR [CE2CA7] => [3C6DD0]
 
-For the implementation of CRC encoder, refer to the pyModeS library ``pyModeS.util.crc(msg, encode=True)``
+For the implementation of the CRC encoder, refer to the pyModeS library ``pyModeS.util.crc(msg, encode=True)``
 
 .. Data parity
 
@@ -87,11 +87,11 @@ For the implementation of CRC encoder, refer to the pyModeS library ``pyModeS.ut
 BDS (Comm-B Data Selector)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-In simply words, BDS is a number (usually a 2-digit hexadecimal) that defines the type of message we are looking at. Both ADS-B messages and other types of Mods-S messages are all assigned their distinctive BDS number. However, it is **no where** to be found in the messages.
+In simple words, BDS is a number (usually a 2-digit hexadecimal) that defines the type of message we are looking at. Both ADS-B messages and other types of Mods-S messages are all assigned their distinctive BDS number. However, it is **nowhere** to be found in the messages.
 
-When SSR interrogates aircraft, a BDS code is included in request message ( Uplink Format - UF 4, 5, 20, or 21). This BDS code are then used by the aircraft transponder to register the type of message to be sent. But when the downlink message is transmitted, its BDS code is not included in the message (because the SSR knows what kind message it requested). Good new for them, but challenges for us.
+When SSR interrogates an aircraft, a BDS code is included in the request message (Uplink Format - UF 4, 5, 20, or 21). This BDS code is then used by the aircraft transponder to register the type of message to be sent. But when the downlink message is transmitted, its BDS code is not included in the message (because the SSR knows what kind of message it requested). Good news for them, but challenges for us.
 
-Here are some BDS codes that we are interested, where additional parameters about aircraft can be found:
+Here are some BDS codes that we are interested in, where additional parameters about an aircraft can be found:
 
 .. code-block:: text
 
