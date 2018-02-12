@@ -1,7 +1,7 @@
 Aircraft identification (BDS 2,0)
 ---------------------------------
 
-Similar to ADS-B aircraft identification message, the callsign of aircraft can be decode in the same way. For the 56-bit MB (message, Comm-B) field, information decodes as follows:
+Similar to an ADS-B aircraft identification message, the callsign of an aircraft can be decoded in the same way. For the 56-bit MB (message, Comm-B) field, information decodes as follows:
 
 .. code-block:: text
 

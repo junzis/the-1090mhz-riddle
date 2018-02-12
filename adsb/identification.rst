@@ -15,13 +15,13 @@ An aircraft identification message has ``DF: 17 or 18``, and ``TC: 1 to 4``, the
   C*: A character
 
 
-For decode characters, a lookup table is needed for mapping numbers to characters. It is defines as follows, where the ``#`` is not used, and ``_`` represents a separation.
+To decode characters, a lookup table is needed for mapping numbers to characters. It is defined as follows, where the ``#`` is not used, and ``_`` represents a separation.
 
 ::
 
   #ABCDEFGHIJKLMNOPQRSTUVWXYZ#####_###############0123456789######
 
-In summary, characters and there decimal representations are:
+In summary, characters and their decimal representations are:
 ::
 
   A - Z :   1 - 26
@@ -41,7 +41,7 @@ For example:
   8D4840D6202CC371C32CE0576098
 
 
-The structure of the message is:
+The structure of the message is as follows:
 ::
 
 
@@ -51,10 +51,10 @@ The structure of the message is:
   DEC: 17   |4            4     0
                           TC    *
 
-Note that ``Type Code`` is inside of the DATA frame (first 5 bits). With ``DF=17`` and ``TC=4``, we can confirm this is a aircraft identification message. Aircraft ``callsign`` then can be decoded.
+Note that ``Type Code`` is inside of the DATA frame (first 5 bits). With ``DF=17`` and ``TC=4``, we can confirm this is an aircraft identification message. Aircraft ``callsign`` then can be decoded.
 
 
-In previous example message, it is easy to decode the ``Data`` segment:
+In the previous example message, it is easy to decode the ``Data`` segment:
 ::
 
   HEX: 20         2CC371C32CE0
@@ -65,4 +65,4 @@ In previous example message, it is easy to decode the ``Data`` segment:
 
 So the final aircraft callsign decoded is: **KLM1023_**
 
-For detailed codes in python, refer to the pyModeS library function: ``pyModeS.adsb.callsign()``
+For detailed codes in Python, refer to the pyModeS library function: ``pyModeS.adsb.callsign()``

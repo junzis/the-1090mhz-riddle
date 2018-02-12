@@ -1,21 +1,21 @@
 Airborne Velocity
 -----------------
 
-There are two different types of messages for velocities, determined by  3-bit subtype in the message. With subtype 1 and 2, surface velocity  (ground speed) is reported. And in subtype 3 and 4, aircraft airspeed are reported.
+There are two different types of messages for velocities, determined by 3-bit subtype in the message. With subtype 1 and 2, surface velocity (ground speed) is reported. And in subtype 3 and 4, aircraft airspeed is reported.
 
 Type 2 and 4 are for supersonic aircraft. So, before we have another commercial supersonic aircraft flying around, you won't see any of those types.
 
-In real world, very few of subtype 3 messages are reported. In our setup, we only received **0.3%** of these message with regard to subtype 1.
+In real world, very few of subtype 3 messages are reported. In our setup, we only received **0.3%** of these message with regards to subtype 1.
 
-An aircraft velocity message has ``DF: 17 or 18``, ``TC: 19``. and the subtype code are represented in bits 38 to 40. Now, we can decode those messages.
+An aircraft velocity message has ``DF: 17 or 18``, ``TC: 19``, and the subtype codes are represented in bits 38 to 40. Now, we can decode those messages.
 
 
 Subtype 1 (Ground Speed)
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-Subtype 1 (subsonic, ground speed), are broadcast when ground velocity information are available. The aircraft velocity contains speed and heading information. The speed and heading are also decomposed into North-South, and East-West components.
+Subtype 1 (subsonic, ground speed), are broadcast when ground velocity information is available. The aircraft velocity contains speed and heading information. The speed and heading are also decomposed into North-South, and East-West components.
 
-For example, following message is received:
+For example, the following message is received:
 
 .. code-block:: text
 
@@ -34,7 +34,7 @@ For example, following message is received:
 
 
 
-There are quite a few parameters in the the velocity message. From left to rights, the number of bits indicate the following contents:
+There are quite a few parameters in the velocity message. From left to right, the number of bits indicates the following contents:
 
 +-----------+-----------+------+--------+------------------------------+
 | MSG Bits  | DATA Bits | Len  | Abbr   | Content                      |
@@ -110,7 +110,7 @@ The Speed (v) and heading (h) with unit `knot` and `degree` can be computed as f
 
   h = arctan2 \left( V_{we}, V_{sn} \right) \cdot \frac{360}{2\pi}  \quad \text{(deg)}
 
-In case of an negative value here, we will simply add 360 degrees.
+In case of a negative value here, we will simply add 360 degrees.
 
 .. math::
 
@@ -153,7 +153,7 @@ The actual vertical rate ``Vr`` is the value of bits 70-78, minus 1, and then mu
 
 So we see a descending aircraft at 832 ft/min rate of descend.
 
-The Vertical Rate Source (VrSrc) field determine whether if it is a measurement in barometric pressure altitude or geometric altitude:
+The Vertical Rate Source (VrSrc) field determines if it is a measurement in barometric pressure altitude or geometric altitude:
 
 ::
 
@@ -164,7 +164,7 @@ The Vertical Rate Source (VrSrc) field determine whether if it is a measurement 
 Subtype 3 (Airspeed)
 ~~~~~~~~~~~~~~~~~~~~
 
-Subtype 3 (subsonic, aripseed), are broadcast when ground speed information are NOT available, while airspeed is available. The structure of the message is similar to previous one. Let's take a close look at an example for decoding here.
+Subtype 3 (subsonic, airspeed), are broadcast when ground speed information is NOT available, while airspeed is available. The structure of the message is similar to the previous one. Let's take a close look at an example for decoding here.
 
 .. code-block:: text
 
@@ -250,7 +250,7 @@ To find out which type of the airspeed (TAS or IAS), first we need to look at th
   0 -> Indicated Airspeed (IAS)
   1 -> True Airspeed (TAS)
 
-And the the speed is simply a binary to decimal conversion of ``AS`` bits (in knot). In our example:
+And then the speed is simply a binary to decimal conversion of ``AS`` bits (in knot). In our example:
 
 ::
 

@@ -9,7 +9,7 @@ Within the BDS 6,0 message, five different types of aircraft states are given:
 - barometric altitude rate
 - inertial vertical rate
 
-The 56-bit MB filed is structure as following:
+The 56-bit MB field is structured as follows:
 
 .. code-block:: text
 
