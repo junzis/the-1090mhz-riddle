@@ -3,7 +3,7 @@ Airborne Velocity
 
 There are two different types of messages for velocities, determined by 3-bit subtype in the message. With subtype 1 and 2, surface velocity (ground speed) is reported. And in subtype 3 and 4, aircraft airspeed is reported.
 
-Type 2 and 4 are for supersonic aircrafts. So, before we have another commercial supersonic aircraft flying around, you won't see any of those types.
+Type 2 and 4 are for supersonic aircraft. So, before we have another commercial supersonic aircraft flying around, you won't see any of those types.
 
 In real world, very few of subtype 3 messages are reported. In our setup, we only received **0.3%** of these message with regards to subtype 1.
 
