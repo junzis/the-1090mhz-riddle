@@ -48,7 +48,7 @@ The operation status is transmitted with ``Type Code`` 31 (``TC=31``). The struc
   +----------------------------------------+------+------+------+
   | NIC supplement bit                     |  76  |  44  |  1   |
   +----------------------------------------+------+------+------+
-  | NUCp: Navigation accuracy category     |  77  |  45  |  4   |
+  | NACp: Navigation accuracy category     |  77  |  45  |  4   |
   |        - position                      |  80  |  48  |      |
   +-------------------+--------------------+------+------+------+
   | BAQ = 0           | Reserved           |  81  |  49  |  2   |
@@ -93,7 +93,7 @@ In ADS-B ``Version 2``, most part of the message remains the same, we will only 
   +----------------------------------------+------+------+------+
   | NIC supplement bit - A                 |  76  |  44  |  1   |
   +----------------------------------------+------+------+------+
-  | NUCp: Navigation accuracy category     |  77  |  45  |  4   |
+  | NACp: Navigation accuracy category     |  77  |  45  |  4   |
   |       - position                       |      |      |      |
   |                                        |  80  |  48  |      |
   +-------------------+--------------------+------+------+------+
