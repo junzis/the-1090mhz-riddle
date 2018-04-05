@@ -3,7 +3,7 @@ ADS-B versions
 
 In this advanced chapter, we are going to looking into different versions and evolution of the ADS-B.
 
-Since the beginning of ADS-B, there have been three different versions (to my knowledge) implemented. The major reason for these update is to enable more information (types of data) in ADS-B. Documentations on these versions and differences are quite far from user friendly. They are always presented in a very scattered fashion. Even the official ``ICAO_9871`` document is confusing to read. I am going to try my best to put the pieces together in this chapter.
+Since the beginning of ADS-B, there have been three different versions (to my knowledge) implemented. The major reason for these updates is to enable more information (types of data) in ADS-B. Documentations on these versions and differences are quite far from user friendly. They are always presented in a very scattered fashion. Even the official ``ICAO_9871`` document is confusing to read. I am going to try my best to put the pieces together in this chapter.
 
 There are three versions implemented so far, starting from Version 0, then  Version 1 around 2008 and Version 2 around 2012. Major changes in Version 1 and Version 2 are listed as follows:
 
