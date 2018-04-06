@@ -15,21 +15,21 @@ An ADS-B message is 112 bits long, and consists of 5 parts:
 
 This table lists the key bits of a message:
 
-+----------+------------+----------+-----------------------------------------------+
-| nBits    | Bits       | Abbr.    | Name                                          |
-+==========+============+==========+===============================================+
-| 5        | 1 - 5      | DF       | Downlink Format = 17 (or 18 for TIS-B)        |
-+----------+------------+----------+-----------------------------------------------+
-| 3        | 6 - 8      | CA       | Capability (additional identifier)            |
-+----------+------------+----------+-----------------------------------------------+
-| 24       | 9 - 32     | ICAO     | ICAO aircraft address                         |
-+----------+------------+----------+-----------------------------------------------+
-| 56       | 33 - 88    | DATA     | Data                                          |
-+          +------------+----------+-----------------------------------------------+
-|          | [33 - 37]  | [TC]     | Type code                                     |
-+----------+------------+----------+-----------------------------------------------+
-| 24       | 89 - 112   | PI       | Parity/Interrogator ID                        |
-+----------+------------+----------+-----------------------------------------------+
++----------+------------+----------+----------------------------------------+
+| nBits    | Bits       | Abbr.    | Name                                   |
++==========+============+==========+========================================+
+| 5        | 1 - 5      | DF       | Downlink Format (17 or 18)             |
++----------+------------+----------+----------------------------------------+
+| 3        | 6 - 8      | CA       | Capability (additional identifier)     |
++----------+------------+----------+----------------------------------------+
+| 24       | 9 - 32     | ICAO     | ICAO aircraft address                  |
++----------+------------+----------+----------------------------------------+
+| 56       | 33 - 88    | DATA     | Data                                   |
++          +------------+----------+----------------------------------------+
+|          | [33 - 37]  | [TC]     | Type code                              |
++----------+------------+----------+----------------------------------------+
+| 24       | 89 - 112   | PI       | Parity/Interrogator ID                 |
++----------+------------+----------+----------------------------------------+
 
 
 Example:
@@ -51,7 +51,12 @@ Example:
           DF    CA     ICAO          [TC] ------ DATA ----------    PI
 
 
-Any ADS-B must start with the Downlink Format 17 or 18 (10001 or 10010 in binary code) for the first 5 bits. Bits 6-8 are used as an additional identifier, which has different meanings within different types of ADS-B message.
+Any ADS-B must start with the Downlink Format 17 or 18 (10001 or 10010 in binary code) for the first 5 bits.
+
+The ADS-B Extended Squitter sent from a Mode S transponder use Downlink Format 17 (``DF=17``) while Non-Transponder-Based ADS-B Transmitting Subsystems and TIS-B Transmitting equipment use Downlink Format 18 (``DF=18``).
+By using ``DF=18`` instead of ``DF=17``, an ADS-B/TIS-B Receiving Subsystem will know that the message comes from equipment that cannot be interrogated.
+
+Bits 6-8 are used as an additional identifier, which has different meanings within different types of ADS-B message.
 
 
 ICAO address
