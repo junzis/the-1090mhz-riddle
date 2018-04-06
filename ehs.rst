@@ -4,12 +4,12 @@ EHS (Mode-S Enhanced Surveillance)
 Let's hack into the EHS messaged too! More information on aircraft air speeds.
 
 
-The Mode-S Enhanced Surveillance (EHS) provides to the air traffic controller more information than what is included in the ADS-B (aka Mode-S Elementary Surveillance). It responds to the ATC Secondary Surveillance Radar, and broadcasts specific parameters non-independently. Hence it is only available in the area where ATC presents.
+The Mode-S Enhanced Surveillance (EHS) provides to Air Traffic Control (ATC) more information than what is included in the Mode-S Elementary Surveillance (ELS).
 
 There are quite a few very interesting data contained within various types of the EHS messages. Such as: airspeeds (IAS, TAS, Mach), roll angles, track angles, track angle rates, selected altitude, magnetic heading, vertical rate, etc.
 
 There are a few challenges to decode this information:
- - Which aircraft does one message came from?
+ - Which aircraft does one message come from?
  - What is the type of one message (aka which BDS code) most likely to be?
  - How reliable is the information that has been decoded?
 
