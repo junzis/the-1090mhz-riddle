@@ -5,11 +5,20 @@ The 1090MHz Riddle
 The book about decoding Mode-S and ADS-B data
 ------------------------------------------------------------
 
+Author
+------
+
+Junzi Sun (http://junzis.com)
+
+PhD Candidate, Faculty of Aerospace Engineering, Delft University of Technology  
+
+
 Preface
-=======
+-------
 
 .. include:: README.rst
    :start-line: 10
+
 
 Table of contents
 -----------------
@@ -39,13 +48,20 @@ You can download the pyModeS tool from GitHub, which is a Python implementation 
 
 
 
-Original contributors
----------------------
+Contributors
+------------
+
+From TU Delft:
 
 - Junzi Sun, PhD Candidate, TuDelft
+- Huy Vu, Master Student, TuDelft
 - Jacco Hoekstra, Prof.dr.ir, TuDelft
 - Joost EllerBroek, Dr.ir, TuDelft
-- Huy Vu, Master Student, TuDelft
+
+
+From GitHub community:
+
+- https://github.com/junzis/the-1090mhz-riddle/graphs/contributors
 
 
 Contact
@@ -61,10 +77,13 @@ Anyhow, still feel free to drop me a messages at: **j.sun-1[at]tudelft.nl**
 
 References
 ----------
-Some good source of documents:
 
-- RTCA: Minimum Operational Performance Standards for 1090 MHz Extended Squitter
-- ICAO: Technical Provisions for Mode S Services and Extended Squitter
-- `ICAO ADS-B Guide <http://www.icao.int/SAM/eDocuments/ADSB%20Guide%20Vs1.2%20English.pdf>`_
+- Technical Provisions for Mode S Services and Extended Squitter. International Civil Aviation Organization, 2008.
+- Technical Provisions for Mode S Services and Extended Squitter, 2nd Edition. International Civil Aviation Organization, 2012.
+- Annex 10 to the Convention on International Civil Aviation, Aeronautical Telecommunications. International Civil Aviation Organization, 2002.
+- Minimum Operational Performance Standards for 1090 MHz Extended Squitter (DO-260B), RTCA, 2009
+- Elementary surveillance (els) and enhanced surveillance (ehs) validation via mode s secondary radar surveillance, Project Report ATC-337, Lincoln Lab., MIT, 2008.
+- Fundamentals of mode s parity coding, tech. rep., Massachusetts Institute of Technology, Lincoln Laboratory, 1984.
 - `Dump1090 Project <https://github.com/antirez/dump1090>`_
 - `A Very Simple ADSB Receiver <http://www.lll.lu/~edward/edward/adsb/VerySimpleADSBreceiver.html>`_
+
