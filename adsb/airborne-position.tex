@@ -1,0 +1,385 @@
+\section{Airborne Positions}\label{airborne-positions}
+
+An aircraft airborne position message has downlink format \texttt{17} (or \texttt{18}) with type code from \texttt{9} to \texttt{18}
+
+Messages are composed as follows:
+
+\begin{verbatim}
++-----------+---------+---------+----------------------------------+
+| MSG bits  | # bits  | Abbr    | Content                          |
++===========+=========+=========+==================================+
+| 1-5       | 5       | DF      | Downlink format                  |
++-----------+---------+---------+----------------------------------+
+| 33-37     | 5       | TC      | Type code                        |
++-----------+---------+---------+----------------------------------+
+| 38-39     | 2       | SS      | Surveillance status              |
++-----------+---------+---------+----------------------------------+
+| 40        | 1       | NICsb   | NIC supplement-B                 |
++-----------+---------+---------+----------------------------------+
+| 41-52     | 12      | ALT     | Altitude                         |
++-----------+---------+---------+----------------------------------+
+| 53        | 1       | T       | Time                             |
++-----------+---------+---------+----------------------------------+
+| 54        | 1       | F       | CPR odd/even frame flag          |
++-----------+---------+---------+----------------------------------+
+| 55-71     | 17      | LAT-CPR | Latitude in CPR format           |
++-----------+---------+---------+----------------------------------+
+| 72-88     | 17      | LON-CPR | Longitude in CPR format          |
++-----------+---------+---------+----------------------------------+
+\end{verbatim}
+
+Two types of the position messages (odd and even frames) are broadcast
+alternately. There are two different ways to decode an airborne position
+base on these messages:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+
+\item
+  Unknown position, using both type of messages (aka globally
+  unambiguous position)
+\item
+  Knowing previous position, using only one message (aka locally
+  unambiguous position)
+\end{enumerate}
+
+Note: The definition of functions \texttt{NL(lat)}, \texttt{floor(x)},
+and \texttt{mod(x,y)} are described in the CPR chapter.
+
+\subsection{Globally unambiguous position (decoding with two
+messages)}\label{globally-unambiguous-position-decoding-with-two-messages}
+
+\subsubsection{\texorpdfstring{odd" or ``even''
+message?}{odd" or even message?}}\label{odd-or-even-message}
+
+For each frame, bit 54 determines whether it is an ``odd'' or ``even''
+frame: :
+
+\begin{verbatim}
+0 -> Even frame
+1 -> Odd frame
+\end{verbatim}
+
+For example, the two following messages are received:
+
+\begin{verbatim}
+8D40621D58C382D690C8AC2863A7
+8D40621D58C386435CC412692AD6
+
+|    | ICAO24 |      DATA      |  CRC   |
+|----|--------|----------------|--------|
+| 8D | 40621D | 58C382D690C8AC | 2863A7 |
+| 8D | 40621D | 58C386435CC412 | 692AD6 |
+
+\end{verbatim}
+
+The payload data in binary formation:
+
+\begin{verbatim}
+| DATA                                                                       |
+|============================================================================|
+| TC    | ... | ALT          | T | F | CPR-LAT           | CPR-LON           |
+|-------|-----|--------------|---|---|-------------------|-------------------|
+| 01011 | 000 | 110000111000 | 0 | 0 | 10110101101001000 | 01100100010101100 |
+| 01011 | 000 | 110000111000 | 0 | 1 | 10010000110101110 | 01100010000010010 |
+\end{verbatim}
+
+In both messages we can find \texttt{DF=17} and \texttt{TC=11}, with the
+same ICAO24 address \texttt{40621D}. So, those two frames are valid for
+decoding the positions of this aircraft. Assume the first message is the
+newest message received.
+
+\subsubsection{The CPR representation of
+coordinates}\label{the-cpr-representation-of-coordinates}
+
+\begin{verbatim}
+| F | CPR Latitude      | CPR Longitude     |
+|---|-------------------|-------------------|
+| 0 | 10110101101001000 | 01100100010101100 |  -> newest
+| 1 | 10010000110101110 | 01100010000010010 |
+|---|-------------------|-------------------|
+
+In decimal:
+
+|---|-------------------|-------------------|
+| 0 | 93000             | 51372             |
+| 1 | 74158             | 50194             |
+|---|-------------------|-------------------|
+
+CPR_LAT_EVEN: 93000 / 131072 -> 0.7095
+CPR_LON_EVEN: 51372 / 131072 -> 0.3919
+CPR_LAT_ODD:  74158 / 131072 -> 0.5658
+CPR_LON_ODD:  50194 / 131072 -> 0.3829
+\end{verbatim}
+
+Since CPR latitude and longitude are encoded in 17 bits, 131072
+(2\^{}17) is the maximum value.
+
+\subsubsection{Calculate the latitude index
+j}\label{calculate-the-latitude-index-j}
+
+Use the following equation:
+
+\begin{equation}
+  j = floor \left( 59 \cdot \mathrm{Lat}_\mathrm{cprEven} - 60 \cdot \mathrm{Lat}_\mathrm{cprOdd} + \frac{1}{2}  \right)
+\end{equation}
+
+\noindent where $j$ is set 8.
+
+\subsubsection{Calculate latitude}\label{calculate-latitude}
+
+First, two constants will be used:
+
+\begin{equation}
+  \begin{split}
+    \mathrm{dLat}_\mathrm{even} &= \frac{360}{4 \cdot NZ} = \frac{360}{60} \\
+    \mathrm{dLat}_\mathrm{odd} &= \frac{360}{4 \cdot NZ - 1}  = \frac{360}{59}
+  \end{split}
+\end{equation}
+
+Then we can use the following equations to compute the relative
+latitudes:
+
+\begin{equation}
+  \begin{split}
+    \mathrm{Lat}_\mathrm{even} &= \mathrm{dLat}_\mathrm{even} \cdot [mod(j, 60) + \mathrm{Lat}_\mathrm{cprEven}] \\
+    \mathrm{Lat}_\mathrm{odd} &= \mathrm{dLat}_\mathrm{odd} \cdot [mod(j, 59) + \mathrm{Lat}_\mathrm{cprOdd}]
+  \end{split}
+\end{equation}
+
+For the southern hemisphere, values will fall from 270 to 360 degrees.
+We need to make sure the latitude is within the range
+\texttt{{[}-90,\ +90{]}}:
+
+\begin{equation}
+  \begin{split}
+    \mathrm{Lat}_\mathrm{even} &= \mathrm{Lat}_\mathrm{even} - 360  \quad \text{if } (\mathrm{Lat}_\mathrm{even} \geq 270) \\
+    \mathrm{Lat}_\mathrm{odd} &= \mathrm{Lat}_\mathrm{odd} - 360  \quad \text{if } (\mathrm{Lat}_\mathrm{odd} \geq 270)
+  \end{split}
+\end{equation}
+
+Final latitude is chosen depending on the time stamp of the frames--the
+newest one is used:
+
+\begin{equation}
+  \mathrm{Lat} =
+  \begin{cases}
+   \mathrm{Lat}_\mathrm{even}     & \text{if } (T_\mathrm{even} \geq T_\mathrm{odd}) \\
+   \mathrm{Lat}_\mathrm{odd}     & \text{else}
+  \end{cases}
+\end{equation}
+
+In the example: :
+
+\begin{verbatim}
+Lat_EVEN = 52.25720214843750
+Lat_ODD  = 52.26578017412606
+Lat = Lat_EVEN = 52.25720
+\end{verbatim}
+
+\subsubsection{Check the latitude zone
+consistency}\label{check-the-latitude-zone-consistency}
+
+Compute \texttt{NL(Lat\_E)} and \texttt{NL(Lat\_O)}. If not the same,
+two positions are located at different latitude zones. Computation of a
+global longitude is not possible. Exit the calculation and wait for new
+messages. If two values are the same, we proceed to longitude
+calculation.
+
+\subsubsection{Calculate longitude}\label{calculate-longitude}
+
+If the even frame comes latest \texttt{T\_EVEN\ \textgreater{}\ T\_ODD}:
+
+\begin{equation}
+  \begin{split}
+    ni &= max \left( NL(\mathrm{Lat}_\mathrm{even}), 1 \right) \\
+    \mathrm{dLon} &= \frac{360}{ni} \\
+    m &= floor \left\{ Lon_\mathrm{cprEven} \cdot [NL(\mathrm{Lat}_\mathrm{even})-1] - Lon_\mathrm{cprOdd} \cdot NL(\mathrm{Lat}_\mathrm{even}) + \frac{1}{2}  \right\} \\
+    \mathrm{Lon} &= \mathrm{dLon} \cdot \left( mod(m, ni) + Lon_\mathrm{cprEven} \right)
+  \end{split}
+\end{equation}
+
+In case where the odd frame comes latest
+\texttt{T\_EVEN\ \textless{}\ T\_ODD}:
+
+\begin{equation}
+  \begin{split}
+    ni &= max \left( NL(\mathrm{Lat}_\mathrm{odd})-1, 1 \right) \\
+    \mathrm{dLon} &= \frac{360}{ni} \\
+    m &= floor \left\{ Lon_\mathrm{cprEven} \cdot [NL(\mathrm{Lat}_\mathrm{odd})-1] - Lon_\mathrm{cprOdd} \cdot NL(\mathrm{Lat}_\mathrm{odd}) + \frac{1}{2}  \right\} \\
+    \mathrm{Lon} &= \mathrm{dLon} \cdot \left( mod(m, ni) + Lon_\mathrm{cprOdd} \right)
+  \end{split}
+\end{equation}
+
+if the result is larger than 180 degrees:
+
+\begin{equation}
+  \mathrm{Lon} = \mathrm{Lon} - 360  \quad \text{if } (\mathrm{Lon} \geq 180)
+\end{equation}
+
+In the example: :
+
+\begin{verbatim}
+Lon:  3.91937
+\end{verbatim}
+
+Here is a Python implementation:
+\url{https://github.com/junzis/pyModeS/blob/faf4313/pyModeS/adsb.py\#L166}
+
+\subsubsection{Calculate altitude}\label{calculate-altitude}
+
+The altitude of the aircraft is much easier to compute from the data
+frame. The bits in the altitude field (either odd or even frame) are as
+follows: :
+
+\begin{verbatim}
+1100001 1 1000
+        ^
+       Q-bit
+\end{verbatim}
+
+This Q-bit (bit 48) indicates whether the altitude is encoded in
+multiples of 25 or 100 ft (0: 100 ft, 1: 25 ft).
+
+For Q = 1, we can calculate the altitude as follows:
+
+First, remove the Q-bit :
+
+\begin{verbatim}
+N = 1100001 1000 => 1560 (in decimal)
+\end{verbatim}
+
+The final altitude value will be:
+
+\begin{equation}
+  Alt = N \cdot 25 - 1000 \quad \text{(ft.)}
+\end{equation}
+
+In this example, the altitude at which the aircraft is flying is: :
+
+\begin{verbatim}
+1560 * 25 - 1000 = 38000 ft.
+\end{verbatim}
+
+Note that the altitude has the accuracy of +/- 25 ft when the Q-bit is
+1, and the value can represent altitudes from -1000 to +50175 ft.
+
+\subsubsection{The final position}\label{the-final-position}
+
+Finally, we have all three components (latitude/longitude/altitude) of
+the aircraft position: :
+
+\begin{verbatim}
+LAT: 52.25720 (degrees N)
+LON:  3.91937 (degrees E)
+ALT:    38000 ft
+\end{verbatim}
+
+\subsection{Locally unambiguous position (decoding with one
+message)}\label{locally-unambiguous-position-decoding-with-one-message}
+
+This method gives the possibility of decoding aircraft using only one
+message knowing a reference position. This method computes the latitude
+index (j) and the longitude index (m) based on such reference, and can
+be used with either type of the messages.
+
+\subsubsection{The reference position}\label{the-reference-position}
+
+The reference position should be close to the actual position (eg.
+position of aircraft previously decoded, or the location of ADS-B
+antenna), and must be \textbf{within a 180 NM} range.
+
+\subsubsection{Calculate dLat}\label{calculate-dlat}
+
+\begin{equation}
+  dLat =
+  \begin{cases}
+   \frac{360}{4 \cdot NZ} = \frac{360}{60}          & \text{if even message}  \\
+   \frac{360}{4 \cdot NZ - 1}  = \frac{360}{59}     & \text{if odd message}
+  \end{cases}
+\end{equation}
+
+\subsubsection{Calculate the latitude indexj} \label{calculate-the-latitude-index-j-1}
+
+\begin{equation}
+  j = floor \left (\frac{\mathrm{Lat}_{ref}}{dLat} \right) + floor \left( \frac{mod(\mathrm{Lat}_{ref}, dLat)}{dLat}  - \mathrm{Lat}_\mathrm{cpr}  + \frac{1}{2} \right)
+\end{equation}
+
+\subsubsection{Calculate latitude}\label{calculate-latitude-1}
+
+\begin{equation}
+  \mathrm{Lat} = dLat \cdot (j + \mathrm{Lat}_\mathrm{cpr})
+\end{equation}
+
+
+\subsubsection{Calculate dLon}\label{calculate-dlon}
+
+\begin{equation}
+  \mathrm{dLon} =
+  \begin{cases}
+   \frac{360}{NL(Lat)}    & \text{if } NL(Lat) > 0  \\
+   360                    & \text{if } NL(Lat) = 0
+  \end{cases}
+\end{equation}
+
+\subsubsection{Calculate longitude index
+m}\label{calculate-longitude-index-m}
+
+\begin{equation}
+  m = floor \left( \frac{Lon_{ref}}{\mathrm{dLon}} \right) + floor \left( \frac{mod(Lon_{ref}, \mathrm{dLon})}{\mathrm{dLon}}  - Lon_\mathrm{cpr}  + \frac{1}{2}  \right)
+\end{equation}
+
+\subsubsection{Calculate longitude}\label{calculate-longitude-1}
+
+\begin{equation}
+  Lon = \mathrm{dLon} \cdot (m + Lon_\mathrm{cpr})
+\end{equation}
+
+\subsubsection{Example}\label{example}
+
+For the same example message:
+
+\begin{verbatim}
+8D40621D58C382D690C8AC2863A7
+
+Reference position:
+  LAT: 52.258
+  LON:  3.918
+\end{verbatim}
+
+The structure of the message is:
+
+\begin{verbatim}
+8D40621D58C382D690C8AC2863A7
+
+|    | ICAO24 |      DATA      |  CRC   |
+|----|--------|----------------|--------|
+| 8D | 40621D | 58C382D690C8AC | 2863A7 |
+
+
+Data in binary:
+
+| DATA                                                                       |
+|============================================================================|
+| TC    | ... | ALT          | T | F | CPR-LAT           | CPR-LON           |
+|-------|-----|--------------|---|---|-------------------|-------------------|
+| 01011 | 000 | 110000111000 | 0 | 0 | 10110101101001000 | 01100100010101100 |
+
+
+CPR representation:
+
+| F | CPR Latitude      | CPR Longitude     |
+|---|-------------------|-------------------|
+| 0 | 10110101101001000 | 01100100010101100 |
+|---|-------------------|-------------------|
+|   | 93000 / 131072    | 51372 / 131072    |
+|   | 0.7095            | 0.3919            |
+|---|-------------------|-------------------|
+
+d_lat:  6
+j:      8
+lat:    52.25720
+m:      0
+d_lon:  10
+lon:    3.91937
+\end{verbatim}

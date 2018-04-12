@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html$if(lang)$ lang="$lang$"$endif$$if(dir)$ dir="$dir$"$endif$>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+  <meta name="author" content="Junzi Sun">
+
+$if(keywords)$
+  <meta name="keywords" content="$for(keywords)$$keywords$$sep$, $endfor$">
+$endif$
+
+  <title>The 1090MHz Riddle</title>
+  <style type="text/css">code{white-space: pre;}</style>
+
+$if(quotes)$
+  <style type="text/css">q { quotes: "“" "”" "‘" "’"; }</style>
+$endif$
+
+$if(highlighting-css)$
+  <style type="text/css">
+  $highlighting-css$
+  </style>
+$endif$
+
+$for(css)$
+  <link rel="stylesheet" href="$if(rootdir)$$rootdir$$endif$$css$">
+$endfor$
+
+$if(math)$
+  $math$
+$endif$
+
+<link href="https://fonts.googleapis.com/css?family=PT+Serif" rel="stylesheet">
+
+</head>
+<body>
+$for(include-before)$
+$include-before$
+$endfor$
+
+<div class="container">
+
+<div class="d-flex flex-row align-items-end">
+	<div>
+		<h1 class="title">The 1090MHz Riddle</h1>
+		<div class="subtitle">An open-access book about decoding Mode-S and ADS-B data</div>
+	</div>
+	<div class='ml-auto chapter-nav'>
+    <div class="author">By: <strong>Junzi Sun</strong> (<a href="http://junzis.com">junzis.com</a>)</div>
+    <a href="http://mode-s.org" type="button" class="btn btn-sm btn-outline-dark btn-light">mode-s.org</a>
+    <a href="$if(rootdir)$$rootdir$$endif$book-the_1090mhz_riddle-junzi_sun.pdf" type="button" class="btn btn-sm btn-outline-info">Download PDF</a>
+	</div>
+</div>
+
+<hr>
+
+<div class="row">
+<div class="col-md-4 col-lg-3">
+<nav>
+  <h1>Chapters</h1>
+  <ul>
+    <li><a href="$if(rootdir)$$rootdir$$endif$index.html">Introduction</a></li>
+    <li><a href="$if(rootdir)$$rootdir$$endif$adsb.html">ADS-B</a></li>
+    <ul>
+      <li><a href="$if(rootdir)$$rootdir$$endif$adsb/introduction.html">Basics</a></li>
+      <li><a href="$if(rootdir)$$rootdir$$endif$adsb/identification.html">Aircraft Identification</a></li>
+      <li><a href="$if(rootdir)$$rootdir$$endif$adsb/compact-position-report.html">Compact Position Reporting</a></li>
+      <li><a href="$if(rootdir)$$rootdir$$endif$adsb/airborne-position.html">Airborne Position</a></li>
+      <li><a href="$if(rootdir)$$rootdir$$endif$adsb/airborne-velocity.html">Airborne Velocity</a></li>
+    </ul>
+    <li><a href="$if(rootdir)$$rootdir$$endif$adsb/advance.html">Advanced ADS-B</a></li>
+    <ul>
+      <li><a href="$if(rootdir)$$rootdir$$endif$adsb/version.html">ADS-B Versions</a></li>
+      <li><a href="$if(rootdir)$$rootdir$$endif$adsb/operation-status.html">Operation Status</a></li>
+      <li><a href="$if(rootdir)$$rootdir$$endif$adsb/uncertainty.html">Uncertainty and Accuracy</a></li>
+    </ul>
+    <li><a href="$if(rootdir)$$rootdir$$endif$ehs.html">Enhanced Mode-S</a></li>
+    <ul>
+      <li><a href="$if(rootdir)$$rootdir$$endif$ehs/introduction.html">Basics</a></li>
+      <li><a href="$if(rootdir)$$rootdir$$endif$ehs/bds20-identification.html">Aircraft Identification</a></li>
+      <li><a href="$if(rootdir)$$rootdir$$endif$ehs/bds40-intention.html">Aircraft Intention</a></li>
+      <li><a href="$if(rootdir)$$rootdir$$endif$ehs/bds50-track-n-turn.html">Track and Turn</a></li>
+      <li><a href="$if(rootdir)$$rootdir$$endif$ehs/bds60-airspeed.html">Airspeed and Heading</a></li>
+    </ul>
+  </ul>
+</nav>
+$if(toc)$
+<hr>
+<nav id="$idprefix$TOC">
+<h1>In this page</h1>
+$toc$
+</nav>
+$endif$
+</div>
+<div class="col-md-8 col-lg-9 maintext">
+$body$
+$for(include-after)$
+$include-after$
+$endfor$
+</div>
+</div>
+
+</body>
+</html>

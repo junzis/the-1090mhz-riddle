@@ -1,0 +1,75 @@
+\section{Aircraft Identification}\label{aircraft-identification}
+
+An aircraft identification message has \texttt{DF:\ 17\ or\ 18}, and
+\texttt{TC:\ 1\ to\ 4}, the 56-bit \texttt{DATA} field is configured as
+follows:
+
+\begin{verbatim}
++------+------+------+------+------+------+------+------+------+------+
+| TC,5 | EC,3 | C1,6 | C2,6 | C3,6 | C4,6 | C5,6 | C6,6 | C7,6 | C8,6 |
++------+------+------+------+------+------+------+------+------+------+
+
+TC: Type code
+EC: Emitter category
+C*: A character
+\end{verbatim}
+
+To decode characters, a lookup table is needed for mapping numbers to
+characters. It is defined as follows, where the \texttt{\#} is not used,
+and \texttt{\_} represents a separation.
+
+\begin{verbatim}
+#ABCDEFGHIJKLMNOPQRSTUVWXYZ#####_###############0123456789######
+\end{verbatim}
+
+In summary, characters and their decimal representations are: :
+
+\begin{verbatim}
+A - Z :   1 - 26
+0 - 9 :  48 - 57
+    _ :  32
+\end{verbatim}
+
+The \texttt{EC} value in combination with \texttt{TC} value defines the
+category of the aircraft (such as: heavy, large, small, light, glider,
+etc.). When \texttt{EC} is set to zeros, such information is not
+available.
+
+\subsection{Example}\label{example}
+
+For example: :
+
+\begin{verbatim}
+8D4840D6202CC371C32CE0576098
+\end{verbatim}
+
+The structure of the message is as follows: :
+
+\begin{verbatim}
+     DF... CA.  ICAO..  DATA..................  PI....
+HEX: 8   D      4840D6  2   0     2CC371C32CE0  576098
+BIN: 10001 101  ******  00100 000 ************  ******
+DEC: 17    4            4     0
+                        TC    *
+\end{verbatim}
+
+
+Note that \texttt{Type\ Code} is inside of the DATA frame (first 5
+bits). With \texttt{DF=17} and \texttt{TC=4}, we can confirm this is an
+aircraft identification message. Aircraft \texttt{callsign} then can be
+decoded.
+
+In the previous example message, it is easy to decode the \texttt{Data}
+segment: :
+
+\begin{verbatim}
+HEX: 20         2CC371C32CE0
+BIN: 00100000 | 001011 001100 001101 110001 110000 110010 110011 100000
+DEC:          |   11     12     13     49     48     50     51     32
+LTR:          |   K      L      M      1      0      2      3      _
+\end{verbatim}
+
+So the final aircraft callsign decoded is: \texttt{KLM1023}
+
+For detailed codes in Python, refer to the pyModeS library function:
+\texttt{pyModeS.adsb.callsign()}

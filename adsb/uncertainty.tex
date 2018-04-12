@@ -1,0 +1,674 @@
+\section{Uncertainty and accuracy}\label{uncertainty-and-accuracy}
+
+NIC, NAC, NUC, and SIL, those acronyms do sound confusing. They are
+categorical numbers for the integrity, accuracy, or uncertainties of the
+position measurements.
+
+\begin{itemize}
+
+\item
+  \texttt{NUCp}: Navigation Uncertainty Category - Position
+
+  \begin{itemize}
+
+  \item
+    Values: 0 - 9
+  \item
+    Version 0, 1, and 2
+  \end{itemize}
+\item
+  \texttt{NUCr}: Navigation Uncertainty Category - Velocity (Rate)
+
+  \begin{itemize}
+
+  \item
+    Values: 0 - 4
+  \item
+    Version 0
+  \end{itemize}
+\item
+  \texttt{NIC}: Navigation Integrity Category
+
+  \begin{itemize}
+
+  \item
+    Values: 0 - 11
+  \item
+    Version 1 and 2
+  \end{itemize}
+\item
+  \texttt{NACp}: Navigation Accuracy Category - Position
+
+  \begin{itemize}
+
+  \item
+    Values: 0 - 11
+  \item
+    Version 1 and 2
+  \end{itemize}
+\item
+  \texttt{NACv}: Navigation Accuracy Category - Velocity
+
+  \begin{itemize}
+
+  \item
+    Values: 0 - 4
+  \item
+    Version 1 and 2
+  \end{itemize}
+\item
+  \texttt{SIL}: Surveillance Integrity Level
+
+  \begin{itemize}
+
+  \item
+    Values: 0 - 3
+  \item
+    Version 1 and 2
+  \end{itemize}
+\end{itemize}
+
+For each category name, specific values are given corresponding to the
+numerical indicators. The relation of the category names and value names
+are:
+
+\begin{itemize}
+
+\item
+  \texttt{NUCp}:
+
+  \begin{itemize}
+
+  \item
+    Horizontal Protection Limit (\texttt{HPL})
+  \item
+    95\% Containment Radius - Horizontal (\texttt{RCu})
+  \item
+    95\% Containment Radius - Vertical (\texttt{RCv})
+  \end{itemize}
+\item
+  \texttt{NUCr}:
+
+  \begin{itemize}
+
+  \item
+    95\% Horizontal Velocity Error (\texttt{HVE})
+  \item
+    95\% Vertical Velocity Error (\texttt{VVE})
+  \end{itemize}
+\item
+  \texttt{NIC}:
+
+  \begin{itemize}
+
+  \item
+    Horizontal Radius of Containment (\texttt{RCu})
+  \item
+    Vertical Protection Limit (\texttt{VPL})
+
+    \begin{itemize}
+
+    \item
+      a.k.a. Integrity Containment Region
+    \end{itemize}
+  \end{itemize}
+\item
+  \texttt{NACp}:
+
+  \begin{itemize}
+
+  \item
+    95\% horizontal accuracy bounds, Estimated Position Uncertainty
+    (\texttt{EPU})
+
+    \begin{itemize}
+
+    \item
+      a.k.a. Horizontal Figure of Merit (\texttt{HFOM})
+    \end{itemize}
+  \item
+    95\% vertical accuracy bounds, Vertical Estimated Position
+    Uncertainty (\texttt{VEPU})
+
+    \begin{itemize}
+
+    \item
+      a.k.a. Vertical Figure of Merit (\texttt{VFOM})
+    \end{itemize}
+  \end{itemize}
+\item
+  \texttt{NACv}:
+
+  \begin{itemize}
+
+  \item
+    95\% horizontal accuracy bounds for velocity, Horizontal Figure of
+    Merit (\texttt{HFOMr})
+  \item
+    95\% vertical accuracy bounds for velocity, Vertical Figure of Merit
+    (\texttt{VFOMr})
+  \end{itemize}
+\item
+  \texttt{SIL}:
+
+  \begin{itemize}
+
+  \item
+    Probability of exceeding Horizontal Radius of Containment
+    \texttt{RCu} (\texttt{PE\_RCu})
+  \item
+    Probability of exceeding Vertical Integrity Containment Region
+    \texttt{VPL} (\texttt{PE\_VPL})
+  \end{itemize}
+\end{itemize}
+
+Depending on the ADS-B versions, the bits to uncover these values maybe
+different. We are going to address the uncertainty measures by ADS-B
+versions.
+
+\begin{quote}
+To understand about these versions, first take a look at the
+\href{version.html}{ADS-B version chapter}.
+\end{quote}
+
+\subsection{Version 0}\label{version-0}
+
+\subsubsection{NUCp}\label{nucp}
+
+In ADS-B \texttt{Version\ 0}, the accuracy is expressed as
+\textbf{Navigation Uncertainty Category - position} (\texttt{NUCp}). It
+is directly related (one-to-one relationship) with \texttt{Type\ Code},
+as follows:
+
+For surface position messages:
+
+\begin{verbatim}
++------+---+----+----+----+---+
+| TC   | 0 | 5  | 6  | 7  | 8 |
++------+---+----+----+----+---+
+| NUCp | 0 | 9  | 8  | 7  | 6 |
++------+---+----+----+----+---+
+\end{verbatim}
+
+For airborne position with barometric altitude:
+
+\begin{verbatim}
++------+---+----+----+----+----+----+----+----+----+----+
+| TC   | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 |
++------+---+----+----+----+----+----+----+----+----+----+
+| NUCp | 9 | 8  | 7  | 6  | 5  | 4  | 3  | 2  | 1  | 0  |
++------+---+----+----+----+----+----+----+----+----+----+
+\end{verbatim}
+
+For airborne position with GNSS altitude:
+
+\begin{verbatim}
++------+------+------+-----+
+| TC   |  20  |  21  | 22  |
++------+------+------+-----+
+| NUCp |  9   |  8   | 0   |
++------+------+------+-----+
+\end{verbatim}
+
+Higher number of NUCp represents a higher confidence of in the position
+measurement (hence, a lower uncertainty). Horizontal Protection Limit
+(\texttt{HPL}) and Radius of containment for horizontal (\texttt{RCu})
+are used to quantify the uncertainty.
+
+For surface position (\texttt{TC=5-8}):
+
+\begin{verbatim}
++----+------+--------------------+---------------------+
+| TC | NUCp | HPL                | RCu                 |
++====+======+====================+=====================+
+| 5  |  9   | < 7.5 m            | < 3 m               |
++----+------+--------------------+---------------------+
+| 6  |  8   | < 25 m             | < 10 m              |
++----+------+--------------------+---------------------+
+| 7  |  7   | < 0.1 NM (185 m)   | < 0.05 NM (93 m)    |
++----+------+--------------------+---------------------+
+| 8  |  6   | > 0.1 NM (185 m)   | > 0.05 NM (93 m)    |
++----+------+--------------------+---------------------+
+\end{verbatim}
+
+For airborne position with barometric altitude (\texttt{TC=9-18}):
+
+\begin{verbatim}
++------+------+--------------------+---------------------+
+|  TC  | NUCp | HPL                | RCu                 |
++======+======+====================+=====================+
+|  9   |  9   | < 7.5 m            | < 3 m               |
++------+------+--------------------+---------------------+
+|  10  |  8   | < 25 m             | < 10 m              |
++------+------+--------------------+---------------------+
+|  11  |  7   | < 0.1 NM (185 m)   | < 0.05 NM (93 m)    |
++------+------+--------------------+---------------------+
+|  12  |  6   | < 0.2 NM (370 m)   | < 0.1 NM (185 m)    |
++------+------+--------------------+---------------------+
+|  13  |  5   | < 0.5 NM (926 m)   | < 0.25 NM (463 m)   |
++------+------+--------------------+---------------------+
+|  14  |  4   | < 1 NM (1852 m)    | < 0.5 NM (926 m)    |
++------+------+--------------------+---------------------+
+|  15  |  3   | < 2 NM (3704 m)    | < 1 NM (1852 m)     |
++------+------+--------------------+---------------------+
+|  16  |  2   | < 10 NM (18520 m)  | < 5 NM (9260 m)     |
++------+------+--------------------+---------------------+
+|  17  |  1   | < 20 NM (37040 m)  | < 10 NM (18520 m)   |
++------+------+--------------------+---------------------+
+|  18  |  0   | > 20 NM (37040 m)  | > 10 NM (18520 m)   |
++------+------+--------------------+---------------------+
+\end{verbatim}
+
+In the case of airborne position with GNSS height (\texttt{TC=20-22}),
+\texttt{HPL} and \texttt{RCu} are defined slight differently. In
+addition, Radius of containment for vertical position (\texttt{RCv}) is
+added:
+
+\begin{verbatim}
++------+------+----------+---------+---------+
+|  TC  | NUCp | HPL      | RCu     | RCv     |
++======+======+==========+=========+=========+
+|  20  |  9   | < 7.5 m  | < 3 m   | < 4 m   |
++------+------+----------+---------+---------+
+|  21  |  8   | < 25 m   | < 10 m  | < 15 m  |
++------+------+----------+---------+---------+
+|  22  |  0   | > 25 m   | > 10 m  | > 15 m  |
++------+------+----------+---------+---------+
+\end{verbatim}
+
+\subsubsection{NUCv}\label{nucv}
+
+The \textbf{Navigation Uncertainty Category - velocity} (\texttt{NUCv})
+it is used to indicate the uncertainty of the horizontal and vertical
+speeds. Related bits are located at the airborne velocity message,
+\texttt{TC=19}, message bit 43-45 (or payload bit 11-13). It defines the
+95\% of the error in horizontal and vertical speed.
+
+\begin{verbatim}
++------+-------------+------------------------+
+| NUCp | HVE (95%)   | VVE (95%)              |
++======+=============+========================+
+|  0   | unknown     | unknown                |
++------+-------------+------------------------+
+|  1   | < 10 m/s    | < 15.2 m/s (50 pfs)    |
++------+-------------+------------------------+
+|  2   | < 3 m/s     | < 4.5 m/s (15 fps)     |
++------+-------------+------------------------+
+|  3   | < 1 m/s     | < 1.5 m/s (5 fps)      |
++------+-------------+------------------------+
+|  4   | < 0.3 m/s   | < 0.46 m/s (1.5 fps)   |
++------+-------------+------------------------+
+\end{verbatim}
+
+\subsection{Version 1}\label{version-1}
+
+\subsubsection{NIC}\label{nic}
+
+In ADS-B Version 1, \textbf{Navigation Integrity Category}
+(\texttt{NIC}) is introduced to provide more levels of uncertainty
+definitions. The \texttt{NUCp} value is still kept, but has been moved
+to the new ``operation status messages'' (\texttt{TC=31}).
+
+As for \texttt{NIC}, in \texttt{Type\ Code}: \texttt{7} and \texttt{11},
+two \texttt{NIC} levels present in each code. In order to distinguish
+these two different levels, a \textbf{NIC Supplement Bit}
+(\texttt{NICs}) is introduced in ``operation status messages''
+\texttt{TC=31} (message bit 76 or payload bit 44). The relation of TC,
+NIC, and Rc are list in following tables.
+
+For surface position (\texttt{TC=5-8})
+
+\begin{verbatim}
++------+--------+-------+-----------------------+
+|  TC  | NICs   |  NIC  | Rc                    |
++======+========+=======+=======================+
+|  5   | 0      |  11   | < 7.5 m               |
++------+--------+-------+-----------------------+
+|  6   | 0      |  10   | < 25 m                |
++------+--------+-------+-----------------------+
+|  7   | 1      |  9    | < 75 m                |
+|      +--------+-------+-----------------------+
+|      | 0      |  8    | < 0.1 NM (185 m)      |
++------+--------+-------+-----------------------+
+|  8   | 0      |  0    | > 0.1 NM or Unknown   |
++------+--------+-------+-----------------------+
+\end{verbatim}
+
+For airborne position with barometric altitude (\texttt{TC=9-18}):
+
+\begin{verbatim}
++----+--------+-----+--------------------+----------+
+| TC | NICs   | NIC | Rc                 | VPL      |
++====+========+=====+====================+==========+
+| 9  | 0      | 11  | < 7.5 m            | < 11 m   |
++----+--------+-----+--------------------+----------+
+| 10 | 0      | 10  | < 25 m             | < 37.5 m |
++----+--------+-----+--------------------+----------+
+| 11 | 1      | 9   | < 75 m             | < 112 m  |
+|    +--------+-----+--------------------+----------+
+|    | 0      | 8   | < 0.1 NM (185 m)   |          |
++----+--------+-----+--------------------+----------+
+| 12 | 0      | 7   | < 0.2 NM (370 m)   |          |
++----+--------+-----+--------------------+----------+
+| 13 | 0      | 6   | < 0.5 NM (926 m)   |          |
+|    +--------+     +--------------------+----------+
+|    | 1      |     | < 0.6 NM (1111 m)  |          |
++----+--------+-----+--------------------+----------+
+| 14 | 0      | 5   | < 1.0 NM (1852 m)  |          |
++----+--------+-----+--------------------+----------+
+| 15 | 0      | 4   | < 2 NM (3704 m)    |          |
++----+--------+-----+--------------------+----------+
+| 16 | 1      | 3   | < 4 NM (7408 m)    |          |
+|    +--------+-----+--------------------+----------+
+|    | 0      | 2   | < 8 NM (14.8 km)   |          |
++----+--------+-----+--------------------+----------+
+| 17 | 0      | 1   | < 20 NM (37.0 km)  |          |
++----+--------+-----+--------------------+----------+
+| 18 | 0      | 0   | > 20 NM or Unknown |          |
++----+--------+-----+--------------------+----------+
+\end{verbatim}
+
+
+In the case of airborne position with GNSS height (\texttt{TC=20-22}),
+\texttt{Rc} is defined slight differently:
+
+\begin{verbatim}
++------+------+----------+----------+
+|  TC  | NIC  | Rc       | VPL      |
++======+======+==========+==========+
+|  20  | 11   | < 7.5 m  | < 11 m   |
++------+------+----------+----------+
+|  21  | 10   | < 25 m   | < 37.5 m |
++------+------+----------+----------+
+|  22  | 0    | > 25 m   | > 112 m  |
++------+------+----------+----------+
+\end{verbatim}
+
+\subsubsection{NACp}\label{nacp}
+
+In addition to \texttt{NIC}, \textbf{Navigation Accuracy Category -
+Position} (\texttt{NACp}) is also introduced int ADS-B
+\texttt{Version\ 1}. \texttt{NACp} can be found in:
+
+\begin{itemize}
+
+\item
+  \texttt{TC=29}, target state and status message, message bit 72-75 (or
+  payload bit 40-43)
+\item
+  \texttt{TC=31}, operational status message, message bit 77-80 (or
+  payload bit 45-48)
+\end{itemize}
+
+With \texttt{NACp}, one can find out the 95\% horizontal and vertical
+accuracy bounds (\texttt{EPU} and \texttt{VEPU}, or \texttt{HFOM} and
+\texttt{VFOM}). \texttt{NACp} and \texttt{NIC} usually share the same
+value, and their values are closely related.
+
+\begin{equation}
+  \begin{split}
+    \mathrm{EPU} &\approx \mathrm{Rc} / 2.5   \qquad  \mathrm{NAC, NIC} \ge 9 \\
+    \mathrm{EPU} &\approx \mathrm{Rc} / 2.0  \qquad  \mathrm{NAC, NIC} > 9
+  \end{split}
+\end{equation}
+
+For ADS-B, \texttt{NACp} is also indicated in the operational status
+messages (\texttt{TC=31}). \texttt{NACp} and corresponding
+\texttt{EPU}/\texttt{VEPU} are:
+
+\begin{verbatim}
++------+--------------------+-------------+
+| NACp | HFU (HFOM)         | VEPU (VFOM) |
++======+====================+=============+
+|  11  | < 3 m              | < 4 m       |
++------+--------------------+-------------+
+|  10  | < 10 m             | < 15 m      |
++------+--------------------+-------------+
+|  9   | < 30 m             | < 45 m      |
++------+--------------------+-------------+
+|  8   | < 0.05 NM (93 m)   |             |
++------+--------------------+-------------+
+|  7   | < 0.1 NM (185 m)   |             |
++------+--------------------+-------------+
+|  6   | < 0.3 NM (556 m)   |             |
++------+--------------------+-------------+
+|  5   | < 0.5 NM (926 m)   |             |
++------+--------------------+-------------+
+|  4   | < 1.0 NM (1852 m)  |             |
++------+--------------------+-------------+
+|  3   | < 2 NM (3704 m)    |             |
++------+--------------------+-------------+
+|  2   | < 4 NM (7408 m)    |             |
++------+--------------------+-------------+
+|  1   | < 10 NM (18520 km) |             |
++------+--------------------+-------------+
+|  0   | > 10 NM or Unknown |             |
++------+--------------------+-------------+
+\end{verbatim}
+
+
+\subsubsection{NACv}\label{nacv}
+
+The \textbf{Navigation Accuracy Category - Velocity} (\texttt{NACv}) is
+introduced in \texttt{Version\ 1} to replace the \texttt{NUCv} from
+\texttt{Version\ 0}. The bits are located at the same location and have
+the same definitions of values. It can be found in airborne velocity
+message, \texttt{TC=19}, message bit 43-45 (or payload bit 11-13). It
+defines the 95\% of the error in horizontal and vertical speed.
+
+\begin{verbatim}
++------+-------------+------------------------+
+| NAVc | HFOMr (95%) | VFOMr (95%)            |
++======+=============+========================+
+|  0   | unknown     | unknown                |
++------+-------------+------------------------+
+|  1   | < 10 m/s    | < 15.2 m/s (50 pfs)    |
++------+-------------+------------------------+
+|  2   | < 3 m/s     | < 4.5 m/s (15 fps)     |
++------+-------------+------------------------+
+|  3   | < 1 m/s     | < 1.5 m/s (5 fps)      |
++------+-------------+------------------------+
+|  4   | < 0.3 m/s   | < 0.46 m/s (1.5 fps)   |
++------+-------------+------------------------+
+\end{verbatim}
+
+\subsubsection{SIL}\label{sil}
+
+On the other hand, \textbf{Surveillance Integrity Level} (\texttt{SIL})
+is introduced in \texttt{Version\ 1} to indicate the probability of
+measurement exceeding the containment radius horizontally
+(\texttt{PE\_RCu}) and vertically (\texttt{PE\_VPL}).
+
+\texttt{SIL} value can be found in two different locations:
+
+\begin{itemize}
+
+\item
+  \texttt{TC=29}, target state and status message, message bit 77-78 (or
+  payload bit 45-46)
+\item
+  \texttt{TC=31}, operational status message, message bit 83-84 (or
+  payload bit 51-52)
+\end{itemize}
+
+The definitions are as follows:
+
+\begin{verbatim}
++-----+--------------------+--------------------+
+| SIL | PE_RCu             | PE_VPL             |
++=====+====================+====================+
+| 0   | unknown            | unknown            |
++-----+--------------------+--------------------+
+| 1   | < 1 x 10^-3        | < 1 x 10^-3        |
++-----+--------------------+--------------------+
+| 2   | < 1 x 10^-5        | < 1 x 10^-5        |
++-----+--------------------+--------------------+
+| 3   | < 1 x 10^-7        | < 2 x 10^-7        |
++-----+--------------------+--------------------+
+\end{verbatim}
+
+The unit for \texttt{PE\_RCu} and \texttt{PE\_VPL} is per hour or per
+sample.
+
+\subsection{Version 2}\label{version-2}
+
+\subsubsection{NIC}\label{nic-1}
+
+In ADS-B \texttt{Version\ 2}, levels of accuracies are further divided
+by two addition \texttt{NIC} supplement bits. In \texttt{Version\ 2}, we
+call them NIC Supplement Bit A (\texttt{NICa}), NIC Supplement Bit B
+(\texttt{NICb}), and NIC Supplement Bit C (\texttt{NICc}).
+
+\begin{itemize}
+
+\item
+  \texttt{NICa} is in the same location as in ADS-B \texttt{Version\ 1},
+  which is located in the operational status message \texttt{TC=31}
+  (message bit 76 or payload bit 44).
+\item
+  \texttt{NICb} is located in the airborne position message
+  (\texttt{TC=9-18}, message bit 40 or payload bit 8), where the
+  ``single antenna flag'' was located in previous ADS-B versions.
+\item
+  \texttt{NICc} is also located in the operational status message
+  \texttt{TC=31} (message bit 52 or payload bit 20).
+\end{itemize}
+
+Gather the NIC supplement bits, together with the \texttt{Type\ Code},
+accuracies are defined.
+
+For surface possible message (\texttt{TC=5-8}), using \texttt{TC},
+\texttt{NICa}, and \texttt{NICc}:
+
+\begin{verbatim}
++------+------+------+-------+-----------------------+
+|  TC  | NICa | NICc |  NIC  | Rc                    |
++======+======+======+=======+=======================+
+|  5   | 0    | 0    |  11   | < 7.5 m               |
++------+------+------+-------+-----------------------+
+|  6   | 0    | 0    |  10   | < 25 m                |
++------+------+------+-------+-----------------------+
+|  7   | 1    | 0    |  9    | < 75 m                |
+|      +------+------+-------+-----------------------+
+|      | 0    | 0    |  8    | < 0.1 NM (185 m)      |
++------+------+------+-------+-----------------------+
+|  8   | 1    | 1    |  7    | < 0.2 NM (370 m)      |
+|      +------+------+-------+-----------------------+
+|      | 1    | 0    |  6    | < 0.3 NM (556 m)      |
+|      +------+------+       +-----------------------+
+|      | 0    | 1    |       | < 0.6 NM (1111 m)     |
+|      +------+------+-------+-----------------------+
+|      | 0    | 0    |  0    | > 0.6 NM or Unknown   |
++------+------+------+-------+-----------------------+
+\end{verbatim}
+
+For airborne possible message (\texttt{TC=9-18}), using \texttt{TC},
+\texttt{NICa}, and \texttt{NICc}:
+
+\begin{verbatim}
++----+------+------+-----+-----------------------+
+| TC | NICa | NICb | NIC | Rc                    |
++====+======+======+=====+=======================+
+| 9  | 0    | 0    | 11  | < 7.5 m               |
++----+------+------+-----+-----------------------+
+| 10 | 0    | 0    | 10  | < 25 m                |
++----+------+------+-----+-----------------------+
+| 11 | 1    | 1    | 9   | < 75 m                |
+|    +------+------+-----+-----------------------+
+|    | 0    | 0    | 8   | < 0.1 NM (185 m)      |
++----+------+------+-----+-----------------------+
+| 12 | 0    | 0    | 7   | < 0.2 NM (370 m)      |
++----+------+------+-----+-----------------------+
+| 13 | 0    | 1    | 6   | < 0.3 NM (556 m)      |
+|    +------+------+     +-----------------------+
+|    | 0    | 0    |     | < 0.5 NM (926 m)      |
+|    +------+------+     +-----------------------+
+|    | 1    | 1    |     | < 0.6 NM (1111 m)     |
++----+------+------+-----+-----------------------+
+| 14 | 0    | 0    | 5   | < 1.0 NM (1852 m)     |
++----+------+------+-----+-----------------------+
+| 15 | 0    | 0    | 4   | < 2 NM (3704 m)       |
++----+------+------+-----+-----------------------+
+| 16 | 1    | 1    | 3   | < 4 NM (7408 m)       |
+|    +------+------+-----+-----------------------+
+|    | 0    | 0    | 2   | < 8 NM (14.8 km)      |
++----+------+------+-----+-----------------------+
+| 17 | 0    | 0    | 1   | < 20 NM (37.0 km)     |
++----+------+------+-----+-----------------------+
+| 18 | 0    | 0    | 0   | > 20 NM or Unknown    |
++----+------+------+-----+-----------------------+
+\end{verbatim}
+
+In the case of airborne position with GNSS height (\texttt{TC=20-22}),
+the table remains the same as previous version.
+
+\begin{verbatim}
++------+------+----------+
+|  TC  | NIC  | Rc       |
++======+======+==========+
+|  20  | 11   | < 7.5 m  |
++------+------+----------+
+|  21  | 10   | < 25 m   |
++------+------+----------+
+|  22  | 0    | > 25 m   |
++------+------+----------+
+\end{verbatim}
+
+\subsubsection{NACp}\label{nacp-1}
+
+NACp in \texttt{Version\ 2} remains the same as in \texttt{Version\ 1}.
+
+\subsubsection{NACv}\label{nacv-1}
+
+NACv in \texttt{Version\ 2} remains the same as in \texttt{Version\ 1}.
+
+\subsubsection{SIL}\label{sil-1}
+
+In \texttt{Version\ 2}, an additional \textbf{SIL supplement bit}
+(\texttt{SILs}) is introduced to distinguish if the value is based on
+per flight hour or per sample.
+
+The same as in \texttt{Version\ 1}, \texttt{SIL} value can be found in
+two different locations:
+
+\begin{itemize}
+
+\item
+  \texttt{TC=29}, target state and status message, message bit 77-78 (or
+  payload bit 45-46)
+\item
+  \texttt{TC=31}, operational status message, message bit 83-84 (or
+  payload bit 51-52)
+\end{itemize}
+
+\texttt{SILs} bit can also be found at two different locations:
+
+\begin{itemize}
+
+\item
+  \texttt{TC=29}, target state and status message, message bit 40 (or
+  payload bit 8)
+\item
+  \texttt{TC=31}, operational status message, message bit 87 (or payload
+  bit 55)
+\item
+  \texttt{SILs=0}: probability is ``per hour'' based
+\item
+  \texttt{SILs=1}: probability is ``per sample'' based
+\end{itemize}
+
+The same values from \texttt{Version\ 1} are kept:
+
+\begin{verbatim}
++-----+--------------------+--------------------+
+| SIL | PE_RCu             | PE_VPL             |
++=====+====================+====================+
+| 0   | unknown            | unknown            |
++-----+--------------------+--------------------+
+| 1   | < 1 x 10^-3        | < 1 x 10^-3        |
++-----+--------------------+--------------------+
+| 2   | < 1 x 10^-5        | < 1 x 10^-5        |
++-----+--------------------+--------------------+
+| 3   | < 1 x 10^-7        | < 2 x 10^-7        |
++-----+--------------------+--------------------+
+\end{verbatim}

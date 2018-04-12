@@ -1,0 +1,159 @@
+\section{Aircraft Operation Status}\label{aircraft-operation-status}
+
+Operation status message is introduced since the \texttt{Version\ 1} of
+ADS-B. And there are also slight differences in the structure of
+Aircraft Operation Messages between Version 1 and 2.
+
+\begin{quote}
+To understand about these versions, first take a look at the
+\href{version.html}{ADS-B version chapter}.
+\end{quote}
+
+The operation status is transmitted with \texttt{Type\ Code} 31
+(\texttt{TC=31}). The structure of the message (in \texttt{Version\ 1})
+is laid out as follows:
+
+\begin{verbatim}
++----------------------------------------+------+------+------+
+| FIELD                                  | MSG  | MB   |N-BITS|
++========================================+======+======+======+
+| Downlink Format = 17                   |  1   |      |  8   |
+|                                        |  8   |      |      |
++----------------------------------------+------+------+------+
+| ICAO Address                           |  9   |      |  24  |
+|                                        |  32  |      |      |
++----------------------------------------+------+------+------+
+| Type Code = 31                         |  33  |  1   |  5   |
+|                                        |  37  |  5   |      |
++----------------------------------------+------+------+------+
+| Subtype Code                           |  38  |  6   |  3   |
+|                                        |      |      |      |
+|  - 0: airborne                         |      |      |      |
+|  - 1: surface                          |      |      |      |
+|  - 2-7: reserved                       |  40  |  8   |      |
++-------------------+--------------------+------+------+------+
+|                   |                    |  41  |  9   | 16   |
+|  Airborne         |  Surface           |      |      |      |
+|  capacity class   |  capacity class    |      |      |      |
+|  codes            |  codes             |      |      |      |
+|                   |                    |  52  |  20  |      |
+|                   +--------------------+------+------+------+
+|                   |                    |  53  |  21  | (4)  |
+|                   |  Length/width      |      |      |      |
+|                   |  codes             |      |      |      |
+|                   |                    |  56  |  24  |      |
++-------------------+--------------------+------+------+------+
+| Operational mode code                  |  57  |  25  |  16  |
+|                                        |      |      |      |
+|                                        |      |      |      |
+|                                        |  72  |  40  |      |
++----------------------------------------+------+------+------+
+| ADS-B version number                   |  73  |  41  |  3   |
+|                                        |  75  |  43  |      |
++----------------------------------------+------+------+------+
+| NIC supplement bit                     |  76  |  44  |  1   |
++----------------------------------------+------+------+------+
+| NACp: Navigation accuracy category     |  77  |  45  |  4   |
+|        - position                      |  80  |  48  |      |
++-------------------+--------------------+------+------+------+
+| BAQ = 0           | Reserved           |  81  |  49  |  2   |
+|                   |                    |  82  |  50  |      |
++-------------------+--------------------+------+------+------+
+| SIL: Surveillance integrity level      |  83  |  51  |  2   |
+|                                        |  84  |  52  |      |
++-------------------+--------------------+------+------+------+
+| NIC-BARO          | TRK/HDG            |  85  |  53  |  1   |
++-------------------+--------------------+------+------+------+
+| HRD                                    |  86  |  54  |  1   |
++----------------------------------------+------+------+------+
+| Reserved                               |  87  |  55  |  2   |
+|                                        |  88  |  56  |      |
++----------------------------------------+------+------+------+
+\end{verbatim}
+
+Acronyms:
+
+\begin{itemize}
+
+\item
+  BAQ: Barometric Altitude Quality (always set to zero for airborne
+  message \texttt{subtype=1})
+\item
+  HRD: Horizontal Reference Direction
+
+  \begin{itemize}
+
+  \item
+    0: True North
+  \item
+    1: Magnetic North
+  \end{itemize}
+\end{itemize}
+
+In ADS-B \texttt{Version\ 2}, most part of the message remains the same,
+we will only address the second half of the message, where the changes
+have been made.
+
+\begin{verbatim}
++----------------------------------------+------+------+------+
+| FIELD                                  | MSG  | MB   |N-BITS|
++========================================+======+======+======+
+| Airborne          | Surface            |  57  |  25  |  16  |
+| operational       | operational        |      |      |      |
+| mode code         | mode code          |      |      |      |
+|                   |                    |  72  |  40  |      |
++-------------------+--------------------+------+------+------+
+| ADS-B version number                   |  73  |  41  |  3   |
+|                                        |  75  |  43  |      |
++----------------------------------------+------+------+------+
+| NIC supplement bit - A                 |  76  |  44  |  1   |
++----------------------------------------+------+------+------+
+| NACp: Navigation accuracy category     |  77  |  45  |  4   |
+|       - position                       |      |      |      |
+|                                        |  80  |  48  |      |
++-------------------+--------------------+------+------+------+
+| GVA               | Reserved           |  81  |  49  |  2   |
+|                   |                    |  82  |  50  |      |
++-------------------+--------------------+------+------+------+
+| SIL: Surveillance integrity level      |  83  |  51  |  2   |
+|                                        |  84  |  52  |      |
++-------------------+--------------------+------+------+------+
+| NIC-BARO          | TRK/HDG            |  85  |  53  |  1   |
++-------------------+--------------------+------+------+------+
+| HRD                                    |  86  |  54  |  1   |
++----------------------------------------+------+------+------+
+| SIL supplement bit                     |  87  |  55  |  1   |
++----------------------------------------+------+------+------+
+| Reserved                               |  88  |  56  |  1   |
++----------------------------------------+------+------+------+
+\end{verbatim}
+
+Acronyms:
+
+\begin{itemize}
+
+\item
+  GVA: Geometric Vertical Accuracy - GNSS position source, 95\% vertical
+  figure of merit (\texttt{VFOM})
+
+  \begin{itemize}
+
+  \item
+    0: unknown or \textgreater{} 150 meters
+  \item
+    1: \textless{} 150 meters
+  \item
+    2: \textless{} 45 meters
+  \item
+    3: reserved
+  \end{itemize}
+\item
+  SIL, NIC, NAC are also related to measurement uncertainty or accuracy.
+
+  \begin{itemize}
+
+  \item
+    A lot or more details are given in \href{uncertainty.html}{the
+    uncertainty chapter}.
+  \end{itemize}
+\end{itemize}

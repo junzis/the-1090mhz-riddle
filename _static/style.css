@@ -1,0 +1,49 @@
+body {
+  font-family: "PT Serif", serif !important;
+  padding-top: 20px;
+}
+
+.title{
+  margin-bottom: 0px;
+}
+
+.subtitle{
+  font-size: 140%;
+}
+
+.author{
+  margin-bottom: 10px;
+}
+
+.references div{
+  margin-left: 5px;
+  padding-left: 5px;
+  border-left: 3px solid #eee;
+}
+
+.references div:hover {
+  background: #eee;
+}
+
+nav ul {
+  padding-left: 20px;
+  font-size: 95%;
+}
+
+nav h1 {
+  font-size: 24px;
+}
+
+pre {
+  background: #f5f5f5;
+  padding: 10px;
+}
+
+.maintext h1 {
+  margin-top: 0.2em;
+  border-bottom: 1px dashed #ddd;
+}
+
+.maintext h2, .maintext h3 {
+  margin-top: 0.5em;
+}
