@@ -107,9 +107,16 @@ information contained in the \texttt{DATA} segment:
 +----------+-----------------------------------------+
 | 20 - 22  | Airborne position (w/ GNSS Height)      |
 +----------+-----------------------------------------+
-| 23 - 31  | Reserved for other uses                 |
+| 23 - 27  | Reserved*                               |
++----------+-----------------------------------------+
+| 28       | Aircraft status                         |
++----------+-----------------------------------------+
+| 29       | Target state and status information     |
++----------+-----------------------------------------+
+| 31       | Aircraft operation status               |
 +----------+-----------------------------------------+
 \end{verbatim}
+
 
 \subsection{ADS-B Checksum}\label{ads-b-checksum}
 
