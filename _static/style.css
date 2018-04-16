@@ -56,6 +56,13 @@ pre {
 table thead {
   background: #f3f3f3;
 }
+table caption{
+  text-align: right;
+}
+table caption span:after{
+  content: "[" attr(data-label) "]";
+  margin-left: 10px;
+}
 table tr {
   border-bottom: 1px dashed #aaa;
 }

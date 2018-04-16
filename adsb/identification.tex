@@ -18,7 +18,7 @@ To decode characters, a lookup table is needed for mapping numbers to characters
 #ABCDEFGHIJKLMNOPQRSTUVWXYZ#####_###############0123456789######
 \end{verbatim}
 
-In summary, characters and their decimal representations are: :
+In summary, characters and their decimal representations are:
 
 \begin{verbatim}
 A - Z :   1 - 26
@@ -28,15 +28,13 @@ A - Z :   1 - 26
 
 The \texttt{EC} value in combination with \texttt{TC} value defines the category of the aircraft (such as: heavy, large, small, light, glider, etc.). When \texttt{EC} is set to zeros, such information is not available.
 
-\subsection{Example}\label{example}
-
-For example: :
+For example:
 
 \begin{verbatim}
 8D4840D6202CC371C32CE0576098
 \end{verbatim}
 
-The structure of the message is as follows: :
+The structure of the message is as follows:
 
 \begin{verbatim}
      DF... CA.  ICAO..  DATA..................  PI....
@@ -49,7 +47,7 @@ DEC: 17    4            4     0
 
 Note that \texttt{Type\ Code} is inside of the DATA frame (first 5 bits). With \texttt{DF=17} and \texttt{TC=4}, we can confirm this is an aircraft identification message. Aircraft \texttt{callsign} then can be decoded.
 
-In the previous example message, it is easy to decode the \texttt{Data} segment: :
+In the previous example message, it is easy to decode the \texttt{Data} segment:
 
 \begin{verbatim}
 HEX: 20         2CC371C32CE0

@@ -2,8 +2,6 @@
 
 The position information in ADS-B messages is encoded in a compact position reporting (CPR) format. The general idea behind CPR is to be able to encode more coordinate decimals using less bits. It is achieved by trading global position ambiguity and time with local position accuracy.
 
-\subsection{Example}\label{example}
-
 An easy example to understand the principle behind CPR:
 
 Imaging the world is constructed by 16 grid, which we have divided into two levels, each level is encoded with two bits. Higher levels in color are \texttt{00} (yellow), \texttt{01} (blue), \texttt{10} (red), \texttt{11} (green). And within each color grid, the lower levels are also encoded similarly.

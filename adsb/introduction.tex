@@ -21,7 +21,7 @@ In following Table \ref{tb:adsb-structure}, the key information of a ADS-B messa
 \begin{tabular}{@{}llll@{}}
 \toprule
 nBits & Bits & Abbr. & Name \\ \midrule
-5 & 1 - 5 & DF & Downlink Format (17 or 18 for TIS-B) \footnote{The ADS-B Extended Squitter sent from a Mode S transponder use Downlink Format 17 (\texttt{DF=17}) while Non-Transponder-Based ADS-B Transmitting Subsystems and TIS-B Transmitting equipment use Downlink Format 18 (\texttt{DF=18}). By using \texttt{DF=18} instead of \texttt{DF=17}, an ADS-B/TIS-B Receiving Subsystem will know that the message comes from equipment that cannot be interrogated.} \\
+5 & 1 - 5 & DF & Downlink Format \\
 3 & 6 - 8 & CA & Capability (additional identifier) \\
 24 & 9 - 32 & ICAO & ICAO aircraft address \\
 56 & 33 - 88 & DATA & Data \\
@@ -30,8 +30,9 @@ nBits & Bits & Abbr. & Name \\ \midrule
 \end{tabular}
 \end{table}
 
+It is worth noting that the ADS-B Extended Squitter sent from a Mode S transponder use Downlink Format 17 (\texttt{DF=17}). Non-Transponder-Based ADS-B Transmitting Subsystems and TIS-B Transmitting equipment use Downlink Format 18 (\texttt{DF=18}). By using \texttt{DF=18} instead of \texttt{DF=17}, an ADS-B/TIS-B Receiving Subsystem will know that the message comes from equipment that cannot be interrogated.
 
-Example:
+An example:
 
 \begin{verbatim}
 Raw message in hexadecimal:
