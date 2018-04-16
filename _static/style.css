@@ -3,6 +3,11 @@ body {
   padding-top: 20px;
 }
 
+footer{
+  padding: 15px;
+  border-top: 1px dashed #ccc;
+}
+
 .title{
   margin-bottom: 0px;
 }
@@ -46,4 +51,24 @@ pre {
 
 .maintext h2, .maintext h3 {
   margin-top: 0.5em;
+}
+
+table thead {
+  background: #f3f3f3;
+}
+table tr {
+  border-bottom: 1px dashed #aaa;
+}
+table th {
+  padding: 5px 10px;
+  border-bottom: 2px solid #aaa;
+}
+table td {
+  padding: 5px 10px;
+}
+table tr.even {
+  background: #fbfbfb;
+}
+table tr:hover{
+  background: #eee;
 }

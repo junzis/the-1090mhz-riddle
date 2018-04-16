@@ -10,37 +10,26 @@ An ADS-B message is 112 bits long, and consists of 5 parts.
 +--------+--------+-----------+--------------------------+---------+
 \end{verbatim}
 
-Any ADS-B must start with the Downlink Format 17, or 18 in case of TIS-B
-message. They correspond to 10001 or 10010 in binary for the first 5
-bits. Bits 6-8 are used as an additional identifier, which has different
-meanings within each ADS-B subtype.
+Any ADS-B must start with the Downlink Format 17, or 18 in case of TIS-B message. They correspond to 10001 or 10010 in binary for the first 5 bits. Bits 6-8 are used as an additional identifier, which has different meanings within each ADS-B subtype.
 
-The following table lists the key information of a ADS-B message:
+In following Table \ref{tb:adsb-structure}, the key information of a ADS-B message is listed.
 
-\begin{verbatim}
-+--------+------------+--------+---------------------------------------+
-| nBits  | Bits       | Abbr.  | Name                                  |
-+========+============+========+=======================================+
-| 5      | 1 - 5      | DF     | Downlink Format (17 or 18 for TIS-B)* |
-+--------+------------+--------+---------------------------------------+
-| 3      | 6 - 8      | CA     | Capability (additional identifier)    |
-+--------+------------+--------+---------------------------------------+
-| 24     | 9 - 32     | ICAO   | ICAO aircraft address                 |
-+--------+------------+--------+---------------------------------------+
-| 56     | 33 - 88    | DATA   | Data                                  |
-+        +------------+--------+---------------------------------------+
-|        | [33 - 37]  | [TC]   | Type code                             |
-+--------+------------+--------+---------------------------------------+
-| 24     | 89 - 112   | PI     | Parity/Interrogator ID                |
-+--------+------------+--------+---------------------------------------+
-\end{verbatim}
+\begin{table}[!ht]
+\centering
+\caption{Structure of ADS-B messages}
+\label{tb:adsb-structure}
+\begin{tabular}{@{}llll@{}}
+\toprule
+nBits & Bits & Abbr. & Name \\ \midrule
+5 & 1 - 5 & DF & Downlink Format (17 or 18 for TIS-B) \footnote{The ADS-B Extended Squitter sent from a Mode S transponder use Downlink Format 17 (\texttt{DF=17}) while Non-Transponder-Based ADS-B Transmitting Subsystems and TIS-B Transmitting equipment use Downlink Format 18 (\texttt{DF=18}). By using \texttt{DF=18} instead of \texttt{DF=17}, an ADS-B/TIS-B Receiving Subsystem will know that the message comes from equipment that cannot be interrogated.} \\
+3 & 6 - 8 & CA & Capability (additional identifier) \\
+24 & 9 - 32 & ICAO & ICAO aircraft address \\
+56 & 33 - 88 & DATA & Data \\
+ & {[}33 - 37{]} & {[}TC{]} & Type code \\
+24 & 89 - 112 & PI & Parity/Interrogator ID \\ \bottomrule
+\end{tabular}
+\end{table}
 
-*The ADS-B Extended Squitter sent from a Mode S transponder use Downlink
-Format 17 (\texttt{DF=17}) while Non-Transponder-Based ADS-B
-Transmitting Subsystems and TIS-B Transmitting equipment use Downlink
-Format 18 (\texttt{DF=18}). By using \texttt{DF=18} instead of
-\texttt{DF=17}, an ADS-B/TIS-B Receiving Subsystem will know that the
-message comes from equipment that cannot be interrogated.
 
 Example:
 
@@ -67,62 +56,40 @@ DEC  |  17    5   |              | [4] ...............  |
 
 \subsection{ICAO address}\label{icao-address}
 
-In each ADS-B message, the sender (originating aircraft) can be
-identified using the ICAO address. It is located from 9 to 32 bits in
-binary (or 3 to 8 in hexadecimal). In the example above, it is
-\texttt{4840D6} or \texttt{010010000100}.
+In each ADS-B message, the sender (originating aircraft) can be identified using the ICAO address. It is located from 9 to 32 bits in binary (or 3 to 8 in hexadecimal). In the example above, it is \texttt{4840D6} or \texttt{010010000100}.
 
-An unique ICAO address is assigned to each Mode-S transponder of an
-aircraft. Thus this is a unique identifier for each aircraft. You can
-use the query tool (\href{https://junzis.com/adb/}{World Aircraft
-Database}) from mode-s.org to find out more about the aircraft with a
-given ICAO address. For instance, using the previous ICAO
-\texttt{4840D6} example, it will return the result of a
-\texttt{Fokker\ 70} with registration of \texttt{PH-KZD}.
+An unique ICAO address is assigned to each Mode-S transponder of an aircraft. Thus this is a unique identifier for each aircraft. You can use the query tool (\href{https://junzis.com/adb/}{World Aircraft Database}) from mode-s.org to find out more about the aircraft with a given ICAO address. For instance, using the previous ICAO \texttt{4840D6} example, it will return the result of a \texttt{Fokker\ 70} with registration of \texttt{PH-KZD}.
 
-In addition, you can download the database from the aforementioned
-website in CSV format.
+In addition, you can download the database from the aforementioned website in CSV format.
 
 \subsection{ADS-B message types}\label{ads-b-message-types}
 
-To identify what information is contained in an ADS-B message, we need
-to take a look at the \texttt{Type\ Code} of the message, indicated at
-bits 33 - 37 of the ADS-B message (or first 5 bits of the \texttt{DATA}
-segment).
+To identify what information is contained in an ADS-B message, we need to take a look at the \texttt{Type\ Code} of the message, indicated at bits 33 - 37 of the ADS-B message (or first 5 bits of the \texttt{DATA} segment).
 
-Following are the relationships between each \texttt{Type\ Code} and its
-information contained in the \texttt{DATA} segment:
+In following Table \ref{tb:adsb-tc}, the relationships between each \texttt{Type\ Code} and its information contained in the \texttt{DATA} segment are shown.
 
-\begin{verbatim}
-+----------+-----------------------------------------+
-| TC       | Content                                 |
-+==========+=========================================+
-| 1 - 4    | Aircraft identification                 |
-+----------+-----------------------------------------+
-| 5 - 8    | Surface position                        |
-+----------+-----------------------------------------+
-| 9 - 18   | Airborne position (w/ Baro Altitude)    |
-+----------+-----------------------------------------+
-| 19       | Airborne velocities                     |
-+----------+-----------------------------------------+
-| 20 - 22  | Airborne position (w/ GNSS Height)      |
-+----------+-----------------------------------------+
-| 23 - 27  | Reserved*                               |
-+----------+-----------------------------------------+
-| 28       | Aircraft status                         |
-+----------+-----------------------------------------+
-| 29       | Target state and status information     |
-+----------+-----------------------------------------+
-| 31       | Aircraft operation status               |
-+----------+-----------------------------------------+
-\end{verbatim}
-
+\begin{table}[!ht]
+\centering
+\caption{ADS-B Type Code and content}
+\label{tb:adsb-tc}
+\begin{tabular}{@{}ll@{}}
+\toprule
+Type Code & Content                              \\ \midrule
+1 - 4     & Aircraft identification              \\
+5 - 8     & Surface position                     \\
+9 - 18    & Airborne position (w/ Baro Altitude) \\
+19        & Airborne velocities                  \\
+20 - 22   & Airborne position (w/ GNSS Height)   \\
+23 - 27   & Reserved                             \\
+28        & Aircraft status                      \\
+29        & Target state and status information  \\
+31        & Aircraft operation status            \\ \bottomrule
+\end{tabular}
+\end{table}
 
 \subsection{ADS-B Checksum}\label{ads-b-checksum}
 
-ADS-B uses a cyclic redundancy check to validate the correctness of the
-received message, where the last 24 bits are the parity bits. The
-following pseudo-code describes the CRC process:
+ADS-B uses a cyclic redundancy check to validate the correctness of the received message, where the last 24 bits are the parity bits. The following pseudo-code describes the CRC process:
 
 \begin{verbatim}
 GENERATOR = 1111111111111010000001001
@@ -140,8 +107,7 @@ IF CRC not 0:
 
 \end{verbatim}
 
-For the implementation of CRC encoder in Python, refer to the pyModeS
-library function: \texttt{pyModeS.crc()}
+For the implementation of CRC encoder in Python, refer to the pyModeS library function: \texttt{pyModeS.crc()}
 
 A comprehensive documentation on Mode-S parity coding can be found:
 

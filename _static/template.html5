@@ -97,20 +97,22 @@ $endfor$
     </ul>
   </ul>
 </nav>
+
 $if(toc)$
 <hr>
 <nav id="$idprefix$TOC">
-
 <div class="float-right">
   <a href="https://github.com/junzis/the-1090mhz-riddle/edit/master/$if(editat)$$editat$.tex$endif$"
     class='btn btn-sm btn-outline-danger'> <i class="fab fa-github-alt"></i> Edit</a>
 </div>
-
 <h1>In this page</h1>
 $toc$
 </nav>
 $endif$
+
 </div>
+
+
 <div class="col-md-8 col-lg-9 maintext">
 
 <div class="float-right">
@@ -120,9 +122,12 @@ $endif$
 
 $body$
 
-$for(include-after)$
-$include-after$
-$endfor$
+<footer class="mastfoot">
+  <div class="text-right">
+    <p>Site maintained by <a href="https://github.com/junzis">@junzis</a>. Build with LaTeX, Pandoc, and GitHub</p>
+  </div>
+</footer>
+
 </div>
 </div>
 

@@ -1,8 +1,6 @@
 \section{Aircraft Identification}\label{aircraft-identification}
 
-An aircraft identification message has \texttt{DF:\ 17\ or\ 18}, and
-\texttt{TC:\ 1\ to\ 4}, the 56-bit \texttt{DATA} field is configured as
-follows:
+An aircraft identification message has \texttt{DF:\ 17\ or\ 18}, and \texttt{TC:\ 1\ to\ 4}, the 56-bit \texttt{DATA} field is configured as follows:
 
 \begin{verbatim}
 +------+------+------+------+------+------+------+------+------+------+
@@ -14,9 +12,7 @@ EC: Emitter category
 C*: A character
 \end{verbatim}
 
-To decode characters, a lookup table is needed for mapping numbers to
-characters. It is defined as follows, where the \texttt{\#} is not used,
-and \texttt{\_} represents a separation.
+To decode characters, a lookup table is needed for mapping numbers to characters. It is defined as follows, where the \texttt{\#} is not used, and \texttt{\_} represents a separation.
 
 \begin{verbatim}
 #ABCDEFGHIJKLMNOPQRSTUVWXYZ#####_###############0123456789######
@@ -30,10 +26,7 @@ A - Z :   1 - 26
     _ :  32
 \end{verbatim}
 
-The \texttt{EC} value in combination with \texttt{TC} value defines the
-category of the aircraft (such as: heavy, large, small, light, glider,
-etc.). When \texttt{EC} is set to zeros, such information is not
-available.
+The \texttt{EC} value in combination with \texttt{TC} value defines the category of the aircraft (such as: heavy, large, small, light, glider, etc.). When \texttt{EC} is set to zeros, such information is not available.
 
 \subsection{Example}\label{example}
 
@@ -54,13 +47,9 @@ DEC: 17    4            4     0
 \end{verbatim}
 
 
-Note that \texttt{Type\ Code} is inside of the DATA frame (first 5
-bits). With \texttt{DF=17} and \texttt{TC=4}, we can confirm this is an
-aircraft identification message. Aircraft \texttt{callsign} then can be
-decoded.
+Note that \texttt{Type\ Code} is inside of the DATA frame (first 5 bits). With \texttt{DF=17} and \texttt{TC=4}, we can confirm this is an aircraft identification message. Aircraft \texttt{callsign} then can be decoded.
 
-In the previous example message, it is easy to decode the \texttt{Data}
-segment: :
+In the previous example message, it is easy to decode the \texttt{Data} segment: :
 
 \begin{verbatim}
 HEX: 20         2CC371C32CE0
@@ -71,5 +60,4 @@ LTR:          |   K      L      M      1      0      2      3      _
 
 So the final aircraft callsign decoded is: \texttt{KLM1023}
 
-For detailed codes in Python, refer to the pyModeS library function:
-\texttt{pyModeS.adsb.callsign()}
+For detailed codes in Python, refer to the pyModeS library function: \texttt{pyModeS.adsb.callsign()}
