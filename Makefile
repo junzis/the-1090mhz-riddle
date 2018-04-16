@@ -1,5 +1,5 @@
 html:
-	# make pdf
+	make pdf
 	./tex2html.sh
 	cp _static/*.css _build/html
 	cp _build/pdf/book.pdf _build/html/book-the_1090mhz_riddle-junzi_sun.pdf
