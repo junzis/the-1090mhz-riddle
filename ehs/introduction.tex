@@ -18,19 +18,19 @@ The message is structured as follows, where the digit represents the
 number of binary digits:
 
 \begin{verbatim}
-+--------+--------+--------+--------+---------+---------+------------+
-|  DF 5  |  FS 3  |  DR 5  |  UM 6  |  AC 13  |  MB 56  |  AP/DP 24  |
-+-----------------+--------+----------------------------+------------+
-|   <---------+      32 bits      +-------->  |
++--------+--------+--------+--------+------------+---------+------------+
+|  DF 5  |  FS 3  |  DR 5  |  UM 6  |  AC/ID 13  |  MB 56  |  AP/DP 24  |
++-----------------+--------+--------+------------+---------+------------+
+|   <---------+        32 bits       +-------->  |
 
 
 DF:     downlink format
 FS:     flight status
 DR:     downlink request
 UM:     utility message
-ID:     identity
+AC/ID:  altitude code (DF20) or identity (DF21)
 MB:     message, Comm-B
-AP/DP:  address/parity or data/parity
+AP/DP:  address parity or data parity
 \end{verbatim}
 
 Except for the DF, the first 32 bits do not contain useful information
