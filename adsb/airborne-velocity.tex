@@ -195,22 +195,22 @@ The details on all data bits are described in following Table \ref{tb:adsb-v-bit
 \label{tb:adsb-v-bits-st-3}
 \begin{tabular}{@{}lllll@{}}
 \toprule
-MSG Bits   & DATA Bits   & Len & Abbr    & Content                        \\ \midrule
-33 - 37    & 1 - 5       & 5   & TC      & Type code                      \\
-38 - 40    & 6 - 8       & 3   & ST      & Subtype                        \\
-41         & 9           & 1   & IC      & Intent change flag             \\
-42         & 10          & 1   & RESV\_A & Reserved-A                     \\
-43 - 45    & 11 - 13     & 3   & NAC     & Velocity uncertainty (NAC)     \\
-46         & 14          & 1   & S\_hdg  & Heading status                 \\
-47 - 56    & 15 - 24     & 10  & Hdg     & Heading (proportion)           \\
-57         & 25          & 1   & AS-t    & Airspeed Type                  \\
-58 - 67    & 26 - 35     & 10  & AS      & Airspeed                       \\
-68         & 36          & 1   & VrSrc   & Vertical rate source           \\
-69         & 37          & 1   & S\_vr   & Vertical rate sign             \\
-70 - 78    & 38 - 46     & 9   & Vr      & Vertical rate                  \\
-79 - 80    & 47 - 48     & 2   & RESV\_B & Reserved-B                     \\
-81         & 49          & 1   & S\_Dif  & Difference from baro alt, sign \\
-82 - 88    & 50 - 66     & 7   & Dif     & Difference from baro alt       \\ \bottomrule
+DATA Bits  & MSG Bits   & Len  & Abbr    & Content                        \\ \midrule
+33 - 37    & 1 - 5      &  5   & TC      & Type code                      \\
+38 - 40    & 6 - 8      &  3   & ST      & Subtype                        \\
+41         & 9          &  1   & IC      & Intent change flag             \\
+42         & 10         &  1   & RESV\_A & Reserved-A                     \\
+43 - 45    & 11 - 13    &  3   & NAC     & Velocity uncertainty (NAC)     \\
+46         & 14         &  1   & S\_hdg  & Heading status                 \\
+47 - 56    & 15 - 24    &  10  & Hdg     & Heading (proportion)           \\
+57         & 25         &  1   & AS-t    & Airspeed Type                  \\
+58 - 67    & 26 - 35    &  10  & AS      & Airspeed                       \\
+68         & 36         &  1   & VrSrc   & Vertical rate source           \\
+69         & 37         &  1   & S\_vr   & Vertical rate sign             \\
+70 - 78    & 38 - 46    &  9   & Vr      & Vertical rate                  \\
+79 - 80    & 47 - 48    &  2   & RESV\_B & Reserved-B                     \\
+81         & 49         &  1   & S\_Dif  & Difference from baro alt, sign \\
+82 - 88    & 50 - 66    &  7   & Dif     & Difference from baro alt       \\ \bottomrule
 \end{tabular}
 \end{table}
 

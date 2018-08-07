@@ -10,16 +10,15 @@ Messages are composed as shown in following Table \ref{tb:adsb-pos-bits}
 \label{tb:adsb-pos-bits}
 \begin{tabular}{@{}llll@{}}
 \toprule
-Bits    & N-bit & Abbr    & Content                 \\ \midrule
-1 - 5   & 5     & DF      & Downlink format         \\
-33 - 37 & 5     & TC      & Type code               \\
-38 - 39 & 2     & SS      & Surveillance status     \\
-40      & 1     & NICsb   & NIC supplement-B        \\
-41 - 52 & 12    & ALT     & Altitude                \\
-53      & 1     & T       & Time                    \\
-54      & 1     & F       & CPR odd/even frame flag \\
-55 - 71 & 17    & LAT-CPR & Latitude in CPR format  \\
-72 - 88 & 17    & LON-CPR & Longitude in CPR format \\ \bottomrule
+Data Bits & MSG Bits & N-bit & Abbr    & Content                 \\ \midrule
+33 - 37   & 1 - 5    & 5     & TC      & Type code               \\
+38 - 39   & 6 - 7    & 2     & SS      & Surveillance status     \\
+40        & 8        & 1     & NICsb   & NIC supplement-B        \\
+41 - 52   & 9 - 20   & 12    & ALT     & Altitude                \\
+53        & 21       & 1     & T       & Time                    \\
+54        & 22       & 1     & F       & CPR odd/even frame flag \\
+55 - 71   & 23 - 39  & 17    & LAT-CPR & Latitude in CPR format  \\
+72 - 88   & 40 - 56  & 17    & LON-CPR & Longitude in CPR format \\ \bottomrule
 \end{tabular}
 \end{table}
 
