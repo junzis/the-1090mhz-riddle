@@ -24,7 +24,7 @@ The 56-bit MB field is structured as follows:
 +=======================================+======+======+
 | Status                                |  1   |  1   |
 +---------------------------------------+------+------+
-| Sign, 1 -> West                       |  1   |  1   |
+| Sign, 1 -> Use two's complement       |  1   |  1   |
 +---------------------------------------+------+------+
 | Magnetic heading                      |  3   |  10  |
 |                                       |      |      |
@@ -50,7 +50,7 @@ The 56-bit MB field is structured as follows:
 +---------------------------------------+------+------+
 | Status                                |  35  |  1   |
 +---------------------------------------+------+------+
-| SIGN 1 -> Below                       |  36  |  1   |
+| SIGN 1 -> Use two's complement        |  36  |  1   |
 +---------------------------------------+------+------+
 | Barometric altitude rate              |  37  |  9   |
 |                                       |      |      |
@@ -60,7 +60,7 @@ The 56-bit MB field is structured as follows:
 +---------------------------------------+------+------+
 | Status                                |  46  |  1   |
 +---------------------------------------+------+------+
-| SIGN 1 -> Below                       |  47  |  1   |
+| SIGN 1 -> Use two's complement        |  47  |  1   |
 +---------------------------------------+------+------+
 | Inertial altitude rate                |  48  |  9   |
 |                                       |      |      |
@@ -69,6 +69,15 @@ The 56-bit MB field is structured as follows:
 | LSB: 32 ft/min                        |  56  |      |
 +---------------------------------------+------+------+
 \end{verbatim}
+
+When a parameter is signed (SIGN = 1), the two's complement should be used to calculate the value.
+The value can be calculated as follows:
+
+\begin{verbatim}
+(-2**{Number of bits parameter} + value) * LSB.
+\end{verbatim}
+The number of bits for magnetic heading is 10, and for barometric/inertial altitude rate 9.
+
 
 An example:
 
@@ -80,7 +89,7 @@ MB:           FFBAA11E200472
 MB BIN:   1 1 1111111011 1 0101010000 1 0001111000 1 0 000000000 1 0 001110010
 ---------------------------------------------------------------------------------
 STATUS:   1
-SIGN:       -
+SIGN:       1 (Two's complement -2^{10} + value)
 HEADING:      1019 (x90/512)
 ---------------------------------------------------------------------------------
 STATUS:                  1
@@ -90,13 +99,15 @@ STATUS:                               1
 MACH:                                   120 (x2.048/512)
 ---------------------------------------------------------------------------------
 STATUS:                                             1
-SIGN:                                                +
+SIGN:                                                0
 VERTIVAL RATE - BARO:                                  0 (x32)
 ---------------------------------------------------------------------------------
 STATUS:                                                         1
-SIGN:                                                             -
+SIGN:                                                             0
 VERTICAL RATE - INERTIAL:                                           114 (x32)
 ---------------------------------------------------------------------------------
-FINAL:      -179.1 deg     336 kt      0.48 Mach     0 ft/min     -3648 ft/min
+FINAL:      -0.88 deg*    336 kt      0.48 Mach     0 ft/min      3648 ft/min
 ---------------------------------------------------------------------------------
+
+* Two's complement calculation: (-2^{10} + 1019) * 90/512 = -0.88 degree (= 359.12)
 \end{verbatim}

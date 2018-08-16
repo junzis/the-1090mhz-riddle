@@ -24,7 +24,7 @@ The 56-bit MB field is structured as follows:
 +=======================================+======+======+
 | Status                                |  1   |  1   |
 +---------------------------------------+------+------+
-| Sign, 1 -> left wing down             |  1   |  1   |
+| Sign, 1 -> Use two's complement       |  1   |  1   |
 +---------------------------------------+------+------+
 | Roll angle                            |  3   |  9   |
 |                                       |      |      |
@@ -34,7 +34,7 @@ The 56-bit MB field is structured as follows:
 +---------------------------------------+------+------+
 | Status                                |  12  |  1   |
 +---------------------------------------+------+------+
-| Sign, 1 -> west                       |  13  |  1   |
+| Sign, 1 -> Use two's complement       |  13  |  1   |
 +---------------------------------------+------+------+
 | True track angle                      |  14  |  10  |
 |                                       |      |      |
@@ -52,7 +52,7 @@ The 56-bit MB field is structured as follows:
 +---------------------------------------+------+------+
 | Status                                |  35  |  1   |
 +---------------------------------------+------+------+
-| Sign, 1 -> negative value             |  36  |  1   |
+| Sign, 1 -> Use two's complement       |  36  |  1   |
 +---------------------------------------+------+------+
 | Track angle rate                      |  37  |  9   |
 |                                       |      |      |
@@ -70,6 +70,16 @@ The 56-bit MB field is structured as follows:
 +---------------------------------------+------+------+
 \end{verbatim}
 
+When a parameter is signed (SIGN = 1), the two's complement should be used to calculate the value.
+The value can be calculated as follows:
+
+\begin{verbatim}
+(-2**{Number of bits parameter} + value) * LSB.
+\end{verbatim}
+
+The number of bits for roll angle and track rate is 9, and for true track angle 10. An example calculation with a signed parameter is given in (Airspeed and Heading) \url{https://mode-s.org/decode/ehs/bds60-airspeed.html}. 
+
+
 An example:
 
 \begin{verbatim}
@@ -80,18 +90,18 @@ MB:           81951536E024D4
 MB BIN:   1 0 000001100 1 0 1010001010 1 0011011011 1 0 000000100 1 0011010100
 ---------------------------------------------------------------------------------
 STATUS:   1
-SIGN:       +
+SIGN:       0
 ROLL:         12 (x45/256)
 ---------------------------------------------------------------------------------
 STATUS:                 1
-SIGN:                     +
+SIGN:                     0
 TRACK ANGLE:                650 (x90/512)
 ---------------------------------------------------------------------------------
 STATUS:                                1
 GROUND SPEED:                            219 (x2)
 ---------------------------------------------------------------------------------
 STATUS:                                             1
-SIGN:                                                +
+SIGN:                                                0
 TRACK ANGLE RATE:                                      4 (x8/256)
 ---------------------------------------------------------------------------------
 STATUS:                                                           1

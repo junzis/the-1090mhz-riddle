@@ -49,8 +49,8 @@ Parity (DP). Majority of the time Address Parity is used.
 
 \subsubsection{Address Parity}\label{address-parity}
 
-For AP, the message parity field is produced by XOR ICAO with message
-data CRC checksum. So, to recover the ICAO bits, simply reversing the
+For AP, the message parity field is produced by XOR-ing the ICAO address with the message
+data CRC checksum. So, to recover the ICAO address, simply reversing the
 XOR process will work, shown as follows:
 
 \begin{verbatim}
@@ -83,9 +83,9 @@ ICAO:    [F24177] XOR [CE2CA7] => [3C6DD0]
 \end{verbatim}
 
 For the implementation of the CRC encoder, refer to the pyModeS library
-\texttt{pyModeS.util.crc(msg,\ encode=True)}
+\texttt{pyModeS.common.crc(msg,\ encode=True)}
 
-\subsection{BDS (Comm-B Data Selector)}\label{bds-comm-b-data-selector}
+\subsection{BDS (Binary Data Selector)}\label{bds-comm-b-data-selector}
 
 In simple words, BDS is a number (usually a 2-digit hexadecimal) that
 defines the type of message we are looking at. Both ADS-B messages and
