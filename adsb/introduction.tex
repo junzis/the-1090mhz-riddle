@@ -16,6 +16,8 @@ In following Table \ref{tb:adsb-structure}, the key information of a ADS-B messa
 
 \begin{table}[!ht]
 \centering
+\caption{Structure of ADS-B messages}
+\label{tb:adsb-structure}
 \begin{tabular}{@{}llll@{}}
 \toprule
 nBits & Bits & Abbr. & Name \\ \midrule
@@ -26,8 +28,6 @@ nBits & Bits & Abbr. & Name \\ \midrule
  & {[}33 - 37{]} & {[}TC{]} & Type code \\
 24 & 89 - 112 & PI & Parity/Interrogator ID \\ \bottomrule
 \end{tabular}
-\caption{Structure of ADS-B messages}
-\label{tb:adsb-structure}
 \end{table}
 
 It is worth noting that the ADS-B Extended Squitter sent from a Mode S transponder use Downlink Format 17 (\texttt{DF=17}). Non-Transponder-Based ADS-B Transmitting Subsystems and TIS-B Transmitting equipment use Downlink Format 18 (\texttt{DF=18}). By using \texttt{DF=18} instead of \texttt{DF=17}, an ADS-B/TIS-B Receiving Subsystem will know that the message comes from equipment that cannot be interrogated.
@@ -71,6 +71,8 @@ In following Table \ref{tb:adsb-tc}, the relationships between each \texttt{Type
 
 \begin{table}[!ht]
 \centering
+\caption{ADS-B Type Code and content}
+\label{tb:adsb-tc}
 \begin{tabular}{@{}ll@{}}
 \toprule
 Type Code & Content                              \\ \midrule
@@ -84,8 +86,6 @@ Type Code & Content                              \\ \midrule
 29        & Target state and status information  \\
 31        & Aircraft operation status            \\ \bottomrule
 \end{tabular}
-\caption{ADS-B Type Code and content}
-\label{tb:adsb-tc}
 \end{table}
 
 \subsection{ADS-B Checksum}\label{ads-b-checksum}
