@@ -258,12 +258,12 @@ The reference position should be close to the actual position (eg. position of a
 \begin{equation}
   dLat =
   \begin{cases}
-   \frac{360}{4 \cdot NZ} = \frac{360}{60}          & \text{if even message}  \\
-   \frac{360}{4 \cdot NZ - 1}  = \frac{360}{59}     & \text{if odd message}
+   \frac{360}{4 \cdot NZ} = \frac{360}{60}          & \text{for even message}  \\
+   \frac{360}{4 \cdot NZ - 1}  = \frac{360}{59}     & \text{for odd message}
   \end{cases}
 \end{equation}
 
-\subsubsection{Calculate the latitude indexj} \label{calculate-the-latitude-index-j-1}
+\subsubsection{Calculate the latitude index j} \label{calculate-the-latitude-index-j-1}
 
 \begin{equation}
   j = floor \left (\frac{\mathrm{Lat}_{ref}}{dLat} \right) + floor \left( \frac{mod(\mathrm{Lat}_{ref}, dLat)}{dLat}  - \mathrm{Lat}_\mathrm{cpr}  + \frac{1}{2} \right)
@@ -278,6 +278,8 @@ The reference position should be close to the actual position (eg. position of a
 
 \subsubsection{Calculate dLon}\label{calculate-dlon}
 
+For even message:
+
 \begin{equation}
   \mathrm{dLon} =
   \begin{cases}
@@ -285,6 +287,16 @@ The reference position should be close to the actual position (eg. position of a
    360                    & \text{if } NL(Lat) = 0
   \end{cases}
 \end{equation}
+
+For odd message:
+\begin{equation}
+  \mathrm{dLon} =
+  \begin{cases}
+   \frac{360}{NL(Lat)-1}    & \text{if } NL(Lat) - 1 > 0  \\
+   360                    & \text{if } NL(Lat) - 1 = 0
+  \end{cases}
+\end{equation}
+
 
 \subsubsection{Calculate longitude index
 m}\label{calculate-longitude-index-m}
