@@ -5,17 +5,14 @@ structure}\label{downlink-format-and-message-structure}
 
 DF 20 and DF 21 are used for downlink messages.
 
-The same as ADS-B, in all Mode-S messages, the first 5 bits contain the
-Downlink Format. The same identification process can be used to discover
-EHS messages. So the EHS messages starting bits are:
+The same as ADS-B, in all Mode-S messages, the first 5 bits contain the Downlink Format. The same identification process can be used to discover EHS messages. So the EHS messages starting bits are:
 
 \begin{verbatim}
 DF20 - 10100
 DF21 - 10101
 \end{verbatim}
 
-The message is structured as follows, where the digit represents the
-number of binary digits:
+The message is structured as follows, where the digit represents the number of binary digits:
 
 \begin{verbatim}
 +--------+--------+--------+--------+------------+---------+------------+
@@ -33,37 +30,30 @@ MB:     message, Comm-B
 AP/DP:  address parity or data parity
 \end{verbatim}
 
-Except for the DF, the first 32 bits do not contain useful information
-to decode the message. The exact definitions can be found in ICAO annex
-10 (Aeronautical Telecommunications).
+Except for the DF, the first 32 bits do not contain useful information to decode the message. The exact definitions can be found in ICAO annex 10 (Aeronautical Telecommunications).
 
 \subsection{Parity and ICAO address
 recovery}\label{parity-and-icao-address-recovery}
 
-Unlike ADS-B, the ICAO address is not broadcast along with the EHS
-messages. We will have to ``decode'' the ICAO address before decoding
-other information, and ICAO is hidden in the message and checksum.
+Unlike ADS-B, the ICAO address is not broadcast along with the EHS messages. We will have to ``decode'' the ICAO address before decoding other information, and ICAO is hidden in the message and checksum.
 
-Mode-S uses two types of parity checksum Address Parity (AP) and Data
-Parity (DP). Majority of the time Address Parity is used.
+Mode-S uses two types of parity checksum Address Parity (AP) and Data Parity (DP). Majority of the time Address Parity is used.
+
+When the proposed ICAO recover process is applied, the results would either be aircraft real address or modified address, or the data is corrupted.
 
 \subsubsection{Address Parity}\label{address-parity}
 
-For AP, the message parity field is produced by XOR-ing the ICAO address with the message
-data CRC checksum. So, to recover the ICAO address, simply reversing the
-XOR process will work, shown as follows:
+For AP, the message parity field is produced by XOR-ing the ICAO address with the message data CRC checksum. So, to recover the ICAO address, simply reversing the XOR process will work, shown as follows:
 
 \begin{verbatim}
 +-------------------------------+  +--------------------+
 |   DATA FIELD (32 OR 88 BIT)   |  |    PARITY BITS     |
 +--------------+----------------+  +--------------------+
-               |
-               |                           XOR
-               v
+               V                           XOR
 +--------------+-----------+       +--------------------+
 |          ENCODER         |  +--> | CHECKSUM (24 BITS) |
-+--------------------------+       +--------------------+
-                                            ||
++--------------------------+       +---------+----------+
+                                             V
                                    +--------------------+
                                    |   ICAO (24 BITS)   |
                                    +--------------------+
@@ -85,6 +75,22 @@ ICAO:    [F24177] XOR [CE2CA7] => [3C6DD0]
 For the implementation of the CRC encoder, refer to the pyModeS library
 \texttt{pyModeS.common.crc(msg,\ encode=True)}
 
+
+
+\subsubsection{Data Parity}\label{data-parity}
+
+In some cases (not common), SSR would request a Data Parity instead of Address Parity. When DP is in use, the parity is XOR with the modified ICAO address (Modified AA). The Modified AA is the XOR results of Address and BDS code (with 16 bits of zeros appended). As example is shown as follows:
+
+
+\begin{verbatim}
+ICAO:         DD33AA      1101 1101 0011 0011 1010 1010
+                                      XOR
+BDS 4,4       440000      0100 0100 0000 0000 0000 0000
+-------------------------------------------------------
+Modified AA   9933AA  <-  1001 1001 0011 0011 1010 1010
+\end{verbatim}
+
+
 \subsection{BDS (Binary Data Selector)}\label{bds-comm-b-data-selector}
 
 In simple words, BDS is a number (usually a 2-digit hexadecimal) that
@@ -102,11 +108,10 @@ requested). Good news for them, but challenges for us.
 Here are some BDS codes that we are interested in, where additional
 parameters about an aircraft can be found:
 
-\begin{verbatim}
-BDS 2,0   Aircraft identification
-BDS 2,1   Aircraft and airline registration markings
-BDS 4,0   Selected vertical intention
-BDS 4,4   Meteorological routine air report
-BDS 5,0   Track and turn report
-BDS 6,0   Heading and speed report
-\end{verbatim}
+\begin{itemize}
+  \item BDS 2,0   Aircraft identification
+  \item BDS 4,0   Selected vertical intention
+  \item BDS 5,0   Track and turn report
+  \item BDS 6,0   Heading and speed report
+  % \item BDS 4,4   Meteorological routine air report
+\end{itemize}
