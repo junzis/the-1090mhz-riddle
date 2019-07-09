@@ -25,6 +25,7 @@ Here is a planned structures:
     - Velocity
     - Operation status
   - Uncertainty and accuracy
+  - CRC and parity check
 - Advanced: Mode-S elementary surveillance, enhanced surveillance, and other services
   - Mode-S ELS and EHS background
   - ELS (altitude code, identity code)
