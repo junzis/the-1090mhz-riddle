@@ -1,89 +1,72 @@
-\documentclass[book, b5paper, fittopage]{ncc}
-\FromMargins[hf]{20mm}{20mm}{15mm}{15mm}
-
-\usepackage[headings]{ncchdr}
-\usepackage{graphicx}
-\usepackage{charter}
-\usepackage{booktabs}
-\usepackage{multirow}
-\usepackage{amssymb,amsmath}
-\usepackage{ifxetex,ifluatex}
-
-\usepackage[unicode=true]{hyperref}
-\PassOptionsToPackage{hyphens}{url} % url is loaded by hyperref
-\urlstyle{same}  % don't use monospace font for urls
-
-\usepackage{parskip}
-\setlength{\emergencystretch}{3em}  % prevent overfull lines
-
-% set default figure placement to htbp
-\makeatletter
-\def\fps@figure{htbp}
-\makeatother
-
-% change verbatim and texttt style
-\usepackage{fancyvrb,newverbs,xcolor}
-\usepackage{letltxmacro}
-
-\definecolor{cverbbg}{gray}{0.96}
-
-\LetLtxMacro{\oldverbatim}{\verbatim}
-\renewenvironment{verbatim}
- {\SaveVerbatim{cverb}}
- {\endSaveVerbatim
-  % \center
-  \flushleft\fboxrule=0pt
-  \fboxsep=1em
-  \colorbox{cverbbg}{\footnotesize\BUseVerbatim{cverb}}%
-  \endflushleft
-}
-
-\LetLtxMacro{\oldtexttt}{\texttt}
-\renewcommand{\texttt}[1]{\colorbox{cverbbg}{\oldtexttt{#1}}}
+\documentclass[openany]{r1090}                % web version
+%\documentclass[print, openright]{r1090}      % print version (with margins)
 
 
-
-% ---------------------- start of content ----------------------------
-
-\title{
-  The 1090MHz Riddle \\
-  \medskip
-  \large An open-access book about decoding Mode-S and ADS-B data
-}
 \date{}
-\author{Junzi Sun}
+
+\newcommand\1{\texttt{1}}
+\newcommand\0{\texttt{0}}
+
+
 
 \begin{document}
+
+
+\title[A Guide to Decoding and Interpreting ADS-B and Other Mode S Signals]{The 1090 Megahertz Riddle}
+\author{Junzi}{Sun}
+
+
+\input{misc/title.tex}
+
 % \maketitle
 
-\input{misc/cover}
+\dedication{
+  This book is dedicated to my sons: William and Vincent
+}
 
-\pagestyle{headings}
-\input{misc/preface}
-
+\setcounter{tocdepth}{1}
 \tableofcontents
 
+\input{misc/preface}
 
-\input{adsb.tex}
+\part{Getting started}
+\input{content/introduction.tex}
+\input{content/quickstart.tex}
 
-\input{adsb/introduction.tex}
-\input{adsb/identification.tex}
-\input{adsb/compact-position-report.tex}
-\input{adsb/airborne-position.tex}
-\input{adsb/airborne-velocity.tex}
+\part{Fundamental ADS-B Decoding}
+\input{content/ads-b/1-basics.tex}
+\input{content/ads-b/2-identification.tex}
+\input{content/ads-b/3-airborne-position.tex}
+\input{content/ads-b/4-surface-position.tex}
+\input{content/ads-b/5-airborne-velocity.tex}
+\input{content/ads-b/6-operation-status.tex}
+\input{content/ads-b/7-uncertainty.tex}
+\input{content/ads-b/8-error-control.tex}
 
-\input{adsb/advance.tex}
-\input{adsb/version.tex}
-\input{adsb/operation-status.tex}
-\input{adsb/uncertainty.tex}
+\part{Advanced Mode S Decoding}
+\input{content/mode-s/1-basics.tex}
+\input{content/mode-s/2-allcall.tex}
+\input{content/mode-s/3-surveillance.tex}
+\input{content/mode-s/4-acas.tex}
+\input{content/mode-s/5-commb.tex}
+\input{content/mode-s/6-els.tex}
+\input{content/mode-s/7-ehs.tex}
+\input{content/mode-s/8-meteo.tex}
+\input{content/mode-s/9-inference.tex}
 
-\input{ehs.tex}
-\input{ehs/introduction.tex}
-\input{ehs/bds20-identification.tex}
-\input{ehs/bds40-intention.tex}
-\input{ehs/bds50-track-n-turn.tex}
-\input{ehs/bds60-airspeed.tex}
+% \part{Beyond Decoding}
+% \input{content/conclusion.tex}
 
-\input{misc/about.tex}
+
+\chapter*{References}
+\addcontentsline{toc}{chapter}{References}
+\printbibliography[heading=none]
+
+% \input{misc/ack.tex}
+% \input{misc/about.tex}
+
+% \clearpage
+% \addcontentsline{toc}{chapter}{Index}
+% \printindex
 
 \end{document}

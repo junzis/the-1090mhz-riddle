@@ -1,0 +1,346 @@
+\chapter{Surface Position}
+
+When an aircraft is on the ground, a different type of message is used to broadcast its position information. Unlike the airborne position message, the surface position message also includes the speed of the aircraft. Since no altitude information needs to be transmitted, this provides extra bits for extra information, such as speed and track angle.
+
+The surface position message has the Type Code from 5 to 8, which also represents the level of uncertainties in the position. And the structure of the surface position message payload is shown as follows:
+
+
+\begin{verbatim}
++-------+--------+------+--------+------+------+-------------+-------------+
+| TC, 5 | MOV, 7 | S, 1 | TRK, 7 | T, 1 | F, 1 | LAT-CPR, 17 | LON-CPR, 17 |
++-------+--------+------+--------+------+------+-------------+-------------+
+\end{verbatim}
+
+We can see that the fields are defined similarly to the ones from airborne messages, except that the surveillance status and altitude bits are replaced by movement and ground track. The details of the fields are shown in Table \ref{tb:adsb-surf-pos-fields}
+
+\begin{table}[ht]
+\caption{Surface position message structure}
+\label{tb:adsb-surf-pos-fields}
+\begin{tabular}{|l|l|l|l|l|}
+\hline
+\textbf{FIELD} & \textbf{} & \textbf{MSG} & \textbf{MB} & \textbf{BITS} \\ \hline
+Type Code & TC & 33-37 & 1-5 & 5 \\ \hline
+Movement & MOV & 38-44 & 6-12 & 7 \\ \hline
+\begin{tabular}[c]{@{}l@{}}Status for ground track\\  ~~0: Invalid\\  ~~1: Valid\end{tabular} & S & 45 & 13 & 1 \\ \hline
+Ground track & TRK & 46-52 & 14-20 & 7 \\ \hline
+Time & T & 53 & 21 & 1 \\ \hline
+\begin{tabular}[c]{@{}l@{}}CPR Format\\  ~~0: even frame\\  ~~1: odd frame\end{tabular} & F & 54 & 22 & 1 \\ \hline
+Encoded latitude & LAR-CPR & 55-71 & 23-39 & 17 \\ \hline
+Encoded longitude & LON-CPR & 72-88 & 40-56 & 17 \\ \hline
+\end{tabular}
+\end{table}
+
+\section{Movement}
+
+The movement field encodes the aircraft ground speed. The ground speed of the aircraft is encoded non-linearly and with different quantizations. This is to ensure that a lower speed can be encoded with a improved precision than a higher speed. Different levels of quantizations are defined in Table \ref{tb:adsb-surf-pos-mov}.
+
+\begin{table}[ht]
+\caption{Surface position movement (ground speed) decoding}
+\label{tb:adsb-surf-pos-mov}
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Encoded speed} & \textbf{Ground speed range} & \textbf{Quantization} \\ \hline
+0 & Speed not avaiable &  \\ \hline
+1 & Stopped (v $<$ 0.125 kt) &  \\ \hline
+2 - 8 & 0.125 $\leq$ v $<$ 1 kt & 0.125 kt steps \\ \hline
+9 - 12 & 1 kt $\leq$ v $<$ 2 kt & 0.25 kt steps \\ \hline
+13 - 38 & 2 kt $\leq$ v $<$ 15 kt & 0.5 kt steps \\ \hline
+39 - 93 & 15 kt $\leq$ v $<$ 70 kt & 1 kt steps \\ \hline
+94 - 108 & 70 kt $\leq$ v $<$ 100 kt & 2 kt steps \\ \hline
+109 - 123 & 100 kt $\leq$ v $<$ 175 kt & 5 kt steps \\ \hline
+124 & v $\ge$ 175 kt &  \\ \hline
+125 - 127 & Reserved &  \\ \hline
+\end{tabular}
+\end{table}
+
+
+\section{Ground track}
+
+The ground track is encoded with a precision of (and rounded to) 360/128 degrees. Zero degrees represents an aircraft ground track that is aligned with the true north. Based on the encoded value ($n$), the ground track ($\chi$) is calculated as:
+
+\begin{equation}
+    \chi = \frac{360~n}{128} \quad \text{(degrees)}
+\end{equation}
+
+When the status for the ground track field is set to 0, the information contained in the ground track fields should be considered as invalid.
+
+\section{Position}
+
+Like coordinates from airborne messages, the surface latitude and longitude are also encoded in the Compact Position Reporting (CPR) format. CPR format bit indicates whether the message is a \emph{even} or \emph{odd} message. There are only a few slight differences in decoding the surface position positions. 
+
+First, the latitude zone size is four times smaller, which is defined as:
+
+\begin{equation}
+\begin{split}
+    \mathrm{dLat}_\mathrm{even} &= \frac{90^\circ}{4 N_Z} \\
+    \mathrm{dLat}_\mathrm{odd} &= \frac{90^\circ}{4 N_Z - 1}
+\end{split}
+\end{equation}
+
+Similarly, the longitude zone size is also smaller, which is:
+
+\begin{equation}
+\begin{split}
+    \mathrm{dLon}_\mathrm{even} &= \frac{90^\circ}{n_\mathrm{even}} \\
+    \mathrm{dLon}_\mathrm{odd} &= \frac{90^\circ}{n_\mathrm{odd}}
+\end{split}
+\end{equation}
+
+The algorithm used to encode the position is essentially the same as the one used for encoding airborne position. All the other equations from chapter \ref{chap:airborn-position} can be used to decode surface position.
+
+The main difference, when compared to the airborne position, is that the original number of bits used for encoding surface coordinates is 19 instead of 17. However in the message, only the lower-order 17 bits are included and transmitted in the surface message. Thus, there can be multiple solutions for a pair of odd and even messages, even when globally unambiguous decoding is used. To identify the correct solution, a reference position needs to be given. This can be the position of the receiver or the location of the airfield.
+
+When employing locally unambiguous decoding, the reference position needs to be within 45 nautical miles of the actual location. Commonly, the positions of the airport is used.
+
+With the equations from section \ref{sec:cpr_airborne_global_lat}, the solution refers to the latitude located at the northern hemisphere. We need to compute a southern hemisphere solution by subtracting this value with 90 degrees. The final correct latitude is the one that is closet to the reference position.
+
+Similarly, with the equations from section \ref{sec:cpr_airborne_global_lon}, the solution refers only the longitude in the 0 to 90 degrees quadrant. We need to compute the other three possible solutions by adding 90, 180, and 270 degrees. The final correct longitude is also the one that is closet to the reference position.
+
+
+
+
+\section{Example}
+
+\subsection{Globally unambiguous decoding}
+
+First, we decode the location using globally unambiguous decoding. The following example contains an even/odd pair of surface position messages: 
+
+\begin{verbatim}
+8C4841753AAB238733C8CD4020B1
+8C4841753A8A35323FAEBDAC702D    (most recent)
+\end{verbatim}
+
+Based on the ADS-B message structure, we can identify the ICAO address and message payload data as follows:
+
+\begin{verbatim}
++----+--------+----------------+--------+
+|    | ICAO   |      Data      |  PI    |
++----+--------+----------------+--------+
+| 8C | 484175 | 3AAB238733C8CD | 4020B1 |
+| 8C | 484175 | 3A8A35323FAEBD | AC702D |
++----+--------+----------------+--------+
+\end{verbatim}
+
+We can covert the message data into binary format:
+
+\begin{verbatim}
++-------+---------+---+---------+---+---+-------------------+-------------------+
+| TC    | MOV     | S | TRK     | T | F | CPR-LAT           | CPR-LON           |
++-------+---------+-------------+---+---+-------------------+-------------------+
+| 00111 | 0101010 | 1 | 0110010 | 0 | 0 | 11100001110011001 | 11100100011001101 |
+| 00111 | 0101000 | 1 | 0100011 | 0 | 1 | 01001100100011111 | 11010111010111101 |
++-------+---------+---+---------+---+---+-------------------+-------------------+
+\end{verbatim}
+
+
+Knowing the receiver location:
+
+\begin{verbatim}
+reference latitude: 51.990
+reference longitude: 4.375
+\end{verbatim}
+
+
+it is possible to extract the encoded CPR latitude and longitude binary and convert them to decimal format. Then, they are divided by the $2^{17}$, representing the fractions of the positions within the latitude and longitude grids:
+
+\begin{equation}
+  \begin{split}
+    \mathrm{lat}_\mathrm{cpr,even} &= \frac{115609}{2^{17}} \\
+    \mathrm{lon}_\mathrm{cpr,even} &= \frac{116941}{2^{17}} \\
+    \mathrm{lat}_\mathrm{cpr,odd} &=  \frac{39199}{2^{17}} \\
+    \mathrm{lon}_\mathrm{cpr,odd} &=  \frac{110269}{2^{17}}
+  \end{split}
+\end{equation}
+
+We can calculate the latitude index, $j$, as:
+
+\begin{equation}
+  j = floor \left( 59 \times \frac{115609}{2^{17}} - 60 \times \frac{39199}{2^{17}} + \frac{1}{2}  \right) = 34
+\end{equation}
+
+Then, we can decode the latitudes from both even and odd messages:
+
+\begin{equation}
+  \begin{split}
+    \mathrm{lat}_\mathrm{even} &= \frac{90}{4 \times 15} \Big[ mod(34, 60) + \frac{115609}{2^{17}} \Big] = 52.323040008544920 \\
+    \mathrm{lat}_\mathrm{odd} &= \frac{90}{4 \times 15 - 1} \Big[ mod(34, 59) + \frac{39199}{2^{17}} \Big] = 52.320607072215964
+  \end{split}
+\end{equation}
+
+After validating the longitude zone of both messages are the same:
+
+\begin{equation}
+  \begin{split}
+    \mathrm{NL}(\mathrm{lat}_\mathrm{even}) &= \mathrm{NL}(52.323040008544920) = 36 \\
+    \mathrm{NL}(\mathrm{lat}_\mathrm{odd}) &= \mathrm{NL}(52.320607072215964) = 36
+  \end{split}
+\end{equation}
+
+
+we can continue to calculate the global position. Since the even message is the most recent message, the northern hemisphere latitude solution is:
+
+\begin{equation}
+  \mathrm{lat}_N = \mathrm{lat}_\mathrm{odd} = 52.320607072215964
+\end{equation}
+
+
+The southern hemisphere latitude solution is:
+
+\begin{equation}
+    \mathrm{lat}_S = 52.320607072215964 - 90 = -37.679392927784036
+\end{equation}
+  
+By comparing the result with the reference latitude (51.990), the final latitude value is the one located in the northern hemisphere.
+
+\begin{equation}
+    \mathrm{lat} = \mathrm{lat}_N = 52.320607072215964
+\end{equation}
+  
+
+The longitude solution in the first quadrant of 0 to 90 degress is calculated based on the most recent (odd) message:
+
+\begin{align}
+  m &= floor \left( \frac{116941}{2^{17}} \times (36-1) - \frac{110269}{2^{17}} \times 36 + \frac{1}{2}  \right) = 1\\
+  n &= max \Big( 36-1, 1 \Big) = 35\\
+    \mathrm{lon}_1 &= \frac{90}{35} \Big[ mod(1, 36-1) + \frac{110269}{2^{17}} \Big] = 4.734734671456474
+\end{align}
+
+The three other possible solutions are:
+
+\begin{equation}
+\begin{split}
+    \mathrm{lon}_2 &= \mathrm{lon}_1 + 90 = 94.734734671456474 \\
+    \mathrm{lon}_3 &= \mathrm{lon}_1 + 180 = 184.734734671456474 \\
+    \mathrm{lon}_4 &= \mathrm{lon}_1 + 270 = 274.734734671456474 \\
+\end{split}
+\end{equation}
+
+By comparing with the reference longitude (4.375), the final longitude is the one located in the first quadrant. Combining the result of previously obtained latitude, the final decoded coordinates (rounded up to 6 decimal position) are:
+
+
+\begin{verbatim}
+latitude: 52.320607
+longitude: 4.734735
+\end{verbatim}
+
+\begin{notebox}{Try it out}
+Using \texttt{pyModeS}, we can perform the decoding of this globally unambiguous surface position as: 
+
+\begin{verbatim}
+import pyModeS as pms
+
+msg0 = "8C4841753AAB238733C8CD4020B1"
+msg1 = "8C4841753A8A35323FAEBDAC702D"
+t0 = 1457996410
+t1 = 1457996412
+lat_ref = 51.990
+lon_ref = 4.375
+
+position = pms.adsb.position(msg0, msg1, t0, t1, lat_ref, lon_ref)
+\end{verbatim}
+
+Note that the reference coordinates are needed for decoding the surface position. In this case the reference is the coordinates of the airfield. 
+
+\end{notebox}
+
+
+
+\subsection{Locally unambiguous decoding}
+
+Secondly, we decode the location using locally unambiguous decoding. In this case, we want to use the position obtained previously as the reference.
+
+The new message received is:
+
+\begin{verbatim}
+8C4841753A9A153237AEF0F275BE
+\end{verbatim}
+
+The structure of the ADS-B message is:
+
+\begin{verbatim}
++----+--------+----------------+--------+
+|    | ICAO   |      Data      |  PI    |
++----+--------+----------------+--------+
+| 8C | 484175 | 3A9A153237AEF0 | F275BE |
++----+--------+----------------+--------+
+\end{verbatim}
+
+We can covert the message data into binary format:
+
+\begin{verbatim}
++-------+---------+---+---------+---+---+-------------------+-------------------+
+| TC    | MOV     | S | TRK     | T | F | CPR-LAT           | CPR-LON           |
++-------+---------+-------------+---+---+-------------------+-------------------+
+| 00111 | 0101001 | 1 | 0100001 | 0 | 1 | 01001100100011011 | 11010111011110000 |
++-------+---------+---+---------+---+---+-------------------+-------------------+
+\end{verbatim}
+
+
+\begin{align}
+    \mathrm{dLat} &= \frac{90}{4 \times 15 - 1} = \frac{90}{59} \\
+    j &= floor \left( \frac{52.320607}{90/59} \right) + floor \left[ \frac{mod(52.320607, 90/59)}{90/59} - \frac{39195}{2^{17}}  + \frac{1}{2} \right] = 34 \\
+    \mathrm{lat} &= \mathrm{lat}_\mathrm{odd} = \frac{90}{59} \times \left( 34 + \frac{39195}{2^{17}} \right) = 52.32056051997815
+\end{align}
+  
+Next, the longitude can be calculated as follows:
+  
+\begin{align}
+    \mathrm{dLon} &= \frac{90}{max \Big( \mathrm{NL}(\mathrm{lat}_\mathrm{odd})-1, 1 \Big)} = \frac{90}{max(36-1, 1)} = \frac{90}{35} \\
+    m &= floor \left( \frac{4.734735}{90/35} \right) + floor \left( \frac{mod(4.734735, 90/35)}{90/35} - \frac{110320}{2^{17}}  + \frac{1}{2}  \right) = 1 \\
+    \mathrm{lon} &= \frac{90}{35} \times \left(1 + \frac{110320}{2^{17}} \right) = 4.735735212053571
+\end{align}
+
+
+The final decoded coordinates (rounded up to 6 decimal positions) are:
+
+\begin{verbatim}
+latitude: 52.320561
+longitude: 4.735735
+\end{verbatim}
+
+\begin{notebox}{Try it out}
+Using \texttt{pyModeS}, we can perform the decoding of this locally unambiguous surface position as: 
+
+\begin{verbatim}
+import pyModeS as pms
+
+msg = "8C4841753A9A153237AEF0F275BE"
+lat_ref = 51.990
+lon_ref = 4.375
+
+position = pms.adsb.position_with_ref(msg, lat_ref, lon_ref)
+\end{verbatim}
+
+\end{notebox}
+
+
+\subsection{Movement and track}
+
+As a continuation of the previous example, we can also calculate the speed and track angle from the movement and track fields.
+
+The decimal value of movement \texttt{0101001} is \texttt{41}. Based on Table \ref{tb:adsb-surf-pos-mov}, the speed is encoded using 1 kt steps. Thus, the speed of aircraft is:
+
+\begin{equation}
+  15 + (42 - 39) \times 1 = 17 kt
+\end{equation}
+
+The decimal value of track angle \texttt{0100001} is \texttt{33}. The track angle can be calculated as:
+
+\begin{equation}
+  \frac{360^\circ}{128} \times 33 = 92.8125 ^\circ
+\end{equation}
+
+\begin{notebox}{Try it out}
+Using \texttt{pyModeS}, we can perform the decoding aircraft speed and track angle as: 
+
+\begin{verbatim}
+import pyModeS as pms
+
+msg = "8C4841753A9A153237AEF0F275BE"
+
+spd, trk, vs, tag = pms.adsb.velocity(msg)
+\end{verbatim}
+
+Note that the last two parameters returned by the previous function are vertical speed and a tag indicate whether the speed is ground speed (GS) or airspeed (IAS/TAS).
+
+\end{notebox}

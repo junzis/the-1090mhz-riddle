@@ -48,7 +48,7 @@ $endfor$
 <div class="d-flex flex-row align-items-end">
 	<div>
 		<h1 class="title">The 1090MHz Riddle</h1>
-		<div class="subtitle">An open-access book about decoding Mode-S and ADS-B data</div>
+		<div class="subtitle">An open-access book about decoding Mode S and ADS-B data</div>
 	</div>
 	<div class='ml-auto chapter-nav'>
     <div class="author">By: <strong>Junzi Sun</strong> (<a href="http://junzis.com">junzis.com</a>)</div>
@@ -87,7 +87,7 @@ $endfor$
       <li><a href="$if(rootdir)$$rootdir$$endif$adsb/operation-status.html">Operation Status</a></li>
       <li><a href="$if(rootdir)$$rootdir$$endif$adsb/uncertainty.html">Uncertainty and Accuracy</a></li>
     </ul>
-    <li><a href="$if(rootdir)$$rootdir$$endif$ehs.html">Enhanced Mode-S</a></li>
+    <li><a href="$if(rootdir)$$rootdir$$endif$ehs.html">Enhanced Mode S</a></li>
     <ul>
       <li><a href="$if(rootdir)$$rootdir$$endif$ehs/introduction.html">Basics</a></li>
       <li><a href="$if(rootdir)$$rootdir$$endif$ehs/bds20-identification.html">Aircraft Identification</a></li>

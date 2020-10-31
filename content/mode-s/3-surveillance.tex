@@ -1,0 +1,170 @@
+\chapter{Surveillance replies} \label{chap:surv_reply}
+
+Surveillance replies consist of short messages (56 bits) that respond to the selective interrogations of the secondary surveillance radar based on the 24-bit transponder addresses of the aircraft. Two types of information are transmitted: altitude (DF=4) and identity (DF=5).
+
+
+\section{Message structure}
+
+The structure of altitude and identity surveillance replies are similar, as shown in Table \ref{tb:df_4_5_structure}. The main difference is that bits 20 to 32 are used to encode either the altitude or the squawk code.
+
+\begin{table}[ht]
+\footnotesize
+\caption{Surveillance replies}
+\label{tb:df_4_5_structure}
+\begin{subtable}[t]{.44\linewidth}
+  \centering
+  \caption{Altitude reply (DF=4)}
+  \begin{tabular}[t]{|l|l|l|l|}
+  \hline
+  \textbf{FIELD} & \textbf{} & \textbf{MSG} & \textbf{BITS} \\ \hline
+  Downlink format   & DF & 1-5    & 5   \\ \hline
+  Flight status     & FS & 6-8    & 3   \\ \hline
+  Downlink request  & DR & 9-13   & 5   \\ \hline
+  Utility message   & UM & 14-19  & 6   \\ \hline
+  Altitude code     & AC & 20-32  & 13  \\ \hline
+  Address parity    & AP & 33-56  & 24  \\ \hline
+  \end{tabular}
+\end{subtable}%
+\begin{subtable}[t]{.56\linewidth}
+  \centering
+  \caption{Identity reply (DF=5)}
+  \begin{tabular}[t]{|l|l|l|l|}
+  \hline
+  \textbf{FIELD} & \textbf{} & \textbf{MSG} & \textbf{BITS} \\ \hline
+  Downlink format   & DF & 1-5    & 5   \\ \hline
+  Flight status     & FS & 6-8    & 3   \\ \hline
+  Downlink request  & DR & 9-13   & 5   \\ \hline
+  Utility message   & UM & 14-19  & 6   \\ \hline
+  Identity code     & ID & 20-32  & 13  \\ \hline
+  Address parity    & AP & 33-56  & 24  \\ \hline
+  \end{tabular}
+\end{subtable}
+\end{table}
+
+The definitions of the common fields are:
+
+\begin{itemize}
+  \item \emph{Flight status (FS)}: 3 bits, shows status of alert, special position pulse (SPI, in Mode A only) and aircraft status (airborne or on-ground). The field is interpreted as:
+
+  \begin{quote}
+    \small
+    \texttt{000}: no alert, no SPI, aircraft is airborne \\
+    \texttt{001}: no alert, no SPI, aircraft is on-ground \\
+    \texttt{010}: alert, no SPI, aircraft is airborne \\
+    \texttt{011}: alert, no SPI, aircraft is on-ground \\
+    \texttt{100}: alert, SPI, aircraft is airborne or on-ground \\
+    \texttt{101}: no alert, SPI, aircraft is airborne or on-ground \\
+    \texttt{110}: reserved \\
+    \texttt{111}: not assigned
+  \end{quote}
+
+  \item \emph{Downlink request (DR)}: 5 bits, contains the type of request. In surveillance replies, only values 0, 1, 4, and 5 are used. The field can be decoded as:
+
+  \begin{quote}
+    \small
+    \texttt{00000}: no downlink request \\
+    \texttt{00001}: request to send Comm-B message \\
+    \texttt{00100}: Comm-B broadcast messages 1 available \\
+    \texttt{00101}: Comm-B broadcast messages 2 available
+  \end{quote}
+
+  \item \emph{Utility message (UM)}: 6 bits, contains transponder communication status information.
+
+
+\end{itemize}
+
+
+
+\section{Altitude code} \label{sec:alt_code}
+
+The 13-bit altitude code can be encoded in 25-ft increments, 100-ft increments, or in metric units (m). The 7th bit (MSG bit 28) is defined as the M bit. When the M bit is set to \0, the 9th bit (MSG bit 30) is defined as the Q bit.
+
+The decoding rules are as follows:
+
+\begin{itemize}
+  \item When all bits are set to \0, altitude information is not available or invalid.
+
+  \item When M=1, removing the M bit, the reset 12 bits represent the altitude in meters.
+
+  \item When M=0 and Q=1, removing the M and Q bits, the remaining 11 bits encode the altitude with 25 ft increments. Denote $N$ as the decimal value of the remaining 11 bits. The altitude is calculated as $25 \times N - 1000$ ft.
+
+  \item When M=0 and Q=0, the rest bits are defined as follows:
+
+\begin{verbatim}
+                                M        Q
++----+----+----+----+----+----+---+----+---+----+----+----+----+
+| C1 | A1 | C2 | A2 | C4 | A4 | 0 | B1 | 0 | B2 | D2 | B4 | D4 |
++----+----+----+----+----+----+---+----+---+----+----+----+----+
+\end{verbatim}
+
+  This structure corresponds to the Mode C altitude reply. This structure is used to encode altitudes above 50187.5 ft.
+
+\end{itemize}
+
+\begin{notebox}{Try it out}
+Using \texttt{pyModeS}, we can calculate the altitude code as: 
+
+\begin{verbatim}
+import pyModeS as pms
+
+msg = "2000171806A983"
+altitude = pms.altcode(msg)  # 36000 (ft)
+\end{verbatim}
+
+\end{notebox}
+
+
+\section{Identity code} \label{sec:id_code}
+
+The 13-bit identity code encodes the 4 octal digit squawk code (from \texttt{0000} to \texttt{7777}). The structure of this field is shown as follows:
+
+\begin{verbatim}
++----+----+----+----+----+----+---+----+----+----+----+----+----+
+| C1 | A1 | C2 | A2 | C4 | A4 | X | B1 | D1 | B2 | D2 | B4 | D4 |
++----+----+----+----+----+----+---+----+----+----+----+----+----+
+\end{verbatim}
+
+The binary representation of the octal digit is:
+
+\begin{verbatim}
+A4 A2 A1 | B4 B2 B1 | C4 C2 C1 | D4 D2 D1
+\end{verbatim}
+
+
+Next, we will use an example to explain the decoding of the identity code. The example message is:
+
+\begin{verbatim}
+MSG HEX: 2A00516D492B80
+MSG BIN: 00101 01000000000010 1000101101101 010010010010101110000000
+         [DF=5]              [identity code]
+\end{verbatim}
+
+The binary identity code can be interpreted as follows:
+
+\begin{verbatim}
+C1 A1 C2 A2 C4 A4  X  B1 D1 B2 D2 B4 D4
+1  0  0  0  1  0   1   1  0  1  1  0  1
+\end{verbatim}
+
+Rearranging the bits, we have three groups of binaries:
+\begin{verbatim}
+A4 A2 A1 | B4 B2 B1 | C4 C2 C1 | D4 D2 D1
+0  0  0  | 0  1  1  | 1  0  1  | 1  1  0
+\end{verbatim}
+
+Finally, the four octal digit squawk code can be decoded from the binary groups as:
+\begin{verbatim}
+0 3 5 6
+\end{verbatim}
+
+\begin{notebox}{Try it out}
+Using \texttt{pyModeS}, we can calculate the squawk code as: 
+
+\begin{verbatim}
+import pyModeS as pms
+
+msg = "2A00516D492B80"
+altitude = pms.idcode(msg)  # 0356
+\end{verbatim}
+
+\end{notebox}

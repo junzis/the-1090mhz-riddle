@@ -1,0 +1,222 @@
+\chapter{Introduction} \label{chap:intro}
+
+\section{Background: the ``death ray'' that saves lives}
+
+Like many modern technologies such as computers, the internet, and GPS whose origins can be traced back to the military, aviation radar is no exception. 
+
+The fundamental theory of radar started long before the application. Since the 1860s, when the electromagnetic theory was discovered by James Clerk Maxwell, the foundation for many science and technology fields was laid out. In the late 19th century, Heinrich Hertz, who proved the existence of electromagnetic waves, also confirmed that metals could reflect radio waves. In the first decades of the 20th century, several systems for using radio waves to provide short-range directional information of objects were developed. German inventor Christian Hulsmeyer is often considered as the first person to use radio waves to detect metal objects in 1904.
+
+However, not until the Second World War, was the concept of \emph{RAdio Detection And Ranging} (RADAR) developed. The technology was simultaneously researched by both major Allies and Axis countries. However, the United Kingdom led the race to in developing a functional radar system. 
+
+Originally, British Air Ministry officials, who were concerned about falling behind the technology race with the Germans, advised the physicist Robert Watson Watt to propose a set of abstract technical challenges to his colleague Skip Wilkins:
+
+\begin{quotation}
+\noindent"Suppose, just suppose, that you had eight pints [17kg] of water, 3,000ft [1km] above the ground. And suppose that water was at 98$^\circ$F [37$^\circ$C], and you wanted to heat it to 105$^\circ$F [41$^\circ$C]. How much radio frequency power would you require, from a distance of 5km?"
+\end{quotation}
+
+Both scientists understood very well that the average adult human has 17 kg blood and a critical body temperature of 41$^\circ$C. This represented an idea of the \emph{death ray} that could be used to disable enemy aircraft pilots.
+
+Without even developing such a system, they figured out that the power requirement was far beyond practice at that time. However, they realized an opportunity for funding a different project. Given the amount of power that can be transmitted, it was possible to detect the reflection of aircraft, and, thus calculate the position of aircraft. This proposal was approved by the air ministry. Later on, this technology was developed and shared with Americans during the war. After that, the widespread usage of RADAR (later became radar) had begun.
+
+After the war ended, radar became more and more important for civil aviation. With the rapid growth of commercial flights, it developed into a prominent technology for aircraft surveillance in the aviation industry.
+
+\section{The primary radar}
+
+Aircraft surveillance in the early days relied only on, what is known today as the primary surveillance radar (PSR). The concept of PSR is fairly simple. It is a rotating radio transponder with an omnidirectional antenna. Commonly, the radar transmits a one-microsecond pulse for every one millisecond and listens to the reflections from the airplanes. The position of the aircraft is measured by distance and angle to the radar. The distance is known as slant distance, which is the line-of-sight distance between an aircraft and the radar. It can be calculated by measuring the time difference between the original signal and the reflection received, since the speed of the radio wave (speed of light) is known. The azimuth angle\footnote{Azimuth angle is the horizontal angle measured clockwise with to the north of the observer.} of the aircraft is determined by the rotation angle of the radar. By processing radar signals, technologies like phase filter and Doppler filter can be used to filter out moving targets like aircraft and remove static objects, such as mountains, buildings, and other obstacles.
+
+The slant distance of an aircraft does not always correspond to the horizontal distance to the radar. This is because all points having the same slant distance are located on a sphere that has the radius equal to the distance. Since the civil radar usually does not provide elevation information on the target, it is not possible to accurately convert the slant distance to the horizontal distance. Historically, it is sufficient to use primary radar for separating airplanes without considering this altitude differences. However, other systems have to be in place to provide air traffic controllers more accurate positions of the aircraft.
+
+\section{The secondary radar}
+
+The secondary surveillance radar (SSR), also known as air traffic control radar beacon system (ATCRBS), was designed to provide air traffic controllers more information than that provided by the primary radar. The secondary radar can be installed separately or installed on top of the primary radar. It uses a different radio frequency to actively interrogate the aircraft and receive information transmitted by the aircraft.
+
+The SSR transmits interrogations using the 1030 MHz radio frequency and the aircraft transponder transmits replies using 1090MHz radio frequency. In the early design of SSR, two civilian communication protocols (Mode A and Mode C) were introduced. Mode A and Mode C allow the SSR to continuously interrogate the identity (squawk code) and the barometric altitude of an aircraft respectively.
+
+Although Mode A and Mode C provide additional information to air traffic controllers, they present several design challenges \cite{icao1983}. The secondary surveillance radar initiates Mode A and C interrogations with two different pulse patterns, which are shown in Figure \ref{fig:mode_ac_uplink_pulses}.
+
+\begin{figure}[ht]
+  \scalebox{0.9}{
+    \input{figures/intro/mode_ac_uplink_pulses.tex}
+  }
+  \caption{Mode A/C interrogation pulses}
+  \label{fig:mode_ac_uplink_pulses}
+\end{figure}
+
+The pulses are about 0.8 microseconds wide. P1 and P3 are the two main pulses sent by the directional antenna. They are separated by 8 microseconds and 21 microseconds respectively for Mode A and C. P2 is a pulse sent by the omnidirectional antenna right after P1. Pulse P2 is introduced for sidelobe suppression. When the aircraft is close to the radar, the power of P2 can be higher than P1. In this case, the interrogation is likely generated by the side lobes of the directional antenna and should be ignored by the aircraft.
+
+In Figure \ref{fig:mode_ac_downlink_pulses}, an example of a Mode A/C reply is shown. Each reply consists of two persistent pulses separated by 20.3 microseconds (F1 and F2). Within this period, either the identity code or the altitude code is encoded using 13 0.45 microseconds pulses. The pulses are separated by gaps of one microsecond. The pulse at the center serves as a verification pulse and is always absent. The presence or absence of any other 12 pulses represents a 1 or 0 bit. When required by air traffic controllers for identification purposes, a special purpose identification (SPI) may follow F2 after two absent pulses.
+
+\begin{figure}[ht]
+  \scalebox{0.9}{
+    \input{figures/intro/mode_ac_downlink_pulses.tex}
+  }
+  \caption{Mode A/C interrogation pulses}
+  \label{fig:mode_ac_downlink_pulses}
+\end{figure}
+
+The response type (A or C) cannot be identified based on the reply signal itself. The SSR determines the content based on the synchronization with interrogations. This design of ATCRBS works sufficiently well with low-density air traffic, but it cannot efficiently cope with higher flight densities. Since all aircraft replies are transmitted on the same frequency, when several aircraft are in the same direction of the radar beam, reply signals can overlap and introduce errors for decoding. This is known as synchronous garbling.
+
+When there are multiply secondary radars in the vicinity, replies originated by other radars may be considered as valid responses of one radar, which in turn, causes errors and confusion. This syndrome is called FRUIT (False Replies Unsynchronized In Time).
+
+Though some of the garbling and the FRUIT problem can be mitigated with the reduction of interrogation frequency and improvements in signal processing ability, the information transmitted in Mode A and Mode C is still very limited. The number of identity codes available in Mode A communication is limited to a maximum of 4096 unique codes, which poses another clear limitation.
+
+Hence, more advanced communication protocols needed to be developed to acquire more information from a large number of aircraft.
+
+
+
+\section{Mode S}
+
+Mode S (Mode Select Beacon System) was designed by Lincoln Laboratory at Massachusetts Institute of Technology in the 1970s. Based on different iterations of hardware and software design in the 1980s, the implementation of Mode S in air traffic control began in the 1990s. Since then, Mode S has become one of the main sources for aircraft surveillance.
+
+The main characteristic of Mode S is its selective interrogation, which allows the SSR to interrogate different information from different aircraft separately. By using selective interrogation, it largely mitigated the problem of garbling in Mode A/C and thus greatly improved the capacity of the communication channel.
+
+Unlike the limited number (4096) of unique identification codes in Mode A communication, the Mode S transponder is identified by a 24-bit transponder code, which can support up to 16,777,216 ($2^{24}$) unique addresses. In addition to these two major advantages, the Mode S protocol introduced many different types of information that could be interrogated and downlinked.
+
+\subsection{Mode S interrogations}
+The Mode S uplink signal contains parameters that indicate which information is desired by the air traffic controller. There are two types of Mode S interrogations, which are shown in Figure \ref{fig:mode_s_uplink_pulses}. The short interrogation has 56 bits of information contained in the data block, while the long interrogation contains 112 bits of information. The P2 pulse acts as the sidelobe suppression for Mode A/C transponders so that they will ignore the rest of the interrogation pulses. Information in the Mode S interrogation data block is uses the Differential Phase-Shift Keying (DPSK) modulaion \cite{mazda2014}.
+
+\begin{figure}[ht]
+  \scalebox{0.9}{
+    \input{figures/intro/mode_s_uplink_pulses.tex}
+  }
+  \caption{Mode S uplink pulses}
+  \label{fig:mode_s_uplink_pulses}
+\end{figure}
+
+
+\subsection{Mode S replies}
+There two types of Mode S downlink signals, short reply and long reply, which correspond to the short and long interrogations from the SSR. For each microsecond, two bits are transmitted. All Mode S replies start with an 8-microsecond fixed preamble and continue with 56 or 122 microseconds of the data block. The structure of the downlink message is shown in Figure \ref{fig:mode_s_downlink_pulses}.
+
+\begin{figure}[ht]
+  \scalebox{0.9}{
+    \input{figures/intro/mode_s_downlink_pulses.tex}
+  }
+  \caption{An example of Mode S reply message}
+  \label{fig:mode_s_downlink_pulses}
+\end{figure}
+
+The 16-bit fix preamble can be represented as \texttt{1010000101000000} in binary. The information contained in the data block is modulated using the Pulse Position Modulation (PPM), which is a type of amplitude modulation. In PPM, the \1 bit is represented by a 0.5-microsecond of pulse followed by a 0.5-microsecond flat signal. The \0 bit is reversed compared to the \1 bit. It is represented by a 0.5-microsecond flat signal and followed by a 0.5-microsecond pulse.
+
+\begin{notebox}{Note}
+  Mode S uplink and downlink signals use different modulation methods. The uplink uses phase modulation, while the downlink uses amplitude modulation. Phase modulation requires slightly more complicated hardware implementation but has a better performance in terms of error tolerance. 
+\end{notebox}
+
+\subsection{Compatiblity with Mode A/C}
+
+Similar to Mode A/C, Mode S SSR can send \emph{All-Call} interrogations to all aircraft in the vicinity. The All-Call interrogations are designed to be compatible with Mode A/C transponders. In Figure \ref{fig:mode_s_all_call}, the All-Call interrogation is shown. There would be 8 or 21 microseconds between P1 and P3, which is the same as Mode A/C. P4 is a wider pulse lasting for 1.6 microseconds.
+
+\begin{figure}[ht]
+  \scalebox{0.9}{
+    \input{figures/intro/mode_s_all_call.tex}
+  }
+  \caption{Mode A/C/S All-Call interrogation}
+  \label{fig:mode_s_all_call}
+\end{figure}
+
+When a Mode A/C transponder receives this interrogation, the last pulse P4 is ignored. Hence, a normal Mode A or Mode C reply is replied. A Mode S transponder would detect P4, and thus, produce a Mode S All-Call reply. The Mode A/C/S All-Call reply is designed for SSR to identify which aircraft are in the vicinity, including Mode A/C only aircraft.
+
+This is one of the several different interrogation pulse patterns from a Mode A/C compatible Mode S radar. Most current SSRs can perform both Mode A/C and Mode S interrogations. In Figure \ref{fig:mode_s_inter_mode}, the interrogation pulses and replies from aircraft transponders are summarized.
+
+\begin{figure}[ht]
+  \scalebox{0.9}{
+    \input{figures/intro/mode_s_inter_mode.tex}
+  }
+  \caption{SSR interrogations pulses and transponder replies}
+  \label{fig:mode_s_inter_mode}
+\end{figure}
+
+We can see that:
+
+\begin{itemize}
+  \item Mode A/C transponders respond to all interrogations with P1 and P3.
+  \item When P4 is not present or a shorter P4 is used (as shown in the first and second patterns), Mode S transponders will ignore the interrogations.
+  \item Mode S transponders will produce an All-Call reply to interrogations with a long P4. This interrogation is used to acquire all aircraft with either Mode A/C or Mode S capability.
+  \item Finally, all Mode S interrogation is designed to be ignored by Mode A/C transponders due to the presence of P2 (as shown in the last pattern), which is considered as a side lobe suppression mechanism for Mode A/C transponders.
+\end{itemize}
+
+
+\begin{notebox}{Note}
+  Mode S SSR is also able to produce a Mode S only All-Call interrogation using the standard Mode S uplink (with uplink format 11).
+\end{notebox}
+
+
+\subsection{Mode S format}
+
+The Mode S communication protocol is designed to handle different types of uplink and downlink message formats. The first 5 bits of the uplink or downlink message define the uplink format (UF) or downlink format (DF) number of the message. Based on the UF/DF number, different structures of the data block are defined. In Table \ref{tb:mode_s_formats}, all available Mode S formats are shown. Currently, 11 Mode S formats are being used. Numbers not in this table are reserved for future use.
+
+\begin{table}[ht]
+\centering
+\footnotesize
+\caption{Mode S uplink and downlink formats}
+\label{tb:mode_s_formats}
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{UF/DF} & \textbf{Bits} & \textbf{Uplink type} & \textbf{Downlink type} \\ \hline\hline
+0 & 56 & Short air-air surveillance (ACAS) & Short air-air surveillance (ACAS) \\ \hline
+4 & 56 & Surveillance, altitude request & Surveillance, altitude reply \\ \hline
+5 & 56 & Surveillance, identity request & Surveillance, identity reply \\ \hline
+11 & 56 & Mode S All-Call & All-Call reply \\ \hline
+\hline
+16 & 112 & Long air-air surveillance (ACAS) & Long air-air surveillance (ACAS) \\ \hline
+17 & 112 & - & Extended squitter \\ \hline
+18 & 112 & - & Extended squitter / non transponder \\ \hline
+19 & 112 & - & Military extended squitter \\ \hline
+20 & 112 & Comm-A, altitude request & Comm-B, altitude reply \\ \hline
+21 & 112 & Comm-A, identity request & Comm-B, identity reply \\ \hline
+24 & 112 & Comm-C (ELM) & Comm-D (ELM) \\ \hline
+\end{tabular}
+\end{table}
+
+
+\begin{notebox}{Note}
+  Format number 24 is an exception. It is identified using only the first two bits, which must be \texttt{11}. All following bits are used for encoding other information.
+\end{notebox}
+
+
+We can see that the short 56-bit data block is used to encode messages with format numbers from 0 to 11. Messages with format numbers above 16 are encoded with the long 112-bit data block. Among all uplink formats, UF 17, 18, and 19 are not used. This is because the corresponding downlink messages (extended squitter messages) are designed to be broadcast automatically without the need for SSR interrogations. 
+
+One of the most common applications for the extended squitter is the Automatic Dependent Surveillance-Broadcast service, which is also commonly known as ADS-B.
+
+
+\section{ADS-B}
+
+Automatic Dependent Surveillance-Broadcast (ADS-B) is a surveillance technology designed to allow aircraft to broadcast their flight state periodically without the need for interrogation. The word \emph{automatic} refers to the fact that no inputs from controllers or pilots are required. The word \emph{dependent} indicates this technology depends on information from other onboard systems, such as air data systems and navigation systems.
+
+Common aircraft state parameters included in ADS-B are position, altitude, and speed. The position is determined by Global Navigation Satellite Systems (GNSS). The velocity is derived from the GNSS position and the inertial measurement system. The altitude information includes both barometric altitude and GNSS altitude. The barometric altitude is provided by the air data system. 
+
+In addition to these primary state parameters, ADS-B also allows other information to be broadcast, for example, aircraft call-sign, accuracy indicators, integrity indicators, and operational status.
+
+Different types of ADS-B messages are identified by Type Codes. The structures of these messages are all defined in ICAO documents, such as in \cite{icao9871v1} and \cite{rtca2011mops}. In Part I of this book, we will explain how these different types of ADS-B messages can be decoded.
+
+\begin{notebox}{Note}
+Originally, there were three candidates to build ADS-B: Mode S Extended Squitter, VHF Data Link - Mode 4 (VDL4)), and Universal Access Transceiver (UAT). Different specifications are designed for these frequency channels \cite{rtca2011mops, rtca2002uat}. However, the Mode S extended squitter implementation of ADS-B is the most adopted one among all candidates. UAT is only partially implemented in some countries like the USA, while VDL4 did not go beyond the test phase.
+\end{notebox}
+
+
+\section{Other Mode S services}
+
+The most common data format number used in Mode S for information downlink are 4, 5, 20, and 21. Format 4 and 5 are short messages designed to acquire aircraft altitude and identity (similar to Mode A/C messages). Downlink messages with format 20 or 21, as known as Comm-B messages, contain other information desired by air traffic controllers, in addition to altitude and identity.
+
+In theory, up to 255 different message types are supported by the Mode S Comm-B. A new parameter, Comm-B Data Selector (BDS), is designed to identify which additional information is included in Mode S messages. It functions similarly to the Type Code of ADS-B message. In practice, not all 255 BDS codes are defined or used. 
+
+A subgroup of these codes is commonly interrogated by air traffic controllers. By combining different BDS codes into groups, several Mode S services are defined. The two most used services are Mode S Elementary Surveillance (ELS) and Mode S Enhanced Surveillance (EHS) \cite{grappel2008}. For example, in the European airspace, aircraft above certain takeoff weight category are required to have these capabilities enabled.
+
+The Mode S Elementary Surveillance (ELS) consists of four BDS codes (10, 17, 20, and 30). It provides basic information such as Mode S capabilities, identification (callsign), and ACAS resolution advisory, in addition to the altitude or identity (squawk code) information. 
+
+The Mode S Enhanced Surveillance consists of three BDS codes (40, 50, and 60). It provides much more additional information on aircraft states, such as selected altitudes, true airspeed, indicated airspeed, Mach number, bank angle, and turn rate.
+
+In addition to the common ELS and EHS, the meteorological routine air report (MRAR), and the meteorological hazard report (MHR) are also interrogated in some controlled airspaces. These reports provide weather-related information such as wind and temperature that are measured by the aircraft sensors.
+
+
+\section{Summary}
+
+In Figure \ref{fig:mode_s_services}, all aforementioned Mode S services and their relationships with Mode S downlink formats are illustrated.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/intro/mode_s_services.pdf}
+  \caption{Relationship between Mode S downlink formats and different services}
+  \label{fig:mode_s_services}
+\end{figure}
+
+In the rest of this book, the details of these services are discussed in different chapters. In chapter 2 (the rest of Part I), common hardware and software setups are shown. In chapter 3 to 10 (Part II), the focus is on ADS-B messages. Detailed guides on how to decode different types of messages are presented. In chapter 11 to 19 (Part III), the focus is on Mode S ELS, EHS, and meteorological services. Accordingly, the decoding and inference of the messages are provided.

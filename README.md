@@ -8,38 +8,38 @@ This is the working branch of the new (second) edition of the book, which featur
 Here is a planned structures:
 
 - Introduction
-  - Overview of aircraft surveillance technology
-  - Aircraft 1090MHz transponder
+  - [x] Background
+  - [x] Primary radar
+  - [x] Secondary radar
   - ADS-B
-  - Mode-S ELS & EHS
+  - Mode S
   - Other services
 - Quickstart: hardware and off-the-shelf tools
   - Receivers and tools
   - Common setup instructions, with demos
 - Core: ADS-B messages and decoding
-  - Background
-  - Versions
-  - Messages
-    - Identification
-    - Position
-    - Velocity
-    - Operation status
-  - Uncertainty and accuracy
-  - CRC and parity check
-- Advanced: Mode-S elementary surveillance, enhanced surveillance, and other services
-  - Mode-S ELS and EHS background
-  - ELS (altitude code, identity code)
-  - EHS
-    - Aircraft intent (BDS 40)
-    - Track and turn (BDS 50)
-    - Airspeed and heading (BDS 60)
-  - MRAR (BDS 44)
-  - MHR (BDS 45)
-  - Inference of BDS code (IEEE paper)
+  - [x] ADS-B basics
+  - [x] Identification
+  - [x] Position
+  - [x] Velocity
+  - [x] Operation status
+  - [x] Uncertainties in ADS-B
+  - [x] Error control
+- Advanced: Mode S elementary surveillance, enhanced surveillance, and other services
+  - Mode S services
+  - [..] ELS
+  - [..] EHS
+    - [..] Aircraft intent (BDS 40)
+    - [..] Track and turn (BDS 50)
+    - [..] Airspeed and heading (BDS 60)
+  - Meteo reports
+    - MRAR (BDS 44)
+    - MHR (BDS 45)
+  - Inference of BDS code
 - Expert: Beyond the decoding the messages
+  - Congestion
   - Trajectory processing
   - Crowd-sourced networks
-  - Signal congestion
   - Applications of surveillance data
 
 
