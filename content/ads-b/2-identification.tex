@@ -1,4 +1,4 @@
-\chapter{Aircraft Identification and Category}
+\chapter{Aircraft identification and category}
 
 Within the group of ADS-B messages, the \emph{Aircraft Identification and Category} message is designed to broadcast the identification (also known as the \emph{callsign}), and the wake vortex category of the aircraft.
 
@@ -16,7 +16,7 @@ C*: A character
 
 Here, number 6 represents the number of bits used to encode each of the characters.
 
-\section{Identification (Call Sign)}
+\section{Identification (call sign)}
 The aircraft identification included in the message is the callsign. Be aware that callsign is not a unique identifier of an aircraft, since different aircraft flying the same route at different times would share the same callsign.
 
 The last 8 fields in the previous structure diagram represent the callsign characters. In order to decode each character, a lookup table is needed to map the corresponding decimal number (represented in binary code) to each character.

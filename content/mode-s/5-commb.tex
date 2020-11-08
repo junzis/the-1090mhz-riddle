@@ -1,8 +1,8 @@
 \chapter{Comm-B replies} \label{chap:comm-b}
 
-Most of the Mode S selective interrogations responses in Comm-B messages. The message can have a downlink format of either 20 or 21, depending on whether the aircraft identity code or altitude code is included in the message.
+Most of the Mode~S selective interrogations responses in Comm-B messages. The message can have a downlink format of either 20 or 21, depending on whether the aircraft identity code or altitude code is included in the message.
 
-Comm-B protocol supports many different types of messages (up to 255). Several important surveillance services utilize some of the Comm-B message types (see Figure \ref{fig:mode_s_services} from the Chapter \ref{chap:intro}). In this book, we are mainly interested in three types of services, which are Mode S Elementary Surveillance (ELS), Mode S Enhanced Surveillance (EHS), and Meteorological information.By decoding these messages, we can discover some additional information regarding an aircraft.
+Comm-B protocol supports many different types of messages (up to 255). Several important surveillance services utilize some of the Comm-B message types (see Figure \ref{fig:mode_s_services} from the Chapter \ref{chap:intro}). In this book, we are mainly interested in three types of services, which are Mode~S Elementary Surveillance (ELS), Mode~S Enhanced Surveillance (EHS), and Meteorological information.By decoding these messages, we can discover some additional information regarding an aircraft.
 
 
 \section{Structure}
@@ -72,3 +72,13 @@ The following is the list of BDS codes for messages that will be discussed in de
 \end{itemize}
 
 Here, the first four BDS codes (\texttt{1,0}, \texttt{1,7}, \texttt{2,0}, \texttt{3,0}) belong to the ELS service, next three codes (\texttt{4,0}, \texttt{5,0}, \texttt{6,0}) belong to EHS services, and the last two codes (\texttt{4,4}, \texttt{4,5}) report meteorological information. All ELS, EHS and meteorological services are discussed in the following chapters.
+
+It is also worth noting that even ADS-B messages belong to Mode~S extended squitter, they are still assigned with BDS codes. The list of BDS codes for these ADS-B messages are:
+
+\begin{itemize}
+  \item BDS 0,5 - Extended squitter airborne position
+  \item BDS 0,6 - Extended squitter surface position
+  \item BDS 0,7 - Extended squitter status
+  \item BDS 0,8 - Extended squitter identification and category
+  \item BDS 0,9 - Extended squitter airborne velocity information
+\end{itemize}

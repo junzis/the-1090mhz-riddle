@@ -15,12 +15,12 @@ For error detection, three types of error control codes are broadly used, which 
 \end{itemize}
 
 \begin{notebox}{Note}
-The CRC \emph{remainder} term is confusingly defined in Mode S literature and standards. Many documents refer it as \emph{parity} or \emph{checksum}. To be consistent with Mode S standards, such as \cite{icao9871v1, rtca2011mops}, parity, checksum, and CRC remainder are considered to be synonyms in this book. They all refer to the CTC remainder.
+The CRC \emph{remainder} term is confusingly defined in Mode~S literature and standards. Many documents refer it as \emph{parity} or \emph{checksum}. To be consistent with Mode~S standards, such as \cite{icao9871v1, rtca2011mops}, parity, checksum, and CRC remainder are considered to be synonyms in this book. They all refer to the CTC remainder.
 \end{notebox}
 
 \section{CRC error control}
 
-In Mode S communications (including ADS-B), CRC error control coding is used. In all types of Mode S downlink messages, the last 24 bits are reserved for the CRC remainder. In ADS-B, the CRC remainder is directly appended as the final 24 bits of the messages. However, in other types of Mode S messages, those bits can be overlaid with other information (such as the ICAO address) using the \texttt{XOR} (\emph{exclusive disjunction}) operator before being appended to the message.
+In Mode~S communications (including ADS-B), CRC error control coding is used. In all types of Mode~S downlink messages, the last 24 bits are reserved for the CRC remainder. In ADS-B, the CRC remainder is directly appended as the final 24 bits of the messages. However, in other types of Mode~S messages, those bits can be overlaid with other information (such as the ICAO address) using the \texttt{XOR} (\emph{exclusive disjunction}) operator before being appended to the message.
 
 A basic CRC workflow is shown in Figure \ref{fig:crc_flow}. The diagram on the left-hand side shows how the CRC remainder is generated on the sender side. The diagram on the right-hand side shows how the same arithmetic can be used on the receiver side to validate the message.
 
@@ -42,7 +42,7 @@ The binary polynomial falls in the finite field arithmetic \cite{carlitz1932}. T
 
 \section{ADS-B parity}
 
-The polynomial form of the divisor (generator) used for ADS-B (as well as other Mode S messages) is shown as following \cite{gertz1984}:
+The polynomial form of the divisor (generator) used for ADS-B (as well as other Mode~S messages) is shown as following \cite{gertz1984}:
 
 \begin{equation}
   \begin{split}

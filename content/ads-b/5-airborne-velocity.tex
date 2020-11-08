@@ -1,4 +1,4 @@
-\chapter{Airborne Velocity}
+\chapter{Airborne velocity}
 
 Airborne velocities are all transmitted with Type Code 19 (\texttt{TC=19}). Four different subtypes are defined with bit 6 to 8 in the message payload bits. With subtypes 1 and 2, ground speeds of aircraft are reported. With subtypes 3 and 4, aircraft true airspeed or indicated airspeed are included. Reporting of airspeed in ADS-B only occurs when aircraft position can not be determined based on the GNSS system.\footnote{In the real world, subtype 3 messages are very rare.}
 
@@ -93,7 +93,7 @@ Message B (sub-type 3):
 Here, the second rows and third rows of the messages are binary and decimal values respectively.
 
 
-\section{Vertical Rate}
+\section{Vertical rate}
 
 The method for decoding vertical rate and its related parameters are the same among all different sub-types of the messages.
 
@@ -126,7 +126,7 @@ Based on the example \texttt{Message B}, the vertical speed is calculated as:
 which indicates that the aircraft B is descending with a vertical speed of 2304 ft/min.
 
 
-\section{Difference between GNSS and barometric altitudes}
+\section{GNSS and barometric altitudes difference}
 
 The last 8 bits of the ME filed contain the difference between the barometric and GNSS altitudes. 
 
@@ -149,7 +149,7 @@ Based on the example \texttt{Message A}, the difference between GNSS and baromet
 When all the bits are zeros (as shown in \texttt{Message B}) or ones, the information is not available.
 
 
-\section{Sub-type 1 and 2: Ground Speed decoding}
+\section{Sub-type 1 and 2: ground speed decoding}
 
 The velocity information fields of subtype 1 and 2 messages consist of the East-West velocity component and the North-South velocity component, as well as the signs for these two values. The structure of message payload bits 14 to 35 is shown in Table \ref{tb:adsb-velocity-bits-14-35-gs}.
 
@@ -227,7 +227,7 @@ The final aircraft speed and track angle are calculated as:
 where the aircraft speed is 159.20 kt and the track angle is 182.88 degrees.
 
 
-\section{Subtype 3 and 4: Airspeed decoding}
+\section{Subtype 3 and 4: airspeed decoding}
 
 ADS-B velocity messages with sub-type 3 or 4 are broadcast when the ground speed of the aircraft is not known. This could happen when, for example, aircraft positions cannot be obtained due to the low availability of GNSS satellites.
 

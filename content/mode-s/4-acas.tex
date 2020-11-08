@@ -1,4 +1,4 @@
-\chapter{Airborne Collision Avoidance System}
+\chapter{Airborne collision avoidance system}
 
 \section{Background}
 
@@ -10,7 +10,7 @@
   \item ACAS III: Gives traffic advisories (TA) and resolution advisories (RA) in both horizontal and vertical directions. ACAS III is not currently implemented
 \end{itemize}
 
-This chapter will focus on ACAS II. The ACAS II is a system that utilizes the aircraft transponder, which interrogates the Mode C and Mode S transponders of nearby aircraft. When threats are detected, corresponding alerts are given to the pilots.
+This chapter will focus on ACAS II. The ACAS II is a system that utilizes the aircraft transponder, which interrogates the Mode~C and Mode~S transponders of nearby aircraft. When threats are detected, corresponding alerts are given to the pilots.
 
 Currently, the most common implementation of ACAS II is \emph{Traffic alert and Collision Avoidance System} (TCAS) II version 7.1, which was initiated by EUROCONTROL. It has been mandatory for aircraft in Europe since 2015. ACAS II works independently of the navigation system, FMS, and ATC. No input from these systems is considered for producing the alerts.
 
@@ -26,11 +26,11 @@ In ACAS II, TA and RA are triggered when certain thresholds to the closest point
 
 
 
-\section{ACAS with Mode C Transponders}
+\section{ACAS with Mode~C transponders}
 
-ACAS system uses Mod C only all-call interrogation (see Figure \ref{fig:mode_s_inter_mode} in chapter \ref{chap:intro}) to detect aircraft that are only equipped with Mode A/C transponders. In this case, the ACAS system initiates a sequence of interrogations with increasing power.
+ACAS system uses Mod C only all-call interrogation (see Figure \ref{fig:mode_s_inter_mode} in chapter \ref{chap:intro}) to detect aircraft that are only equipped with Mode~A/C transponders. In this case, the ACAS system initiates a sequence of interrogations with increasing power.
 
-The interrogation pulse is slightly different from a Mode A/C-only all-call interrogation. A special $S_1$ pulse (also known as "whisper-shout") is designed to reduce interference. The $S_1$ pulse is inserted 2 $\mu s$ ($\pm 0.15 \mu s$) before the $P_1$ pulse.
+The interrogation pulse is slightly different from a Mode~A/C-only all-call interrogation. A special $S_1$ pulse (also known as "whisper-shout") is designed to reduce interference. The $S_1$ pulse is inserted 2 $\mu s$ ($\pm 0.15 \mu s$) before the $P_1$ pulse.
 
 The reply should be sent with the following rules:
 
@@ -41,11 +41,11 @@ The reply should be sent with the following rules:
   \item With $P_1$ at MTL and $S_1$ at MTL - 6 dB, the transponder will response to 90\% of the interrogations.
 \end{itemize}
 
-\section{ACAS with Mode S Transponders}
+\section{ACAS with Mode~S transponders}
 
-For Mode S transponders, ACAS system employs a three-phase process, which includes the phases of \emph{detection}, \emph{surveillance}, and \emph{coordination}.
+For Mode~S transponders, ACAS system employs a three-phase process, which includes the phases of \emph{detection}, \emph{surveillance}, and \emph{coordination}.
 
-For the detection phase, ACAS passively listens to Mode S only all-call replies (DF=11). These all-call replies are usually generated as a result of ground SSR interrogations or as spontaneous replies. In this process, aircraft with Mode S transponders in the vicinity are discovered. ACAS may also listen to extended squitter messages (Downlink Format 17, ADS-B) to detect other aircraft.
+For the detection phase, ACAS passively listens to Mode~S only all-call replies (DF=11). These all-call replies are usually generated as a result of ground SSR interrogations or as spontaneous replies. In this process, aircraft with Mode~S transponders in the vicinity are discovered. ACAS may also listen to extended squitter messages (Downlink Format 17, ADS-B) to detect other aircraft.
 
 Once an aircraft is determined to be within the ACAS surveillance range, and within 10,000 ft of the own ACAS aircraft, ACAS will initiate a short air-air interrogation (UF=11) to acquire the range. The interrogation rate is defined as:
 
@@ -290,8 +290,8 @@ RAC's record & RAC & 55-58 & 23-26 & 4 \\ \hline
 RA terminated indicator & RAT & 59 & 27 & 1 \\ \hline
 Multiple threat encounter & MTE & 60 & 28 & 1 \\ \hline
 Reserved &  & 61-62 & 29-30 & 2 \\ \hline
-Mode A identity code & AID & 63-75 & 31-43 & 13 \\ \hline
-Mode C altitude code & CAC & 76-88 & 44-56 & 13 \\ \hline
+Mode~A identity code & AID & 63-75 & 31-43 & 13 \\ \hline
+Mode~C altitude code & CAC & 76-88 & 44-56 & 13 \\ \hline
 \end{tabular}
 \end{table}
 
@@ -342,14 +342,14 @@ The significance of fields are listed as follows:
   \end{quote}
 
 
-  \item \emph{RA terminated indicator (RAT)}: 1 bit, indicates whether ACAS is currently generating RA in the ARA field or RA in the ARA field has been terminated.\footnote{The Mode S transponder is still required to report RA 18 seconds after it is terminated by ACAS. Hence, the RAT field is used.}
+  \item \emph{RA terminated indicator (RAT)}: 1 bit, indicates whether ACAS is currently generating RA in the ARA field or RA in the ARA field has been terminated.\footnote{The Mode~S transponder is still required to report RA 18 seconds after it is terminated by ACAS. Hence, the RAT field is used.}
 
 
   \item \emph{Multiple threat encounter (MTE)}: 1 bit, indicates whether multiple threats are currently being processed by the ACAS resolution. When MTE is set to \0, either one threat is being processed (ARA bit 41 sets to \1) or no threat is being processed (ARA bit 41 sets to \0). When MTE is set to \1, multiple threats are being processed.
 
-  \item \emph{Mode A identity code (AID)}: 13 bits, contains the Mode A identity code (sqwake code) of the reporting aircraft. It can be decoded according to section \ref{sec:id_code}.
+  \item \emph{Mode~A identity code (AID)}: 13 bits, contains the Mode~A identity code (sqwake code) of the reporting aircraft. It can be decoded according to section \ref{sec:id_code}.
 
-  \item \emph{Mode C altitude code (CAC)}: 13 bits, contains the Mode C altitude code reporting aircraft. It can be decoded according to section \ref{sec:alt_code}.
+  \item \emph{Mode~C altitude code (CAC)}: 13 bits, contains the Mode~C altitude code reporting aircraft. It can be decoded according to section \ref{sec:alt_code}.
 
 
 \end{itemize}

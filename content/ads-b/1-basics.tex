@@ -1,5 +1,5 @@
 \chapter{ADS-B Basics} \label{chap:adsb-basic}
-ADS-B is short for Automatic Dependent Surveillance-Broadcast. It is a satellite-based surveillance system. Parameters such as position, velocity, and identification are transmitted through Mode S Extended Squitter (1090 MHz). Nowadays, the majority of the aircraft are broadcasting ADS-B messages constantly.
+ADS-B is short for Automatic Dependent Surveillance-Broadcast. It is a satellite-based surveillance system. Parameters such as position, velocity, and identification are transmitted through Mode~S Extended Squitter (1090 MHz). Nowadays, the majority of the aircraft are broadcasting ADS-B messages constantly.
 
 \section{Message structure}
 
@@ -31,7 +31,7 @@ In Table \ref{tb:adsb-structure}, the key information of an ADS-B message is lis
 \end{tabular}
 \end{table}
 
-It is worth noting that the ADS-B Extended Squitter sent from a Mode S transponder uses Downlink Format 17 (\texttt{DF=17}). Non-Transponder-Based ADS-B Transmitting Subsystems and TIS-B Transmitting equipment use Downlink Format 18 (\texttt{DF=18}). By using \texttt{DF=18} instead of \texttt{DF=17}, an ADS-B/TIS-B Receiving Subsystem will know that the message comes from equipment that cannot be interrogated.
+It is worth noting that the ADS-B Extended Squitter sent from a Mode~S transponder uses Downlink Format 17 (\texttt{DF=17}). Non-Transponder-Based ADS-B Transmitting Subsystems and TIS-B Transmitting equipment use Downlink Format 18 (\texttt{DF=18}). By using \texttt{DF=18} instead of \texttt{DF=17}, an ADS-B/TIS-B Receiving Subsystem will know that the message comes from equipment that cannot be interrogated.
 
 \section{Capability}
 
@@ -39,7 +39,7 @@ The second field consists of three bits that indicate the transponder level. The
 
 \begin{table}[!ht]
 \centering
-\caption{Mode S transponder capability (CA)}
+\caption{Mode~S transponder capability (CA)}
 \label{tb:transponder_capability}
 \begin{tabular}{|l|p{10cm}|}
 \hline
@@ -55,9 +55,9 @@ The second field consists of three bits that indicate the transponder level. The
 
 \section{ICAO address}
 
-In each ADS-B message, the sender (originating aircraft) can be identified using the Mode S transponder address assigned accordingly ICAO regulations. Very often this is referred as ICAO address. 
+In each ADS-B message, the sender (originating aircraft) can be identified using the Mode~S transponder address assigned accordingly ICAO regulations. Very often this is referred as ICAO address. 
 
-The ICAO address is located from 9 to 32 bits in binary (or 3 to 8 in hexadecimal positions). A unique ICAO address is assigned to each Mode S transponder of an aircraft and serves as the unique identifier for each aircraft.
+The ICAO address is located from 9 to 32 bits in binary (or 3 to 8 in hexadecimal positions). A unique ICAO address is assigned to each Mode~S transponder of an aircraft and serves as the unique identifier for each aircraft.
 
 
 \section{ADS-B message types}
@@ -130,7 +130,7 @@ Output:
          Message: 8D4840D6202CC371C32CE0576098 
     ICAO address: 4840D6 
  Downlink Format: 17 
-        Protocol: Mode S Extended Squitter (ADS-B) 
+        Protocol: Mode~S Extended Squitter (ADS-B) 
             Type: Identitification and category 
         Callsign: KLM1023_ 
 \end{verbatim}

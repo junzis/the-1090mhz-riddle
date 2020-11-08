@@ -1,0 +1,22 @@
+\newcommand\toc{book} % <<< Replace myfile with the name of your tex/toc file (without extension)
+\documentclass{article}
+\newwrite\txtfile
+\immediate\openout\txtfile=\toc.txt
+\renewcommand\numberline[1]{#1 }
+\def\levelch{chapter}
+\def\levelsec{section}
+\renewcommand\contentsline[3]%
+  {\def\tmp{#1}%
+   \ifx\tmp\levelch
+     \immediate\write\txtfile{Chapter #2}%
+   \else
+     \ifx\tmp\levelsec
+       \immediate\write\txtfile{\space\space Section #2}%
+     \else
+       %%% Code for further toc levels
+     \fi
+   \fi
+  }
+\begin{document}
+\input{\toc.toc}
+\end{document}

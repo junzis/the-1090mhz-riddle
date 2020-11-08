@@ -1,10 +1,10 @@
-\chapter{Mode S Elementary Surveillance}
+\chapter{Mode~S elementary surveillance}
 
-Mode S Elementary Surveillance (ELS) includes provides a set of basic functionalities that are supported by the Mode S transponders. These basic functionalities include the reporting  of aircraft identity, altitude, transponder capability, and flight status. The set of BDS codes included in ELS are \texttt{1,0}, \texttt{1,7}, \texttt{2,0}, and \texttt{3,0}.
+Mode~S Elementary Surveillance (ELS) includes provides a set of basic functionalities that are supported by the Mode~S transponders. These basic functionalities include the reporting  of aircraft identity, altitude, transponder capability, and flight status. The set of BDS codes included in ELS are \texttt{1,0}, \texttt{1,7}, \texttt{2,0}, and \texttt{3,0}.
 
 \section{Data link capability report (BDS 1,0)}
 
-This message is designed to report the data link capability of the Mode S transponder installed. In Table \ref{tb:bds10}, all fields in this report are shown.
+This message is designed to report the data link capability of the Mode~S transponder installed. In Table \ref{tb:bds10}, all fields in this report are shown.
 
 \begin{table}[ht]
 \centering
@@ -18,9 +18,9 @@ Configuration flag & 41 & 9 & 1 \\ \hline
 Reserved {[}00000{]} & 42-46 & 10-14 & 6 \\ \hline
 Overlay Command Capability (OCC) & 47 & 15 & 1 \\ \hline
 Reserved for ACAS & 48 & 16 & 1 \\ \hline
-Mode S subnetwork version number & 49-55 & 17-23 & 7 \\ \hline
+Mode~S subnetwork version number & 49-55 & 17-23 & 7 \\ \hline
 Transponder enhanced protocol indicator & 56 & 24 & 1 \\ \hline
-Mode S specific services capability & 57 & 25 & 1 \\ \hline
+Mode~S specific services capability & 57 & 25 & 1 \\ \hline
 Uplink ELM average throughput capacity & 58-60 & 26-28 & 3 \\ \hline
 Downlink ELM throughput & 61-64 & 29-32 & 4 \\ \hline
 Aircraft identification capability & 65 & 33 & 1 \\ \hline
@@ -55,7 +55,7 @@ MSG     MB      Coding
                 1|1: Reserved for future versions
 \end{verbatim}
 
-2) Valid values for \emph{Mode S subnetwork version number} are from 0 to 5, corresponds to compliance to a different version of ICAO documentations. Numbers 6 to 127 are currently unassigned. Numbers 0 to 5 can be interpreted:
+2) Valid values for \emph{Mode~S subnetwork version number} are from 0 to 5, corresponds to compliance to a different version of ICAO documentations. Numbers 6 to 127 are currently unassigned. Numbers 0 to 5 can be interpreted:
 
 \begin{verbatim}
 0:  Subnetwork not available
@@ -71,11 +71,11 @@ MSG     MB      Coding
 
 4) When \emph{Transponder enhanced protocol indicator} bit is set to \1, the transponder is a Level 5 transponder. Value \0 indicates a Level 2 to 4 transponder.
 
-5) When \emph{Mode S specific services capability} bit is set to \1, at least one Mode S specific service is supported.\footnote{The additional specific services are BDS codes other than 02, 03, 10, 17-1C, 20, and 30}.
+5) When \emph{Mode~S specific services capability} bit is set to \1, at least one Mode~S specific service is supported.\footnote{The additional specific services are BDS codes other than \texttt{0,2}, \texttt{0,3}, \texttt{1,0}, \texttt{1,7}-\texttt{1,C}, \texttt{2,0}, and \texttt{3,0}}.
 
 6) \emph{Aircraft identification capability} indicates whether the aircraft identification is available.
 
-7) When \emph{Squitter capability subfield} bit is set to \1, both BDS 05 and 06 registers have been updated in the past 9 to 11 seconds.
+7) When \emph{Squitter capability subfield} bit is set to \1, both BDS 0,5 and 0,6 registers have been updated in the past 9 to 11 seconds.
 
 8) \emph{Surveillance identifier code} determines whether the transponder has the surveillance identification code capability.
 
@@ -125,8 +125,8 @@ A bit is set to \1 when the corresponding register has a valid input that has be
 6,0 Heading and speed report & 56 & 24 & 1 \\ \hline
 Reserved for aircraft capability & 57 & 25 & 1 \\ \hline
 Reserved for aircraft capability & 58 & 26 & 1 \\ \hline
-E,1 Reserved for Mode S BITE (Built In Test Equipment) & 59 & 27 & 1 \\ \hline
-E,2 Reserved for Mode S BITE (Built In Test Equipment) & 60 & 28 & 1 \\ \hline
+E,1 Reserved for Mode~S BITE (Built In Test Equipment) & 59 & 27 & 1 \\ \hline
+E,2 Reserved for Mode~S BITE (Built In Test Equipment) & 60 & 28 & 1 \\ \hline
 F,1 Military applications & 61 & 29 & 1 \\ \hline
 Reserved & 62-80 & 30-56 & 17 \\ \hline
 \end{tabular}
@@ -338,12 +338,12 @@ MB:26=1   Do not turn right
 
 \begin{verbatim}
 00    No identity data in threat identity data
-01    Threat identity data contains a Mode S transponder address
+01    Threat identity data contains a Mode~S transponder address
 10    Threat identity data contains altitude, range, and bearing
 11    Not assigned
 \end{verbatim}
 
-When the threat type indicator is \texttt{01}, MB bits 31-54 contain the 24-bit Mode S transponder address and the last two bits are set to zero.
+When the threat type indicator is \texttt{01}, MB bits 31-54 contain the 24-bit Mode~S transponder address and the last two bits are set to zero.
 
 When the threat type indicator is \texttt{10}, MB bits 31-56 is divided into three different segments.
 

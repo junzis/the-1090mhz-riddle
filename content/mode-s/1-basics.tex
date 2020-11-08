@@ -1,8 +1,8 @@
-\chapter{Basics of Mode S services} \label{chap:mode_s_basics}
+\chapter{Basics of Mode~S services} \label{chap:mode_s_basics}
 
-In chapter \ref{chap:intro}, an overview of different Mode S services is given. Most of the services except the extended squitter are interrogations based, which means information is only transmitted upon request. The request, also known as \emph{uplink}, is transmitted using 1030 megahertz radio frequency. The reply (\emph{downlink}) signals are all transmitted using the 1090 megahertz radio frequency. Hence, all Mode S downlink messages can be intercepted using the same setup as ADS-B.
+In chapter \ref{chap:intro}, an overview of different Mode~S services is given. Most of the services except the extended squitter are interrogations based, which means information is only transmitted upon request. The request, also known as \emph{uplink}, is transmitted using 1030 megahertz radio frequency. The reply (\emph{downlink}) signals are all transmitted using the 1090 megahertz radio frequency. Hence, all Mode~S downlink messages can be intercepted using the same setup as ADS-B.
 
-In the following chapters of this book, we are going to explain the interrogation based Mode S services in four groups, specifically:
+In the following chapters of this book, we are going to explain the interrogation based Mode~S services in four groups, specifically:
 
 \begin{enumerate}
   \item All-call reply (DF 11)
@@ -10,18 +10,18 @@ In the following chapters of this book, we are going to explain the interrogatio
   \item Altitude and identity replies (DF 4/5)
   \item Comm-B, with altitude and identity replies (DF 20/21)
     \begin{enumerate}
-      \item Mode S elementary surveillance (ELS)
-      \item Mode S enhanced surveillance (EHS)
+      \item Mode~S elementary surveillance (ELS)
+      \item Mode~S enhanced surveillance (EHS)
       \item Meteorological information
     \end{enumerate}
 \end{enumerate}
 
-In this chapter, we discuss some of the common aspects regarding the decoding of Mode S messages. First of all, the structure of Mode S services is reviewed. Then, Mode S parity and ICAO address recovery are discussed. Finally, some common terminologies related to Comm-B messages are explained.
+In this chapter, we discuss some of the common aspects regarding the decoding of Mode~S messages. First of all, the structure of Mode~S services is reviewed. Then, Mode~S parity and ICAO address recovery are discussed. Finally, some common terminologies related to Comm-B messages are explained.
 
 
-\section{Mode S message structures}
+\section{Mode~S message structures}
 
-Based on Figure \ref{fig:mode_s_uplink_pulses} from the introduction chapter, we see that there are two types of Mode S messages in terms of message length. Table \ref{tb:mode_s_formats} indicates that among the current 11 different downlink formats, 4 are short messages consisting of 56 bits. The other 7 are long messages with 112 bits. All formats share the same structure of a header consisting of 5 bits format code and 24 bits parity at the end, as shown in the Figure \ref{fig:modes_msg_structures}.
+Based on Figure \ref{fig:mode_s_uplink_pulses} from the introduction chapter, we see that there are two types of Mode~S messages in terms of message length. Table \ref{tb:mode_s_formats} indicates that among the current 11 different downlink formats, 4 are short messages consisting of 56 bits. The other 7 are long messages with 112 bits. All formats share the same structure of a header consisting of 5 bits format code and 24 bits parity at the end, as shown in the Figure \ref{fig:modes_msg_structures}.
 
 \begin{figure}[!ht]
   \centering
@@ -45,7 +45,7 @@ Based on Figure \ref{fig:mode_s_uplink_pulses} from the introduction chapter, we
 
   \end{tikzpicture}
   }
-  \caption{The structures of Mode S short and long messages}
+  \caption{The structures of Mode~S short and long messages}
   \label{fig:modes_msg_structures}
 \end{figure}
 
@@ -54,11 +54,11 @@ Based on Figure \ref{fig:mode_s_uplink_pulses} from the introduction chapter, we
 
 \section{Parity} \label{sec:parity}
 
-Mode S uses three types of parity. The first one is what is used for ADS-B in the extended squitter (see chapter \ref{chap:adsb_parity}). The other two types of parities are Address Parity (AP) and Data Parity (DP).
+Mode~S uses three types of parity. The first one is what is used for ADS-B in the extended squitter (see chapter \ref{chap:adsb_parity}). The other two types of parities are Address Parity (AP) and Data Parity (DP).
 
-For any type of Mode S messages, the parity can be calculated ass follows:
+For any type of Mode~S messages, the parity can be calculated ass follows:
 
-1) Let  $x^{i}$ represent each bit of the message and $M(x)$ represent the polynomial corresponding Mode S message, the parity $P(x)$ can thus be calculated as the CRC remainder:
+1) Let  $x^{i}$ represent each bit of the message and $M(x)$ represent the polynomial corresponding Mode~S message, the parity $P(x)$ can thus be calculated as the CRC remainder:
 
 \begin{equation} \label{eq:crc}
   \begin{split}
@@ -69,7 +69,7 @@ For any type of Mode S messages, the parity can be calculated ass follows:
 
 2) For an extended squitter message, $P(x)$ is directly transmitted as the parity in the last 24 bits of the message. Errors can be detected by performing the same computation process at the receiving side when received parity differs from this newly computed remainder.
 
-However, for other types of Mode S messages, \emph{Address Parity} (AP) is generated by overlaying the normal CRC remainder with the 24-bit transponder ICAO address. Thus, the final parity included in the message is not $P(x)$, but a new parity $P_A(x)$:
+However, for other types of Mode~S messages, \emph{Address Parity} (AP) is generated by overlaying the normal CRC remainder with the 24-bit transponder ICAO address. Thus, the final parity included in the message is not $P(x)$, but a new parity $P_A(x)$:
 
 \begin{equation}
   P_A(x) = P(x) + A(x)
@@ -77,7 +77,7 @@ However, for other types of Mode S messages, \emph{Address Parity} (AP) is gener
 
 \noindent where $A(x)$ is the polynomial representing the ICAO address of the transponder.
 
-3) For some of the Downlink Format 20 and 21 Mode S messages, upon request of the SSR interrogation, another addition with the Comm-B Data Selector (BDS) number is performed \cite{gertz1984}. In this case, the \emph{Data Parity} (DP), is included in the last 24 bits of the Mode S message and transmitted.
+3) For some of the Downlink Format 20 and 21 Mode~S messages, upon request of the SSR interrogation, another addition with the Comm-B Data Selector (BDS) number is performed \cite{gertz1984}. In this case, the \emph{Data Parity} (DP), is included in the last 24 bits of the Mode~S message and transmitted.
 
 When DP is in use, the parity is overlaid with the modified ICAO address, Modified AA (MA). The MA is calculated as the polynomial addition of ICAO address and BDS code (with 16 bits of zeros appended after), for example:
 
@@ -99,7 +99,7 @@ Denote the modified address as $P_\mathrm{MA}(x)$ and the Data Parity as $P_D(x)
   \end{split}
 \end{equation}
 
-\noindent where $D(x)$ is the polynomial representing the BDS code of the Mode S Comm-B message.
+\noindent where $D(x)$ is the polynomial representing the BDS code of the Mode~S Comm-B message.
 
 
 \section{ICAO address recovery}
@@ -124,7 +124,7 @@ Payload:      A0001838CA380031440000
 Parity (AP):                        F24177
 \end{verbatim}
 
-In Figure \ref{fig:icao_revover}, the ICAO address recovering process is illustrated. We first use the Mode S CRC algorithm to compute the remainder (parity) from only the payload data \texttt{A0001838CA380031440000}. The remainder is found to be \texttt{CE2CA7}. Then, by performing the polynomial addition (XOR for bitwise operation) with the actual parity included in the message, the ICAO address can be computed as \texttt{3C6DD0}.
+In Figure \ref{fig:icao_revover}, the ICAO address recovering process is illustrated. We first use the Mode~S CRC algorithm to compute the remainder (parity) from only the payload data \texttt{A0001838CA380031440000}. The remainder is found to be \texttt{CE2CA7}. Then, by performing the polynomial addition (XOR for bitwise operation) with the actual parity included in the message, the ICAO address can be computed as \texttt{3C6DD0}.
 
 \begin{figure}[!ht]
   \centering
@@ -178,7 +178,7 @@ For the cases of Data Parity, it is still possible to recover the transponder ad
 
 It is worth noting that in either case, the resulting $A'(x)$ is the same as the actual transponder address ($A(x)$) only if no error has occurred during the transmission. If the message is corrupted, the obtained address will be different from the actual one.
 
-By combining with ICAO addresses obtained in ADS-B and other information independently decoded from Mode S message, this process can also be used for detecting Mode S errors as a third party observer. This method is described in \cite{sun2019pymodes}.
+By combining with ICAO addresses obtained in ADS-B and other information independently decoded from Mode~S message, this process can also be used for detecting Mode~S errors as a third party observer. This method is described in \cite{sun2019pymodes}.
 
 \begin{notebox}{Try it out}
 Using \texttt{pyModeS}, we can obtain the ICAO address as: 
@@ -194,7 +194,7 @@ icao = pms.icao(msg)
 
 \section{Two's complement coding} \label{sec:two_complement}
 
-Two's complement coding is used for representing negative numbers in some Mode S messages, for example, heading and vertical rates in BDS 50 and BDS 60 messages. Every parameter in Mode S using two's complement coding include a 1-bit sign and n-bit value.
+Two's complement coding is used for representing negative numbers in some Mode~S messages, for example, heading and vertical rates in BDS 5,0 and BDS 6,0 messages. Every parameter in Mode~S using two's complement coding include a 1-bit sign and n-bit value.
 
 1) If the sign bit is \0, the result is simply the decimal representation of the value bits.
 

@@ -1,4 +1,4 @@
-\chapter{Airborne Position} \label{chap:airborn-position}
+\chapter{Airborne position} \label{chap:airborn-position}
 
 The aircraft airborne position message is used to broadcast the position and altitude of the aircraft. It has the Type Code from 9 to 18 or from 20 to 22. When Type Code is from 9 to 18, the encoded altitude represents the barometric altitude of the aircraft. When the Type Code is from 20 to 22, the encoded altitude contains the GNSS altitude of the aircraft. The Type Code value is related to the uncertainties in the position, which will be discussed in a later chapter.
 
@@ -74,7 +74,7 @@ Combining the possible positions from both even and odd messages, we can recover
 
 \newpage
 
-\section{Compact Position Reporting}
+\section{Compact position reporting}
 
 \subsection{CPR zones}
 The actual CPR algorithm is more sophisticated. First of all, more zones are defined. There are 15 latitude zones defined for each hemisphere. Up to 59 longitude zones are used, and the number of longitude zones is different at different altitudes.
@@ -107,7 +107,7 @@ To decode the CPR positions, we first introduce relevant parameters and common f
 
 \subsubsection{Nz}
 
-$N_Z$ represents the number of latitude zones between the equator and a pole. In Mode S, $N_Z$ is defined to be 15.
+$N_Z$ represents the number of latitude zones between the equator and a pole. In Mode~S, $N_Z$ is defined to be 15.
 
 \subsubsection{floor(x)}
 

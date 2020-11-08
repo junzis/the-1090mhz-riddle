@@ -1,11 +1,11 @@
 \chapter{Inferencing of BDS codes}
 
-In chapter \ref{chap:comm-b}, we discussed the basic structure and protocols of Mode S Comm-B messages. Each message type is identified by an 8-bit Comm-B Data Selector (BDS) code, which is only transmitted in the uplink message but not included in the downlink message. As third parties observing the replies to Mode S surveillance interrogations, we must first determine the BDS code before decoding the content of any Comm-B messages. 
+In chapter \ref{chap:comm-b}, we discussed the basic structure and protocols of Mode~S Comm-B messages. Each message type is identified by an 8-bit Comm-B Data Selector (BDS) code, which is only transmitted in the uplink message but not included in the downlink message. As third parties observing the replies to Mode~S surveillance interrogations, we must first determine the BDS code before decoding the content of any Comm-B messages. 
 
 
 \section{BDS codes identification logics}
 
-Each Mode S message has a predefined structure and variables. For almost all common Comm-B message types, there are rules for certain bits. For example, these bits are:
+Each Mode~S message has a predefined structure and variables. For almost all common Comm-B message types, there are rules for certain bits. For example, these bits are:
 \begin{itemize}
     \item Reserved bits: Those are bits in the different message types that are reserved for future use. They all have to be zeros. If any of the bits is not zero, the possibility of a certain BDS code should be ruled out.
     \item Status bits: Some fields in Comm-B messages have their corresponding status bits. When a status bit is set to zero, all bits in the field must be zero. If the field contains non zero bits, the possibility of a certain BDS code can be ruled out.

@@ -50,6 +50,7 @@
 \usetikzlibrary{positioning,shapes,arrows,fadings,patterns}
 \usepackage{emptypage}
 
+\usepackage{threeparttable}
 
 %\usepackage{makeidx}
 %\makeindex
@@ -127,10 +128,10 @@
 % chapter title style
 \usepackage{titlesec}
 \titleformat{\chapter}[hang]
-  {\Huge\bfseries\filright}
+  {\huge\bfseries\filright}
   {\thechapter\hspace{5pt}\textcolor{gray70}{|}\hspace{5pt}}
   {0pt}
-  {\huge\bfseries}
+  {\LARGE\bfseries}
 
 \titlespacing*{\chapter}{0pt}{-20pt}{20pt}
 
@@ -174,3 +175,7 @@
 \def\titleshape{}
 \def\titlestyle{\titlefont\titleshape\bfseries}
 \def\headerstyle{\titlefont\titleshape\bfseries}
+
+
+\usepackage{enumitem}
+\setitemize{noitemsep,topsep=0pt,parsep=2pt,partopsep=0pt}
