@@ -1,0 +1,131 @@
+\chapter{Mode~S meteorological services}
+
+In the current Mode~S design, two message formats are used for aircraft to communicate meteorological conditions. These messages are meteorological routine air report (MRAR) and meteorological hazard report (MHR). In this chapter, we focus on explaining the information contained in these two types of messages.
+
+\section{Meteorological routine air report (BDS 4,4)}
+
+In MRAR messages, information on wind, air temperature, pressure, and humidity is transmitted. The structure of the message is shown in Table \ref{tb:bds44}.
+
+
+\begin{table}[ht]
+\renewcommand{\arraystretch}{1.1}
+\centering
+\caption{Meteorological routine air report (BDS 4,4), MB field}
+\label{tb:bds44}
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{FIELD} & \textbf{MSG} & \textbf{MB} & \textbf{BITS} \\ \hline
+Figure of merit / source & 33-36 & 1-4 & 4 \\ \hline
+Status (for wind) & 37 & 5 & 1 \\ \cdashline{1-1}
+\begin{tabular}[c]{@{}l@{}}Wind speed\\ ~~\footnotesize Range: {[}0, 511{]} knots\\ ~~\footnotesize LSB: 1 knots\end{tabular} & 38-46 & 6-14 & 9 \\ \cdashline{1-1}
+\begin{tabular}[c]{@{}l@{}}Wind direction\\ ~~\footnotesize Range: {[}0, 360{]} degrees\\ ~~\footnotesize LSB: 180/256 degrees\end{tabular} & 47-55 & 15-23 & 9 \\ \hline
+Sign (for temperature) & 56 & 24 & 1 \\ \cdashline{1-1}
+\begin{tabular}[c]{@{}l@{}}Static air temperature\\ ~~\footnotesize Range: {[}-128, +128{]} $^\circ$C\\ ~~\footnotesize LSB: 0.25 $^\circ$C \end{tabular} & 57-66 & 25-34 & 10 \\ \hline
+Status (for pressure) & 67 & 35 & 1 \\ \cdashline{1-1}
+\begin{tabular}[c]{@{}l@{}}Average static pressure\\ ~~\footnotesize Range: {[}0, 2048{]} hPa\\ ~~\footnotesize LSB: 1 hPa\end{tabular} & 68-78 & 36-46 & 11 \\ \hline
+Status (for turbulence) & 79 & 47 & 1 \\ \cdashline{1-1}
+Turbulence & 80-81 & 48-49 & 2 \\ \hline
+Status (for humidity) & 82 & 50 & 1 \\ \cdashline{1-1}
+\begin{tabular}[c]{@{}l@{}}Humidity\\ ~~\footnotesize Range: {[}0\%, 100\%{]} \\ ~~\footnotesize LSB: 100/64 \%\end{tabular} & 83-88 & 51-56 & 6 \\ \hline
+\end{tabular}
+\end{table}
+
+The first field of the message defined the figure of merit (FOM) / source of the information. The values indicate the following:
+\begin{itemize}
+    \item 0: Invalid
+    \item 1: Intertial system (INS)
+    \item 2: Global Navigation Satellite System (GNSS)
+    \item 3: Distance measuring equipment-based navigation (DME/DME)
+    \item 4: Very High Frequency omnidirectional range / distance measuring equipment-based navigation (VOR/DME)
+    \item 5-15: Reserved
+\end{itemize}
+
+For static air temperature, the encoded value can be negative. Hence, two's complement coding (see section \ref{sec:two_complement}) is used for decoding. The actual maximum range of temperature is from -80 $^\circ$C to +60 $^\circ$C.
+
+It is also worth pointing out a discrepancy in the design. The temperature is encoded using 10 bits, where the least significant bit value should have been 0.125$^\circ$. However, according to the official document \cite{icao9871v1}, the LSB value is 0.25$^\circ$. ICAO has planned to update this to 0.125$^\circ$ in the future. Most current implementations still use 0.25$^\circ$. 
+
+In Figure \ref{fig:bds44_example}, the decoding of an MRAR example message is shown.
+
+\begin{figure}[ht]
+    \centering
+    \input{figures/mode_s/bds44_example.tex}
+    \caption{Meteorological routine air report (BDS 4,4) decoding example}
+    \label{fig:bds44_example}
+  \end{figure}
+  
+\begin{notebox}{Try it out}
+Using \texttt{pyModeS}, we can decode information of BDS 4,4 messages as: 
+
+\begin{verbatim}
+import pyModeS as pms
+
+msg = "A0001692185BD5CF400000DFC696"
+
+wind = pms.commb.wind44(msg)
+temperature = pms.commb.temp44(msg)
+pressure = pms.commb.p44(msg)
+humidity = pms.commb.hum44(msg)
+\end{verbatim}
+
+\end{notebox}
+
+\clearpage
+\section{Meteorological hazard report (BDS 4,5)}
+
+In MHR messages, different hazard condition levels are reported, such as turbulence, wind shear, microburst, icing, and wake vortex. It also includes temperature, pressure, and radio height. In Table \ref{tb:bds45}, the structure of the MHR message is shown.
+
+It is worth noting that during real flights, MHR messages are much rarer than MARA messages. Whenever they are available, most of the messages only contain temperature information.
+
+\begin{table}[ht]
+\renewcommand{\arraystretch}{1.1}
+\centering
+\caption{Meteorological harzard report (BDS 4,5), MB field}
+\label{tb:bds45}
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{FIELD} & \textbf{MSG} & \textbf{MB} & \textbf{BITS} \\ \hline
+Status (for turbulence) & 33 & 1 & 1 \\ \cdashline{1-1}
+Turbulence & 34-35 & 2-3 & 2 \\ \hline
+Status (for wind shear) & 36 & 4 & 1 \\ \cdashline{1-1}
+Wind shear & 37-38 & 5-6 & 2 \\ \hline
+Status (for microburst) & 39 & 7 & 1 \\ \cdashline{1-1}
+Microburst & 40-41 & 8-9 & 2 \\ \hline
+Status (for icing) & 42 & 10 & 1 \\ \cdashline{1-1}
+Icing & 43-44 & 11-12 & 2 \\ \hline
+Status (for wake vortex) & 45 & 13 & 1 \\ \cdashline{1-1}
+Wake vortex & 46-47 & 14-15 & 2 \\ \hline
+Status (for temperature) & 48 & 16 & 1 \\ \cdashline{1-1}
+Sign (for temperature) & 49 & 17 & 1 \\ \cdashline{1-1}
+\begin{tabular}[c]{@{}l@{}} Static air temperature\\ ~~\footnotesize Range: {[}-128, +128{]} $^\circ$C\\ ~~\footnotesize LSB: 0.25 $^\circ$C\end{tabular} & 50-58 & 18-26 & 9 \\ \hline
+Status (for pressure) & 59 & 27 & 1 \\ \cdashline{1-1}
+\begin{tabular}[c]{@{}l@{}}Average static pressure\\ ~~\footnotesize Range: {[}0, 2048{]} hPa\\ ~~\footnotesize LSB: 1 hPa\end{tabular} & 60-70 & 28-38 & 11 \\ \hline
+Status (for height) & 71 & 39 & 1 \\ \cdashline{1-1}
+\begin{tabular}[c]{@{}l@{}}Radio height\\ ~~\footnotesize Range: {[}0, 65 528{]} ft\\ ~~\footnotesize LSB: 16 ft\end{tabular} & 72-83 & 40-51 & 12 \\ \hline
+Reserved & 84-88 & 52-56 & 5 \\ \hline
+\end{tabular}
+\end{table}
+
+The levels for turbulence, wind shear, microburst, icing, and wake vortex are encoded as follows:
+\begin{itemize}
+  \item \texttt{00}: NIL
+  \item \texttt{01}: LIGHT
+  \item \texttt{10}: MODERATE
+  \item \texttt{11}: SEVERE
+\end{itemize}
+
+As is the case for MRAR messages, the actual range of the temperature is from -80 $^\circ$C to +60 $^\circ$C, and it is encoded using the two's complement coding.
+
+In Figure \ref{fig:bds45_example}, the decoding of an example message is shown. Note that in this example, only the air temperature information is included. None of the hazard conditions is reported.
+
+\begin{figure}[ht]
+  \centering
+  \input{figures/mode_s/bds45_example.tex}
+  \caption{Meteorological harzard report (BDS 4,5) decoding example}
+  \label{fig:bds45_example}
+\end{figure}
+
+
+\begin{notebox}{Note}
+The availability of BDS 4,4 messages is quite low. Very few aircraft's transponders have these capabilities enabled. BDS 4,5 message is even rarer. When a message is transmitted, it is very common that information in many fields are not available.
+\end{notebox}
+

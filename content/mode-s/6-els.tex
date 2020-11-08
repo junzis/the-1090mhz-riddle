@@ -1,0 +1,354 @@
+\chapter{Mode~S elementary surveillance}
+
+Mode~S Elementary Surveillance (ELS) includes provides a set of basic functionalities that are supported by the Mode~S transponders. These basic functionalities include the reporting  of aircraft identity, altitude, transponder capability, and flight status. The set of BDS codes included in ELS are \texttt{1,0}, \texttt{1,7}, \texttt{2,0}, and \texttt{3,0}.
+
+\section{Data link capability report (BDS 1,0)}
+
+This message is designed to report the data link capability of the Mode~S transponder installed. In Table \ref{tb:bds10}, all fields in this report are shown.
+
+\begin{table}[ht]
+\centering
+\caption{Data link capability report (BDS 1,0), MB field}
+\label{tb:bds10}
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{FIELD} & \textbf{MSG} & \textbf{MB} & \textbf{BITS} \\ \hline
+BDS Code {[}0001 0000{]} & 33-40 & 1-8 & 8 \\ \hline
+Configuration flag & 41 & 9 & 1 \\ \hline
+Reserved {[}00000{]} & 42-46 & 10-14 & 6 \\ \hline
+Overlay Command Capability (OCC) & 47 & 15 & 1 \\ \hline
+Reserved for ACAS & 48 & 16 & 1 \\ \hline
+Mode~S subnetwork version number & 49-55 & 17-23 & 7 \\ \hline
+Transponder enhanced protocol indicator & 56 & 24 & 1 \\ \hline
+Mode~S specific services capability & 57 & 25 & 1 \\ \hline
+Uplink ELM average throughput capacity & 58-60 & 26-28 & 3 \\ \hline
+Downlink ELM throughput & 61-64 & 29-32 & 4 \\ \hline
+Aircraft identification capability & 65 & 33 & 1 \\ \hline
+Squitter capability subfield (SCS) & 66 & 34 & 1 \\ \hline
+Surveillance identifier code (SIC) & 67 & 35 & 1 \\ \hline
+Common usage GICB capability report & 68 & 36 & 1 \\ \hline
+Reserved for ACAS & 69-72 & 37-40 & 4 \\ \hline
+Data terminal equipment (DTE) status & 73-80 & 41-56 & 16 \\ \hline
+\end{tabular}
+\end{table}
+
+
+In the data link capability report, the first eight bits indicate the BDS number 1,0, which is \texttt{0001 0000} in binary format. The definitions of the other fields are:
+
+1) ACAS related bits are shown as follows:
+
+\begin{verbatim}
+MSG     MB      Coding
+--------------------------------------------------------------
+48      16      0: ACAS failed or on standby
+                1: ACAS operating
+--------------------------------------------------------------
+69      37      0: Hybrid surveillance not operational
+                1: Hybrid surveillance fitted and operational
+--------------------------------------------------------------
+70      38      0: ACAS generating TAs only
+                1: ACAS generating TAs and RAs
+--------------------------------------------------------------
+72|71   37|36   0|0: RTCA/DO-185 (pre-ACAS)
+                0|1: RTCA/DO-185A
+                1|0: RTCA/DO-185B or EUROCAE ED 143
+                1|1: Reserved for future versions
+\end{verbatim}
+
+2) Valid values for \emph{Mode~S subnetwork version number} are from 0 to 5, corresponds to compliance to a different version of ICAO documentations. Numbers 6 to 127 are currently unassigned. Numbers 0 to 5 can be interpreted:
+
+\begin{verbatim}
+0:  Subnetwork not available
+1:  ICAO Doc 9688 (1996)
+2:  ICAO Doc 9688 (1998)
+3:  ICAO Annex 10, Vol III, Amdt 77
+4:  ICAO Doc 9871 (Ed 1), RTCA DO-181D, EUROCAE ED-73C
+5:  ICAO Doc 9871 (Ed 2), RTCA DO-181E, EUROCAE ED-73E
+>5: Reserved for future use
+\end{verbatim}
+
+3) \emph{Overlay Command Capability} indicated whether the transponder supports BDS overlay (Data Parity).
+
+4) When \emph{Transponder enhanced protocol indicator} bit is set to \1, the transponder is a Level 5 transponder. Value \0 indicates a Level 2 to 4 transponder.
+
+5) When \emph{Mode~S specific services capability} bit is set to \1, at least one Mode~S specific service is supported.\footnote{The additional specific services are BDS codes other than \texttt{0,2}, \texttt{0,3}, \texttt{1,0}, \texttt{1,7}-\texttt{1,C}, \texttt{2,0}, and \texttt{3,0}}.
+
+6) \emph{Aircraft identification capability} indicates whether the aircraft identification is available.
+
+7) When \emph{Squitter capability subfield} bit is set to \1, both BDS 0,5 and 0,6 registers have been updated in the past 9 to 11 seconds.
+
+8) \emph{Surveillance identifier code} determines whether the transponder has the surveillance identification code capability.
+
+9) \emph{Common usage GICB capability report} is set to \1 every time the GICB capacity report (BDS code 1,7) is changed. Register 1,7 is sampled every minute to check for changes.
+
+
+
+\newpage
+
+\section{Common usage GICB capability report (BDS 1,7)}
+
+This message is designed to report Common Usage Ground-initiated Comm-B (GICB) capabilities. The fields in this report are shown in Table \ref{tb:bds17}. In this table, each bit indicates whether the corresponding service is available from the transponder. 
+
+A bit is set to \1 when the corresponding register has a valid input that has been updated with the required rate. This means that the same aircraft would response different GICB reports due to the availability of the source data.
+
+\begin{table}[ht]
+\footnotesize
+\centering
+\caption{Common usage GICB capability report (BDS 1,0), MB field}
+\label{tb:bds17}
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{FIELD} & \textbf{MSG} & \textbf{MB} & \textbf{BITS} \\ \hline
+0,5 Extended squitter airborne position & 33 & 1 & 1 \\ \hline
+0,6 Extended squitter surface position & 34 & 2 & 1 \\ \hline
+0,7 Extended squitter status & 35 & 3 & 1 \\ \hline
+0,8 Extended squitter identification and category & 36 & 4 & 1 \\ \hline
+0,9 Extended squitter airborne velocity information & 37 & 5 & 1 \\ \hline
+0,A Extended squitter event-driven information & 38 & 6 & 1 \\ \hline
+2,0 Aircraft identification & 39 & 7 & 1 \\ \hline
+2,1 Aircraft registration number & 40 & 8 & 1 \\ \hline
+4,0 Selected vertical intention & 41 & 9 & 1 \\ \hline
+4,1 Next waypoint identifier & 42 & 10 & 1 \\ \hline
+4,2 Next waypoint position & 43 & 11 & 1 \\ \hline
+4,3 Next waypoint information & 44 & 12 & 1 \\ \hline
+4,4 Meteorological routine report & 45 & 13 & 1 \\ \hline
+4,5 Meteorological hazard report & 46 & 14 & 1 \\ \hline
+4.8 VHF channel report & 47 & 15 & 1 \\ \hline
+5,0 Track and turn report & 48 & 16 & 1 \\ \hline
+5,1 Position coarse & 49 & 17 & 1 \\ \hline
+5,2 Position fine & 50 & 18 & 1 \\ \hline
+5,3 Air-referenced state vector & 51 & 19 & 1 \\ \hline
+5,4 Waypoint 1 & 52 & 20 & 1 \\ \hline
+5,5 Waypoint 2 & 53 & 21 & 1 \\ \hline
+5,6 Waypoint 3 & 54 & 22 & 1 \\ \hline
+5,F Quasi-static parameter monitoring & 55 & 23 & 1 \\ \hline
+6,0 Heading and speed report & 56 & 24 & 1 \\ \hline
+Reserved for aircraft capability & 57 & 25 & 1 \\ \hline
+Reserved for aircraft capability & 58 & 26 & 1 \\ \hline
+E,1 Reserved for Mode~S BITE (Built In Test Equipment) & 59 & 27 & 1 \\ \hline
+E,2 Reserved for Mode~S BITE (Built In Test Equipment) & 60 & 28 & 1 \\ \hline
+F,1 Military applications & 61 & 29 & 1 \\ \hline
+Reserved & 62-80 & 30-56 & 17 \\ \hline
+\end{tabular}
+\end{table}
+
+We can use the following message as an example:
+
+\begin{verbatim}
+MSG:      A0000638FA81C10000000081A92F
+MB:               FA81C100000000
+MB BIN:   11111010100000011100000100000000000000000000000000000000
+\end{verbatim}
+
+From the MB field, we can identify that following bits are set to \1:
+
+\begin{verbatim}
+Bit: 1, 2, 3, 4, 5, 7, 9, 16, 17, 18, 24
+\end{verbatim}
+
+Hence, BDS codes supported by the transponder are: 
+\begin{verbatim}
+BDS05 BDS06 BDS07 BDS08 BDS09     < ADSB
+BDS20                             < ELS
+BDS40 BDS50 BDS51 and BDS60       < EHS
+\end{verbatim}
+  
+\begin{notebox}{Try it out}
+Using \texttt{pyModeS}, we can decode the GICB information as: 
+
+\begin{verbatim}
+import pyModeS as pms
+
+msg = "A0000638FA81C10000000081A92F"
+capabilities = pms.commb.cap17(msg)
+\end{verbatim}
+
+A list of supporting BDS code will be returned.
+
+\end{notebox}
+
+\newpage
+
+
+\section{Aircraft identification (BDS 2,0)}
+
+Similar to an ADS-B aircraft identification message, the callsign of an aircraft can be decoded from BDS 2,0 messages. The structure of the MB field is defined in Table \ref{tb:bds30}.
+
+\begin{table}[ht]
+\centering
+\caption{Aircraft identification (BDS 2,0), MB field}
+\label{tb:bds30}
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{FIELD} & \textbf{MSG} & \textbf{MB} & \textbf{BITS} \\ \hline
+BDS Code {[}0010 0000{]} & 33-40 & 1-8 & 8 \\ \hline
+Character 1 & 41-46 & 9-14 & 6 \\ \hline
+Character 2 & 47-52 & 15-20 & 6 \\ \hline
+Character 3 & 53-58 & 21-26 & 6 \\ \hline
+Character 4 & 59-64 & 27-32 & 6 \\ \hline
+Character 5 & 65-70 & 33-38 & 6 \\ \hline
+Character 6 & 71-76 & 39-44 & 6 \\ \hline
+Character 7 & 77-82 & 45-50 & 6 \\ \hline
+Character 8 & 83-88 & 51-56 & 6 \\ \hline
+\end{tabular}
+\end{table}
+
+
+The first 8 bits indicates the BDS code 0010 0000 (2,0 in hexadecimal). Each of the callsign characters is represented by 6 bits. We first need to convert the binary numbers to decimals. Each decimal value corresponds to the index of the letter in the following character map:
+
+\begin{verbatim}
+#ABCDEFGHIJKLMNOPQRSTUVWXYZ##### ###############0123456789######
+\end{verbatim}
+
+It is worth noting that this character mapping is the same as the one used for ADS-B identification, which also corresponds to a part of the ASCII code map.
+
+The following is an example on how to decode the callsign from a sample BDS 2,0 message:
+
+\begin{verbatim}
+MSG:  A000083E202CC371C31DE0AA1CCF
+MB:           202CC371C31DE0
+-----------------------------------------------------------------------------
+MB BIN:  0010 0000 001011 001100 001101 110001 110000 110001 110111 100000
+HEX:        2    0
+DEC:                 11     12     13     49     48     49     55     32
+CHR:                 K      L      M      1      0      1      7     [SPACE]
+-----------------------------------------------------------------------------
+ID:   KLM1017
+\end{verbatim}
+
+\begin{notebox}{Try it out}
+Using \texttt{pyModeS}, we can decode the callsign in this message as: 
+
+\begin{verbatim}
+import pyModeS as pms
+
+msg = "A000083E202CC371C31DE0AA1CCF"
+callsign = pms.commb.cs20(msg)
+\end{verbatim}
+
+Callsign \texttt{KLM1017\_} will be returned by the previous function since the space is replace by \texttt{\_} in \texttt{pyModeS}.
+\end{notebox}
+
+
+\newpage
+
+\section{ACAS active resolution advisory (BDS 3,0)}
+
+The BDS 3,0 message is used to report resolution advisories (RA) generated by ACAS equipment. The structure of the MB field is defined in Table \ref{tb:bds20}.
+
+\begin{table}[ht]
+\centering
+\caption{ACAS active resolution advisory (BDS 3,0), MB field}
+\label{tb:bds20}
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{FIELD} & \textbf{MSG} & \textbf{MB} & \textbf{BITS} \\ \hline
+BDS Code {[}0011 0000{]} & 33-40 & 1-8 & 8 \\ \hline
+Active resolution advisories & 41-54 & 9-22 & 14 \\ \hline
+Resolution advisory complements record & 55-58 & 23-26 & 4 \\ \hline
+RA teminated & 59 & 27 & 1 \\ \hline
+Multiple threat encounter & 60 & 28 & 1 \\ \hline
+Threat type indicator & 61-62 & 29-30 & 2 \\ \hline
+Threat identity data & 63-86 & 31-56 & 26 \\ \hline
+\end{tabular}
+\end{table}
+
+
+1) The first 8 bits show the BDS code 3,0 or \texttt{0011 0000} in binary format.
+
+2) The 14-bit active resolution advisories (ARA) indicate the characteristics of the RA generated by the ACAS associated with the transponder. To decode the information, we need to decode MB bit 9 (MSG bit 41) and MB bit 28 (MSG bit 60). Table \ref{tb:bds30_mb9_mb28} shows how to interpret these two bits.
+
+\begin{table}[ht]
+\centering
+\caption{BDS 3,0 MB bits 9 and 28}
+\label{tb:bds30_mb9_mb28}
+\begin{tabular}{|l|l|p{7cm}|}
+\hline
+\textbf{MB:9} & \textbf{MB:28} & \textbf{} \\ \hline
+0 & 0 & No RA has been generated \\ \hline
+0 & 1 & Multiple threats, RA is intended to provide vertical separation blew some threats and above some other threats \\ \hline
+1 & 0 & Only one threat \\ \hline
+0 & 1 & Multiple threats, RA is intended to provide vertical separation in the same direction \\ \hline
+\end{tabular}
+\end{table}
+
+MB bits 16-22 are reserved for ACAS III. When \texttt{MB:9=1}, the meanings of MB bits from 10 to 15 are shown in Table \ref{tb:bds30_mb10-22_1}.
+
+\begin{table}[]
+\centering
+\caption{BDS 3,0 MB bits 10 to 15 (MB:9=1)}
+\label{tb:bds30_mb10-22_1}
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{MB} & \textbf{Value} & \textbf{} \\ \hline
+10 & 0 & RA is preventive \\ \hline
+ & 1 & RA is corrective \\ \hline
+11 & 0 & Upward sense RA has been generated \\ \hline
+ & 1 & Downward sense RA has been generated \\ \hline
+12 & 0 & RA is not increased rate \\ \hline
+ & 1 & RA is increased rate \\ \hline
+13 & 0 & RA is not a sense reversal \\ \hline
+ & 1 & RA is a sense reversal \\ \hline
+14 & 0 & RA is not altitude crossing \\ \hline
+ & 1 & RA is altitude crossing \\ \hline
+15 & 0 & RA is vertical speed limit \\ \hline
+ & 1 & RA is positive \\ \hline
+\end{tabular}
+\end{table}
+
+When \texttt{MB:9=0} and \texttt{MB:28=1}, the meanings of MB bits from 10 to 15 are shown in Table \ref{tb:bds30_mb10-22_2}.
+
+\begin{table}[]
+\centering
+\caption{BDS 3,0 MB bits 10 to 15 (MB:9=0 MB:28=1)}
+\label{tb:bds30_mb10-22_2}
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{MB} & \textbf{Value} & \textbf{} \\ \hline
+10 & 0 & RA does not require a correction in the upward sense \\ \hline
+ & 1 & RA requires a correction in the upward sense \\ \hline
+11 & 0 & RA does not require a positive climb \\ \hline
+ & 1 & RA requires a positive climb \\ \hline
+12 & 0 & RA does not require a correction in the downward sense \\ \hline
+ & 1 & RA requires a correction in the downward sense \\ \hline
+13 & 0 & RA does not require a positive descend \\ \hline
+ & 1 & RA requires a positive descend \\ \hline
+14 & 0 & RA does not require a crossing \\ \hline
+ & 1 & RA requires a crossing \\ \hline
+15 & 0 & RA is not a sense reversal \\ \hline
+ & 1 & RA is a sense reversal \\ \hline
+\end{tabular}
+\end{table}
+
+\newpage 
+2) The resolution advisory complements (RAC) record consists of 4 bits, and each bit has the following meaning:
+
+\begin{verbatim}
+MB:23=1   Do not pass below
+MB:24=1   Do not pass above
+MB:25=1   Do not turn left
+MB:26=1   Do not turn right
+\end{verbatim}
+
+
+3) A RA terminated bit indicates whether previously generated RA has been terminated.
+
+
+4) Threat type indicator contains 2 bits with the following meaning:
+
+\begin{verbatim}
+00    No identity data in threat identity data
+01    Threat identity data contains a Mode~S transponder address
+10    Threat identity data contains altitude, range, and bearing
+11    Not assigned
+\end{verbatim}
+
+When the threat type indicator is \texttt{01}, MB bits 31-54 contain the 24-bit Mode~S transponder address and the last two bits are set to zero.
+
+When the threat type indicator is \texttt{10}, MB bits 31-56 is divided into three different segments.
+
+\begin{itemize}
+  \item MB bits 31-43 contain the 13-bit threat altitude code. It is the same structure as the altitude code from section \ref{sec:alt_code}.
+  \item MB bits 44-50 contain the most recent threat range from ACAS. When it is 0, no range estimation is available. When it is 127, the range is greater than 12.55 nautical miles. For other values, the range is calculated as $(n-1) / 10 \pm 0.05$ nautical miles.
+  \item MB bits 51-56 contain the most recent estimated bearing of the threat aircraft, relative to their own heading. When it is 0, no estimation is available. Values larger than 60 are not assigned. For other values (from 1 to 60), the bearing range is calculated as $[6(n-1), 6n]$ in degrees.
+\end{itemize}

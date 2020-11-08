@@ -1,0 +1,238 @@
+\chapter{ADS-B Basics} \label{chap:adsb-basic}
+ADS-B is short for Automatic Dependent Surveillance-Broadcast. It is a satellite-based surveillance system. Parameters such as position, velocity, and identification are transmitted through Mode~S Extended Squitter (1090 MHz). Nowadays, the majority of the aircraft are broadcasting ADS-B messages constantly.
+
+\section{Message structure}
+
+An ADS-B frame is 112 bits long and consists of 5 main parts, as follows:
+
+\begin{verbatim}
++----------+----------+-------------+------------------------+-----------+
+|  DF (5)  |  CA (3)  |  ICAO (24)  |         ME (56)        |  PI (24)  |
++----------+----------+-------------+------------------------+-----------+
+\end{verbatim}
+
+Any ADS-B message must start with the Downlink Format 17. In case of a TIS-B message, the Downlink Format is 18. They correspond to 10001 or 10010 in binary for the first 5 bits. Bits 6-8 are used as an additional identifier, which presents different meanings within each ADS-B subtype.
+
+In Table \ref{tb:adsb-structure}, the key information of an ADS-B message is listed.
+
+\begin{table}[!ht]
+\centering
+\caption{Structure of ADS-B frame}
+\label{tb:adsb-structure}
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{Bit} & \textbf{No. bits} & \textbf{Abbreviation} & \textbf{Information} \\ \hline\hline
+1-5 & 5 & DF & Downlink Format \\ \hline
+6-8 & 3 & CA & Transponder capability \\ \hline
+9-32 & 24 & ICAO & ICAO aircraft address \\ \hline
+33-88 & 56 & ME & Payload message \\
+(33-37) & (5) & (TC) & (Type code) \\ \hline
+89-112 & 24 & PI & Parity/Interrogator ID \\ \hline
+\end{tabular}
+\end{table}
+
+It is worth noting that the ADS-B Extended Squitter sent from a Mode~S transponder uses Downlink Format 17 (\texttt{DF=17}). Non-Transponder-Based ADS-B Transmitting Subsystems and TIS-B Transmitting equipment use Downlink Format 18 (\texttt{DF=18}). By using \texttt{DF=18} instead of \texttt{DF=17}, an ADS-B/TIS-B Receiving Subsystem will know that the message comes from equipment that cannot be interrogated.
+
+\section{Capability}
+
+The second field consists of three bits that indicate the transponder level. The capability value can be between 0 and 7. The definitions of these values are shown in Table \ref{tb:transponder_capability}.
+
+\begin{table}[!ht]
+\centering
+\caption{Mode~S transponder capability (CA)}
+\label{tb:transponder_capability}
+\begin{tabular}{|l|p{10cm}|}
+\hline
+\textbf{CA} & \textbf{Definition} \\ \hline
+0 & Level 1 transponder \\ \hline
+1-3 & Reserved \\ \hline
+4 & \makecell*{Level 2+ transponder, \\ with ability to set CA to 7, \\ on-ground} \\ \hline
+5 & \makecell*{Level 2+ transponder, \\ with ability to set CA to 7, \\ airborne} \\ \hline
+6 & \makecell*{Level 2+ transponder, \\ with ability to set CA to 7, \\ either on-ground or airborne} \\ \hline
+7 & \makecell*{Signifies the Downlink Request value is 0, \\ or the Flight Status is 2, 3, 4 or 5, \\ either airborne or on the ground} \\ \hline
+\end{tabular}
+\end{table}
+
+\section{ICAO address}
+
+In each ADS-B message, the sender (originating aircraft) can be identified using the Mode~S transponder address assigned accordingly ICAO regulations. Very often this is referred as ICAO address. 
+
+The ICAO address is located from 9 to 32 bits in binary (or 3 to 8 in hexadecimal positions). A unique ICAO address is assigned to each Mode~S transponder of an aircraft and serves as the unique identifier for each aircraft.
+
+
+\section{ADS-B message types}
+
+To identify what information is contained in an ADS-B message, we need to take a look at the Type Code of the message, indicated at bits 33 - 37 (or first 5 bits of the \texttt{ME} segment).
+
+In following Table \ref{tb:adsb-tc}, the relationships between each Type Code and its information contained in the \texttt{ME} segment are shown.
+
+\begin{table}[ht]
+\centering
+\caption{ADS-B Type Code and content}
+\label{tb:adsb-tc}
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Type Code} & \textbf{Data frame content} \\  \hline \hline
+1 - 4     & Aircraft identification              \\  \hline
+5 - 8     & Surface position                     \\  \hline
+9 - 18    & Airborne position (w/ Baro Altitude) \\  \hline
+19        & Airborne velocities                  \\  \hline
+20 - 22   & Airborne position (w/ GNSS Height)   \\  \hline
+23 - 27   & Reserved                             \\  \hline
+28        & Aircraft status                      \\  \hline
+29        & Target state and status information  \\  \hline
+31        & Aircraft operation status            \\  \hline
+\end{tabular}
+\end{table}
+
+
+\section{Example of ADS-B message structure}
+
+Let us use an example to illustrate the decoding process. First, a raw message is received, which is represented in hexadecimal format:
+
+\begin{verbatim}
+8D4840D6202CC371C32CE0576098
+\end{verbatim}
+
+It can be converted into binary conveniently. The structure of the binary message is shown as follows:
+
+\begin{verbatim}
++-----+------------+--------------+----------------------+--------------+
+| HEX | 8D         | 4840D6       | 202CC371C32CE0       | 576098       |
++-----+------------+--------------+----------------------+--------------+
+| BIN | 10001  101 | 010010000100 | [00100]0000010110011 | 010101110110 |
+|     |            | 000011010110 | 00001101110001110000 | 000010011000 |
+|     |            |              | 110010110011100000   |              |
++-----+------------+--------------+----------------------+--------------+
+| DEC |  17    5   |              | [4] ...............  |              |
++-----+------------+--------------+----------------------+--------------+
+|     |  DF    CA  |   ICAO       |          ME          | PI           |
+|     |            |              | [TC] ..............  |              |
++-----+------------+--------------+----------------------+--------------+
+\end{verbatim}
+
+The first five bits show that the downlink format is \texttt{17} (or \texttt{10001} in binary), which indicates the message is an ADS-B message. The first five bits of the \texttt{ME} field shows that the type code is \texttt{4} (or binary \texttt{00100}), which indicates the message is an identification message.
+
+In the example above, The ICAO address is \texttt{4840D6} (or \texttt{010010000100} in binary format). Various online tools can be used to find out more about the aircraft with a given ICAO address.\footnote{For example, an online database from OpenSky can be used:\\ https://opensky-network.org/aircraft-database} For instance, using the previous ICAO \texttt{4840D6} example, it will return the result of a \texttt{Fokker\ 70} with the registration of \texttt{PH-KZD}.
+
+
+\begin{notebox}{Try it out}
+  Using \texttt{pyModeS}, we can find out what information is contained in this ADS-B message:
+
+\begin{verbatim}
+import pyModeS as pms
+pms.tell("8D4840D6202CC371C32CE0576098")
+\end{verbatim}
+
+Output:
+
+\begin{verbatim}
+         Message: 8D4840D6202CC371C32CE0576098 
+    ICAO address: 4840D6 
+ Downlink Format: 17 
+        Protocol: Mode~S Extended Squitter (ADS-B) 
+            Type: Identitification and category 
+        Callsign: KLM1023_ 
+\end{verbatim}
+  
+
+\end{notebox}
+
+
+
+\section{Availability and transmission rate}
+
+Different ADS-B messages have different transmission rates. The update frequency also differs depending on if the aircraft is on-ground or airborne, as well as if the aircraft is still or moving when on the ground.
+
+In Table \ref{tb:adsb-transmission-rate}, the transmission rate of these messages are indicated.
+
+\begin{table}[ht]
+  \footnotesize
+  \centering
+  \caption{ADS-B message transmission rates}
+  \label{tb:adsb-transmission-rate}
+  \begin{tabular}{|l|l|l|l|l|}
+  \hline
+  \textbf{Messages} & \textbf{TC} & \textbf{Ground (still)} & \textbf{Ground (moving)} & \textbf{Airborne} \\ \hline
+  Aircraft identification & 1-4 & 0.1 Hz & 0.2 Hz & 0.2 Hz \\ \hline
+  Surface position & 5-8 & 0.2 Hz & 2 Hz & - \\ \hline
+  Airborne position & 9-18, 20-22 & - & - & 2 Hz \\ \hline
+  Airborne velocity & 19 & - & - & 2 Hz \\ \hline
+  \multirow{2}{*}{Aircraft status} & \multirow{2}{*}{28} & \multicolumn{3}{l|}{0.2 Hz (\textit{no TCAS RA and Squawk Code change})} \\ \cline{3-5} 
+   &  & \multicolumn{3}{l|}{1.25 Hz (\textit{change in TCAS RA or Squawk Code})} \\ \hline
+  Target states & 29 & - & - & 0.8 Hz \\ \hline
+  \multirow{2}{*}{Operational status} & \multirow{2}{*}{31} & \multirow{2}{*}{0.2 Hz} & \multicolumn{2}{l|}{0.4 Hz (\textit{no NIC/NAC/SIL change})} \\ \cline{4-5} 
+   &  &  & \multicolumn{2}{l|}{1.25 Hz (\textit{change in NIC/NAC/SIL})} \\ \hline
+  \end{tabular}
+\end{table}
+
+For Target states and Operational status messages, when there is a change in some key parameters, the transmission is changed to a higher rate for approximately 24 seconds.
+
+
+
+\section{ADS-B versions}
+
+In this section, we are going to look into different versions and the evolution of ADS-B.
+
+Since start of ADS-B until now, there have been three different implementation versions. The major reason for these updates is to include more information (types of data) in ADS-B. The documentation available on these versions and differences is quite far from user friendly and generally presented in a very scattered fashion. Even the official \texttt{ICAO\_9871} document is confusing to read. Here, I am going to put the pieces of scattered information together.
+
+There are three versions implemented so far, starting from version 0, then version 1 around 2008, and version 2 around 2012. Major changes in version 1 and version 2 are listed as follows:
+
+\subsection{From version 0 to 1}
+
+The changes introduced in version 1 are summarized as follows:
+
+\begin{itemize}
+  \item Added Type Code 28 and 31 messages.
+
+  \begin{itemize}
+    \item \texttt{TC=28}: Aircraft status - Emergency/priority status and ACAS RA Broadcast.
+    \item \texttt{TC=31}: Operational status.
+  \end{itemize}
+
+  \item Removed the \emph{Navigational uncertainty categories} (NUC). Introduced the \emph{Navigation integrity category} (NIC) and \emph{Surveillance integrity level} (SIL).
+
+  \begin{itemize}
+    \item Type Code and a NIC Supplement bit (NICs) are used to define the NIC.
+    \item NIC Supplement bit included in operation status message (\texttt{TC=31}).
+  \end{itemize}
+
+  \item The ADS-B version number is now indicated in operation status message (\texttt{TC=31}).
+\end{itemize}
+
+\subsection{From version 1 to 2}
+
+The changes introduced in version 2 are summarized as follows:
+
+\begin{itemize}
+\item
+  Re-defined the structure and content of \texttt{TC=28} and \texttt{TC=31} messages.
+\item
+  Introduced two additional NIC supplement bits.
+\item
+  \texttt{NICa} is defined in operational status messages.
+  (\texttt{TC=31})
+\item
+  \texttt{NICb} is defined in airborne position messages.
+  (\texttt{TC=9-18})
+\item
+  \texttt{NICc} is defined in operational status messages.
+  (\texttt{TC=31})
+\item
+  Introduced an additional \emph{Horizontal Containment Radius} (Rc) level within \texttt{NIC=6} of the airborne position message (\texttt{TC=13}).
+\end{itemize}
+
+\subsection{Identification of the ADS-B Version}
+
+There are two steps to check the ADS-B version. This is because ADS-B \texttt{Version\ 0} is not included in any message.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Step 1: Check whether an aircraft is broadcasting ADS-B messages with   \texttt{TC=31} at all. If no message is ever reported, it is safe to assume that the version is \texttt{Version\ 0}.
+\item
+  Step 2: If messages with \texttt{TC=31} are received, check the version numbers located in the 41-43 bit of the payload (or 73-75 bit of the message).
+\end{enumerate}
+
+After identifying the correct ADS-B version for an aircraft (which does not change often), one can decode related \texttt{TC=28} and \texttt{TC=31} messages accordingly.
+

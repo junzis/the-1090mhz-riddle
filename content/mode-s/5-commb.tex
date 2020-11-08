@@ -1,0 +1,84 @@
+\chapter{Comm-B replies} \label{chap:comm-b}
+
+Most of the Mode~S selective interrogations responses in Comm-B messages. The message can have a downlink format of either 20 or 21, depending on whether the aircraft identity code or altitude code is included in the message.
+
+Comm-B protocol supports many different types of messages (up to 255). Several important surveillance services utilize some of the Comm-B message types (see Figure \ref{fig:mode_s_services} from the Chapter \ref{chap:intro}). In this book, we are mainly interested in three types of services, which are Mode~S Elementary Surveillance (ELS), Mode~S Enhanced Surveillance (EHS), and Meteorological information.By decoding these messages, we can discover some additional information regarding an aircraft.
+
+
+\section{Structure}
+
+Comm-B messages have similar structures as surveillance replies (DF=4/5). The structures are shown in the Table \ref{tb:df_20_21_structure}.
+
+\begin{table}[!ht]
+\caption{Comm-B messages with altitude code and identity code}
+\label{tb:df_20_21_structure}
+
+\begin{subtable}[t]{.6\linewidth}
+  \centering
+  \caption{Comm-B, altitude reply (DF=20)}
+  \begin{tabular}[t]{|l|l|l|l|}
+  \hline
+  \textbf{FIELD} & \textbf{} & \textbf{MSG} & \textbf{BITS} \\ \hline
+  Downlink format         & DF & 1-5    & 5   \\ \hline
+  Flight status           & FS & 6-8    & 3   \\ \hline
+  Downlink request        & DR & 9-13   & 5   \\ \hline
+  Utility message         & UM & 14-19  & 6   \\ \hline
+  Altitude code           & AC & 20-32  & 13  \\ \hline
+  Message, Comm-B         & MB & 33-88  & 56  \\ \hline
+  Parity  &  & 89-112  & 24  \\ \hline
+  \end{tabular}
+\end{subtable}%
+
+\vspace{0.5cm}
+
+\begin{subtable}[t]{.6\linewidth}
+  \centering
+  \caption{Comm-B, identity reply (DF=21)}
+  \begin{tabular}[t]{|l|l|l|l|}
+  \hline
+  \textbf{FIELD} & \textbf{} & \textbf{MSG} & \textbf{BITS} \\ \hline
+  Downlink format         & DF & 1-5    & 5   \\ \hline
+  Flight status           & FS & 6-8    & 3   \\ \hline
+  Downlink request        & DR & 9-13   & 5   \\ \hline
+  Utility message         & UM & 14-19  & 6   \\ \hline
+  Identity code           & ID & 20-32  & 13  \\ \hline
+  Message, Comm-B         & MB & 33-88  & 56  \\ \hline
+  Parity  &  & 89-112  & 24  \\ \hline
+  \end{tabular}
+\end{subtable}
+\end{table}
+
+The definitions of common fields are the same as surveillance replies in chapter \ref{chap:surv_reply}. The parity can be either address parity or data parity, which are defined in chapter \ref{chap:mode_s_basics}.
+
+
+\section{BDS}
+
+Comm-B Data Selector (BDS) is an 8-bit code that determines which information to be included in the MB fields. It is often shown as a 2-digit hexadecimal, for example, \texttt{4,0} or \texttt{0,A}. We can make a comparison between the BDS code and Type Code used in ADS-B. They both help to identify which structure shall be used to decode the message, except that the BDS code is only included in the uplink (Comm-A). For Comm-B messages, BDS codes are not always included.
+
+Without knowing the BDS code of the downlink message, the information contained in the MB field can not be decoded. Fortunately, there are methods available that can be used to infer the BDS code for most of the messages and decode them. In a later chapter, we are going to explain how the BDS code inference process works.
+
+The following is the list of BDS codes for messages that will be discussed in detail in the different chapters.
+
+\begin{itemize}
+  \item BDS 1,0 - Data link capability report
+  \item BDS 1,7 - Common usage GICB capability report
+  \item BDS 2,0 - Aircraft identification
+  \item BDS 3,0 - ACAS active resolution advisory
+  \item BDS 4,0 - Selected vertical intention
+  \item BDS 5,0 - Track and turn report
+  \item BDS 6,0 - Heading and speed report
+  \item BDS 4,4 - Meteorological routine air report
+  \item BDS 4,5 - Meteorological hazard report
+\end{itemize}
+
+Here, the first four BDS codes (\texttt{1,0}, \texttt{1,7}, \texttt{2,0}, \texttt{3,0}) belong to the ELS service, next three codes (\texttt{4,0}, \texttt{5,0}, \texttt{6,0}) belong to EHS services, and the last two codes (\texttt{4,4}, \texttt{4,5}) report meteorological information. All ELS, EHS and meteorological services are discussed in the following chapters.
+
+It is also worth noting that even ADS-B messages belong to Mode~S extended squitter, they are still assigned with BDS codes. The list of BDS codes for these ADS-B messages are:
+
+\begin{itemize}
+  \item BDS 0,5 - Extended squitter airborne position
+  \item BDS 0,6 - Extended squitter surface position
+  \item BDS 0,7 - Extended squitter status
+  \item BDS 0,8 - Extended squitter identification and category
+  \item BDS 0,9 - Extended squitter airborne velocity information
+\end{itemize}

@@ -11,7 +11,7 @@ do
     --variable editat=$fn
 done
 
-for file in adsb/*.tex
+for file in content/ads-b/*.tex
 do
   fn=${file%.tex}
   pandoc $file \
@@ -22,11 +22,11 @@ do
     --toc \
     --toc-depth=3 \
     --mathjax \
-    --variable rootdir="../" \
+    --variable rootdir="../../" \
     --variable editat=$fn
 done
 
-for file in ehs/*.tex
+for file in content/mode-s/*.tex
 do
   fn=${file%.tex}
   pandoc $file \
@@ -37,6 +37,6 @@ do
     --toc \
     --toc-depth=3 \
     --mathjax \
-    --variable rootdir="../" \
+    --variable rootdir="../../" \
     --variable editat=$fn
 done

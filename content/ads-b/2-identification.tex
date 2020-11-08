@@ -1,0 +1,114 @@
+\chapter{Aircraft identification and category}
+
+Within the group of ADS-B messages, the \emph{Aircraft Identification and Category} message is designed to broadcast the identification (also known as the \emph{callsign}), and the wake vortex category of the aircraft.
+
+In this message, the Type Code can be from 1 to 4. The 56-bit message payload consists of 10 parts and is structured as follows:
+
+\begin{verbatim}
++------+------+------+------+------+------+------+------+------+------+
+| TC,5 | CA,3 | C1,6 | C2,6 | C3,6 | C4,6 | C5,6 | C6,6 | C7,6 | C8,6 |
++------+------+------+------+------+------+------+------+------+------+
+
+TC: Type code
+CA: Aircraft category
+C*: A character
+\end{verbatim}
+
+Here, number 6 represents the number of bits used to encode each of the characters.
+
+\section{Identification (call sign)}
+The aircraft identification included in the message is the callsign. Be aware that callsign is not a unique identifier of an aircraft, since different aircraft flying the same route at different times would share the same callsign.
+
+The last 8 fields in the previous structure diagram represent the callsign characters. In order to decode each character, a lookup table is needed to map the corresponding decimal number (represented in binary code) to each character.
+
+The character mapping is shown as follows:
+
+\begin{verbatim}
+#ABCDEFGHIJKLMNOPQRSTUVWXYZ##### ###############0123456789######
+\end{verbatim}
+
+Firstly, the \texttt{\#} symbols represent characters that are not used. In summary, characters and their decimal representations are as follows, where  \texttt{␣} symbol refers to a space character. 
+
+\begin{verbatim}
+A - Z :   1 - 26
+0 - 9 :  48 - 57
+    ␣ :  32
+\end{verbatim}
+
+
+If you are familiar with the ASCII (American Standard Code for Information Interchange) code, it is easy to identify that a callsign character is encoded using the lower 6 bits of the same character in ASCII.
+
+\section{Wake vortex category}
+The \texttt{CA} value in combination with \texttt{TC} value defines the wake vortex category of the aircraft. Note ADS-B has its own definition of wake categories, which is different from the common ICAO wake turbulence category definition. In Table \ref{tb:adsb_id_wake_category}, the definitions and related \texttt{TC} and \texttt{CA} codes are indicated.
+
+\begin{table}[ht]
+\caption{Wake vortex in ADS-B identification and category message}
+\label{tb:adsb_id_wake_category}
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{TC} & \textbf{CA} & \textbf{Category} \\ \hline\hline
+1 & ANY & Reserved \\ \hline\hline
+ANY & 0 & No category information \\ \hline\hline
+2 & 1 & Surface emergency vehicle \\ \hline
+2 & 3 & Surface service vehicle \\ \hline
+2 & 4 - 7 & Ground obstruction \\ \hline\hline
+3 & 1 & Glider, sailplane \\ \hline
+3 & 2 & Lighter-than-air \\ \hline
+3 & 3 & Parachutist, skydiver \\ \hline
+3 & 4 & Ultralight, hang-glider, paraglider \\ \hline
+3 & 5 & Reserved \\ \hline
+3 & 6 & Unmanned aerial vehicle \\ \hline
+3 & 7 & Space or transatmospheric vehicle \\ \hline\hline
+4 & 1 & Light (less than 7000 kg) \\ \hline
+4 & 2 & Medium 1 (between 7000 kg and 34000 kg) \\ \hline
+4 & 3 & Medium 2 (between 34000 kg to 136000 kg) \\ \hline
+4 & 4 & High vortex aircraft \\ \hline
+4 & 5 & Heavy (larger than 136000 kg) \\ \hline
+4 & 6 & High performance (\textgreater 5 g acceleration) and high speed (\textgreater 400 kt) \\ \hline
+4 & 7 & Rotocraft \\ \hline
+\end{tabular}
+\end{table}
+
+
+\section{Example}
+
+Let us use the following raw message as an example for decoding:
+
+\begin{verbatim}
+8D4840D6202CC371C32CE0576098
+\end{verbatim}
+
+The message payload is:
+
+\begin{verbatim}
+HEX: 202CC371C32CE0
+BIN: 00100000001011001100001101110001110000110010110011100000
+\end{verbatim}
+
+The structure of the payload can be decomposed as follows:
+
+\begin{verbatim}
++-----+---+------+------+------+------+------+------+------+------+
+|00100|000|001011|001100|001101|110001|110000|110010|110011|100000|
++-----+---+------+------+------+------+------+------+------+------+
+|TC   |CA |11    |12    |13    |49    |48    |50    |51    |32    |
++-----+---+------+------+------+------+------+------+------+------+
+|4    |0  |K     |L     |M     |1     |0     |2     |3     |_     |
++-----+---+------+------+------+------+------+------+------+------+
+\end{verbatim}
+
+With \texttt{TC=4}, we can confirm it is an identification and category message. The decoded identity (callsign) of the aircraft is \texttt{KLM1023} (with the tailing space ignored). With \texttt{CA=0}, we can see that the aircraft did not transmit any information on the wake vortex category.
+
+\begin{notebox}{Try it out}
+Using \texttt{pyModeS}, we can decode the callsign as follows:
+
+\begin{verbatim}
+import pyModeS as pms
+
+category = pms.adsb.category("8D4840D6202CC371C32CE0576098")
+callsign = pms.adsb.callsign("8D4840D6202CC371C32CE0576098")
+\end{verbatim}
+
+\end{notebox}
+ 
+  
