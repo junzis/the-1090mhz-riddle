@@ -1,13 +1,18 @@
 The 1090 Megahertz Riddle (Second edition)
 ============================================================
 
-(Access the first edition book online: [mode-s.org](http://mode-s.org))
+View the current second edition draft at: [The 1090 Megahertz Riddle (Second edition) [draft]](https://raw.githubusercontent.com/junzis/the-1090mhz-riddle/master/book.pdf)
 
-This is the working branch of the new (second) edition of the book, which features major structure updates and content re-writes.
+This is the working branch of the new (second) edition of the book, which features many new chapters, major re-structuring, and content updates.
 
 The new book will be published by TU Delft Open publishing under [CC BY-NC-SA-4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) license, which allows copy, redistribute, remix, transform, and build upon this book.
 
-The new structure of the book is:
+(Visit the first edition online at: [mode-s.org](http://mode-s.org))
+
+---
+
+
+The new structure of the book:
 
 ```
 Chapter 1 Introduction
@@ -99,5 +104,10 @@ Chapter 19 Inferencing of BDS codes
   Section 19.1 BDS codes identification logics
   Section 19.2 Identification of BSD 5,0 and 6,0
   Section 19.3 Examples
-Chapter 20 Conclusion
+Chapter 20 Summary and beyond
+  Section 20.1 Summary
+  Section 20.2 Crowd-sourced networks
+  Section 20.3 Additional data
+  Section 20.4 Congestion
+  Section 20.5 Future of ADS-B
 ```
