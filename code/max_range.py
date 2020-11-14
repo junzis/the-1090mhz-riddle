@@ -20,7 +20,7 @@ def plot(*args, **kwargs):
         ax.plot(Ht / 1000, d, label="Receiver height: {} m".format(hr))
 
     ax.set_ylabel("Maximum range (km)")
-    ax.set_xlabel("Aicraft altitude (km)")
+    ax.set_xlabel("Aircraft altitude (km)")
     ax.set_ylim([0, 500])
     plt.legend(loc="lower right")
     plt.grid()
