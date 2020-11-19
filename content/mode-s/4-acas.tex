@@ -36,16 +36,16 @@ The reply should be sent with the following rules:
 
 \begin{itemize}
   \item With both $S_1$ and $P_1$ above the minimum triggering level (MTL), no reply will be generated.
-  \item With both $S_1$ and $P_1$ at MTL, the transponder will response to 10\% of the interrogations.
-  \item With $P_1$ at MTL and $S_1$ at MTL - 3 dB, the transponder will response to 70\% of the interrogation.
-  \item With $P_1$ at MTL and $S_1$ at MTL - 6 dB, the transponder will response to 90\% of the interrogations.
+  \item With both $S_1$ and $P_1$ at MTL, the transponder will respond to 10\% of the interrogations.
+  \item With $P_1$ at MTL and $S_1$ at MTL - 3 dB, the transponder will respond to 70\% of the interrogations.
+  \item With $P_1$ at MTL and $S_1$ at MTL - 6 dB, the transponder will respond to 90\% of the interrogations.
 \end{itemize}
 
 \section{ACAS with Mode~S transponders}
 
 For Mode~S transponders, ACAS system employs a three-phase process, which includes the phases of \emph{detection}, \emph{surveillance}, and \emph{coordination}.
 
-For the detection phase, ACAS passively listens to Mode~S only all-call replies (DF=11). These all-call replies are usually generated as a result of ground SSR interrogations or as spontaneous replies. In this process, aircraft with Mode~S transponders in the vicinity are discovered. ACAS may also listen to extended squitter messages (Downlink Format 17, ADS-B) to detect other aircraft.
+For the detection phase, ACAS passively listens to Mode~S only all-call replies (DF=11). These all-call replies are usually generated as a result of ground SSR interrogations or as spontaneous replies. In this process, aircrafts with Mode~S transponders in the vicinity are discovered. ACAS may also listen to extended squitter messages (Downlink Format 17, ADS-B) to detect other aircrafts.
 
 Once an aircraft is determined to be within the ACAS surveillance range, and within 10,000 ft of the own ACAS aircraft, ACAS will initiate a short air-air interrogation (UF=11) to acquire the range. The interrogation rate is defined as:
 
@@ -391,7 +391,7 @@ V-definition subfield 2 [0001] & VDS2 & 37-40 & 5-8 & 4 \\ \hline
 Active RAs & ARA & 41-54 & 9-22 & 14 \\ \hline
 RAC's record & RAC & 55-58 & 23-26 & 4 \\ \hline
 RA terminated indicator & RAT & 59 & 27 & 1 \\ \hline
-Multiple thread encounter & MTE & 60 & 28 & 1 \\ \hline
+Multiple threat encounter & MTE & 60 & 28 & 1 \\ \hline
 Reserved &  & 61-88 & 29-56 & 28 \\ \hline
 \end{tabular}
 \end{table}
