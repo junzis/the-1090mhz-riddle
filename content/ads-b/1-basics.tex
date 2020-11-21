@@ -55,16 +55,16 @@ The second field consists of three bits that indicate the transponder level. The
 
 \section{ICAO address}
 
-In each ADS-B message, the sender (originating aircraft) can be identified using the Mode~S transponder address assigned accordingly ICAO regulations. Very often this is referred as ICAO address. 
+In each ADS-B message, the sender (originating aircraft) can be identified using the Mode~S transponder code assigned according to ICAO regulations \cite{blythe2011}. The Mode~S transponder code is also often referred as \emph{ICAO address}, or \emph{hex code}. 
 
-The ICAO address is located from 9 to 32 bits in binary (or 3 to 8 in hexadecimal positions). A unique ICAO address is assigned to each Mode~S transponder of an aircraft and serves as the unique identifier for each aircraft.
+The ICAO address is located from 9 to 32 bits in binary (or 3 to 8 in hexadecimal positions). A unique ICAO address is assigned to each Mode~S transponder of an aircraft and serves as the unique identifier for each aircraft. 
+
+In principle, this code does not change over the lifetime of the aircraft. However, it is possible to reprogram a transponder so that the messages contain a different address. This has been observed in military aircraft and private airplanes opt-in for the FAA Privacy ICAO Address System \cite{gray2019}.
 
 
 \section{ADS-B message types}
 
-To identify what information is contained in an ADS-B message, we need to take a look at the Type Code of the message, indicated at bits 33 - 37 (or first 5 bits of the \texttt{ME} segment).
-
-In following Table \ref{tb:adsb-tc}, the relationships between each Type Code and its information contained in the \texttt{ME} segment are shown.
+To identify what information is contained in an ADS-B message, we need to take a look at the Type Code of the message. The Type Code is located at bits 33 - 37 (or the first 5 bits of the \texttt{ME} segment). In following Table \ref{tb:adsb-tc}, the relationships between each Type Code and its information contained in the \texttt{ME} segment are shown.
 
 \begin{table}[ht]
 \centering

@@ -21,10 +21,14 @@ We can see that the fields are defined similarly to the ones from airborne messa
 \textbf{FIELD} & \textbf{} & \textbf{MSG} & \textbf{MB} & \textbf{BITS} \\ \hline
 Type Code & TC & 33-37 & 1-5 & 5 \\ \hline
 Movement & MOV & 38-44 & 6-12 & 7 \\ \hline
-\begin{tabular}[c]{@{}l@{}}Status for ground track\\  ~~0: Invalid\\  ~~1: Valid\end{tabular} & S & 45 & 13 & 1 \\ \hline
+Status for ground track & S & 45 & 13 & 1\\
+~~0: Invalid & & & &\\
+~~1: Valid & & & &\\ \hline
 Ground track & TRK & 46-52 & 14-20 & 7 \\ \hline
 Time & T & 53 & 21 & 1 \\ \hline
-\begin{tabular}[c]{@{}l@{}}CPR Format\\  ~~0: even frame\\  ~~1: odd frame\end{tabular} & F & 54 & 22 & 1 \\ \hline
+CPR Format  & F & 54 & 22 & 1\\
+~~0: even frame & & & &\\
+~~1: odd frame & & & &\\ \hline
 Encoded latitude & LAR-CPR & 55-71 & 23-39 & 17 \\ \hline
 Encoded longitude & LON-CPR & 72-88 & 40-56 & 17 \\ \hline
 \end{tabular}

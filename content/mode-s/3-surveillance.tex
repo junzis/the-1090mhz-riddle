@@ -68,7 +68,23 @@ The definitions of the common fields are:
     \texttt{00101}: Comm-B broadcast messages 2 available
   \end{quote}
 
-  \item \emph{Utility message (UM)}: 6 bits, contains transponder communication status information.
+  \item \emph{Utility message (UM)}: 6 bits, contains transponder communication status information. 
+  
+  \begin{itemize}
+    \item IIS: The first 4 bits of UM indicate the interrogator identifier code. 
+    \item IDS: The last 2 bits indicate the type of reservation made by the interrogator.
+
+    \begin{quote}
+      \small
+      \texttt{00}: no information \\
+      \texttt{01}: IIS contains Comm-B interrogator identifier code \\
+      \texttt{10}: IIS contains Comm-C interrogator identifier code \\
+      \texttt{11}: IIS contains Comm-D interrogator identifier code \\
+    \end{quote}
+  
+  \end{itemize}
+
+  
 
 
 \end{itemize}

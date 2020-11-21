@@ -18,12 +18,20 @@ There are eight fields in the message payload, and the details of all fields are
 \begin{tabular}{|l|l|l|l|l|}
 \hline
 \textbf{FIELD} & \textbf{} & \textbf{MSG} & \textbf{MB} & \textbf{BITS} \\ \hline
-\begin{tabular}[c]{@{}l@{}}Type Code\\ ~~9-18: with barometric altitude\\ ~~20-22: with GNSS altitude\end{tabular} & TC & 33-37 & 1-5 & 5 \\ \hline
-\begin{tabular}[c]{@{}l@{}}Surveillance status\\ ~~0: No condition\\ ~~1: Permanent alert\\ ~~2: Temporary alert\\ ~~3: SPI condition\end{tabular} & SS & 38-39 & 6-7 & 2 \\ \hline
+Type Code  & TC & 33-37 & 1-5 & 5 \\ 
+~~9-18: with barometric altitude  & & & &\\ 
+~~20-22: with GNSS altitude  & & & &\\ \hline
+Surveillance status  & SS & 38-39 & 6-7 & 2\\
+~~0: No condition & & & &\\ 
+~~1: Permanent alert & & & &\\ 
+~~2: Temporary alert & & & &\\ 
+~~3: SPI condition & & & & \\ \hline
 Single antenna flag & SAF & 40 & 8 & 1 \\ \hline
 Encoded altitude & ALT & 41-52 & 9-20 & 12 \\ \hline
 Time & T & 53 & 21 & 1 \\ \hline
-\begin{tabular}[c]{@{}l@{}}CPR Format\\  ~~0: even frame\\  ~~1: odd frame\end{tabular} & F & 54 & 22 & 1 \\ \hline
+CPR Format  & F & 54 & 22 & 1 \\
+~~0: even frame & & & &\\
+~~1: odd frame  & & & &\\ \hline
 Encoded latitude & LAR-CPR & 55-71 & 23-39 & 17 \\ \hline
 Encoded longitude & LON-CPR & 72-88 & 40-56 & 17 \\ \hline
 \end{tabular}
@@ -387,10 +395,10 @@ Denote $i$ as the value dependent on the type of the message:
 
 \begin{equation}
   i =
-  \begin{dcases}
+  \begin{cases}
     0, \quad \text{even message} \\
     1, \quad \text{odd message}
-  \end{dcases}
+  \end{cases}
 \end{equation}
 
 \noindent The latitude zone size is different depending on the message type:

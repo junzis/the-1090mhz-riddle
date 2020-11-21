@@ -22,7 +22,8 @@
     inner = 17mm,
     outer = 14mm,
     top = 19mm,
-    bottom = 14mm,
+    bottom = 16mm,
+    footskip = 6mm,
   }
 \else
   \geometry{
@@ -30,7 +31,8 @@
     inner = 14mm,
     outer = 14mm,
     top = 19mm,
-    bottom = 14mm,
+    bottom = 16mm,
+    footskip = 6mm,
   }
 \fi
 
@@ -72,7 +74,7 @@
 
 \usepackage{arydshln}
 
-\setcounter{secnumdepth}{3}
+\setcounter{secnumdepth}{2}
 
 % footnote style
 \usepackage[hang,flushmargin]{footmisc}
@@ -85,6 +87,8 @@
 
 \usepackage{parskip}
 \setlength{\emergencystretch}{3em}  % prevent overfull lines
+\setlength{\parskip}{0.6em}
+\renewcommand{\baselinestretch}{1.05}
 
 
 %% note box
@@ -123,7 +127,7 @@
 % setup table styles
 \usepackage{floatrow}
 \floatsetup[table]{font=small,capposition=top}
-\renewcommand{\arraystretch}{1.25}
+\renewcommand{\arraystretch}{1.1}
 
 % chapter title style
 \usepackage{titlesec}
@@ -179,3 +183,11 @@
 
 \usepackage{enumitem}
 \setitemize{noitemsep,topsep=0pt,parsep=2pt,partopsep=0pt}
+
+%% remove page number on chapter and part page
+% \makeatletter
+% \renewcommand\ps@plain{\let\@mkboth\@gobbletwo
+%      \let\@oddhead\@empty
+%      \def\@oddfoot{\reset@font\hfil}
+%      \let\@evenhead\@empty\let\@evenfoot\@oddfoot}
+% \makeatother
