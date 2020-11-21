@@ -100,11 +100,11 @@ The decoding rules are as follows:
 \begin{itemize}
   \item When all bits are set to \0, altitude information is not available or invalid.
 
-  \item When M=1, removing the M bit, the reset 12 bits represent the altitude in meters.
+  \item When M=1, removing the M bit, the remaining 12 bits represent the altitude in meters.
 
   \item When M=0 and Q=1, removing the M and Q bits, the remaining 11 bits encode the altitude with 25 ft increments. Denote $N$ as the decimal value of the remaining 11 bits. The altitude is calculated as $25 \times N - 1000$ ft.
 
-  \item When M=0 and Q=0, the rest bits are defined as follows:
+  \item When M=0 and Q=0, the remaining bits are defined as follows:
 
 \begin{verbatim}
                                 M        Q

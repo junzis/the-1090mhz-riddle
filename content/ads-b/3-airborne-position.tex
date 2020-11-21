@@ -97,7 +97,7 @@ In Figure \ref{fig:cpr_lat_zones}, the latitude zones are illustrated. The solid
   \label{fig:cpr_lat_zones}
 \end{figure}
 
-In Figure \ref{fig:cpr_lon_zones}, the latitude zones are illustrated. On the right-hand side of the figure is a zoomed-in view of the gird of northern Europe. The black and gray lines represent the longitude zone size of even and odd messages. We can see that the number of longitude zones (and the sizes) also differs depending on the latitude.
+In Figure \ref{fig:cpr_lon_zones}, the latitude zones are illustrated. On the right-hand side of the figure is a zoomed-in view of the grid of northern Europe. The black and gray lines represent the longitude zone size of even and odd messages. We can see that the number of longitude zones (and the sizes) also differs depending on the latitude.
 
 \begin{figure}
   \includegraphics[width=0.7\linewidth]{figures/adsb/cpr_lon_zone_full.pdf}
@@ -181,7 +181,7 @@ For even and odd messages, the latitude zone sizes are defined as follows:
 \end{equation}
 
 
-To decode the latitude, first, use the following equation to calculate the latitude zone index, demoted as $j$:
+To decode the latitude, first, use the following equation to calculate the latitude zone index, denoted as $j$:
 
 \begin{equation}
   j = floor \left( 59 \cdot \mathrm{lat}_\mathrm{cpr, even} - 60 \cdot \mathrm{lat}_\mathrm{cpr,odd} + \frac{1}{2}  \right)
@@ -198,7 +198,7 @@ Based on both even and odd frames, two latitudes are computed as follows:
 \end{equation}
 
 
-For the southern hemisphere, values returned from previouse equations range from 270 to 360 degrees. Hence, we need to make sure the latitude is within the range of $[-90, +90]$ by applying the following equations:
+For the southern hemisphere, values returned from previous equations range from 270 to 360 degrees. Hence, we need to make sure the latitude is within the range of $[-90, +90]$ by applying the following equations:
 
 \begin{equation}
   \begin{split}

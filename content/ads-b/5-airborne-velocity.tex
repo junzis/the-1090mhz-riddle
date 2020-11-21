@@ -22,14 +22,14 @@ All sub-types share a similar overall message structure, with the different defi
 \textbf{IFR capability flag} & IFR & 42 & 10 & 1 \\ \hline
 \begin{tabular}[c]{@{}l@{}}\textbf{Navigation uncertainty category for velocity}\\ ~~Denoted as NUCr for ADS-B version 0\\ ~~Denoted as NUCv for ADS-B version 1-2\end{tabular} & \begin{tabular}[c]{@{}l@{}}NUCr\\ or\\ NUCv\end{tabular} & \begin{tabular}[c]{@{}c@{}}43\\ :\\ 45\end{tabular} & \begin{tabular}[c]{@{}c@{}}11\\ :\\ 13\end{tabular} & 3 \\ \hline
 \hline
-\begin{tabular}[c]{@{}l@{}}\textbf{Sub-type specific fileds}\\ ~~Refer to Table \ref{tb:adsb-velocity-bits-14-35-gs} and Table \ref{tb:adsb-velocity-bits-14-35-as} \end{tabular} &  & \begin{tabular}[c]{@{}c@{}}46\\ :\\ 67\end{tabular} & \begin{tabular}[c]{@{}c@{}}14\\ :\\ 35\end{tabular} & 22 \\ \hline
+\begin{tabular}[c]{@{}l@{}}\textbf{Sub-type specific fields}\\ ~~Refer to Table \ref{tb:adsb-velocity-bits-14-35-gs} and Table \ref{tb:adsb-velocity-bits-14-35-as} \end{tabular} &  & \begin{tabular}[c]{@{}c@{}}46\\ :\\ 67\end{tabular} & \begin{tabular}[c]{@{}c@{}}14\\ :\\ 35\end{tabular} & 22 \\ \hline
 \hline
 \begin{tabular}[c]{@{}l@{}}\textbf{Source bit for vertical rate}\\ ~~0: GNSS, 1: Barometer\end{tabular} & VrSrc & 38 & 36 & 1 \\ \hline
 \begin{tabular}[c]{@{}l@{}}\textbf{Sign bit for vertical rate}\\ ~~0: Up, 1: Down\end{tabular} & Svr & 69 & 37 & 1 \\ \hline
 \begin{tabular}[c]{@{}l@{}}\textbf{Vertical rate}\\ ~~All zeros: no information\\ ~~LSB: 64 ft/min\\ ~~VR = 64 x (Decimal value - 1)\end{tabular} & VR & \begin{tabular}[c]{@{}c@{}}70\\ :\\ 78\end{tabular} & \begin{tabular}[c]{@{}c@{}}38\\ :\\ 46\end{tabular} & 9 \\ \hline
 \textbf{Reserved} &  & \begin{tabular}[c]{@{}c@{}}79\\ 80\end{tabular} & \begin{tabular}[c]{@{}c@{}}47\\ 48\end{tabular} & 2 \\ \hline
 \begin{tabular}[c]{@{}l@{}}\textbf{Sign bit for GNSS and Baro altitudes difference}\\ ~~0: GNSS alt above Baro alt\\ ~~1: GNSS alt below Baro alt\end{tabular} & SDif & 81 & 49 & 1 \\ \hline
-\begin{tabular}[c]{@{}l@{}}\textbf{Differen between GNSS and Baro altitudes}\\ ~~All zeros: no information\\ ~~LSB: 25 ft\end{tabular} & DAlt & \begin{tabular}[c]{@{}c@{}}82\\ :\\ 88\end{tabular} & \begin{tabular}[c]{@{}c@{}}50\\ :\\ 56\end{tabular} & 7 \\ \hline
+\begin{tabular}[c]{@{}l@{}}\textbf{Difference between GNSS and Baro altitudes}\\ ~~All zeros: no information\\ ~~LSB: 25 ft\end{tabular} & DAlt & \begin{tabular}[c]{@{}c@{}}82\\ :\\ 88\end{tabular} & \begin{tabular}[c]{@{}c@{}}50\\ :\\ 56\end{tabular} & 7 \\ \hline
 \end{tabular}
 \end{table}
 
