@@ -35,9 +35,7 @@ The SSR transmits interrogations using the 1030 MHz radio frequency and the airc
 Although Mode~A and Mode~C provide additional information to air traffic controllers, they present several design challenges \cite{icao1983}. The secondary surveillance radar initiates Mode~A and C interrogations with two different pulse patterns, which are shown in Figure \ref{fig:mode_ac_uplink_pulses}.
 
 \begin{figure}[ht]
-  \scalebox{0.9}{
-    \input{figures/intro/mode_ac_uplink_pulses.tex}
-  }
+  \includegraphics[scale=0.8]{figures/intro/mode_ac_uplink_pulses.pdf}
   \caption{Mode~A/C interrogation pulses}
   \label{fig:mode_ac_uplink_pulses}
 \end{figure}
@@ -47,9 +45,7 @@ The pulses are about 0.8 microseconds wide. P1 and P3 are the two main pulses se
 In Figure \ref{fig:mode_ac_downlink_pulses}, an example of a Mode~A/C reply is shown. Each reply consists of two persistent pulses separated by 20.3 microseconds (F1 and F2). Within this period, either the identity code or the altitude code is encoded using 13 0.45 microseconds pulses. The pulses are separated by gaps of one microsecond. The pulse at the center serves as a verification pulse and is always absent. The presence or absence of any other 12 pulses represents a 1 or 0 bit. When required by air traffic controllers for identification purposes, a special purpose identification (SPI) may follow F2 after two absent pulses.
 
 \begin{figure}[ht]
-  \scalebox{0.9}{
-    \input{figures/intro/mode_ac_downlink_pulses.tex}
-  }
+  \includegraphics[scale=0.8]{figures/intro/mode_ac_downlink_pulses.pdf}
   \caption{Mode~A/C interrogation pulses}
   \label{fig:mode_ac_downlink_pulses}
 \end{figure}
@@ -76,9 +72,7 @@ Unlike the limited number (4096) of unique identification codes in Mode~A commun
 The Mode~S uplink signal contains parameters that indicate which information is desired by the air traffic controller. There are two types of Mode~S interrogations, which are shown in Figure \ref{fig:mode_s_uplink_pulses}. The short interrogation has 56 bits of information contained in the data block, while the long interrogation contains 112 bits of information. The P2 pulse acts as the sidelobe suppression for Mode~A/C transponders so that they will ignore the rest of the interrogation pulses. Information in the Mode~S interrogation data block is uses the Differential Phase-Shift Keying (DPSK) modulaion \cite{mazda2014}.
 
 \begin{figure}[ht]
-  \scalebox{0.9}{
-    \input{figures/intro/mode_s_uplink_pulses.tex}
-  }
+  \includegraphics[scale=0.8]{figures/intro/mode_s_uplink_pulses.pdf}
   \caption{Mode~S uplink pulses}
   \label{fig:mode_s_uplink_pulses}
 \end{figure}
@@ -88,9 +82,7 @@ The Mode~S uplink signal contains parameters that indicate which information is 
 There two types of Mode~S downlink signals, short reply and long reply, which correspond to the short and long interrogations from the SSR. For each microsecond, two bits are transmitted. All Mode~S replies start with an 8-microsecond fixed preamble and continue with 56 or 122 microseconds of the data block. The structure of the downlink message is shown in Figure \ref{fig:mode_s_downlink_pulses}.
 
 \begin{figure}[ht]
-  \scalebox{0.9}{
-    \input{figures/intro/mode_s_downlink_pulses.tex}
-  }
+  \includegraphics[scale=0.8]{figures/intro/mode_s_downlink_pulses.pdf}
   \caption{An example of Mode~S reply message}
   \label{fig:mode_s_downlink_pulses}
 \end{figure}
@@ -106,9 +98,7 @@ The 16-bit fix preamble can be represented as \texttt{1010000101000000} in binar
 Similar to Mode~A/C, Mode~S SSR can send \emph{All-Call} interrogations to all aircraft in the vicinity. The All-Call interrogations are designed to be compatible with Mode~A/C transponders. In Figure \ref{fig:mode_s_all_call}, the All-Call interrogation is shown. There would be 8 or 21 microseconds between P1 and P3, which is the same as Mode~A/C. P4 is a wider pulse lasting for 1.6 microseconds.
 
 \begin{figure}[ht]
-  \scalebox{0.9}{
-    \input{figures/intro/mode_s_all_call.tex}
-  }
+  \includegraphics[scale=0.8]{figures/intro/mode_acs_all_call.pdf}
   \caption{Mode~A/C/S All-Call interrogation}
   \label{fig:mode_s_all_call}
 \end{figure}
@@ -118,9 +108,7 @@ When a Mode~A/C transponder receives this interrogation, the last pulse P4 is ig
 This is one of the several different interrogation pulse patterns from a Mode~A/C compatible Mode~S radar. Most current SSRs can perform both Mode~A/C and Mode~S interrogations. In Figure \ref{fig:mode_s_inter_mode}, the interrogation pulses and replies from aircraft transponders are summarized.
 
 \begin{figure}[ht]
-  \scalebox{0.9}{
-    \input{figures/intro/mode_s_inter_mode.tex}
-  }
+  \includegraphics[scale=0.8]{figures/intro/mode_s_inter_mode.pdf}
   \caption{SSR interrogations pulses and transponder replies}
   \label{fig:mode_s_inter_mode}
 \end{figure}

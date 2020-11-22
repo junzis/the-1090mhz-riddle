@@ -14,12 +14,18 @@ In version 0, the structure of the message is shown in Table \ref{tb:adsb-operat
 \footnotesize
 \begin{tabular}{|l|c|c|c|c|}
 \hline
-\textbf{FIELD} & \textbf{ABBR} & \textbf{FB} & \textbf{MB} & \textbf{N-BITS} \\ \hline
-\begin{tabular}[c]{@{}l@{}}Type code = 31 \\ Binary: 11111\end{tabular} & TC & \begin{tabular}[c]{@{}c@{}}33\\ :\\ 37\end{tabular} & \begin{tabular}[c]{@{}c@{}}1\\ :\\ 5\end{tabular} & 5 \\ \hline
-\begin{tabular}[c]{@{}l@{}}Sub-type code = 0\\ Binary: 000\end{tabular} & ST & \begin{tabular}[c]{@{}c@{}}38\\ :\\ 40\end{tabular} & \begin{tabular}[c]{@{}c@{}}6\\ :\\ 8\end{tabular} & 3 \\ \hline
-\begin{tabular}[c]{@{}l@{}}Enroute operational capabilities (4 bits)\\ Terminal area operational capabilities (4 bits)\\ Approach/landing operational capabilities (4 bits)\\ Surface operational capabilities (4 bits)\end{tabular} & \begin{tabular}[c]{@{}c@{}}CC4\\ CC3\\ CC2\\ CC1\end{tabular} & \begin{tabular}[c]{@{}c@{}}41\\ :\\ 56\end{tabular} & \begin{tabular}[c]{@{}c@{}}9\\ :\\ 24\end{tabular} & 16 \\ \hline
-\begin{tabular}[c]{@{}l@{}}Enroute operational status (4 bits)\\ Terminal area operational status (4 bits)\\ Approach/landing operational status (4 bits)\\ Surface operational status (4 bits)\end{tabular} & \begin{tabular}[c]{@{}c@{}}OM4\\ OM3\\ OM2\\ OM1\end{tabular} & \begin{tabular}[c]{@{}c@{}}57\\ :\\ 72\end{tabular} & \begin{tabular}[c]{@{}c@{}}25\\ :\\ 40\end{tabular} & 16 \\ \hline
-Reserved &  & \begin{tabular}[c]{@{}c@{}}73\\ :\\ 88\end{tabular} & \begin{tabular}[c]{@{}c@{}}41\\ :\\ 56\end{tabular} & 16 \\ \hline
+\textbf{FIELD} &  & \textbf{MSG} & \textbf{ME} & \textbf{BITS} \\ \hline
+Type code = 31 (Binary: 11111) & TC & 33-37 & 1-5 & 5 \\ \hline
+Sub-type code = 0 (Binary: 000) & ST & 38-40 & 6-8 & 3 \\ \hline
+Enroute operational capabilities & CC4 & 41-44 & 9-12 & 4\\
+Terminal area operational capabilities & CC3 & 45-48 & 13-16 & 4\\
+Approach/landing operational capabilities & CC2 & 49-52 & 17-21 & 4\\
+Surface operational capabilities & CC1 & 53-56 & 22-24 & 4 \\ \hline
+Enroute operational status & OM4 & 57-60 & 25-28 & 4\\
+Terminal area operational status & OM3 & 61-64 & 29-32 & 4\\
+Approach/landing operational status & OM2 & 65-68 & 33-36 & 4 \\
+Surface operational status  & OM1 & 69-72 & 36-39 & 4\\ \hline
+Reserved & & 73-88 & 41-56 & 16 \\ \hline
 \end{tabular}
 \end{table}
 
@@ -36,19 +42,28 @@ From version 1 onward, the operational status report is implemented and broadcas
 \footnotesize
 \begin{tabular}{|l|c|c|c|c|}
 \hline
-\textbf{FIELD} & \textbf{ABBR} & \textbf{FB} & \textbf{MB} & \textbf{N-BITS} \\ \hline \hline
-\begin{tabular}[c]{@{}l@{}}\textbf{Type code = 31} \\ Binary: 11111\end{tabular} & TC & \begin{tabular}[c]{@{}c@{}}33\\ :\\ 37\end{tabular} & \begin{tabular}[c]{@{}c@{}}1\\ :\\ 5\end{tabular} & 5 \\ \hline
-\begin{tabular}[c]{@{}l@{}}\textbf{Sub-type code}\\ 0: airborne\\ 1: surface\\ 2-7: reserved\end{tabular} & ST & \begin{tabular}[c]{@{}c@{}}38\\ :\\ 40\end{tabular} & \begin{tabular}[c]{@{}c@{}}6\\ :\\ 8\end{tabular} & 3 \\ \hline
-\begin{tabular}[c]{@{}l@{}}\textbf{ST=0: Airborne capacity class codes} (16 bits)\\ \textbf{ST=1: Surface capacity codes} (12 bits) \\ \quad\qquad+ \textbf{Length/width code} (4 bits)\end{tabular} & CC & \begin{tabular}[c]{@{}c@{}}41\\ :\\ 56\end{tabular} & \begin{tabular}[c]{@{}c@{}}9\\ :\\ 24\end{tabular} & 16 \\ \hline
-\textbf{Operational mode codes} & OM & \begin{tabular}[c]{@{}c@{}}57\\ :\\ 72\end{tabular} & \begin{tabular}[c]{@{}c@{}}25\\ :\\ 40\end{tabular} & 16 \\ \hline
-\begin{tabular}[c]{@{}l@{}}\textbf{ADS-B version number}\\ 0: Conformant to DOC 9871, Appendix A\\ 1: Conformant to DOC 9871, Appendix B\\ 2-7: Reserved\end{tabular} & VER & \begin{tabular}[c]{@{}c@{}}73\\ :\\ 75\end{tabular} & \begin{tabular}[c]{@{}c@{}}41\\ :\\ 43\end{tabular} & 3 \\ \hline
+\textbf{FIELD} &  & \textbf{MSG} & \textbf{ME} & \textbf{BITS} \\ \hline \hline
+\textbf{Type code = 31} (Binary: 11111) & TC & 33-37 & 1-5 & 5 \\ \hline
+\textbf{Sub-type code} & ST & 38-40 & 6-8 & 3\\
+0: airborne, 1: surface, 2-7: reserved &&&&  \\ \hline
+\textbf{Capacity class codes} & CC & 41-56 & 9-24 & 16 \\
+ST=0: Airborne capacity class codes (16 bits) &&&& \\
+ST=1: Surface capacity codes (12 bits) &&&& \\
+\quad\qquad+ Length/width code (4 bits) &&&& \\ \hline
+\textbf{Operational mode codes} & OM & 57-72 & 25-40 & 16 \\ \hline
+\textbf{ADS-B version number} & Ver & 73-75 & 41-43 & 3\\ 
+0: Comply with DOC 9871, Appendix A &&&& \\
+1: Comply with DOC 9871, Appendix B &&&& \\
+2-7: Reserved &&&& \\ \hline
 \textbf{NIC supplement} & NICs & 76 & 44 & 1 \\ \hline
-\textbf{Navigational accuracy category - position} & NACp & \begin{tabular}[c]{@{}c@{}}45\\ :\\ 48\end{tabular} & \begin{tabular}[c]{@{}c@{}}77\\ :\\ 80\end{tabular} & 4 \\ \hline
-\begin{tabular}[c]{@{}l@{}}\textbf{ST=0: Barometric altitude quality}\\ \textbf{ST=1: Reserved}\end{tabular} & \begin{tabular}[c]{@{}c@{}}BAQ\\ --\end{tabular} & \begin{tabular}[c]{@{}c@{}}81\\ 82\end{tabular} & \begin{tabular}[c]{@{}c@{}}49\\ 50\end{tabular} & 2 \\ \hline
-\textbf{Surveillance integrity level} & SIL & \begin{tabular}[c]{@{}c@{}}83\\ 84\end{tabular} & \begin{tabular}[c]{@{}c@{}}51\\ 52\end{tabular} & 2 \\ \hline
-\begin{tabular}[c]{@{}l@{}}\textbf{ST=0: Barometric altitude integrity}\\ \textbf{ST=1: Track angle or heading}\end{tabular} & \begin{tabular}[c]{@{}c@{}}BICbaro\\ T/H\end{tabular} & 85 & 53 & 1 \\ \hline
+\textbf{Navigational accuracy category - position} & NACp & 77-80 & 45-48 & 4 \\ \hline
+\textbf{ST=0: Barometric altitude quality} & BAQ & 81-82 & 49-50 & 2\\
+\textbf{ST=1: Reserved} &&&& \\ \hline
+\textbf{Surveillance integrity level} & SIL & 83-84 & 51-52 & 2 \\ \hline
+\textbf{ST=0: Barometric altitude integrity} & & 85 & 53 & 1\\
+\textbf{ST=1: Track angle or heading} & & & &  \\ \hline
 \textbf{Horizontal reference direction} & HRD & 86 & 54 & 1 \\ \hline
-\textbf{Reserved} &  & \begin{tabular}[c]{@{}c@{}}87\\ 88\end{tabular} & \begin{tabular}[c]{@{}c@{}}55\\ 56\end{tabular} & 2 \\ \hline
+\textbf{Reserved} & & 87-88 & 55-56 & 2 \\ \hline
 \end{tabular}
 \end{table}
 
@@ -68,17 +83,30 @@ Compared to the previous update, the changes in the operational status report fr
 \footnotesize
 \begin{tabular}{|l|c|c|c|c|}
 \hline
-\textbf{FIELD} & \textbf{ABBR} & \textbf{FB} & \textbf{MB} & \textbf{N-BITS} \\ \hline
-\begin{tabular}[c]{@{}l@{}}\textbf{Type code = 31} \\ Binary: 11111\end{tabular} & TC & \begin{tabular}[c]{@{}c@{}}33\\ :\\ 37\end{tabular} & \begin{tabular}[c]{@{}c@{}}1\\ :\\ 5\end{tabular} & 5 \\ \hline
-\begin{tabular}[c]{@{}l@{}}\textbf{Sub-type code}\\ 0: Airborne status message\\ 1: Surface status message\end{tabular} & ST & \begin{tabular}[c]{@{}c@{}}38\\ :\\ 40\end{tabular} & \begin{tabular}[c]{@{}c@{}}6\\ :\\ 8\end{tabular} & 3 \\ \hline
-\begin{tabular}[c]{@{}l@{}}\textbf{ST=0: Airborne capacity class codes} (16 bits)\\ \textbf{ST=1: Surface capacity codes} (12 bits) \\ \quad\qquad+ \textbf{Length/width code} (4 bits)\end{tabular} & CC & \begin{tabular}[c]{@{}c@{}}41\\ :\\ 56\end{tabular} & \begin{tabular}[c]{@{}c@{}}9\\ :\\ 24\end{tabular} & 16 \\ \hline
-\begin{tabular}[c]{@{}l@{}}\textbf{ST=0: Airborne operational mode codes}\\ \textbf{ST=1: Surface operational mode codes}\end{tabular} & OM & \begin{tabular}[c]{@{}c@{}}57\\ :\\ 72\end{tabular} & \begin{tabular}[c]{@{}c@{}}25\\ :\\ 40\end{tabular} & 16 \\ \hline
-\begin{tabular}[c]{@{}l@{}}\textbf{ADS-B version number}\\ 0: Conformance with DOC 9871, Appendix A\\ 1: Conformance with DOC 9871, Appendix B\\ 2: Conformance with DOC 9871, Appendix C\\ 3-7: Reserved\end{tabular} & VER & \begin{tabular}[c]{@{}c@{}}73\\ :\\ 75\end{tabular} & \begin{tabular}[c]{@{}c@{}}41\\ :\\ 43\end{tabular} & 3 \\ \hline
+\textbf{FIELD} &  & \textbf{MSG} & \textbf{ME} & \textbf{BITS} \\ \hline
+\textbf{Type code = 31} (Binary: 11111) & TC & 33-37 & 1-5 & 5 \\ \hline
+\textbf{Sub-type code} & ST & 38-40 & 6-8 & 3 \\
+0: Airborne status message &&&& \\
+1: Surface status message &&&& \\ \hline
+\textbf{Capacity class codes} & CC & 41-56 & 9-24 & 16 \\
+ST=0: Airborne capacity class codes (16 bits) &&&& \\
+ST=1: Surface capacity codes (12 bits) &&&& \\
+\quad\qquad+ Length/width code (4 bits) &&&& \\ \hline
+\textbf{Operational mode codes} & OM & 57-72 & 25-40 & 16 \\
+\textbf{ST=0: Airborne operational mode codes} &&&&\\
+\textbf{ST=1: Surface operational mode codes} &&&& \\ \hline
+\textbf{ADS-B version number} & Ver & 73-75 & 41-43 & 3\\ 
+0: Comply with DOC 9871, Appendix A &&&&\\ 
+1: Comply with DOC 9871, Appendix B &&&&\\ 
+2: Comply with DOC 9871, Appendix C &&&&\\ 
+3-7: Reserved &&&& \\ \hline
 \textbf{NIC supplement - A} & NICa & 76 & 44 &  \\ \hline
-\textbf{Navigational accuracy category - position} & NACp & \begin{tabular}[c]{@{}c@{}}45\\ :\\ 48\end{tabular} & \begin{tabular}[c]{@{}c@{}}77\\ :\\ 80\end{tabular} & 4 \\ \hline
-\begin{tabular}[c]{@{}l@{}}\textbf{ST=0: Geometric vertical accuracy}\\ \textbf{ST=1: Reserved}\end{tabular} & \begin{tabular}[c]{@{}c@{}}GVA\\ --\end{tabular} & \begin{tabular}[c]{@{}c@{}}81\\ 82\end{tabular} & \begin{tabular}[c]{@{}c@{}}49\\ 50\end{tabular} & 2 \\ \hline
-\textbf{Source integrity level} & SIL & \begin{tabular}[c]{@{}c@{}}83\\ 84\end{tabular} & \begin{tabular}[c]{@{}c@{}}51\\ 52\end{tabular} & 2 \\ \hline
-\begin{tabular}[c]{@{}l@{}}\textbf{ST=0: Barometric altitude integrity} \\ \textbf{ST=1: Track angle or heading}\end{tabular} & \begin{tabular}[c]{@{}c@{}}NICbaro\\ T/H\end{tabular} & 85 & 53 & 1 \\ \hline
+\textbf{Navigational accuracy category - position} & NACp & 77-80 & 45-48 & 4 \\ \hline
+\textbf{ST=0: Geometric vertical accuracy} & GVA & 81-82 & 49-50 & 2\\
+\textbf{ST=1: Reserved} &&&& \\ \hline
+\textbf{Source integrity level} & SIL & 83-84 & 51-52 & 2 \\ \hline
+\textbf{ST=0: Barometric altitude integrity} & & 85 & 53 & 1\\
+\textbf{ST=1: Track angle or heading} &&&& \\ \hline
 \textbf{Horizontal reference direction} & HRD & 86 & 54 & 1 \\ \hline
 \textbf{SIL supplement} & SILs & 87 & 55 & 1 \\ \hline
 \textbf{Reserved} &  & 88 & 56 & 1 \\ \hline

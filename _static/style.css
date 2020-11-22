@@ -42,6 +42,17 @@ nav h1 {
 pre {
   background: #f5f5f5;
   padding: 10px;
+  line-height: 1.15 !important;
+}
+
+code {
+  background: #f5f5f5;
+  color: #000;
+  padding: 0 3px;
+}
+
+pre > code{
+  padding: 0 !important;
 }
 
 .maintext h1 {
@@ -50,32 +61,86 @@ pre {
 }
 
 .maintext h2, .maintext h3 {
-  margin-top: 0.5em;
+  margin-top: 1em;
+}
+
+table {
+  margin: 20px auto;
+  border: 1px solid #aaa;
+  font-size: 85%;
+  min-width: 70%;
 }
 
 table thead {
   background: #f3f3f3;
 }
+
 table caption{
-  text-align: right;
+  text-align: center;
 }
-table caption span:after{
-  content: "[" attr(data-label) "]";
-  margin-left: 10px;
-}
-table tr {
+
+/* table tr {
   border-bottom: 1px dashed #aaa;
-}
+} */
+
 table th {
-  padding: 5px 10px;
+  padding: 3px 6px;
   border-bottom: 2px solid #aaa;
 }
+
 table td {
-  padding: 5px 10px;
+  padding: 3px 6px;
 }
+
 table tr.even {
   background: #fbfbfb;
 }
+
 table tr:hover{
   background: #eee;
+}
+
+figure > img,
+p > img {
+  max-width: 95%;
+  padding: 10px 0;
+  border: 1px solid #ddd;
+  margin: 10px auto;
+}
+
+figure {
+  margin: 20px 0;
+  text-align: center;
+}
+
+figcaption {
+  margin: 10px 0;
+  color: #6c757d;
+}
+
+
+
+li > p {
+  margin-bottom: 3px;
+}
+
+/* Heading numbering */
+body {
+  counter-reset: h2counter;
+
+}
+h1 {
+  counter-reset: h2counter;
+}
+h2 {
+  counter-reset: h3counter;
+}
+
+h2:before {
+  content: counter(h2counter) ".\0000a0\0000a0";
+  counter-increment: h2counter;
+}
+h3:before {
+  content: counter(h2counter) "." counter(h3counter) ".\0000a0\0000a0";
+  counter-increment: h3counter;
 }

@@ -17,7 +17,7 @@ def fig(x, y):
 
 mpl.rc("font", size=12)
 mpl.rc("axes", labelpad=5, linewidth=1)
-mpl.rc("font", family="Charter, Utopia, serif")
+mpl.rc("font", family="sans-serif")
 mpl.rc("lines", linewidth=1.5, markersize=8)
 mpl.rc("grid", color="darkgray", linestyle=":")
 mpl.rc("legend", markerscale=0.9, columnspacing=0.5, fontsize=10)

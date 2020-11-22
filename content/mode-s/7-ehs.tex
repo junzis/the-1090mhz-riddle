@@ -16,19 +16,26 @@ Table \ref{tb:bds40} shows the structure of the message.
 \begin{tabular}{|l|l|l|l|}
 \hline
 \textbf{FIELD} & \textbf{MSG} & \textbf{MB} & \textbf{BITS} \\ \hline
-Status (for MCP/FCU selected altitude) & 33 & 1 & 1 \\ \cdashline{1-1}
-\begin{tabular}[c]{@{}l@{}}MCP/FCU selected altitude\\ Range: {[}0, 65520{]} ft\\ LSB: 16 ft\end{tabular} & 34-45 & 2-13 & 12 \\ \hline
-Status (for FMS selected altitude) & 46 & 14 & 1 \\ \cdashline{1-1}
-\begin{tabular}[c]{@{}l@{}}FMS selected altitude\\ Range: {[}0, 65520{]} ft\\ LSB: 16 ft\end{tabular} & 47-58 & 15-26 & 12 \\ \hline
-Status (for barometric press setting) & 59 & 27 & 1 \\ \cdashline{1-1}
-\begin{tabular}[c]{@{}l@{}}Barometric pressure setting\\ Note: actual value minus 800 mb\\ Range: {[}0, 410{]} mb\\ LSB: 0.1 mb\end{tabular} & 60-71 & 28-39 & 12 \\ \hline
+Status (for MCP/FCU selected altitude) & 33 & 1 & 1 \\ \cdashline{1-4}
+MCP/FCU selected altitude & 34-45 & 2-13 & 12 \\
+~~Range: {[}0, 65520{]} ft &&& \\
+~~LSB: 16 ft &&& \\ \hline
+Status (for FMS selected altitude) & 46 & 14 & 1 \\ \cdashline{1-4}
+FMS selected altitude & 47-58 & 15-26 & 12 \\
+~~Range: {[}0, 65520{]} ft &&&\\
+~~LSB: 16 ft &&& \\ \hline
+Status (for barometric press setting) & 59 & 27 & 1 \\ \cdashline{1-4}
+Barometric pressure setting  & 60-71 & 28-39 & 12 \\
+~~Note: actual value minus 800 mb &&& \\
+~~Range: {[}0, 410{]} mb &&& \\
+~~LSB: 0.1 mb &&& \\ \hline
 Reserved (all zeros) & 72-79 & 40-47 & 8 \\ \hline
-Status of MCP/FCU mode & 80 & 48 & 1 \\ \cdashline{1-1}
-VNAV mode & 81 & 49 & 1 \\ \cdashline{1-1}
-Alt hold mode & 82 & 50 & 1 \\ \cdashline{1-1}
+Status of MCP/FCU mode & 80 & 48 & 1 \\ \cdashline{1-4}
+VNAV mode & 81 & 49 & 1 \\ \cdashline{1-4}
+Alt hold mode & 82 & 50 & 1 \\ \cdashline{1-4}
 Approach mode & 83 & 51 & 1 \\ \hline
 Reserved (all zeros) & 84-85 & 52-53 & 2 \\ \hline
-Status of target altitude source & 86 & 54 & 1 \\ \cdashline{1-1}
+Status of target altitude source & 86 & 54 & 1 \\ \cdashline{1-4}
 Target altitude source & 87-88 & 55-56 & 2 \\ \hline
 \end{tabular}
 \end{table}
@@ -51,8 +58,7 @@ In Figure \ref{fig:bds40_example}, an example of how to decode a BDS 4,0 message
 
 \begin{figure}[ht]
   \centering
-  \input{figures/mode_s/bds40_example.tex}
-  \vspace{0.2cm}
+  \includegraphics[scale=0.9]{figures/mode_s/bds40_example.pdf}
   \caption{BDS 4,0 decoding example}
   \label{fig:bds40_example}
 \end{figure}
@@ -72,7 +78,6 @@ pressure = pms.commb.p40baro(msg)
 \end{notebox}
 
 
-
 \clearpage
 
 \section{Track and turn report (BDS 5,0)}
@@ -89,19 +94,29 @@ Table \ref{tb:bds50} shows the structure of the message.
 \begin{tabular}{|l|l|l|l|}
 \hline
 \textbf{FIELD} & \textbf{MSG} & \textbf{MB} & \textbf{BITS} \\ \hline
-Status (for roll angle) & 33 & 1 & 1 \\ \cdashline{1-1}
-Sign & 34 & 2 & 1 \\ \cdashline{1-1}
-\begin{tabular}[c]{@{}l@{}}Roll angle\\ Range: {[}-90, +90{]} degrees\\ LSB: 45/256 degrees\end{tabular} & 35-43 & 3-11 & 9 \\ \hline
-Status (for track angle) & 44 & 12 & 1 \\ \cdashline{1-1}
-Sign & 45 & 13 & 1 \\ \cdashline{1-1}
-\begin{tabular}[c]{@{}l@{}}True track angle\\ Range: {[}-180, 180{]} degrees\\ LSB: 90/512 degrees\end{tabular} & 46-55 & 14-23 & 10 \\ \hline
-Status (for ground speed) & 56 & 24 & 1 \\ \cdashline{1-1}
-\begin{tabular}[c]{@{}l@{}}Ground speed\\ Range: {[}0, 2046{]} kt\\ LSB: 2 kt\end{tabular} & 57-66 & 25-34 & 10 \\ \hline
-Status (for track angle rate) & 67 & 35 & 1 \\ \cdashline{1-1}
-Sign & 68 & 36 & 1 \\ \cdashline{1-1}
-\begin{tabular}[c]{@{}l@{}}Track angle rate\\ Range: {[}-16, 16{]} degrees/second\\ LSB: 8/256 degrees/second\end{tabular} & 69-77 & 37-45 & 9 \\ \hline
-Status (for true airspeed) & 78 & 46 & 1 \\ \cdashline{1-1}
-\begin{tabular}[c]{@{}l@{}}True airspeed\\ Range: {[}0, 2046{]} kt\\ LSB: 2 kt\end{tabular} & 79-88 & 47-56 & 10 \\ \hline
+Status (for roll angle) & 33 & 1 & 1 \\ \cdashline{1-4}
+Sign & 34 & 2 & 1 \\ \cdashline{1-4}
+Roll angle & 35-43 & 3-11 & 9\\
+~~Range: {[}-90, +90{]} degrees &&& \\
+~~LSB: 45/256 degrees &&& \\ \hline
+Status (for track angle) & 44 & 12 & 1 \\ \cdashline{1-4}
+Sign & 45 & 13 & 1 \\ \cdashline{1-4}
+True track angle & 46-55 & 14-23 & 10 \\
+~~Range: {[}-180, 180{]} degrees &&& \\
+~~LSB: 90/512 degrees &&& \\ \hline
+Status (for ground speed) & 56 & 24 & 1 \\ \cdashline{1-4}
+Ground speed & 57-66 & 25-34 & 10\\
+~~Range: {[}0, 2046{]} kt &&& \\
+~~LSB: 2 kt &&& \\ \hline
+Status (for track angle rate) & 67 & 35 & 1 \\ \cdashline{1-4}
+Sign & 68 & 36 & 1 \\ \cdashline{1-4}
+Track angle rate & 69-77 & 37-45 & 9 \\
+~~Range: {[}-16, 16{]} degrees/second &&& \\
+~~LSB: 8/256 degrees/second &&& \\ \hline
+Status (for true airspeed) & 78 & 46 & 1 \\ \cdashline{1-4}
+True airspeed & 79-88 & 47-56 & 10 \\
+~~Range: {[}0, 2046{]} kt &&& \\
+~~LSB: 2 kt &&& \\ \hline
 \end{tabular}
 \end{table}
 
@@ -111,8 +126,7 @@ In Figure \ref{fig:bds50_example}, an example of how to decode a BDS 5,0 message
 
 \begin{figure}[ht]
   \centering
-  \input{figures/mode_s/bds50_example.tex}
-  \vspace{0.5cm}
+  \includegraphics[scale=0.9]{figures/mode_s/bds50_example.pdf}
   \caption{BDS 5,0 decoding example}
   \label{fig:bds50_example}
 \end{figure}
@@ -152,19 +166,29 @@ Table \ref{tb:bds60} shows the structure of the message.
 \begin{tabular}{|l|l|l|l|}
 \hline
 \textbf{FIELD} & \textbf{MSG} & \textbf{MB} & \textbf{BITS} \\ \hline
-Status (for magnetic heading) & 33 & 1 & 1 \\ \cdashline{1-1}
-Sign & 34 & 2 & 1 \\ \cdashline{1-1}
-\begin{tabular}[c]{@{}l@{}}Magnetic heading\\ Range: {[}-180, +180{]} degrees\\ LSB: 90/512 degrees\end{tabular} & 35-44 & 3-12 & 10 \\ \hline
-Status (for indicated airspeed) & 45 & 13 & 1 \\ \cdashline{1-1}
-\begin{tabular}[c]{@{}l@{}}Indicated airspeed\\ Range: {[}0, 1023{]} kt\\ LSB: 1 kt\end{tabular} & 46-55 & 14-23 & 10 \\ \hline
-Status (for Mach number) & 56 & 24 & 1 \\ \cdashline{1-1}
-\begin{tabular}[c]{@{}l@{}}Mach number\\ Range: {[}0, 4.092{]}\\ LSB: 0.004\end{tabular} & 57-66 & 25-34 & 10 \\ \hline
-Status (for barometric altitude rate) & 67 & 35 & 1 \\ \cdashline{1-1}
-Sign & 68 & 36 & 1 \\ \cdashline{1-1}
-\begin{tabular}[c]{@{}l@{}}Barometric altitude rate\\ Range: {[}-16384, +16352{]} ft/min\\ LSB: 32 ft/min\end{tabular} & 69-77 & 37-45 & 9 \\ \hline
-Status (for inertial vertical velocity) & 78 & 46 & 1 \\ \cdashline{1-1}
-Sign & 79 & 47 & 1 \\ \cdashline{1-1}
-\begin{tabular}[c]{@{}l@{}}Inertial vertical velocity\\ Range: {[}-16384, +16352{]} ft/min\\ LSB: 32 ft/min\end{tabular} & 80-88 & 48-56 & 9 \\ \hline
+Status (for magnetic heading) & 33 & 1 & 1 \\ \cdashline{1-4}
+Sign & 34 & 2 & 1 \\ \cdashline{1-4}
+Magnetic heading & 35-44 & 3-12 & 10\\
+Range: {[}-180, +180{]} degrees &&& \\
+LSB: 90/512 degrees &&& \\ \hline
+Status (for indicated airspeed) & 45 & 13 & 1 \\ \cdashline{1-4}
+Indicated airspeed  & 46-55 & 14-23 & 10\\
+Range: {[}0, 1023{]} kt &&& \\
+LSB: 1 kt &&& \\ \hline
+Status (for Mach number) & 56 & 24 & 1 \\ \cdashline{1-4}
+Mach number & 57-66 & 25-34 & 10\\
+Range: {[}0, 4.092{]} &&&\\
+LSB: 0.004 &&& \\ \hline
+Status (for barometric altitude rate) & 67 & 35 & 1 \\ \cdashline{1-4}
+Sign & 68 & 36 & 1 \\ \cdashline{1-4}
+Barometric altitude rate  & 69-77 & 37-45 & 9 \\
+Range: {[}-16384, +16352{]} ft/min &&& \\
+LSB: 32 ft/min &&& \\ \hline
+Status (for inertial vertical velocity) & 78 & 46 & 1 \\ \cdashline{1-4}
+Sign & 79 & 47 & 1 \\ \cdashline{1-4}
+Inertial vertical velocity & 80-88 & 48-56 & 9\\
+Range: {[}-16384, +16352{]} ft/min &&& \\
+LSB: 32 ft/min &&& \\ \hline
 \end{tabular}
 \end{table}
 
@@ -182,8 +206,11 @@ In the heading and speed report, two different kinds of vertical rates are repor
 \begin{tabular}{|l|l|}
 \hline
 \textbf{Parameter} & \textbf{Input Data Source Priorities} \\ \hline
-Barometric altitude rate & \begin{tabular}[c]{@{}l@{}}1. Air Data System\\ 2. Inertial Reference System / Flight Management System\end{tabular} \\ \hline
-Inertial vertical velocity & \begin{tabular}[c]{@{}l@{}}1. Flight Management Computer / GNSS integrated\\ 2. Flight Management Computer (General)\\ 3. Inertial Reference System / Flight Management System\end{tabular} \\ \hline
+Barometric altitude rate & 1. Air Data System\\ 
+& 2. Inertial Reference System / Flight Management System \\ \hline
+Inertial vertical velocity & 1. Flight Management Computer / GNSS integrated\\ 
+& 2. Flight Management Computer (General)\\
+& 3. Inertial Reference System / Flight Management System \\ \hline
 \end{tabular}
 \end{table}
 
@@ -192,8 +219,7 @@ In Figure \ref{fig:bds60_example}, the example on how to decode a BDS 6,0 messag
 
 \begin{figure}[ht]
   \centering
-  \input{figures/mode_s/bds60_example.tex}
-  \vspace{0.5cm}
+  \includegraphics[scale=0.9]{figures/mode_s/bds60_example.pdf}
   \caption{BDS 6,0 decoding example}
   \label{fig:bds60_example}
 \end{figure}

@@ -73,17 +73,13 @@ MSG     MB      Coding
 
 5) When \emph{Mode~S specific services capability} bit is set to \1, at least one Mode~S specific service is supported.\footnote{The additional specific services are BDS codes other than \texttt{0,2}, \texttt{0,3}, \texttt{1,0}, \texttt{1,7}-\texttt{1,C}, \texttt{2,0}, and \texttt{3,0}}.
 
-6) \emph{Aircraft identification capability} indicates whether the aircraft identification is available.
+6) \emph{Aircraft identification capability} indicates availability of identification.
 
 7) When \emph{Squitter capability subfield} bit is set to \1, both BDS 0,5 and 0,6 registers have been updated in the past 9 to 11 seconds.
 
 8) \emph{Surveillance identifier code} determines whether the transponder has the surveillance identification code capability.
 
 9) \emph{Common usage GICB capability report} is set to \1 every time the GICB capacity report (BDS code 1,7) is changed. Register 1,7 is sampled every minute to check for changes.
-
-
-
-\newpage
 
 \section{Common usage GICB capability report (BDS 1,7)}
 
@@ -167,8 +163,7 @@ A list of supporting BDS code will be returned.
 
 \end{notebox}
 
-\newpage
-
+\clearpage
 
 \section{Aircraft identification (BDS 2,0)}
 
@@ -230,7 +225,7 @@ Callsign \texttt{KLM1017\_} will be returned by the previous function since the 
 \end{notebox}
 
 
-\newpage
+\clearpage
 
 \section{ACAS active resolution advisory (BDS 3,0)}
 

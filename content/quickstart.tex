@@ -7,10 +7,10 @@ Chapter 1 introduced several fundamental concepts about Mode~S communication. Th
 Since Mode~S uses L band high-frequency signals that follow the line-of-sight propagation, any obstructions between the transmitter and receiver can cause a significant amount of signals to be blocked. Assuming no obstacles between an aircraft and receiver and the transmitter has a sufficient amount of power, the maximum range of the receiver is determined by the curvature of the earth. Figure \ref{fig:max_range} illustrates how the maximum range of the receiver can be obtained.
 
 \begin{figure}[ht]
-  \centering
-  \input{figures/quickstart/max_range.tex}
-  \caption{Maximum receiver range}
-  \label{fig:max_range}
+\centering
+\includegraphics[scale=0.9]{figures/quickstart/max_range.pdf}
+\caption{Maximum receiver range}
+\label{fig:max_range}
 \end{figure}
 
 
@@ -25,7 +25,7 @@ Knowing the altitude of the receiver antenna, it is possible to determine the ma
 
 \begin{figure}[ht]
   \centering
-  \includegraphics[scale=0.6]{figures/quickstart/max_range_curve.pdf}
+  \includegraphics[scale=0.65]{figures/quickstart/max_range_curve.pdf}
   \caption{Maximum receiver range curve}
   \label{fig:max_range_curve}
 \end{figure}
@@ -40,7 +40,7 @@ However, it is not difficult to design your own antenna. The carrier frequency o
 
 \begin{figure}[ht]
   \centering
-  \input{figures/quickstart/antennas.tex}
+  \includegraphics[scale=0.9]{figures/quickstart/antennas.pdf}
   \caption{Common antenna designs}
   \label{fig:antennas}
 \end{figure}
@@ -53,7 +53,7 @@ The active antenna has a low-noise amplifier integrated at the antenna side. Som
 
 \begin{figure}[ht]
   \centering
-  \input{figures/quickstart/biastee.tex}
+  \includegraphics[scale=0.9]{figures/quickstart/biastee.pdf}
   \caption{Bias-tee diagram}
   \label{fig:biastee}
 \end{figure}
@@ -83,7 +83,7 @@ SDRs that offer a higher performance also exist. They often support a larger fre
   \textbf{Max sample rate} & 2.8 MSPS & 10 MSPS & 20 MSPS & 61.44 MSPS & 61.44 MSPS \\ \hline
   \textbf{RX channels} & 1 & 1 & 1 & 2 & 2 \\ \hline
   \textbf{TX channels} & 0 & 1 & 1 & 2 & 2 \\ \hline
-  \textbf{Open hardware} & No & Firmware & Full & Full & \begin{tabular}[c]{@{}l@{}}Firmware,\\ Schematics\end{tabular} \\ \hline
+  \textbf{Open hardware} & No & Partially & Full & Full & Partially \\ \hline
   \end{tabular}
 \end{table}
 

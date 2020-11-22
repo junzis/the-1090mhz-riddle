@@ -25,7 +25,7 @@ In Mode~S communications (including ADS-B), CRC error control coding is used. In
 A basic CRC workflow is shown in Figure \ref{fig:crc_flow}. The diagram on the left-hand side shows how the CRC remainder is generated on the sender side. The diagram on the right-hand side shows how the same arithmetic can be used on the receiver side to validate the message.
 
 \begin{figure}[ht]
-  \input{figures/crc/crc_flow.tex}
+  \includegraphics[scale=0.9]{figures/crc/crc_flow.pdf}
   \caption{The CRC error control processes}
   \label{fig:crc_flow}
 \end{figure}
@@ -33,8 +33,10 @@ A basic CRC workflow is shown in Figure \ref{fig:crc_flow}. The diagram on the l
 
 The binary polynomial falls in the finite field arithmetic \cite{carlitz1932}. The divisions of binary polynomials can essentially be considered as the \texttt{XOR} bitwise operations, which can be easily implemented and calculated by computers. In Figure \ref{fig:crc_example}, a CRC remainder calculation example is shown.
 
+
+
 \begin{figure}[ht]
-  \input{figures/crc/crc_example.tex}
+  \includegraphics[scale=0.9]{figures/crc/crc_example.pdf}
   \caption{A CRC example with a 4-bit divisor and 3-bit remainder}
   \label{fig:crc_example}
 \end{figure}

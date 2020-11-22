@@ -145,7 +145,15 @@ def plot_lon_zones(view, **kwargs):
 if __name__ == "__main__":
 
     save = sys.argv[1] if len(sys.argv) > 1 else False
-    plot_lat_zones(viewlat=60, save=save, chap="adsb", name="cpr_lat_zone_high")
-    plot_lat_zones(viewlat=0, save=save, chap="adsb", name="cpr_lat_zone_low")
-    plot_lon_zones(view="full", save=save, chap="adsb", name="cpr_lon_zone_full")
-    plot_lon_zones(view="zoom", save=save, chap="adsb", name="cpr_lon_zone_zoom")
+    plot_lat_zones(
+        viewlat=60, save=save, chap="adsb", name="cpr_lat_zone_high", tight=False
+    )
+    plot_lat_zones(
+        viewlat=0, save=save, chap="adsb", name="cpr_lat_zone_low", tight=False
+    )
+    plot_lon_zones(
+        view="full", save=save, chap="adsb", name="cpr_lon_zone_full", tight=False
+    )
+    plot_lon_zones(
+        view="zoom", save=save, chap="adsb", name="cpr_lon_zone_zoom", tight=False
+    )

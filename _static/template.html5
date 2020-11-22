@@ -47,8 +47,8 @@ $endfor$
 
 <div class="d-flex flex-row align-items-end">
 	<div>
-		<h1 class="title">The 1090MHz Riddle</h1>
-		<div class="subtitle">An open-access book about decoding Mode S and ADS-B data</div>
+		<h1 class="title">The 1090 Megahertz Riddle</h1>
+		<div class="subtitle">A Guide to Decoding and Interpreting ADS-B and Mode S Signals</div>
 	</div>
 	<div class='ml-auto chapter-nav'>
     <div class="author">By: <strong>Junzi Sun</strong> (<a href="http://junzis.com">junzis.com</a>)</div>
@@ -70,7 +70,7 @@ $endfor$
 <div class="row">
 <div class="col-md-4 col-lg-3">
 <nav>
-  <h1>Chapters</h1>
+  <h1>Book chapters</h1>
   <ul>
     <li><a href="$if(rootdir)$$rootdir$$endif$index.html">Preface</a></li>
     <li><a href="$if(rootdir)$$rootdir$$endif$content/introduction.html">1. Introduction</a></li>

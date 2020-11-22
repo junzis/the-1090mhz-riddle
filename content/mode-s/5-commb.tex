@@ -7,15 +7,12 @@ Comm-B protocol supports many different types of messages (up to 255). Several i
 
 \section{Structure}
 
-Comm-B messages have similar structures as surveillance replies (DF=4/5). The structures are shown in the Table \ref{tb:df_20_21_structure}.
+Comm-B messages have similar structures as surveillance replies (DF=4/5). The structures are shown in the Tables \ref{tb:df_20_structure} and \ref{tb:df_21_structure}.
 
 \begin{table}[!ht]
-\caption{Comm-B messages with altitude code and identity code}
-\label{tb:df_20_21_structure}
-
-\begin{subtable}[t]{.6\linewidth}
   \centering
   \caption{Comm-B, altitude reply (DF=20)}
+  \label{tb:df_20_structure}
   \begin{tabular}[t]{|l|l|l|l|}
   \hline
   \textbf{FIELD} & \textbf{} & \textbf{MSG} & \textbf{BITS} \\ \hline
@@ -27,13 +24,13 @@ Comm-B messages have similar structures as surveillance replies (DF=4/5). The st
   Message, Comm-B         & MB & 33-88  & 56  \\ \hline
   Parity  &  & 89-112  & 24  \\ \hline
   \end{tabular}
-\end{subtable}%
+\end{table}
 
-\vspace{0.5cm}
 
-\begin{subtable}[t]{.6\linewidth}
+\begin{table}[ht]
   \centering
   \caption{Comm-B, identity reply (DF=21)}
+  \label{tb:df_21_structure}
   \begin{tabular}[t]{|l|l|l|l|}
   \hline
   \textbf{FIELD} & \textbf{} & \textbf{MSG} & \textbf{BITS} \\ \hline
@@ -45,7 +42,6 @@ Comm-B messages have similar structures as surveillance replies (DF=4/5). The st
   Message, Comm-B         & MB & 33-88  & 56  \\ \hline
   Parity  &  & 89-112  & 24  \\ \hline
   \end{tabular}
-\end{subtable}
 \end{table}
 
 The definitions of common fields are the same as surveillance replies in chapter \ref{chap:surv_reply}. The parity can be either address parity or data parity, which are defined in chapter \ref{chap:mode_s_basics}.
@@ -55,7 +51,7 @@ The definitions of common fields are the same as surveillance replies in chapter
 
 Comm-B Data Selector (BDS) is an 8-bit code that determines which information to be included in the MB fields. It is often shown as a 2-digit hexadecimal, for example, \texttt{4,0} or \texttt{0,A}. We can make a comparison between the BDS code and Type Code used in ADS-B. They both help to identify which structure shall be used to decode the message, except that the BDS code is only included in the uplink (Comm-A). For Comm-B messages, BDS codes are not always included.
 
-Without knowing the BDS code of the downlink message, the information contained in the MB field can not be decoded. Fortunately, there are methods available that can be used to infer the BDS code for most of the messages and decode them. In a later chapter, we are going to explain how the BDS code inference process works.
+Without knowing the BDS code of the downlink message, the information contained in the MB field can not be decoded. Fortunately, there are methods available that can be used to infer the BDS code for most of the messages and decode them. In a later chapter, the inference process will be explained.
 
 The following is the list of BDS codes for messages that will be discussed in detail in the different chapters.
 

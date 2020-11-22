@@ -14,22 +14,37 @@ All sub-types share a similar overall message structure, with the different defi
 \footnotesize
 \begin{tabular}{|l|l|c|c|c|}
 \hline
-\textbf{FIELD} & \textbf{ABBR} & \textbf{FB} & \textbf{ME} & \textbf{N-BITS} \\ \hline
+\textbf{FIELD} & & \textbf{MSG} & \textbf{ME} & \textbf{BITS} \\ \hline
 \hline
-\begin{tabular}[c]{@{}l@{}}\textbf{Type Code}\\ ~~TC=19 {[}Binary: 10011{]}\end{tabular} & TC & \begin{tabular}[c]{@{}c@{}}33\\ :\\ 37\end{tabular} & \begin{tabular}[c]{@{}c@{}}1\\ :\\ 5\end{tabular} & 5 \\ \hline
-\begin{tabular}[c]{@{}l@{}}\textbf{Sub-type}\\ ~~1: Subsonic\\ ~~2: Supersonic\end{tabular} & ST & \begin{tabular}[c]{@{}c@{}}38\\ :\\ 40\end{tabular} & \begin{tabular}[c]{@{}c@{}}6\\ :\\ 8\end{tabular} & 3 \\ \hline
+\textbf{Type Code} & TC & 33-37 & 1-5 & 5\\
+~~TC=19 {[}Binary: 10011{]} &&&& \\ \hline
+\textbf{Sub-type} & ST & 38-40 & 6-8 & 3\\
+~~1: Subsonic &&&&\\
+~~2: Supersonic &&&& \\ \hline
 \textbf{Intent change flag} & IC & 41 & 9 & 1 \\ \hline
 \textbf{IFR capability flag} & IFR & 42 & 10 & 1 \\ \hline
-\begin{tabular}[c]{@{}l@{}}\textbf{Navigation uncertainty category for velocity}\\ ~~Denoted as NUCr for ADS-B version 0\\ ~~Denoted as NUCv for ADS-B version 1-2\end{tabular} & \begin{tabular}[c]{@{}l@{}}NUCr\\ or\\ NUCv\end{tabular} & \begin{tabular}[c]{@{}c@{}}43\\ :\\ 45\end{tabular} & \begin{tabular}[c]{@{}c@{}}11\\ :\\ 13\end{tabular} & 3 \\ \hline
+\textbf{Navigation uncertainty category for velocity} & & 43-45 & 11-13 & 3\\
+~~ADS-B version 0 & NUCr &&&\\
+~~ADS-B version 1-2 & NUCv &&&\\ \hline
 \hline
-\begin{tabular}[c]{@{}l@{}}\textbf{Sub-type specific fields}\\ ~~Refer to Table \ref{tb:adsb-velocity-bits-14-35-gs} and Table \ref{tb:adsb-velocity-bits-14-35-as} \end{tabular} &  & \begin{tabular}[c]{@{}c@{}}46\\ :\\ 67\end{tabular} & \begin{tabular}[c]{@{}c@{}}14\\ :\\ 35\end{tabular} & 22 \\ \hline
+\textbf{Sub-type specific fields} & & 46-67 & 14-35 & 22\\
+~~Refer to Table \ref{tb:adsb-velocity-bits-14-35-gs} and Table \ref{tb:adsb-velocity-bits-14-35-as} &&&& \\ \hline
 \hline
-\begin{tabular}[c]{@{}l@{}}\textbf{Source bit for vertical rate}\\ ~~0: GNSS, 1: Barometer\end{tabular} & VrSrc & 38 & 36 & 1 \\ \hline
-\begin{tabular}[c]{@{}l@{}}\textbf{Sign bit for vertical rate}\\ ~~0: Up, 1: Down\end{tabular} & Svr & 69 & 37 & 1 \\ \hline
-\begin{tabular}[c]{@{}l@{}}\textbf{Vertical rate}\\ ~~All zeros: no information\\ ~~LSB: 64 ft/min\\ ~~VR = 64 x (Decimal value - 1)\end{tabular} & VR & \begin{tabular}[c]{@{}c@{}}70\\ :\\ 78\end{tabular} & \begin{tabular}[c]{@{}c@{}}38\\ :\\ 46\end{tabular} & 9 \\ \hline
-\textbf{Reserved} &  & \begin{tabular}[c]{@{}c@{}}79\\ 80\end{tabular} & \begin{tabular}[c]{@{}c@{}}47\\ 48\end{tabular} & 2 \\ \hline
-\begin{tabular}[c]{@{}l@{}}\textbf{Sign bit for GNSS and Baro altitudes difference}\\ ~~0: GNSS alt above Baro alt\\ ~~1: GNSS alt below Baro alt\end{tabular} & SDif & 81 & 49 & 1 \\ \hline
-\begin{tabular}[c]{@{}l@{}}\textbf{Difference between GNSS and Baro altitudes}\\ ~~All zeros: no information\\ ~~LSB: 25 ft\end{tabular} & DAlt & \begin{tabular}[c]{@{}c@{}}82\\ :\\ 88\end{tabular} & \begin{tabular}[c]{@{}c@{}}50\\ :\\ 56\end{tabular} & 7 \\ \hline
+\textbf{Source bit for vertical rate} & VrSrc & 38 & 36 & 1 \\
+~~0: GNSS, 1: Barometer &&&&\\ \hline
+\textbf{Sign bit for vertical rate}  & Svr & 69 & 37 & 1 \\
+~~0: Up, 1: Down &&&& \\ \hline
+\textbf{Vertical rate} & VR & 70-78 & 38-46 & 9\\
+~~All zeros: no information &&&&\\
+~~LSB: 64 ft/min &&&&\\
+~~VR = 64 x (Decimal value - 1) &&&& \\ \hline
+\textbf{Reserved} &  & 79-80 & 47-48 & 2 \\ \hline
+\textbf{Sign bit for GNSS and Baro altitudes difference} & SDif & 81 & 49 & 1\\
+~~0: GNSS alt above Baro alt &&&& \\
+~~1: GNSS alt below Baro alt &&&& \\ \hline
+\textbf{Difference between GNSS and Baro altitudes} & dAlt & 82-88 & 50-56 & 7\\
+~~All zeros: no information &&&&\\
+~~LSB: 25 ft &&&& \\ \hline
 \end{tabular}
 \end{table}
 
@@ -160,11 +175,23 @@ The velocity information fields of subtype 1 and 2 messages consist of the East-
 \footnotesize
 \begin{tabular}{|l|l|c|c|c|}
 \hline
-\textbf{FIELD} & \textbf{ABBR} & \textbf{FB} & \textbf{MB} & \textbf{N-BITS} \\ \hline
-\begin{tabular}[c]{@{}l@{}}\textbf{Direction for E-W velocity component}\\ ~~0: from West to East\\ ~~1: from East to West\end{tabular} & Dew & 46 & 14 & 1 \\ \hline
-\begin{tabular}[c]{@{}l@{}}\textbf{East-West velocity component}\\ ~~All zeros: no information available\\ ~~Sub-type 1: Speed = Decimal value - 1\\ ~~Sub-type 2: Speed = 4 x (Decimal value - 1)\\ ~~Unit: knots\end{tabular} & Vew & \begin{tabular}[c]{@{}c@{}}47\\ :\\ 56\end{tabular} & \begin{tabular}[c]{@{}c@{}}15\\ :\\ 24\end{tabular} & 10 \\ \hline
-\begin{tabular}[c]{@{}l@{}}\textbf{Direction for N-S velocity component}\\ ~~0: from South to North\\ ~~1: from North to South\end{tabular} & Dns & 57 & 25 & 1 \\ \hline
-\begin{tabular}[c]{@{}l@{}}\textbf{North-South velocity component}\\ ~~All zeros: no information available\\ ~~Sub-type 1: Speed = Decimal value - 1\\ ~~Sub-type 2: Speed = 4 x (Decimal value - 1)\\ ~~Unit: knots\end{tabular} & Dns & \begin{tabular}[c]{@{}c@{}}58\\ :\\ 67\end{tabular} & \begin{tabular}[c]{@{}c@{}}26\\ :\\ 35\end{tabular} & 10 \\ \hline
+\textbf{FIELD} & & \textbf{MSG} & \textbf{ME} & \textbf{BITS} \\ \hline
+\textbf{Direction for E-W velocity component} & Dew & 46 & 14 & 1\\
+~~0: from West to East &&&&\\
+~~1: from East to West &&&& \\ \hline
+\textbf{East-West velocity component} & Vew & 47-56 & 15-24 & 10\\
+~~All zeros: no information available &&&& \\
+~~Sub-type 1: Speed = Decimal value - 1 &&&& \\
+~~Sub-type 2: Speed = 4 x (Decimal value - 1) &&&& \\
+~~Unit: knots &&&& \\ \hline
+\textbf{Direction for N-S velocity component} & Dns & 57 & 25 & 1 \\
+~~0: from South to North &&&& \\
+~~1: from North to South &&&& \\ \hline
+\textbf{North-South velocity component} & Vns & 58-67 & 26-35 & 10\\
+~~All zeros: no information available &&&&\\
+~~Sub-type 1: Speed = Decimal value - 1 &&&&\\
+~~Sub-type 2: Speed = 4 x (Decimal value - 1) &&&&\\
+~~Unit: knots &&&& \\ \hline
 \end{tabular}
 \end{table}
 
@@ -218,8 +245,8 @@ Message A, payload bit 14-35
 The final aircraft speed and track angle are calculated as:
 
 \begin{align}
-  V_x &= (-2\time1 + 1) \times (9 - 1)  = -8 \\
-  V_y &= (-2\time1 + 1) \times (160 - 1) = -159 \\
+  V_x &= (-2 \times 1 + 1) \times (9 - 1)  = -8 \\
+  V_y &= (-2 \times 1 + 1) \times (160 - 1) = -159 \\
   V &= \sqrt{(-9)^2+ (-160)^2} = 159.20 \\
   \lambda &= arctan2(-9, -160) \times \frac{360}{2\pi} = 182.88
 \end{align}
@@ -239,11 +266,21 @@ Previously, we see the ground speeds in sub-type 1 and 2 are encoded as the East
 \footnotesize
 \begin{tabular}{|l|l|c|c|c|}
 \hline
-\textbf{FIELD} & \textbf{ABBR} & \textbf{FB} & \textbf{MB} & \textbf{N-BITS} \\ \hline
-\begin{tabular}[c]{@{}l@{}}\textbf{Status bit for magnetic heading}\\ ~~0: not available\\ ~~1: available\end{tabular} & SH & 46 & 14 & 1 \\ \hline
-\begin{tabular}[c]{@{}l@{}}\textbf{Magnetic heading}\\ ~~LSB: 360/1024 degrees\\ ~~Heading = Decimal value x 360 / 1024\end{tabular} & HDG & \begin{tabular}[c]{@{}c@{}}47\\ :\\ 56\end{tabular} & \begin{tabular}[c]{@{}c@{}}15\\ :\\ 24\end{tabular} & 10 \\ \hline
-\begin{tabular}[c]{@{}l@{}}\textbf{Airspeed type}\\ ~~0: Indicated airspeed (IAS)\\ ~~1: True airspeed (TAS)\end{tabular} & T & 57 & 25 & 1 \\ \hline
-\begin{tabular}[c]{@{}l@{}}\textbf{Airspeed}\\ ~~All zeros: no information available\\ ~~Sub-type 1: Speed = Decimal value - 1\\ ~~Sub-type 2: Speed = 4 x (Decimal value - 1)\\ ~~Unit: knots\end{tabular} & AS & \begin{tabular}[c]{@{}c@{}}58\\ :\\ 67\end{tabular} & \begin{tabular}[c]{@{}c@{}}26\\ :\\ 35\end{tabular} & 10 \\ \hline
+\textbf{FIELD} & & \textbf{MSG} & \textbf{ME} & \textbf{BITS} \\ \hline
+\textbf{Status bit for magnetic heading}  & SH & 46 & 14 & 1\\
+~~0: not available &&&& \\
+~~1: available &&&& \\ \hline
+\textbf{Magnetic heading} & HDG & 47-56 & 15-24 & 10 \\
+~~LSB: 360/1024 degrees &&&& \\
+~~Heading = Decimal value x 360 / 1024 &&&& \\ \hline
+\textbf{Airspeed type} & T & 57 & 25 & 1\\
+~~0: Indicated airspeed (IAS) &&&& \\
+~~1: True airspeed (TAS) &&&& \\ \hline
+\textbf{Airspeed} & AS & 58-67 & 26-35 & 10 \\
+~~All zeros: no information available &&&& \\
+~~Sub-type 1: Speed = Decimal value - 1 &&&& \\
+~~Sub-type 2: Speed = 4 x (Decimal value - 1) &&&& \\
+~~Unit: knots &&&& \\ \hline
 \end{tabular}
 \end{table}
 

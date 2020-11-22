@@ -17,10 +17,10 @@ Currently, the most common implementation of ACAS II is \emph{Traffic alert and 
 In ACAS II, TA and RA are triggered when certain thresholds to the closest point of approach (CPA) are passed. The thresholds depend on the altitude, speed, and heading of the aircraft. The examples of the TA and RA regions are illustrated in Figure \ref{fig:acas_regions}.
 
 \begin{figure}[ht]
-  \centering
-  \input{figures/mode_s/acas_regions.tex}
-  \caption{Example of an ACAS protection volume in horizontal and vertical directions (between FL50 and FL100)}
-  \label{fig:acas_regions}
+\centering
+\includegraphics[scale=0.9]{figures/mode_s/acas_regions.pdf}
+\caption{Example of an ACAS protection volume in horizontal and vertical directions (between FL50 and FL100)}
+\label{fig:acas_regions}
 \end{figure}
 
 
@@ -64,15 +64,12 @@ The surveillance interrogation is stopped when all the following conditions are 
 \end{itemize}
 
 
-In Table \ref{tb:acas_uf_df_0}, fields for ACAS surveillance interrogation and reply messages are listed.
+In Tables \ref{tb:acas_uf_0} and \ref{tb:acas_df_0}, fields for ACAS surveillance interrogation and reply messages are listed.
 
 \begin{table}[ht]
-\caption{ACAS surveillance uplink and downlink messages}
-\label{tb:acas_uf_df_0}
-
-\begin{subtable}[t]{0.7\linewidth}
   \centering
-  \caption{Interrogation (uplink), UF=0}
+  \caption{ACAS surveillance interrogation (uplink), UF=0}
+  \label{tb:acas_uf_0}
   \begin{tabular}[t]{|l|l|l|l|}
   \hline
   \textbf{FIELD} & \textbf{} & \textbf{MSG} & \textbf{BITS} \\ \hline
@@ -85,13 +82,13 @@ In Table \ref{tb:acas_uf_df_0}, fields for ACAS surveillance interrogation and r
   Reserved &  & 23-32 & 10 \\ \hline
   Address parity & AP & 33-56 & 24 \\ \hline
   \end{tabular}
-\end{subtable}%
+\end{table}
 
-\vspace{0.5cm}
 
-\begin{subtable}[t]{0.7\linewidth}
+\begin{table}[ht]
   \centering
-  \caption{Reply (downlink), DF=0}
+  \caption{ACAS surveillance reply (downlink), DF=0}
+  \label{tb:acas_df_0}
   \begin{tabular}[t]{|l|l|l|l|}
   \hline
   \textbf{FIELD} & \textbf{} & \textbf{MSG} & \textbf{BITS} \\ \hline
@@ -106,21 +103,16 @@ In Table \ref{tb:acas_uf_df_0}, fields for ACAS surveillance interrogation and r
   Altitude code & AC & 20-32 & 13 \\ \hline
   Address parity & AP & 33-56 & 24 \\ \hline
   \end{tabular}
-\end{subtable}
-
 \end{table}
 
 
-Once the target aircraft is within the RA region (a threat), ACAS initiates the coordination interrogation (UF=16). In this step, resolution information are transmitted and received through coordination replies (DF=16). Information that is included in both coordination messages is shown in Table \ref{tb:acas_uf_df_16}.
+Once the target aircraft is within the RA region (a threat), ACAS initiates the coordination interrogation (UF=16). In this step, resolution information are transmitted and received through coordination replies (DF=16). Information that is included in both coordination messages is shown in Tables \ref{tb:acas_uf_16} and \ref{tb:acas_df_16}.
 
 
 \begin{table}[ht]
-
-\caption{ACAS coordination messages}
-\label{tb:acas_uf_df_16}
-\begin{subtable}[t]{0.7\linewidth}
   \centering
-  \caption{Interrogation (UF=16)}
+  \caption{ACAS coordination interrogation (UF=16)}
+  \label{tb:acas_uf_16}
   \begin{tabular}[t]{|l|l|l|l|}
   \hline
   \textbf{FIELD} & \textbf{} & \textbf{MSG} & \textbf{BITS} \\ \hline
@@ -133,13 +125,12 @@ Once the target aircraft is within the RA region (a threat), ACAS initiates the 
   Message, U & MU & 33-88 & 56 \\ \hline
   Address parity & AP & 33-56 & 24 \\ \hline
   \end{tabular}
-\end{subtable}%
+\end{table}%
 
-\vspace{0.5cm}
-
-\begin{subtable}[t]{0.7\linewidth}
+\begin{table}[ht]
   \centering
-  \caption{Reply (DF=16)}
+  \caption{ACAS coordination reply (DF=16)}
+  \label{tb:acas_df_16}
   \begin{tabular}[t]{|l|l|l|l|}
   \hline
   \textbf{FIELD} & \textbf{} & \textbf{MSG} & \textbf{BITS} \\ \hline
@@ -154,7 +145,6 @@ Once the target aircraft is within the RA region (a threat), ACAS initiates the 
   Message, V & MV & 33-88 & 56 \\ \hline
   Address parity & AP & 89-112 & 24 \\ \hline
   \end{tabular}
-\end{subtable}
 \end{table}
 
 
