@@ -32,7 +32,9 @@ $if(math)$
   $math$
 $endif$
 
-<link href="https://fonts.googleapis.com/css?family=PT+Serif" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet"> 
+
 <script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js"
   integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+" crossorigin="anonymous">
 </script>
@@ -47,21 +49,11 @@ $endfor$
 
 <div class="d-flex flex-row align-items-end">
 	<div>
-		<h1 class="title">The 1090 Megahertz Riddle</h1>
-		<div class="subtitle">A Guide to Decoding and Interpreting ADS-B and Mode S Signals</div>
+		<h1 class="title">The 1090 Megahertz Riddle <span class="h5">(second edition)</span></h1>
+		<div class="subtitle">A Guide to Decoding Mode S and ADS-B Signals</div>
 	</div>
 	<div class='ml-auto chapter-nav'>
     <div class="author">By: <strong>Junzi Sun</strong> (<a href="http://junzis.com">junzis.com</a>)</div>
-
-    <a href="http://mode-s.org" type="button"
-        class="btn btn-sm btn-outline-dark btn-light">
-      <i class="fas fa-angle-double-left"></i> mode-s.org
-    </a>
-
-    <a href="$if(rootdir)$$rootdir$$endif$book-the_1090mhz_riddle-junzi_sun.pdf"
-        type="button" class="btn btn-sm btn-outline-info">
-      <i class="far fa-file-pdf"></i> Download PDF
-    </a>
 	</div>
 </div>
 
@@ -70,6 +62,23 @@ $endfor$
 <div class="row">
 <div class="col-md-4 col-lg-3">
 <nav>
+  <a href="http://mode-s.org" type="button"
+      class="btn btn-sm btn-outline-dark btn-light">
+    <i class="fas fa-angle-double-left"></i> mode-s.org
+  </a>
+
+  <a href="$if(rootdir)$$rootdir$$endif$book-the_1090mhz_riddle-junzi_sun.pdf"
+      type="button" class="btn btn-sm btn-outline-info">
+    <i class="far fa-file-pdf"></i> Download PDF book
+  </a>
+
+  <a href="$if(rootdir)$$rootdir$$endif$index.html#cite-this-book" type="button"
+      class="btn btn-sm btn-outline-info btn-light">
+    <i class="fas fa-quote-left"></i> Cite this book
+  </a>
+
+  <hr>
+
   <h1>Book chapters</h1>
   <ul>
     <li><a href="$if(rootdir)$$rootdir$$endif$index.html">Preface</a></li>
@@ -110,10 +119,6 @@ $endfor$
 $if(toc)$
 <hr>
 <nav id="$idprefix$TOC">
-<div class="float-right">
-  <a href="https://github.com/junzis/the-1090mhz-riddle/edit/master/$if(editat)$$editat$.tex$endif$"
-    class='btn btn-sm btn-outline-danger'> <i class="fab fa-github-alt"></i> Edit</a>
-</div>
 <h1>In this page</h1>
 $toc$
 </nav>
@@ -126,7 +131,7 @@ $endif$
 
 <div class="float-right">
   <a href="https://github.com/junzis/the-1090mhz-riddle/edit/master/$if(editat)$$editat$.tex$endif$"
-    class='btn btn-sm btn-outline-danger'> <i class="fas fa-edit"></i> Recommend edits</a>
+    class='btn btn-sm btn-outline-dark'> <i class="fas fa-edit"></i> Recommend edits</a>
 </div>
 
 $body$

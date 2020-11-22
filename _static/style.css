@@ -1,5 +1,5 @@
 body {
-  font-family: "PT Serif", serif !important;
+  font-family: 'Roboto Slab', serif !important;
   padding-top: 20px;
 }
 
@@ -13,7 +13,8 @@ footer{
 }
 
 .subtitle{
-  font-size: 140%;
+  margin-top: 5px;
+  font-size: 160%;
 }
 
 .author{
@@ -28,6 +29,10 @@ footer{
 
 .references div:hover {
   background: #eee;
+}
+
+nav .btn{
+  margin: 5px auto;
 }
 
 nav ul {
@@ -67,7 +72,7 @@ pre > code{
 table {
   margin: 20px auto;
   border: 1px solid #aaa;
-  font-size: 85%;
+  font-size: 90%;
   min-width: 70%;
 }
 

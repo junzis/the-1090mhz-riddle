@@ -6,7 +6,7 @@ Chapter 1 Introduction
   Section 1.5 ADS-B
   Section 1.6 Other Mode S services
   Section 1.7 Summary
-Chapter 2 Quick Start: Hardware and Software to Receive Mode S Data
+Chapter 2 Quick Start: hardware and software to receive Mode S signals
   Section 2.1 Range
   Section 2.2 Antenna
   Section 2.3 Receiver
@@ -19,29 +19,29 @@ Chapter 3 ADS-B Basics
   Section 3.5 Example of ADS-B message structure
   Section 3.6 Availability and transmission rate
   Section 3.7 ADS-B versions
-Chapter 4 Aircraft Identification and Category
-  Section 4.1 Identification (Call Sign)
+Chapter 4 Aircraft identification and category
+  Section 4.1 Identification (call sign)
   Section 4.2 Wake vortex category
   Section 4.3 Example
-Chapter 5 Airborne Position
+Chapter 5 Airborne position
   Section 5.1 A over-simplified example
-  Section 5.2 Compact Position Reporting
+  Section 5.2 Compact position reporting
   Section 5.3 Globally unambiguous position decoding
   Section 5.4 Locally unambiguous position decoding
   Section 5.5 Altitude decoding
   Section 5.6 Verification of decoded positions
-Chapter 6 Surface Position
+Chapter 6 Surface position
   Section 6.1 Movement
   Section 6.2 Ground track
   Section 6.3 Position
   Section 6.4 Example
-Chapter 7 Airborne Velocity
+Chapter 7 Airborne velocity
   Section 7.1 Example messages
-  Section 7.2 Vertical Rate
-  Section 7.3 Difference between GNSS and barometric altitudes
-  Section 7.4 Sub-type 1 and 2: Ground Speed decoding
-  Section 7.5 Subtype 3 and 4: Airspeed decoding
-Chapter 8 Aircraft Operation Status
+  Section 7.2 Vertical rate
+  Section 7.3 GNSS and barometric altitudes difference
+  Section 7.4 Sub-type 1 and 2: ground speed decoding
+  Section 7.5 Subtype 3 and 4: airspeed decoding
+Chapter 8 Aircraft operation status
   Section 8.1 Version 0
   Section 8.2 Version 1
   Section 8.3 Version 2
@@ -63,20 +63,20 @@ Chapter 13 Surveillance replies
   Section 13.1 Message structure
   Section 13.2 Altitude code
   Section 13.3 Identity code
-Chapter 14 Airborne Collision Avoidance System
+Chapter 14 Airborne collision avoidance system
   Section 14.1 Background
-  Section 14.2 ACAS with Mode C Transponders
-  Section 14.3 ACAS with Mode S Transponders
+  Section 14.2 ACAS with Mode C transponders
+  Section 14.3 ACAS with Mode S transponders
   Section 14.4 Message fields of ACAS coordination messages
 Chapter 15 Comm-B replies
   Section 15.1 Structure
   Section 15.2 BDS
-Chapter 16 Mode S Elementary Surveillance
+Chapter 16 Mode S elementary surveillance
   Section 16.1 Data link capability report (BDS 1,0)
   Section 16.2 Common usage GICB capability report (BDS 1,7)
   Section 16.3 Aircraft identification (BDS 2,0)
   Section 16.4 ACAS active resolution advisory (BDS 3,0)
-Chapter 17 Mode S Enhanced Surveillance
+Chapter 17 Mode S enhanced surveillance
   Section 17.1 Selected vertical intention (BDS 4,0)
   Section 17.2 Track and turn report (BDS 5,0)
   Section 17.3 Heading and speed report (BDS 6,0)
@@ -87,5 +87,9 @@ Chapter 19 Inferencing of BDS codes
   Section 19.1 BDS codes identification logics
   Section 19.2 Identification of BSD 5,0 and 6,0
   Section 19.3 Examples
-Chapter 20 Conclusion
-Chapter References
+Chapter 20 Summary and beyond
+  Section 20.1 Summary
+  Section 20.2 Crowd-sourced networks
+  Section 20.3 Additional data
+  Section 20.4 Congestion
+  Section 20.5 Future of Mode S and ADS-B
