@@ -30,7 +30,7 @@ The slant distance of an aircraft does not always correspond to the horizontal d
 
 The secondary surveillance radar (SSR), also known as air traffic control radar beacon system (ATCRBS), was designed to provide air traffic controllers more information than that provided by the primary radar. The secondary radar can be installed separately or installed on top of the primary radar. It uses a different radio frequency to actively interrogate the aircraft and receive information transmitted by the aircraft.
 
-The SSR transmits interrogations using the 1030 MHz radio frequency and the aircraft transponder transmits replies using 1090MHz radio frequency. In the early design of SSR, two civilian communication protocols (Mode~A and Mode~C) were introduced. Mode~A and Mode~C allow the SSR to continuously interrogate the identity (squawk code) and the barometric altitude of an aircraft respectively.
+The SSR transmits interrogations using the 1030 MHz radio frequency and the aircraft transponder transmits replies using 1090 MHz radio frequency. In the early design of SSR, two civilian communication protocols (Mode~A and Mode~C) were introduced. Mode~A and Mode~C allow the SSR to continuously interrogate the identity (squawk code) and the barometric altitude of an aircraft respectively.
 
 Although Mode~A and Mode~C provide additional information to air traffic controllers, they present several design challenges \cite{icao1983}. The secondary surveillance radar initiates Mode~A and C interrogations with two different pulse patterns, which are shown in Figure \ref{fig:mode_ac_uplink_pulses}.
 
@@ -50,7 +50,7 @@ In Figure \ref{fig:mode_ac_downlink_pulses}, an example of a Mode~A/C reply is s
   \label{fig:mode_ac_downlink_pulses}
 \end{figure}
 
-The response type (A or C) cannot be identified based on the reply signal itself. The SSR determines the content based on the synchronization with interrogations. This design of ATCRBS works sufficiently well with low-density air traffic, but it cannot efficiently cope with higher flight densities. Since all aircraft replies are transmitted on the same frequency, when several aircraft are in the same direction of the radar beam, reply signals can overlap and introduce errors for decoding. This is known as synchronous garbling.
+The response type (A or C) cannot be identified based on the reply signal itself. The SSR determines the content based on the synchronization with interrogations. This design of ATCRBS works sufficiently well with low-density air traffic, but it cannot efficiently cope with higher flight densities since all aircraft replies are transmitted on the same frequency. When several aircraft are in the same direction of the radar beam, reply signals can overlap and introduce errors for decoding. This is known as synchronous garbling.
 
 When there are multiply secondary radars in the vicinity, replies originated by other radars may be considered as valid responses of one radar, which in turn, causes errors and confusion. This syndrome is called FRUIT (False Replies Unsynchronized In Time).
 
@@ -69,7 +69,7 @@ The main characteristic of Mode~S is its selective interrogation, which allows t
 Unlike the limited number (4096) of unique identification codes in Mode~A communication, the Mode~S transponder is identified by a 24-bit transponder code, which can support up to 16,777,216 ($2^{24}$) unique addresses. In addition to these two major advantages, the Mode~S protocol introduced many different types of information that could be interrogated and downlinked.
 
 \subsection{Mode~S interrogations}
-The Mode~S uplink signal contains parameters that indicate which information is desired by the air traffic controller. There are two types of Mode~S interrogations, which are shown in Figure \ref{fig:mode_s_uplink_pulses}. The short interrogation has 56 bits of information contained in the data block, while the long interrogation contains 112 bits of information. The P2 pulse acts as the sidelobe suppression for Mode~A/C transponders so that they will ignore the rest of the interrogation pulses. Information in the Mode~S interrogation data block is uses the Differential Phase-Shift Keying (DPSK) modulaion \cite{mazda2014}.
+The Mode~S uplink signal contains parameters that indicate which information is desired by the air traffic controller. There are two types of Mode~S interrogations, which are shown in Figure \ref{fig:mode_s_uplink_pulses}. The short interrogation has 56 bits of information contained in the data block, while the long interrogation contains 112 bits of information. The P2 pulse acts as the sidelobe suppression for Mode~A/C transponders so that they will ignore the rest of the interrogation pulses. Information in the Mode~S interrogation data block is uses the Differential Phase-Shift Keying (DPSK) modulation \cite{mazda2014}.
 
 \begin{figure}[ht]
   \includegraphics[scale=0.8]{figures/intro/mode_s_uplink_pulses.pdf}
@@ -79,7 +79,7 @@ The Mode~S uplink signal contains parameters that indicate which information is 
 
 
 \subsection{Mode~S replies}
-There two types of Mode~S downlink signals, short reply and long reply, which correspond to the short and long interrogations from the SSR. For each microsecond, two bits are transmitted. All Mode~S replies start with an 8-microsecond fixed preamble and continue with 56 or 122 microseconds of the data block. The structure of the downlink message is shown in Figure \ref{fig:mode_s_downlink_pulses}.
+There two types of Mode~S downlink signals, short reply and long reply, which correspond to the short and long interrogations from the SSR. For each microsecond, two bits are transmitted. All Mode~S replies start with an 8-microsecond fixed preamble and continue with 56 or 122 microseconds for the data block. The structure of the downlink message is shown in Figure \ref{fig:mode_s_downlink_pulses}.
 
 \begin{figure}[ht]
   \includegraphics[scale=0.8]{figures/intro/mode_s_downlink_pulses.pdf}
@@ -95,7 +95,7 @@ The 16-bit fix preamble can be represented as \texttt{1010000101000000} in binar
 
 \subsection{Compatibility with Mode~A/C}
 
-Similar to Mode~A/C, Mode~S SSR can send \emph{All-Call} interrogations to all aircraft in the vicinity. The All-Call interrogations are designed to be compatible with Mode~A/C transponders. In Figure \ref{fig:mode_s_all_call}, the All-Call interrogation is shown. There would be 8 or 21 microseconds between P1 and P3, which is the same as Mode~A/C. P4 is a wider pulse lasting for 1.6 microseconds.
+Similar to Mode~A/C, Mode~S SSR can send \emph{All-Call} interrogations to all aircraft in the vicinity. The All-Call interrogations are designed to be compatible with Mode~A/C transponders. In Figure \ref{fig:mode_s_all_call}, the All-Call interrogation is shown. There is an 8 or 21 microseconds between P1 and P3, which is the same as Mode~A/C. P4 is a wider pulse lasting for 1.6 microseconds.
 
 \begin{figure}[ht]
   \includegraphics[scale=0.8]{figures/intro/mode_acs_all_call.pdf}
@@ -175,7 +175,7 @@ Common aircraft state parameters included in ADS-B are position, altitude, and s
 Different types of ADS-B messages are identified by Type Codes. The structures of these messages are all defined in ICAO documents, such as in \cite{icao9871v1} and \cite{rtca2011mops}. In Part I of this book, we will explain how these different types of ADS-B messages can be decoded.
 
 \begin{notebox}{Note}
-Originally, there were three candidates to build ADS-B: Mode~S Extended Squitter, VHF Data Link - Mode~4 (VDL4)), and Universal Access Transceiver (UAT). Different specifications are designed for these frequency channels \cite{rtca2011mops, rtca2002uat}. However, the Mode~S extended squitter implementation of ADS-B is the most adopted one among all candidates. UAT is only partially implemented in some countries like the USA, while VDL4 did not go beyond the test phase.
+Originally, there were three candidates to build ADS-B: Mode~S Extended Squitter, VHF Data Link - Mode~4 (VDL4), and Universal Access Transceiver (UAT). Different specifications are designed for these frequency channels \cite{rtca2011mops, rtca2002uat}. However, the Mode~S extended squitter implementation of ADS-B is the most adopted one among all candidates. UAT is only partially implemented in some countries like the USA, while VDL4 did not go beyond the test phase.
 \end{notebox}
 
 
@@ -185,7 +185,7 @@ The most common data format number used in Mode~S for information downlink are 4
 
 In theory, up to 255 different message types are supported by the Mode~S Comm-B. A new parameter, Comm-B Data Selector (BDS), is designed to identify which additional information is included in Mode~S messages. It functions similarly to the Type Code of ADS-B message. In practice, not all 255 BDS codes are defined or used. 
 
-A subgroup of these codes is commonly interrogated by air traffic controllers. By combining different BDS codes into groups, several Mode~S services are defined. The two most used services are Mode~S Elementary Surveillance (ELS) and Mode~S Enhanced Surveillance (EHS) \cite{grappel2008}. For example, in the European airspace, aircraft above certain takeoff weight category are required to have these capabilities enabled.
+A subgroup of these codes is commonly interrogated by air traffic controllers. By combining different BDS codes into groups, several Mode~S services are defined. The two most used services are Mode~S Elementary Surveillance (ELS) and Mode~S Enhanced Surveillance (EHS) \cite{grappel2008}. For example, in the European airspace, aircraft above certain take-off weight category are required to have these capabilities enabled.
 
 The Mode~S Elementary Surveillance (ELS) consists of four BDS codes (10, 17, 20, and 30). It provides basic information such as Mode~S capabilities, identification (callsign), and ACAS resolution advisory, in addition to the altitude or identity (squawk code) information. 
 

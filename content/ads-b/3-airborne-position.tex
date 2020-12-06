@@ -37,7 +37,7 @@ Encoded longitude & LON-CPR & 72-88 & 40-56 & 17 \\ \hline
 \end{tabular}
 \end{table}
 
-It is important to emphasize that the encoded latitude and longitude are not the actual latitude and longitude values. Instead, the position information is encoded in a Compact Position Reporting (CPR) format, which requires fewer bits to encode positions with higher resolution. Two types of position messages (identified by the odd and even frame flag) are broadcast alternately. There are two different ways to decode an airborne position based on these messages:
+It is important to emphasize that the encoded latitude and longitude are not the actual latitude and longitude values. Instead, the position information is encoded in a Compact Position Reporting (CPR) format, which requires fewer bits to encode positions with higher resolution. The CPR offers a trade-off between global position ambiguity and local position accuracy. Two types of position messages (identified by the odd and even frame flag) are broadcast alternately. There are two different ways to decode an airborne position based on these messages:
 
 \begin{enumerate}
 \item \textbf{Globally unambiguous position decoding}: Without a known position to start with, using both types of messages to decode the position.
@@ -45,10 +45,7 @@ It is important to emphasize that the encoded latitude and longitude are not the
 \end{enumerate}
 
 
-The position information in ADS-B messages is encoded in a compact position reporting (CPR) format. The general idea behind CPR is to encode more coordinate decimals using fewer bits. The CPR offers a trade-off between global position ambiguity and local position accuracy.
-
-
-\section{A over-simplified example}
+\section{An over-simplified example}
 First of all, we will use a simple example to explain the basic ideas behind the CPR position encoding. CPR divides 2D space into two different grids. Two message types are used to encode the positions with different grids.
 
 In the following simple example, we want to encode position $(9, 7)$ in a $16\times16$ discrete world. Normally, this would require 4 bits each to encode the $x$ and $y$ coordinates, which is $(1001, 0111)$.
@@ -266,7 +263,7 @@ Then, the longitude is calculated as:
 \end{equation}
 
 
-Similarly, the final longitude is chosen according to the time stamps of the messages as:
+Similarly, the final longitude is chosen according to the timestamps of the messages as:
 
 \begin{equation}
   \mathrm{lon} =
