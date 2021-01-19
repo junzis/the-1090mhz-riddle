@@ -43,7 +43,7 @@ NUCp (V0) & Horizontal protection limit & HPL \\ \cline{2-3}
 NUCr (V0) & Horizontal velocity error (95\%) & HVE \\ \cline{2-3}
  & Vertical velocity error (95\%) & VVE \\ \hline
 NACp (V1,2) & Estimated position uncertainty (95\% horizontal accuracy - p). a.k.a. horizontal figure of merit (HFOM) in GNSS & EPU \\ \cline{2-3}
- & Vertical estimated position uncertainty (95\% vertical accuracy - p). a.k.a. vertical figure of merit (VFOM) in GNSS & VEPU \\ \hline
+ & Vertical estimated position uncertainty (95\% vertical accuracy - p). a.k.a. vertical figure of merit (VHPM) in GNSS & VEPU \\ \hline
 NACv (V1,2) & Horizontal figure of merit (95\% horizontal accuracy - v) & HFOMr \\ \cline{2-3}
  & Vertical figure of merit (95\% horizontal accuracy - v) & VFOMr \\ \hline
 NIC (V1,2) & Horizontal containment radius limit & RC \\ \cline{2-3}
@@ -149,7 +149,7 @@ The Navigation Uncertainty Category - rate (NUCr) is used to indicate the uncert
 \hline
 \textbf{NUCp} & \textbf{HVE (95\%)} & \textbf{VVE (95\%)} \\ \hline
 0 & N/A & N/A \\ \hline
-1 & \textless 10 m/s & \textless 15.2 m/s (50 fps) \\ \hline
+1 & \textless 10 m/s & \textless 15.2 m/s (50 pfs) \\ \hline
 2 & \textless 3 m/s & \textless 4.5 m/s (15 fps) \\ \hline
 3 & \textless 1 m/s & \textless 1.5 m/s (5 fps) \\ \hline
 4 & \textless 0.3 m/s & \textless 0.46 m/s (1.5 fps) \\ \hline
@@ -254,7 +254,7 @@ NACv is introduced in version 1 to replace the NUCv from version 0. The bits are
 \hline
 \textbf{NACv} & \textbf{HFOMr} & \textbf{VFOMr} \\ \hline
 0 & N/A & N/A \\ \hline
-1 & \textless 10 m/s & \textless 15.2 m/s (50 fps) \\ \hline
+1 & \textless 10 m/s & \textless 15.2 m/s (50 pfs) \\ \hline
 2 & \textless 3 m/s & \textless 4.5 m/s (15 fps) \\ \hline
 3 & \textless 1 m/s & \textless 1.5 m/s (5 fps) \\ \hline
 4 & \textless 0.3 m/s & \textless 0.46 m/s (1.5 fps) \\ \hline

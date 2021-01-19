@@ -50,7 +50,7 @@ In Figure \ref{fig:mode_ac_downlink_pulses}, an example of a Mode~A/C reply is s
   \label{fig:mode_ac_downlink_pulses}
 \end{figure}
 
-The response type (A or C) cannot be identified based on the reply signal itself. The SSR determines the content based on the synchronization with interrogations. This design of ATCRBS works sufficiently well with low-density air traffic, but it cannot efficiently cope with higher flight densities. Since all aircraft replies are transmitted on the same frequency, when several aircraft are in the same direction of the radar beam, reply signals can overlap and introduce errors for decoding. This is known as synchronous garbling.
+The response type (A or C) cannot be identified based on the reply signal itself. The SSR determines the content based on the synchronization with interrogations. This design of ATCRBS works sufficiently well with low-density air traffic, but it cannot efficiently cope with higher flight densities since all aircraft replies are transmitted on the same frequency. When several aircraft are in the same direction of the radar beam, reply signals can overlap and introduce errors for decoding. This is known as synchronous garbling.
 
 When there are multiple secondary radars in the vicinity, replies originated by other radars may be considered as valid responses of one radar, which in turn, causes errors and confusion. This syndrome is called FRUIT (False Replies Unsynchronized In Time).
 

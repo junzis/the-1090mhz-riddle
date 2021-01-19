@@ -37,7 +37,7 @@ Encoded longitude & LON-CPR & 72-88 & 40-56 & 17 \\ \hline
 \end{tabular}
 \end{table}
 
-It is important to emphasize that the encoded latitude and longitude are not the actual latitude and longitude values. Instead, the position information is encoded in a Compact Position Reporting (CPR) format, which requires fewer bits to encode positions with higher resolution. Two types of position messages (identified by the odd and even frame flag) are broadcast alternately. There are two different ways to decode an airborne position based on these messages:
+It is important to emphasize that the encoded latitude and longitude are not the actual latitude and longitude values. Instead, the position information is encoded in a Compact Position Reporting (CPR) format, which requires fewer bits to encode positions with higher resolution. The CPR offers a trade-off between global position ambiguity and local position accuracy. Two types of position messages (identified by the odd and even frame flag) are broadcast alternately. There are two different ways to decode an airborne position based on these messages:
 
 \begin{enumerate}
 \item \textbf{Globally unambiguous position decoding}: Without a known position to start with, using both types of messages to decode the position.
@@ -263,7 +263,7 @@ Then, the longitude is calculated as:
 \end{equation}
 
 
-Similarly, the final longitude is chosen according to the time stamps of the messages as:
+Similarly, the final longitude is chosen according to the timestamps of the messages as:
 
 \begin{equation}
   \mathrm{lon} =
