@@ -24,13 +24,13 @@ In Tables \ref{tb:bds_rule_els}, \ref{tb:bds_rule_ehs}, and \ref{tb:bds_rule_mra
 \begin{tabular}{|l|l|l|l|}
 \hline
 \textbf{BDS} & \textbf{MB bits} & \textbf{Parameter} & \textbf{Rules} \\ \hline \hline
-\multirow{2}{*}{1,0} & 1-8 & BDS code & Equal to \texttt{0001 0000}  \\ \cline{2-4} 
+1,0 & 1-8 & BDS code & Equal to \texttt{0001 0000}  \\ \cline{2-4} 
  & 10-14 & Reserved & All zeros \\ \hline \hline
-\multirow{2}{*}{1,7} & 7 & BDS 2,0 enabled & Equal to \texttt{1} \\ \cline{2-4} 
+1,7 & 7 & BDS 2,0 enabled & Equal to \texttt{1} \\ \cline{2-4} 
  & 29-56 & Reserved & All zeros \\ \hline \hline
-\multirow{2}{*}{2,0} & 1-8 & BDS code & Equal to \texttt{0010 0000} \\ \cline{2-4} 
+2,0 & 1-8 & BDS code & Equal to \texttt{0010 0000} \\ \cline{2-4} 
  & 9-56 & Callsign & Only contains 0-9, A-Z, or space \\ \hline \hline
-\multirow{3}{*}{3,0} & 1-8 & BDS code & Equal to \texttt{0011 0000} \\ \cline{2-4} 
+3,0 & 1-8 & BDS code & Equal to \texttt{0011 0000} \\ \cline{2-4} 
  & 29-30 & Threat type & Not equal to \texttt{11} \\ \cline{2-4} 
  & 16-22 & ACAS &  less than 48 \\ \hline
 
@@ -48,21 +48,28 @@ In Tables \ref{tb:bds_rule_els}, \ref{tb:bds_rule_ehs}, and \ref{tb:bds_rule_mra
 \begin{tabular}{|l|l|l|l|}
 \hline
 \textbf{BDS} & \textbf{MB bits} & \textbf{Parameter} & \textbf{Rules} \\ \hline \hline
-\multirow{5}{*}{4,0} & 1 : 2-13 & MCP/FCU selected altitude & Status consistent \\ \cline{2-4} 
+4,0 & 1 : 2-13 & MCP/FCU selected altitude & Status consistent \\ \cline{2-4} 
 & 14 : 15-26 & FMS selected altitude & Status consistent \\ \cline{2-4} 
 & 27 : 28-39 & Barometric pressure & Status consistent \\ \cline{2-4} 
 & 40 - 47 & Reserved & All zeros \\ \cline{2-4} 
 & 52 - 53 & Reserved & All zeros \\ \hline \hline
-\multirow{5}{*}{5,0} & 1 : 2-11 & Roll angle & \makecell*{Status consistent \\ Between -50 and 50 degrees} \\ \cline{2-4} 
+5,0 & 1 : 2-11 & Roll angle & Status consistent \\ 
+& & & Between -50 and 50 degrees \\ \cline{2-4} 
 & 12 : 13-23 & True track angle & Status consistent \\ \cline{2-4} 
-& 24 : 25-34 & Ground speed & \makecell*{Status consistent \\ Between 0 and 600 kt} \\ \cline{2-4} 
+& 24 : 25-34 & Ground speed & Status consistent \\ 
+& & & Between 0 and 600 kt \\ \cline{2-4} 
 & 35 : 36-45 & Track angle rate & Status consistent \\ \cline{2-4} 
-& 45 : 46-56 & True airspeed & \makecell*{Status consistent \\ Between 0 and 500 kt} \\ \hline \hline
-\multirow{5}{*}{6,0} & 1 : 2-12 & Magnetic heading & Status consistent \\ \cline{2-4} 
-& 13 : 14-23 & Indicated airspeed & \makecell*{Status consistent \\ Between 0 and 500 kt} \\ \cline{2-4} 
-& 24 : 25-34 & Mach number & \makecell*{Status consistent \\ Between 0 and 1}\\ \cline{2-4} 
-& 35 : 36-45 & Barometric vertical rate & \makecell*{Status consistent \\ Between -6000 and 6000 fpm} \\ \cline{2-4} 
-& 46 : 47-56 & Inertial vertical rate & \makecell*{Status consistent \\ Between -6000 and 6000 fpm} \\ \hline
+& 45 : 46-56 & True airspeed & Status consistent \\ 
+& & & Between 0 and 500 kt \\ \hline \hline
+6,0 & 1 : 2-12 & Magnetic heading & Status consistent \\ \cline{2-4} 
+& 13 : 14-23 & Indicated airspeed & Status consistent \\ 
+& & & Between 0 and 500 kt \\ \cline{2-4} 
+& 24 : 25-34 & Mach number & Status consistent \\
+& & & Between 0 and 1 \\ \cline{2-4} 
+& 35 : 36-45 & Barometric vertical rate & Status consistent \\ 
+& & & Between -6000 and 6000 fpm \\ \cline{2-4} 
+& 46 : 47-56 & Inertial vertical rate & Status consistent \\ 
+& & & Between -6000 and 6000 fpm \\ \hline
 \end{tabular}
 \end{table}
 
@@ -76,15 +83,17 @@ In Tables \ref{tb:bds_rule_els}, \ref{tb:bds_rule_ehs}, and \ref{tb:bds_rule_mra
 \begin{tabular}{|l|l|l|l|}
 \hline
 \textbf{BDS} & \textbf{MB bits} & \textbf{Parameter} & \textbf{Rules} \\ \hline \hline
-\multirow{3}{*}{4,4} & 1-4 & FOM & Less than 5 \\ \cline{2-4} 
-& 5 : 6-23 & Wind speed / direction & \makecell*{Status consistent \\ speed less than 250 kt} \\ \cline{2-4} 
+4,4 & 1-4 & FOM & Less than 5 \\ \cline{2-4} 
+& 5 : 6-23 & Wind speed / direction & Status consistent \\ 
+& & & speed less than 250 kt \\ \cline{2-4} 
 & 24-34 & Static air temperature & Between -80 and 60$^\circ$C \\ \hline \hline
-\multirow{9}{*}{4,5} & 1 : 2-3 & Turbulence & Status consistent \\ \cline{2-4} 
+4,5 & 1 : 2-3 & Turbulence & Status consistent \\ \cline{2-4} 
 & 4 : 5-6 & Wind shear & Status consistent \\ \cline{2-4} 
 & 7 : 8-9 & Microburst & Status consistent \\ \cline{2-4} 
 & 10 : 11-12 & Icing & Status consistent \\ \cline{2-4} 
 & 13 : 14-15 & Wake vortex & Status consistent \\ \cline{2-4} 
-& 16 : 17-26 & Static air temperature & \makecell*{Status consistent \\ Between -80 and 60$^\circ$C} \\ \cline{2-4} 
+& 16 : 17-26 & Static air temperature & Status consistent \\
+& & & Between -80 and 60$^\circ$C \\ \cline{2-4} 
 & 27 : 28-28 & Static pressure & Status consistent \\ \cline{2-4} 
 & 39 : 40-51 & Radio height & Status consistent \\ \cline{2-4} 
 & 52-56 & Reserved & All zeros \\ \hline
@@ -108,7 +117,7 @@ In order to distinguish between these two messages, we need to utilize the infor
 If the previous logic does not eliminate one of the two possibilities, we need to make use of the information collected in ADS-B (if available) to verify the information. ADS-B data from the same aircraft can be used as a reference, to check whether the speed from the assumed message type agrees with the ground speed from ADS-B. The details of this process is described in \cite{sun2019pymodes}. Wind information can also be taken into consideration to make the identification more accurate.
 
 
-\section{Examples}
+\section{Decoding examples}
 
 The basic BDS code identification logic is relatively simple. It checks all criteria from all message types and decides whether all but one BDS code can be eliminated. In this example section, we are only going to show how a message with both possibilities of BDS 5,0 and BDS 6,0 can be identified.
 

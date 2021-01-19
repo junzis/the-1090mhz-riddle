@@ -11,7 +11,7 @@ An ADS-B frame is 112 bits long and consists of 5 main parts, as follows:
 +----------+----------+-------------+------------------------+-----------+
 \end{verbatim}
 
-Any ADS-B message must start with the Downlink Format 17. In case of a TIS-B message, the Downlink Format is 18. They correspond to 10001 or 10010 in binary for the first 5 bits. Bits 6-8 are used as an additional identifier, which presents different meanings within each ADS-B subtype.
+Civil aircraft ADS-B message starts with the Downlink Format 17. It corresponds to \texttt{10001} in binary for the first 5 bits. Bits 6-8 indicated the transponder capability. After that, the 24-bit transponder code (also known as ICAO code) is included. The last two segments are 56-bit payload and 24-bit parity.
 
 In Table \ref{tb:adsb-structure}, the key information of an ADS-B message is listed.
 
@@ -25,7 +25,7 @@ In Table \ref{tb:adsb-structure}, the key information of an ADS-B message is lis
 1-5 & 5 & DF & Downlink Format \\ \hline
 6-8 & 3 & CA & Transponder capability \\ \hline
 9-32 & 24 & ICAO & ICAO aircraft address \\ \hline
-33-88 & 56 & ME & Payload message \\
+33-88 & 56 & ME & Message, extended squitter \\
 (33-37) & (5) & (TC) & (Type code) \\ \hline
 89-112 & 24 & PI & Parity/Interrogator ID \\ \hline
 \end{tabular}
@@ -148,6 +148,72 @@ Output:
 
 
 
+
+\section{ADS-B versions}
+
+Since ADS-B was first introduced, there have been three different versions of implementations. The main reason for these updates is to include more information (types of data) in ADS-B. The documentation available on these versions and differences is quite far from user friendly. The official ICAO 9871 document \cite{icao9871v1} is confusing to read. In this section, I have put the difference pieces of scattered information together.
+
+There are three versions implemented so far, starting from \texttt{version 0}. The \texttt{version 1} is introduced around 2008, and the \texttt{version 2} is introduced around 2012. The \texttt{version 3} is currently being developed. Major changes in \texttt{version 1} and \texttt{version 2} are listed as follows:
+
+\subsection{From version 0 to 1}
+
+The changes introduced in version 1 are summarized as follows:
+
+\begin{itemize}
+  \item Added Type Code 28 and 31 messages.
+
+  \begin{itemize}
+    \item TC=28: Aircraft status - Emergency/priority status and ACAS RA Broadcast.
+    \item TC=31: Operational status.
+  \end{itemize}
+
+  \item Removed the \emph{Navigational uncertainty categories} (NUC). Introduced the \emph{Navigation integrity category} (NIC) and \emph{Surveillance integrity level} (SIL).
+
+  \begin{itemize}
+    \item Type Code and a NIC Supplement bit (NICs) are used to define the NIC.
+    \item NIC Supplement bit included in operation status message (TC=31).
+  \end{itemize}
+
+  \item The ADS-B version number is now indicated in operation status message (TC=31).
+\end{itemize}
+
+\subsection{From version 1 to 2}
+
+The changes introduced in version 2 are summarized as follows:
+
+\begin{itemize}
+\item
+  Re-defined the structure and content of TC=28 and TC=31 messages.
+\item
+  Introduced two additional NIC supplement bits.
+\item
+  \texttt{NICa} is defined in operational status messages.
+  (TC=31)
+\item
+  \texttt{NICb} is defined in airborne position messages.
+  (TC=9-18)
+\item
+  \texttt{NICc} is defined in operational status messages.
+  (TC=31)
+\item
+  Introduced an additional \emph{Horizontal Containment Radius} (Rc) level within NIC=6 of the airborne position message (TC=13).
+\end{itemize}
+
+\subsection{Identification of the ADS-B Version}
+
+There are two steps to check the ADS-B version. This is because ADS-B \texttt{Version\ 0} is not included in any message.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Step 1: Check whether an aircraft is broadcasting ADS-B messages with   TC=31 at all. If no message is ever reported, it is safe to assume that the version is \texttt{Version\ 0}.
+\item
+  Step 2: If messages with TC=31 are received, check the version numbers located in the bits 41-43 in ME (or bits 73-75 in the message).
+\end{enumerate}
+
+After identifying the correct ADS-B version for an aircraft (which does not change often), one can decode related TC=28 and TC=31 messages accordingly.
+
+
 \section{Availability and transmission rate}
 
 Different ADS-B messages have different transmission rates. The update frequency also differs depending on if the aircraft is on-ground or airborne, as well as if the aircraft is still or moving when on the ground.
@@ -157,7 +223,7 @@ In Table \ref{tb:adsb-transmission-rate}, the transmission rate of these message
 \begin{table}[ht]
   \footnotesize
   \centering
-  \caption{ADS-B message transmission rates}
+  \caption{ADS-B message transmission rates (version 2)}
   \label{tb:adsb-transmission-rate}
   \begin{tabular}{|l|l|l|l|l|}
   \hline
@@ -168,7 +234,7 @@ In Table \ref{tb:adsb-transmission-rate}, the transmission rate of these message
   Airborne velocity & 19 & - & - & 2 Hz \\ \hline
   \multirow{2}{*}{Aircraft status} & \multirow{2}{*}{28} & \multicolumn{3}{l|}{0.2 Hz (\textit{no TCAS RA and Squawk Code change})} \\ \cline{3-5} 
    &  & \multicolumn{3}{l|}{1.25 Hz (\textit{change in TCAS RA or Squawk Code})} \\ \hline
-  Target states & 29 & - & - & 0.8 Hz \\ \hline
+  Target states and status & 29 & - & - & 0.8 Hz \\ \hline
   \multirow{2}{*}{Operational status} & \multirow{2}{*}{31} & \multirow{2}{*}{0.2 Hz} & \multicolumn{2}{l|}{0.4 Hz (\textit{no NIC/NAC/SIL change})} \\ \cline{4-5} 
    &  &  & \multicolumn{2}{l|}{1.25 Hz (\textit{change in NIC/NAC/SIL})} \\ \hline
   \end{tabular}
@@ -176,71 +242,4 @@ In Table \ref{tb:adsb-transmission-rate}, the transmission rate of these message
 
 For Target states and Operational status messages, when there is a change in some key parameters, the transmission is changed to a higher rate for approximately 24 seconds.
 
-
-
-\section{ADS-B versions}
-
-In this section, we are going to look into different versions and the evolution of ADS-B.
-
-Since start of ADS-B until now, there have been three different implementation versions. The major reason for these updates is to include more information (types of data) in ADS-B. The documentation available on these versions and differences is quite far from user friendly and generally presented in a very scattered fashion. Even the official \texttt{ICAO\_9871} document is confusing to read. Here, I am going to put the pieces of scattered information together.
-
-There are three versions implemented so far, starting from version 0, then version 1 around 2008, and version 2 around 2012. Major changes in version 1 and version 2 are listed as follows:
-
-\subsection{From version 0 to 1}
-
-The changes introduced in version 1 are summarized as follows:
-
-\begin{itemize}
-  \item Added Type Code 28 and 31 messages.
-
-  \begin{itemize}
-    \item \texttt{TC=28}: Aircraft status - Emergency/priority status and ACAS RA Broadcast.
-    \item \texttt{TC=31}: Operational status.
-  \end{itemize}
-
-  \item Removed the \emph{Navigational uncertainty categories} (NUC). Introduced the \emph{Navigation integrity category} (NIC) and \emph{Surveillance integrity level} (SIL).
-
-  \begin{itemize}
-    \item Type Code and a NIC Supplement bit (NICs) are used to define the NIC.
-    \item NIC Supplement bit included in operation status message (\texttt{TC=31}).
-  \end{itemize}
-
-  \item The ADS-B version number is now indicated in operation status message (\texttt{TC=31}).
-\end{itemize}
-
-\subsection{From version 1 to 2}
-
-The changes introduced in version 2 are summarized as follows:
-
-\begin{itemize}
-\item
-  Re-defined the structure and content of \texttt{TC=28} and \texttt{TC=31} messages.
-\item
-  Introduced two additional NIC supplement bits.
-\item
-  \texttt{NICa} is defined in operational status messages.
-  (\texttt{TC=31})
-\item
-  \texttt{NICb} is defined in airborne position messages.
-  (\texttt{TC=9-18})
-\item
-  \texttt{NICc} is defined in operational status messages.
-  (\texttt{TC=31})
-\item
-  Introduced an additional \emph{Horizontal Containment Radius} (Rc) level within \texttt{NIC=6} of the airborne position message (\texttt{TC=13}).
-\end{itemize}
-
-\subsection{Identification of the ADS-B Version}
-
-There are two steps to check the ADS-B version. This is because ADS-B \texttt{Version\ 0} is not included in any message.
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\item
-  Step 1: Check whether an aircraft is broadcasting ADS-B messages with   \texttt{TC=31} at all. If no message is ever reported, it is safe to assume that the version is \texttt{Version\ 0}.
-\item
-  Step 2: If messages with \texttt{TC=31} are received, check the version numbers located in the 41-43 bit of the payload (or 73-75 bit of the message).
-\end{enumerate}
-
-After identifying the correct ADS-B version for an aircraft (which does not change often), one can decode related \texttt{TC=28} and \texttt{TC=31} messages accordingly.
 

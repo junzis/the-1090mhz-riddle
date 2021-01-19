@@ -2,7 +2,7 @@
 
 The aircraft airborne position message is used to broadcast the position and altitude of the aircraft. It has the Type Code from 9 to 18 or from 20 to 22. When Type Code is from 9 to 18, the encoded altitude represents the barometric altitude of the aircraft. When the Type Code is from 20 to 22, the encoded altitude contains the GNSS altitude of the aircraft. The Type Code value is related to the uncertainties in the position, which will be discussed in a later chapter.
 
-The structure of the ADS-B airborne position message payload is shown as follows:
+The structure of the ADS-B airborne position message ME field is shown as follows:
 
 \begin{verbatim}
 +-------+-------+--------+---------+------+------+-------------+-------------+
@@ -10,7 +10,7 @@ The structure of the ADS-B airborne position message payload is shown as follows
 +-------+-------+--------+---------+------+------+-------------+-------------+
 \end{verbatim}
 
-There are eight fields in the message payload, and the details of all fields are listed in Table \ref{tb:adsb-air-pos-fields}.
+There are eight fields, and the details of all fields are listed in Table \ref{tb:adsb-air-pos-fields}.
 
 \begin{table}[ht]
 \caption{Airborne position message structure}
@@ -45,10 +45,7 @@ It is important to emphasize that the encoded latitude and longitude are not the
 \end{enumerate}
 
 
-The position information in ADS-B messages is encoded in a compact position reporting (CPR) format. The general idea behind CPR is to encode more coordinate decimals using fewer bits. The CPR offers a trade-off between global position ambiguity and local position accuracy.
-
-
-\section{A over-simplified example}
+\section{An over-simplified example}
 First of all, we will use a simple example to explain the basic ideas behind the CPR position encoding. CPR divides 2D space into two different grids. Two message types are used to encode the positions with different grids.
 
 In the following simple example, we want to encode position $(9, 7)$ in a $16\times16$ discrete world. Normally, this would require 4 bits each to encode the $x$ and $y$ coordinates, which is $(1001, 0111)$.
@@ -283,7 +280,7 @@ It is worth noting that the longitudes in position messages are between 0 and 36
   \mathrm{lon} = \mathrm{lon} - 360,  \quad \text{if}~\mathrm{lon} \ge 180
 \end{equation}
 
-\subsection{Example}
+\subsection{Decoding example}
 
 The example contains two position messages that are received within 10 seconds. The first message is the most recent position message transmitted by the aircraft.
 
@@ -292,11 +289,11 @@ The example contains two position messages that are received within 10 seconds. 
 8D40621D58C386435CC412692AD6
 \end{verbatim}
 
-Following the common ADS-B message structure, we can identify the ICAO address and payload as follows:
+Following the common ADS-B message structure, we can identify the ICAO address and ME field as follows:
 
 \begin{verbatim}
 +----+--------+----------------+--------+
-|    | ICAO   |      Data      |  PI    |
+|    | ICAO   |       ME       |  PI    |
 +----+--------+----------------+--------+
 | 8D | 40621D | 58C382D690C8AC | 2863A7 |
 | 8D | 40621D | 58C386435CC412 | 692AD6 |
@@ -444,7 +441,7 @@ Knowing the longitude zone index, the longitude of the new position is:
 \end{equation}
 
 
-\subsection{Example}
+\subsection{Decoding example}
 
 Next, we illustrate the decoding process of the messages from the previous example with a reference position. The message and the reference position are as follows:
 

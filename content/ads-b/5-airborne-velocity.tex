@@ -1,6 +1,6 @@
 \chapter{Airborne velocity}
 
-Airborne velocities are all transmitted with Type Code 19 (\texttt{TC=19}). Four different subtypes are defined with bit 6 to 8 in the message payload bits. With subtypes 1 and 2, ground speeds of aircraft are reported. With subtypes 3 and 4, aircraft true airspeed or indicated airspeed are included. Reporting of airspeed in ADS-B only occurs when aircraft position can not be determined based on the GNSS system.\footnote{In the real world, subtype 3 messages are very rare.}
+Airborne velocities are all transmitted with Type Code 19 (\texttt{TC=19}). Four different subtypes are defined in bits 6-8 of ME field. With subtypes 1 and 2, ground speeds of aircraft are reported. With subtypes 3 and 4, aircraft true airspeed or indicated airspeed are included. Reporting of airspeed in ADS-B only occurs when aircraft position can not be determined based on the GNSS system.\footnote{In the real world, subtype 3 messages are very rare.}
 
 Among all four different sub-types, sub-type 2 and 4 are designed for supersonic aircraft. Their message structures are identical to subtypes 1 and 3, but with the speed resolution of 4 kt instead of 1 kt. However, since there are no operational supersonic airliners currently, there is no ADS-B airborne velocity message with sub-type 2 and 4.
 
@@ -59,7 +59,7 @@ Message A:  8D485020994409940838175B284F (sub-type 1)
 Message B:  8DA05F219B06B6AF189400CBC33F (sub-type 3)
 \end{verbatim}
 
-By decomposing the messages, the downlink format, ICAO address, message payload, and CRC remainder are shown as follows:
+By decomposing the messages, the downlink format, ICAO address, ME field, and CRC remainder are shown as follows:
 
 \begin{verbatim}
 Message A (sub-type 1):
@@ -79,7 +79,7 @@ Message B (sub-type 3):
 +----+--------+----------------+--------+
 \end{verbatim}
 
-Next, we can convert both message payloads (ME fields) into binary and decompose the structure further as follows:
+Next, we can convert both ME fields of the messages into binary and decompose the structure further as follows:
 
 \begin{verbatim}
 Message A (sub-type 1):
@@ -112,9 +112,9 @@ Here, the second rows and third rows of the messages are binary and decimal valu
 
 The method for decoding vertical rate and its related parameters are the same among all different sub-types of the messages.
 
-First of all, the vertical rate source bit \texttt{VrSrc} (payload bit 36) indicates the source of the altitude measurements. In the case of \0, the GNSS altitude is encoded. In the case of \1, the barometer altitude is encoded.
+First of all, the vertical rate source bit \texttt{VrSrc} (ME bit 36) indicates the source of the altitude measurements. In the case of \0, the GNSS altitude is encoded. In the case of \1, the barometer altitude is encoded.
 
-The direction of vertical movement of aircraft can be read from \texttt{Svr} bit (payload bit 37), with \0 and \1 referring to climb and descent respectively. The encoded vertical rate value \texttt{VR} can be computed using message payload bits 38 to 46. If the 9-bit block contains all zeros, the vertical rate information is not available.
+The direction of vertical movement of aircraft can be read from \texttt{Svr} bit (ME bit 37), with \0 and \1 referring to climb and descent respectively. The encoded vertical rate value \texttt{VR} can be computed using message ME bits 38 to 46. If the 9-bit block contains all zeros, the vertical rate information is not available.
 
 The final vertical rate ($\mathrm{VS}$) is calculated as:
 
@@ -166,11 +166,11 @@ When all the bits are zeros (as shown in \texttt{Message B}) or ones, the inform
 
 \section{Sub-type 1 and 2: ground speed decoding}
 
-The velocity information fields of subtype 1 and 2 messages consist of the East-West velocity component and the North-South velocity component, as well as the signs for these two values. The structure of message payload bits 14 to 35 is shown in Table \ref{tb:adsb-velocity-bits-14-35-gs}.
+The velocity information fields of subtype 1 and 2 messages consist of the East-West velocity component and the North-South velocity component, as well as the signs for these two values. The structure of ME bits 14 to 35 is shown in Table \ref{tb:adsb-velocity-bits-14-35-gs}.
 
 
 \begin{table}[ht]
-\caption{Velocity fields of sub-type 1 and 2 (message payload bit 14 to 35)}
+\caption{Velocity fields of sub-type 1 and 2 (ME bit 14 to 35)}
 \label{tb:adsb-velocity-bits-14-35-gs}
 \footnotesize
 \begin{tabular}{|l|l|c|c|c|}
@@ -195,7 +195,7 @@ The velocity information fields of subtype 1 and 2 messages consist of the East-
 \end{tabular}
 \end{table}
 
-Here, we can see that message payload bit 14 and 25 are sign bits indicating the directions of each component. Each 10-bit block following these sign bits encodes a velocity component. It is important to point out that when any of the 10-bit blocks contains only zeros, no velocity information is available. For supersonic velocity (sub-type 2), the final velocity components are multiplied by a factor of 4.
+Here, we can see that ME bits 14 and 25 are sign bits indicating the directions of each component. Each 10-bit block following these sign bits encodes a velocity component. It is important to point out that when any of the 10-bit blocks contains only zeros, no velocity information is available. For supersonic velocity (sub-type 2), the final velocity components are multiplied by a factor of 4.
 
 To calculate the velocity, four values are needed: \texttt{Sew}, \texttt{Vew},  \texttt{Sns}, \texttt{Vns}. In aviation, it is commonly considers the West-East and South-North components as positive values, which are denoted as $V_x$ and $V_y$. The formulas for sub-type 1 (subsonic) and sub-type 2 (supersonic) differ by a factor of 4.
 
@@ -232,7 +232,7 @@ where Equation \ref{eq:ground_track_mod_360} ensures the track angle range of [0
 Base on the example message A given earlier:
 
 \begin{verbatim}
-Message A, payload bit 14-35
+Message A, ME bit 14-35
 +-----+------------+-----+------------+-------+
 | Sew | Vew        | Sns | Vns        | VrSrc |
 +-----+------------+-----+------------+-------+
@@ -261,7 +261,7 @@ ADS-B velocity messages with sub-type 3 or 4 are broadcast when the ground speed
 Previously, we see the ground speeds in sub-type 1 and 2 are encoded as the East-West and North-South components. We then convert these two components to speed and track angle. In sub-type 3 or 4, the speed and heading directly encoded. The details on related fields are described in Table \ref{tb:adsb-velocity-bits-14-35-as}.
 
 \begin{table}[ht]
-\caption{Velocity fields of sub-type 3 and 4 (message payload bit 14 to 35)}
+\caption{Velocity fields of sub-type 3 and 4 (ME bit 14 to 35)}
 \label{tb:adsb-velocity-bits-14-35-as}
 \footnotesize
 \begin{tabular}{|l|l|c|c|c|}
@@ -308,7 +308,7 @@ Note that the airspeed type bit \texttt{T} represents whether the value is the i
 Now, let us reflect on our previous example \texttt{Message B}:
 
 \begin{verbatim}
-Message B, payload bit 14-35
+Message B, ME bit 14-35
 +----+------------+---+------------+
 | SH | HDG        | T | AS         |
 +----+------------+---+------------+

@@ -51,6 +51,7 @@
 \usepackage{tikz}
 \usetikzlibrary{positioning,shapes,arrows,fadings,patterns}
 \usepackage{emptypage}
+\usepackage{setspace}
 
 \usepackage{threeparttable}
 

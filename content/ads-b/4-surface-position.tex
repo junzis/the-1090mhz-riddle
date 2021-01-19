@@ -2,7 +2,7 @@
 
 When an aircraft is on the ground, a different type of message is used to broadcast its position information. Unlike the airborne position message, the surface position message also includes the speed of the aircraft. Since no altitude information needs to be transmitted, this provides extra bits for extra information, such as speed and track angle.
 
-The surface position message has the Type Code from 5 to 8, which also represents the level of uncertainties in the position. And the structure of the surface position message payload is shown as follows:
+The surface position message has the Type Code from 5 to 8, which also represents the level of uncertainties in the position. And the structure of the surface position message ME field is shown as follows:
 
 
 \begin{verbatim}
@@ -103,7 +103,7 @@ Similarly, with the equations from section \ref{sec:cpr_airborne_global_lon}, th
 
 
 
-\section{Example}
+\section{Decoding example}
 
 \subsection{Globally unambiguous decoding}
 
@@ -114,11 +114,11 @@ First, we decode the location using globally unambiguous decoding. The following
 8C4841753A8A35323FAEBDAC702D    (most recent)
 \end{verbatim}
 
-Based on the ADS-B message structure, we can identify the ICAO address and message payload data as follows:
+Based on the ADS-B message structure, we can identify the ICAO address and message ME field as follows:
 
 \begin{verbatim}
 +----+--------+----------------+--------+
-|    | ICAO   |      Data      |  PI    |
+|    | ICAO   |       ME       |  PI    |
 +----+--------+----------------+--------+
 | 8C | 484175 | 3AAB238733C8CD | 4020B1 |
 | 8C | 484175 | 3A8A35323FAEBD | AC702D |

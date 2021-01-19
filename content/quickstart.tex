@@ -1,10 +1,10 @@
 \chapter{Quick Start: hardware and software to receive Mode~S signals}
 \label{chap:quickstart}
 
-Chapter 1 introduced several fundamental concepts about Mode~S communication. This chapter focuses on the practical aspects of Mode~S data, specifically, how to receive and obtain information that is transmitted in Mode~S downlink communications. Mode~S signals are transmitted using 1090 megahertz radio waves. Hence, the receiver and antenna have to be designed to work with this frequency. Nowadays, all necessary components required to obtain the Mode~S data can be easily made with low-cost off-the-shelf components. Several open-source software tools are available to support the extraction and decoding of data from Mode~S signals. In this chapter, we explain how to step up a functional hardware and software system to receive Mode~S data.
+Chapter 1 introduced several fundamental concepts about Mode~S communication. This chapter focuses on the practical aspects of Mode~S data, specifically, how to receive and obtain information that is transmitted in Mode~S downlink communications. Mode~S signals are transmitted using 1090 MHz radio waves. Hence, the receiver and antenna have to be designed to work with this frequency. Nowadays, all necessary components required to obtain the Mode~S data can be easily made with low-cost off-the-shelf components. Several open-source software tools are available to support the extraction and decoding of data from Mode~S signals. In this chapter, we explain how to step up a functional hardware and software system to receive Mode~S data.
 
 \section{Range}
-Since Mode~S uses L band high-frequency signals that follow the line-of-sight propagation, any obstructions between the transmitter and receiver can cause a significant amount of signals to be blocked. Assuming no obstacles between an aircraft and receiver and the transmitter has a sufficient amount of power, the maximum range of the receiver is determined by the curvature of the earth. Figure \ref{fig:max_range} illustrates how the maximum range of the receiver can be obtained.
+Since Mode~S uses L band signals that follow the line-of-sight propagation, any obstructions between the transmitter and receiver can cause a significant amount of signals to be blocked. Assuming no obstacles between an aircraft and receiver and the transmitter has a sufficient amount of power, the maximum range of the receiver is determined by the curvature of the earth. Figure \ref{fig:max_range} illustrates how the maximum range of the receiver can be obtained.
 
 \begin{figure}[ht]
 \centering
@@ -49,13 +49,13 @@ The monopole antenna and the dipole antenna both are half-wavelength ($\lambda/2
 
 For a remote installation where the antenna is far from the receiver (i.e. long coaxial cable between the antenna and receiver), the high-frequency signal of Mode~S can attenuate quickly. When the signal has arrived at the receiver end, the signal to noise ratio can become quite high. To overcome this limitation, an active antenna may be used.
 
-The active antenna has a low-noise amplifier integrated at the antenna side. Sometimes, it also includes a band-pass filter that is designed for 1090 MHz. The active antenna requires additional powering. Power is commonly supplied through a bias-tee device (Figure \ref{fig:biastee}) connected at the receiver end, which is on the left-hand side of the diagram. On the right-hand side, the radio frequency is mixed with the DC component, which allows the electronic circuit to be powered close to the receiver end.
+The active antenna (see Figure \ref{fig:biastee_active_antenna}) has a low-noise amplifier integrated at the antenna side. Sometimes, it also includes a band-pass filter that is designed for 1090 MHz. The active antenna requires additional powering. Power is commonly supplied through a bias-tee device connected at the receiver end, which is on the left-hand side of the diagram. On the right-hand side, the radio frequency is mixed with the DC component, which allows the electronic circuit to be powered close to the receiver end.
 
 \begin{figure}[ht]
   \centering
-  \includegraphics[scale=0.9]{figures/quickstart/biastee.pdf}
-  \caption{Bias-tee diagram}
-  \label{fig:biastee}
+  \includegraphics[scale=0.9]{figures/quickstart/biastee_active_antenna.pdf}
+  \caption{Diagram of an active antenna powered through a bias-tee}
+  \label{fig:biastee_active_antenna}
 \end{figure}
 
 
@@ -63,7 +63,7 @@ The active antenna has a low-noise amplifier integrated at the antenna side. Som
 
 Many modern Mode~S receivers are built using software-defined radio (SDR). An SDR usually can be tuned to a wide range of radio frequencies. The user can conveniently select the center frequency of the receiver and the sampling rate, as well as defined the bandwidth of the onboard low-pass filter if it is supported.
 
-For receiving ADS-B (and other types of Mode~S message), a RTL-SDR is the most common type of low-cost receiver to choose. Many different brands of RTL-SDR receivers exist; they are often built with the Realtek RTL2832U chipset. It can work with radio frequencies from 24 to 1766 MHz. The maximum sampling rate is 2.8 million samples per second (MSPS). Given that a Mode~S bit consists of a pulse cycle of 2 microseconds (see Figure \ref{fig:mode_s_uplink_pulses}), the minimum SDR sampling rate required for Mode~S is 2 MSPS. RLT-SDR devices just barely manage to meet this requirement.
+For receiving ADS-B (and other types of Mode~S message), a RTL-SDR is the most common type of low-cost receiver to choose. Many different brands of RTL-SDR receivers exist; they are often built with the Realtek RTL2832U chipset. It can work with radio frequencies from 24 to 1766 MHz. The maximum sampling rate is 2.8 million samples per second (MSPS). Given that a Mode~S bit consists of a pulse cycle of 0.5 microseconds (see Figure \ref{fig:mode_s_uplink_pulses}), the minimum SDR sampling rate required for Mode~S is 2 MSPS. RLT-SDR devices just barely manage to meet this requirement.
 
 \begin{notebox}{Note}
   The maximum frequency range of RTL-SDR can be from 0 to 2220 MHz. However, the sensitivity drops off significantly outside the 24 - 1766 MHz range. The sampling rate can actually go up to a maximum of 3.2 million samples per second, but some samples may be dropped at this sampling rate. Hence, it is not stable.
@@ -93,7 +93,7 @@ Several software tools are also available to work with some of these SDR devices
 
 \subsection{dump1090}
 
-\texttt{dump1090} is the most well-known open-source Mode~S decoder currently available. The software is written in C programming language and was originally developed by Salvatore Sanfilippo \footnote{https://github.com/antirez/dump1090} under the BSD three clause license.
+\texttt{dump1090} is the most well-known open-source Mode~S decoder currently available. The software is written in C programming language and was originally developed by Salvatore Sanfilippo \footnote{https://github.com/antirez/dump1090} under the BSD 3-Clause license.
 
 Since its release in 2013, the repository has been forked and extended intensively on GitHub, creating more than 900 forks so far. Many of the branched versions contain different variations, such as support for additional hardware, additional decoded Mode~S messages, and additional output format. Currently, one of the most comprehensive forks is the repository maintained by FlightAware.\footnote{https://github.com/flightaware/dump1090} The following examples will be based on the FlightAware version of \texttt{dump1090}, using a Debian based Linux system.
 
@@ -226,7 +226,7 @@ $ modeslive [-h] --source SOURCE [--connect SERVER PORT DATAYPE]
             [--latlon LAT LON] [--show-uncertainty] [--dumpto DUMPTO]
 
 arguments:
- -h, --help            show this help message and exit
+ -h, --help            Show this help message and exit
  --source SOURCE       Choose data source, "rtlsdr" or "net"
  --connect SERVER PORT DATATYPE
                        Define server, port and data type. Supported data
@@ -304,7 +304,7 @@ pms.bds.infer(msg)
 # BDS 4,0
 pms.commb.selalt40mcp(msg)  # MCP/FCU selected altitude (ft)
 pms.commb.selalt40fms(msg)  # FMS selected altitude (ft)
-pms.commb.p40baro(msg)      # Barometric pressure (mb)
+pms.commb.p40baro(msg)      # Barometric pressure setting (mb)
 
 # BDS 5,0
 pms.commb.roll50(msg)       # Roll angle (deg)

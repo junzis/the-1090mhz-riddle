@@ -2,7 +2,7 @@
 
 Within the group of ADS-B messages, the \emph{Aircraft Identification and Category} message is designed to broadcast the identification (also known as the \emph{callsign}), and the wake vortex category of the aircraft.
 
-In this message, the Type Code can be from 1 to 4. The 56-bit message payload consists of 10 parts and is structured as follows:
+In this message, the Type Code can be from 1 to 4. The 56-bit ME filed consists of 10 parts and is structured as follows:
 
 \begin{verbatim}
 +------+------+------+------+------+------+------+------+------+------+
@@ -65,12 +65,12 @@ ANY & 0 & No category information \\ \hline\hline
 4 & 4 & High vortex aircraft \\ \hline
 4 & 5 & Heavy (larger than 136000 kg) \\ \hline
 4 & 6 & High performance (\textgreater 5 g acceleration) and high speed (\textgreater 400 kt) \\ \hline
-4 & 7 & Rotocraft \\ \hline
+4 & 7 & Rotorcraft \\ \hline
 \end{tabular}
 \end{table}
 
 
-\section{Example}
+\section{Decoding example}
 
 Let us use the following raw message as an example for decoding:
 
@@ -78,14 +78,14 @@ Let us use the following raw message as an example for decoding:
 8D4840D6202CC371C32CE0576098
 \end{verbatim}
 
-The message payload is:
+The ME field is:
 
 \begin{verbatim}
 HEX: 202CC371C32CE0
 BIN: 00100000001011001100001101110001110000110010110011100000
 \end{verbatim}
 
-The structure of the payload can be decomposed as follows:
+The structure of the ME field can be decomposed as follows:
 
 \begin{verbatim}
 +-----+---+------+------+------+------+------+------+------+------+

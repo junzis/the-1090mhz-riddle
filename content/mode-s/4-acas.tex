@@ -28,7 +28,7 @@ In ACAS II, TA and RA are triggered when certain thresholds to the closest point
 
 \section{ACAS with Mode~C transponders}
 
-ACAS system uses Mod C only all-call interrogation (see Figure \ref{fig:mode_s_inter_mode} in chapter \ref{chap:intro}) to detect aircraft that are only equipped with Mode~A/C transponders. In this case, the ACAS system initiates a sequence of interrogations with increasing power.
+ACAS system uses Mode~C only all-call interrogation to detect aircraft that are only equipped with Mode~A/C transponders. In this case, the ACAS system initiates a sequence of interrogations with increasing power.
 
 The interrogation pulse is slightly different from a Mode~A/C-only all-call interrogation. A special $S_1$ pulse (also known as "whisper-shout") is designed to reduce interference. The $S_1$ pulse is inserted 2 $\mu s$ ($\pm 0.15 \mu s$) before the $P_1$ pulse.
 
@@ -45,9 +45,9 @@ The reply should be sent with the following rules:
 
 For Mode~S transponders, ACAS system employs a three-phase process, which includes the phases of \emph{detection}, \emph{surveillance}, and \emph{coordination}.
 
-For the detection phase, ACAS passively listens to Mode~S only all-call replies (DF=11). These all-call replies are usually generated as a result of ground SSR interrogations or as spontaneous replies. In this process, aircraft with Mode~S transponders in the vicinity are discovered. ACAS may also listen to extended squitter messages (Downlink Format 17, ADS-B) to detect other aircraft.
+For the detection phase, ACAS passively listens to Mode~S only all-call replies (DF=11). These all-call replies are usually generated as a result of ground SSR interrogations, or created by spontaneous acquisition squitter (broadcast of DF=11 message with interrogator code \0). In this process, aircraft with Mode~S transponders in the vicinity are discovered. ACAS may also listen to extended squitter messages (Downlink Format 17, ADS-B) to detect other aircraft.
 
-Once an aircraft is determined to be within the ACAS surveillance range, and within 10,000 ft of the own ACAS aircraft, ACAS will initiate a short air-air interrogation (UF=11) to acquire the range. The interrogation rate is defined as:
+Once an aircraft is determined to be within the ACAS surveillance range, and within 10,000 ft of the own ACAS aircraft\footnote{This can be acquired through existing DF=0 and DF=4 replies, or through active interrogations}, ACAS will initiate a short air-air interrogation (UF=0) to acquire the range. The interrogation rate is defined as:
 
 \begin{itemize}
   \item Once every five cycles: when the target aircraft maintains in the surveillance range.
@@ -58,7 +58,7 @@ Once an aircraft is determined to be within the ACAS surveillance range, and wit
 The surveillance interrogation is stopped when all the following conditions are met:
 
 \begin{itemize}
-  \item A reply (DF=11) is received
+  \item A reply (DF=0) is received
   \item Both aircraft are below 18,000 ft.
   \item Target aircraft is more than 3 NM and 60 s away from the closest point of approach.
 \end{itemize}
@@ -178,14 +178,12 @@ Specific fields in above messages are defined as follows:
 
 
 
-\section{Message fields of ACAS coordination messages}
+\section{ACAS coordination interrogation}
+
+Message U-definition (MU) is transmitted in ACAS coordination interrogation. MU is used to transit resolution, ACAS broadcast, and RA broadcast.
 
 
-Message U-definition (MU) and Message V-definition (MV) are transmitted in ACAS coordination interrogation and reply messages, respectively. MU is used to transit resolution, ACAS broadcast, and RA broadcast. MV is used for reply purposes.
-
-\subsection{MU (U-definition)}
-
-\subsubsection{MU of ACAS resolution message}
+\subsection{UDS=3,0}
 
 When ACAS resolution information is transmitted in the UF=16 message, the first 8 bits of MU, U-definition subfields (UDS), is set to \texttt{0011 0000} (UDS=3,0). The corresponding fields are indicated in Table \ref{tb:acas_mu_uds30}.
 
@@ -263,7 +261,7 @@ The significance of fields are listed as follows:
 
 
 
-\subsubsection{MU of RA broadcast message} \label{sec:acas_ra}
+\subsection{UDS=3,1} \label{sec:acas_ra}
 
 When UF=16 is used for RA broadcast, UDS is set to \texttt{0011 0001} (UDS=3,1). The corresponding fields are indicated in Table \ref{tb:acas_mu_uds31}.
 
@@ -346,7 +344,7 @@ The significance of fields are listed as follows:
 
 
 
-\subsubsection{MU of ACAS broadcast message}
+\subsection{UDS=3,2}
 
 When UF=16 is used for ACAS broadcast, UDS is set to \texttt{0011 0010} (UDS=3,2). The corresponding fields are indicated in Table \ref{tb:acas_mu_uds32}.
 
@@ -363,11 +361,14 @@ Aircraft address & MID & 65-8 & 33-56 & 24 \\ \hline
 \end{tabular}
 \end{table}
 
-The only information that is broadcast in the MU of this message is the 24-bit transponder address of the interrogating aircraft.
+The only information that is broadcast in the MU of this message is the 24-bit transponder address of the interrogating aircraft. Its purpose is to inform other aircraft about ACAS capability of the broadcasting aircraft.
 
 
-\subsection{MV (V-definition)}
+\section{ACAS coordination reply}
 
+Message V-definition (MV) is transmitted in ACAS coordination reply message. 
+
+\subsection{VDS=3,0}
 Similar to MU in the UF=16 message, MV in the DF=16 message contains a few common fields. The corresponding fields are indicated in Table \ref{tb:acas_mv_vds30}.
 
 \begin{table}[ht]
@@ -375,9 +376,9 @@ Similar to MU in the UF=16 message, MV in the DF=16 message contains a few commo
 \label{tb:acas_mv_vds30}
 \begin{tabular}{|l|l|l|l|l|}
 \hline
-\textbf{FIELD} & \textbf{} & \textbf{MSG} & \textbf{MU} & \textbf{BITS} \\ \hline
+\textbf{FIELD} & \textbf{} & \textbf{MSG} & \textbf{MV} & \textbf{BITS} \\ \hline
 V-definition subfield 1 [0011] & VDS1 & 33-36 & 1-4 & 4 \\ \hline
-V-definition subfield 2 [0001] & VDS2 & 37-40 & 5-8 & 4 \\ \hline
+V-definition subfield 2 [0000] & VDS2 & 37-40 & 5-8 & 4 \\ \hline
 Active RAs & ARA & 41-54 & 9-22 & 14 \\ \hline
 RAC's record & RAC & 55-58 & 23-26 & 4 \\ \hline
 RA terminated indicator & RAT & 59 & 27 & 1 \\ \hline
@@ -387,3 +388,8 @@ Reserved &  & 61-88 & 29-56 & 28 \\ \hline
 \end{table}
 
 We can see that the structure of the MV fields is similar to MU fields of RA broadcast (UDS=3,1) from Table \ref{tb:acas_mu_uds31}. The interpretations of these fields are also the same as in section \ref{sec:acas_ra}.
+
+\subsection{Other VDS}
+When the first eight bits are not \texttt{0011 0000}, the MV field contain the Ground-initiated Comm-B information that was requested in DS field of uplink (UF=0) in Table \ref{tb:acas_uf_0}. Comm-B will be explained in the next chapter.
+
+It is worth noting that the DS value is not transmitted in the MV field. Thus, it is difficult for us to know what data is contained in the MV field for VDS other than \texttt{3,0}.

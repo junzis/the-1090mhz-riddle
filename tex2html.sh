@@ -82,6 +82,7 @@ find _build/html/content/ads-b/ -maxdepth 1 -name '*.html' -exec sed -i 's/_buil
 find _build/html/content/mode-s/ -maxdepth 1 -name '*.html' -exec sed -i 's/_build\/html/\.\.\/\.\./g' {} \;
 find _build/html/content/ -maxdepth 1 -name '*.html' -exec sed -i 's/_build\/html/\.\./g' {} \;
 
+
 cd _build/html/figures/
 for pdf_file in *.pdf ; do
   echo "converting ${pdf_file}"

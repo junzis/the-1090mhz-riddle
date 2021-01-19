@@ -81,7 +81,7 @@ $endfor$
 
   <h1>Book chapters</h1>
   <ul>
-    <li><a href="$if(rootdir)$$rootdir$$endif$index.html">Preface</a></li>
+    <li><a href="$if(rootdir)$$rootdir$$endif$index.html">Home</a></li>
     <li><a href="$if(rootdir)$$rootdir$$endif$content/introduction.html">1. Introduction</a></li>
     <li><a href="$if(rootdir)$$rootdir$$endif$content/quickstart.html">2. Quick start</a></li>
     <li>ADS-B</li>

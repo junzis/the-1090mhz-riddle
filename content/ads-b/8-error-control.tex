@@ -15,7 +15,7 @@ For error detection, three types of error control codes are broadly used, which 
 \end{itemize}
 
 \begin{notebox}{Note}
-The CRC \emph{remainder} term is confusingly defined in Mode~S literature and standards. Many documents refer it as \emph{parity} or \emph{checksum}. To be consistent with Mode~S standards, such as \cite{icao9871v1, rtca2011mops}, parity, checksum, and CRC remainder are considered to be synonyms in this book. They all refer to the CTC remainder.
+The CRC \emph{remainder} term is confusingly defined in Mode~S literature and standards. Many documents refer it as \emph{parity} or \emph{checksum}. To be consistent with Mode~S standards, such as \cite{icao9871v1, rtca2011mops}, parity, checksum, and CRC remainder are considered to be synonyms in this book. They all refer to the CRC remainder.
 \end{notebox}
 
 \section{CRC error control}
@@ -84,7 +84,7 @@ data = 1000110101000000011010                 # 88 bits
        0101001101001000100000
       [000000000000000000000000]              # append 24 zero bits
 
-FOR i FROM 0 TO 112:
+FOR i FROM 0 TO (112-24):
   IF data[i] IS 1:
     data[i:i+24] = data[i:i+24] XOR generator
 
@@ -109,5 +109,4 @@ remainderB = pms.crc(msgB)  # should be 16
 \end{verbatim}
 
 When the remainder is zero, the message is not corrupted. Otherwise, the error has occurred during the transmission.
-
 \end{notebox}
