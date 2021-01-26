@@ -50,7 +50,7 @@ First of all, we will use a simple example to explain the basic ideas behind the
 
 In the following simple example, we want to encode position $(9, 7)$ in a $16\times16$ discrete world. Normally, this would require 4 bits each to encode the $x$ and $y$ coordinates, which is $(1001, 0111)$.
 
-In the simple "CPR" algorithm, we first define two different grids. The even grid has a size of $4\times4$, while the odd grid has a size of $5\times5$. The is illustrated in Figure \ref{fig:cpr_simple_1}.
+In the simple "CPR" algorithm, we first define two different grids. The even grid has a size of $4\times4$, while the odd grid has a size of $5\times5$. This is illustrated in Figure \ref{fig:cpr_simple_1}.
 
 
 \begin{figure}[!ht]
@@ -84,7 +84,7 @@ Combining the possible positions from both even and odd messages, we can recover
 \subsection{CPR zones}
 The actual CPR algorithm is more sophisticated. First of all, more zones are defined. There are 15 latitude zones defined for each hemisphere. Up to 59 longitude zones are used, and the number of longitude zones is different at different altitudes.
 
-In Figure \ref{fig:cpr_lat_zones}, the latitude zones are illustrated. The solid and dashed lines represent the latitude zone size of even and odd messages.
+Figure \ref{fig:cpr_lat_zones} illustrates the latitude zones. The solid and dashed lines represent the latitude zone size of even and odd messages.
 
 \begin{figure}
   \includegraphics[width=0.7\linewidth]{figures/adsb/cpr_lat_zone_high.pdf} 
@@ -95,7 +95,7 @@ In Figure \ref{fig:cpr_lat_zones}, the latitude zones are illustrated. The solid
   \label{fig:cpr_lat_zones}
 \end{figure}
 
-In Figure \ref{fig:cpr_lon_zones}, the latitude zones are illustrated. On the right-hand side of the figure is a zoomed-in view of the grid of northern Europe. The black and gray lines represent the longitude zone size of even and odd messages. We can see that the number of longitude zones (and the sizes) also differs depending on the latitude.
+Figure \ref{fig:cpr_lon_zones} illustrates the latitude zones. The second plot of the figure is a zoomed-in view of the grid of northern Europe. The black and gray lines represent the longitude zone size of even and odd messages respectively. We can see that the number of longitude zones (and the sizes) also differs depending on the latitude.
 
 \begin{figure}
   \includegraphics[width=0.7\linewidth]{figures/adsb/cpr_lon_zone_full.pdf}
@@ -106,7 +106,7 @@ In Figure \ref{fig:cpr_lon_zones}, the latitude zones are illustrated. On the ri
   \label{fig:cpr_lon_zones}
 \end{figure}
 
-To report a position, the fractions of latitude and longitude in respective zones are encoded using 17 bits. These bits are transmitted in the position messages.
+To report a position, the fractions of latitude and longitude in the respective zones are encoded using 17 bits. These bits are transmitted in the position messages.
 
 
 \subsection{Core functions and parameters}
@@ -371,7 +371,13 @@ msg1 = "8D40621D58C386435CC412692AD6"
 t0 = 1457996402
 t1 = 1457996400
 
-position = pms.adsb.position(msg0, msg1, t0, t1)
+pms.adsb.position(msg0, msg1, t0, t1)
+\end{verbatim}
+
+Output: 
+
+\begin{verbatim}
+(52.2572, 3.91937)
 \end{verbatim}
 
 \end{notebox}
@@ -386,7 +392,7 @@ This method offers the possibility to continuous decode aircraft using only one 
 
 \subsection{The reference position}
 
-The reference position should be close to the actual position, which must be within a 180 NM range. For example, this can be the position of aircraft that is decoded in the previous update. The range limitation is to ensure the consistency of the latitude and longitude zones between the reference position and decoding position. The reference position is denoted as ($\mathrm{lat}_\mathrm{ref}$, $\mathrm{lon}_\mathrm{ref}$).
+The reference position should be close to the actual position, which must be within a 180 NM range. For example, this can be the position of the aircraft that has been decoded in the previous update. The range limitation is to ensure the consistency of the latitude and longitude zones between the reference position and the decoding position. The reference position is denoted as ($\mathrm{lat}_\mathrm{ref}$, $\mathrm{lon}_\mathrm{ref}$).
 
 \subsection{Calculation of latitude}
 
@@ -446,13 +452,13 @@ Knowing the longitude zone index, the longitude of the new position is:
 Next, we illustrate the decoding process of the messages from the previous example with a reference position. The message and the reference position are as follows:
 
 \begin{verbatim}
-Message: 8D40621D58C382D690C8AC2863A7
-Data:            58C382D690C8AC
+Message:   8D40621D58C382D690C8AC2863A7
+ME (data):         58C382D690C8AC
 
 Reference position: (52.258, 3.918)
 \end{verbatim}
 
-We can easily covert the message data to binary:
+We can easily convert the message data to binary format as:
 
 \begin{verbatim}
 +-------+-----+--------------+-----------------------------------------------+
@@ -498,7 +504,13 @@ msg = "8D40621D58C382D690C8AC2863A7"
 lat_ref = 52.258
 lon_ref = 3.918
 
-position = pms.adsb.position_with_ref(msg, lat_ref, lon_ref)
+pms.adsb.position_with_ref(msg, lat_ref, lon_ref)
+\end{verbatim}
+
+Output: 
+
+\begin{verbatim}
+(52.2572, 3.91937)
 \end{verbatim}
 
 \end{notebox}
@@ -506,7 +518,7 @@ position = pms.adsb.position_with_ref(msg, lat_ref, lon_ref)
 
 \section{Altitude decoding}
 
-The altitude of the aircraft can be decoded with one position message, regardless of it being an even or odd type. However, depending on the type code of the messages, the altitudes are decoded differently. In Table \ref{tb:adsb-tc} from chapter \ref{chap:adsb-basic}, two different types of altitudes are shown. They are:
+The altitude of the aircraft can be decoded with one position message, regardless of it being an even or odd type. However, depending on the type code of the messages, the altitudes are decoded differently. Table \ref{tb:adsb-tc} from chapter \ref{chap:adsb-basic} shows two different types of altitudes. They are:
 
 \begin{itemize}
 \item \textbf{TC=9-18}: Airborne position, with barometric altitude encoded (in feet)
@@ -542,9 +554,9 @@ The altitude of the aircraft becomes:
 1560 \times 25 - 1000 = 38000 \quad \text{(ft)}
 \end{equation}
 
-In the case where the altitude is higher than 50175 ft, a 100 ft increment is used. In this situation, the Q bit is set to \0, and the rest of the bits are encoded using Gray code.
+In the case where the altitude is higher than 50175 ft, a 100 ft increment is used. In this situation, the Q bit is set to \0, and the rest of the bits are encoded using Gray code \cite{doran2007}.
 
-It is worth noting that when all bits of the altitude fields are zeros, the altitude information is not available or not valid.
+It is worth noting that it is possible for all altitude bits to be zeros, rather than zero altitude, it indicates that the altitude information is not available.
 
 
 \subsection{GNSS height}
@@ -559,7 +571,13 @@ import pyModeS as pms
 
 msg = "8D40621D58C382D690C8AC2863A7"
 
-altitude = pms.adsb.altitude(msg)
+pms.adsb.altitude(msg)
+\end{verbatim}
+
+Output (altitude in feet): 
+
+\begin{verbatim}
+38000
 \end{verbatim}
 
 \end{notebox}
@@ -568,7 +586,7 @@ altitude = pms.adsb.altitude(msg)
 
 \section{Verification of decoded positions}
 
-It is recommended to perform a \emph{reasonable test} to validate the decoded position. There are a couple of ways to perform such a reasonable test:
+It is recommended to perform a so-called \emph{reasonable test} to validate the decoded position. There are a couple of ways to perform such test to examine the plausibility of decoded positions:
 
 \begin{enumerate}
   \item The first approach is to use the receiver position. The decoded position should not exceed the coverage of the receiver. See chapter \ref{chap:quickstart}, Figure \ref{fig:max_range_curve}.

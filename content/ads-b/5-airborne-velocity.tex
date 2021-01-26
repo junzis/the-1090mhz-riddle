@@ -1,14 +1,8 @@
 \chapter{Airborne velocity}
 
-Airborne velocities are all transmitted with Type Code 19 (\texttt{TC=19}). Four different subtypes are defined in bits 6-8 of ME field. With subtypes 1 and 2, ground speeds of aircraft are reported. With subtypes 3 and 4, aircraft true airspeed or indicated airspeed are included. Reporting of airspeed in ADS-B only occurs when aircraft position can not be determined based on the GNSS system.\footnote{In the real world, subtype 3 messages are very rare.}
+Airborne velocities are all transmitted with Type Code 19 (\texttt{TC=19}). The general structure of the message is shown in Table \ref{tb:adsb-velocity-bits}. Four different subtypes are defined in bits 6-8 of the ME field. All sub-types share a similar overall message structure, with the different definitions from message bits 14 to 35 (or frame bits 46 to 67). 
 
-Among all four different sub-types, sub-type 2 and 4 are designed for supersonic aircraft. Their message structures are identical to subtypes 1 and 3, but with the speed resolution of 4 kt instead of 1 kt. However, since there are no operational supersonic airliners currently, there is no ADS-B airborne velocity message with sub-type 2 and 4.
-
-These messages contain more information than just horizontal and vertical velocity. Two other significant types of information are the navigation uncertainty category for velocity, and the difference between the GNSS height and barometric altitude. For instance, the study in \cite{stone2015} has made use of the later information to better model the air temperature at higher altitudes.
-
-All sub-types share a similar overall message structure, with the different definitions from message bits 14 to 35 (or frame bits 46 to 67). The general structure of the message is shown in Table \ref{tb:adsb-velocity-bits}. 
-
-\begin{table}[]
+\begin{table}[ht]
 \caption{Airborne velocity message structure}
 \label{tb:adsb-velocity-bits}
 \footnotesize
@@ -19,8 +13,7 @@ All sub-types share a similar overall message structure, with the different defi
 \textbf{Type Code} & TC & 33-37 & 1-5 & 5\\
 ~~TC=19 {[}Binary: 10011{]} &&&& \\ \hline
 \textbf{Sub-type} & ST & 38-40 & 6-8 & 3\\
-~~1: Subsonic &&&&\\
-~~2: Supersonic &&&& \\ \hline
+\hline
 \textbf{Intent change flag} & IC & 41 & 9 & 1 \\ \hline
 \textbf{IFR capability flag} & IFR & 42 & 10 & 1 \\ \hline
 \textbf{Navigation uncertainty category for velocity} & & 43-45 & 11-13 & 3\\
@@ -48,38 +41,32 @@ All sub-types share a similar overall message structure, with the different defi
 \end{tabular}
 \end{table}
 
-Comparing to position messages, the decoding of velocity messages is more straight forward since there is no complicated encoding scheme. In this chapter, we are going to explain the decoding process.
+Subtypes 1 and 2 are used to report ground speeds of aircraft. Subtypes 3 and 4 are used to report aircraft true airspeed or indicated airspeed. Reporting of airspeed in ADS-B only occurs when aircraft position cannot be determined based on the GNSS system.\footnote{In the real world, subtype 3 messages are very rare.} 
 
-\section{Example messages}
+Sub-type 2 and 4 are designed for supersonic aircraft. Their message structures are identical to subtypes 1 and 3, but with the speed resolution of 4 kt instead of 1 kt. However, since there are no operational supersonic airliners currently, there is no ADS-B airborne velocity message with sub-type 2 and 4 at this moment.
 
-Throughout this chapter, we will use two example messages to illustrate the decoding process:
+These messages contain more information than just horizontal and vertical velocity. Two other significant types of information are the navigation uncertainty category for velocity, and the difference between the GNSS height and barometric altitude. 
+
+Comparing to position messages, the decoding of velocity messages is more straightforward since there is no complicated encoding scheme. We will use two example messages to illustrate the decoding process in the rest of this chapter:
 
 \begin{verbatim}
 Message A:  8D485020994409940838175B284F (sub-type 1)
 Message B:  8DA05F219B06B6AF189400CBC33F (sub-type 3)
 \end{verbatim}
 
-By decomposing the messages, the downlink format, ICAO address, ME field, and CRC remainder are shown as follows:
+Downlink format, ICAO address, ME field, and CRC remainder of both messages are as follows:
 
 \begin{verbatim}
-Message A (sub-type 1):
-+----+--------+----------------+--------+
-| DF | ICAO   | ME             |  CRC   |
-+----+--------+----------------+--------+
-| 8D | 485020 | 99440994083817 | 5B284F |
-+----+--------+----------------+--------+
++-----+----+--------+----------------+--------+
++     | DF | ICAO   | ME             |  CRC   |
++-----+----+--------+----------------+--------+
++ A   | 8D | 485020 | 99440994083817 | 5B284F |
++-----+----+--------+----------------+--------+
++ B   | 8D | A05F21 | 9B06B6AF189400 | CBC33F |
++-----+----+--------+----------------+--------+
 \end{verbatim}
 
-\begin{verbatim}
-Message B (sub-type 3):
-+----+--------+----------------+--------+
-|    | ICAO   | ME             |  CRC   |
-+----+--------+----------------+--------+
-| 8D | A05F21 | 9B06B6AF189400 | CBC33F |
-+----+--------+----------------+--------+
-\end{verbatim}
-
-Next, we can convert both ME fields of the messages into binary and decompose the structure further as follows:
+Next, we can convert two ME fields into binary and decompose the structure further as follows:
 
 \begin{verbatim}
 Message A (sub-type 1):
@@ -110,11 +97,11 @@ Here, the second rows and third rows of the messages are binary and decimal valu
 
 \section{Vertical rate}
 
-The method for decoding vertical rate and its related parameters are the same among all different sub-types of the messages.
+The method for decoding vertical rate and its related parameters are the same for different sub-types.
 
-First of all, the vertical rate source bit \texttt{VrSrc} (ME bit 36) indicates the source of the altitude measurements. In the case of \0, the GNSS altitude is encoded. In the case of \1, the barometer altitude is encoded.
+First of all, the vertical rate source bit \texttt{VrSrc} (ME bit 36) indicates the source of the altitude measurements. GNSS altitude is encoded as \0, while \1 encodes the barometric altitude.
 
-The direction of vertical movement of aircraft can be read from \texttt{Svr} bit (ME bit 37), with \0 and \1 referring to climb and descent respectively. The encoded vertical rate value \texttt{VR} can be computed using message ME bits 38 to 46. If the 9-bit block contains all zeros, the vertical rate information is not available.
+The direction of aircraft vertical movement can be read from \texttt{Svr} bit (ME bit 37), with \0 and \1 referring to climb and descent respectively. The encoded vertical rate value \texttt{VR} can be computed using message ME bits 38 to 46. If the 9-bit block contains all zeros, the vertical rate information is not available.
 
 The final vertical rate ($\mathrm{VS}$) is calculated as:
 
@@ -143,9 +130,7 @@ which indicates that the aircraft B is descending with a vertical speed of 2304 
 
 \section{GNSS and barometric altitudes difference}
 
-The last 8 bits of the ME filed contain the difference between the barometric and GNSS altitudes. 
-
-Within these 8 bits, the first bit indicates the sign for the value in the last 7 bits. When it is \1, the value is negative. This means the GNSS altitude is below the barometric altitude.
+The last 8 bits of the ME field contain the difference between the barometric and GNSS altitudes. Of these 8 bits, the first one indicates the sign for the value of the remaining ones. When it is \1, the value is negative. This means the GNSS altitude is below the barometric altitude.
 
 The value is encoded with the increment of 25 ft, and the equation to calculate the altitude difference is:
 
@@ -197,7 +182,7 @@ The velocity information fields of subtype 1 and 2 messages consist of the East-
 
 Here, we can see that ME bits 14 and 25 are sign bits indicating the directions of each component. Each 10-bit block following these sign bits encodes a velocity component. It is important to point out that when any of the 10-bit blocks contains only zeros, no velocity information is available. For supersonic velocity (sub-type 2), the final velocity components are multiplied by a factor of 4.
 
-To calculate the velocity, four values are needed: \texttt{Sew}, \texttt{Vew},  \texttt{Sns}, \texttt{Vns}. In aviation, it is commonly considers the West-East and South-North components as positive values, which are denoted as $V_x$ and $V_y$. The formulas for sub-type 1 (subsonic) and sub-type 2 (supersonic) differ by a factor of 4.
+To calculate the velocity, four values are needed: \texttt{Sew}, \texttt{Vew},  \texttt{Sns}, \texttt{Vns}. It is common to consider speed vector's West-East and South-North component as positive values, which are denoted as $V_x$ and $V_y$. The formulas for sub-type 1 (subsonic) and sub-type 2 (supersonic) differ by a factor of 4.
 
 For subsonic speed (sub-type 1), the speed components can be computed as:
 
@@ -220,16 +205,16 @@ The final ground speed ($V$) of aircraft is:
   V = \sqrt{V_x^2 + V_y^2}
 \end{equation}
 
-With these two speed components, the ground track angle ($\lambda$) of the aircraft can also be calculated conveniently:
+With these two speed components, the ground track angle ($\lambda$) of the aircraft can also be calculated conveniently as:
 
 \begin{align}
   \lambda &= arctan2 \left( V_x, V_y \right) \cdot \frac{360}{2\pi} \\
   \lambda &= mod(\lambda, 360) \label{eq:ground_track_mod_360}
 \end{align}
 
-where Equation \ref{eq:ground_track_mod_360} ensures the track angle range of [0, 360] degree, with North at 0 degrees, which is the case for most aviation applications and studies.
+where Equation \ref{eq:ground_track_mod_360} ensures the track angle range of [0, 360) degree, with North at 0 degrees, which is the case for most aviation applications and studies.
 
-Base on the example message A given earlier:
+Based on the example message A given earlier:
 
 \begin{verbatim}
 Message A, ME bit 14-35
@@ -242,7 +227,7 @@ Message A, ME bit 14-35
 +-----+------------+-----+------------+-------+
 \end{verbatim}
 
-The final aircraft speed and track angle are calculated as:
+the final aircraft speed and track angle are calculated as:
 
 \begin{align}
   V_x &= (-2 \times 1 + 1) \times (9 - 1)  = -8 \\
@@ -256,9 +241,7 @@ where the aircraft speed is 159.20 kt and the track angle is 182.88 degrees.
 
 \section{Subtype 3 and 4: airspeed decoding}
 
-ADS-B velocity messages with sub-type 3 or 4 are broadcast when the ground speed of the aircraft is not known. This could happen when, for example, aircraft positions cannot be obtained due to the low availability of GNSS satellites.
-
-Previously, we see the ground speeds in sub-type 1 and 2 are encoded as the East-West and North-South components. We then convert these two components to speed and track angle. In sub-type 3 or 4, the speed and heading directly encoded. The details on related fields are described in Table \ref{tb:adsb-velocity-bits-14-35-as}.
+ADS-B velocity messages with sub-type 3 or 4 are broadcast when the ground speed of the aircraft is not known. This could happen when, for example, aircraft positions cannot be obtained due to the low availability of GNSS satellites. Furthermore, instead of West/East and South/North components, speed and heading are encoded directly. Table \ref{tb:adsb-velocity-bits-14-35-as} explains the details of message fields.
 
 \begin{table}[ht]
 \caption{Velocity fields of sub-type 3 and 4 (ME bit 14 to 35)}
@@ -291,21 +274,20 @@ The magnetic heading ($\phi$) of the aircraft is calculated as:
   \phi = \mathrm{HDG} \cdot \frac{360}{1024}  \quad \text{degrees}
 \end{equation}
 
-The speed calculations also differ between sub-type 3 and 4. For sub-type 3, the airspeed can be computed as:
+The speed calculations also differ between sub-type 3 and 4:
 
 \begin{equation}
-  V_{as} = \mathrm{AS} - 1
+  V_{as} =
+  \begin{cases}
+    \mathrm{AS} - 1     & \text{sub-type 3} \\
+    4 \cdot (\mathrm{AS} - 1)     & \text{sub-type 4}
+  \end{cases}
 \end{equation}
 
-While for sub-type 4, the airspeed is computed as:
-
-\begin{equation}
-  V_{as} = 4 \cdot (\mathrm{AS} - 1)
-\end{equation}
 
 Note that the airspeed type bit \texttt{T} represents whether the value is the indicated airspeed (IAS, \texttt{T=0}) or true airspeed (TAS, \texttt{T=1}).
 
-Now, let us reflect on our previous example \texttt{Message B}:
+Now, we can apply the decoding process to the previous example \texttt{Message B}:
 
 \begin{verbatim}
 Message B, ME bit 14-35

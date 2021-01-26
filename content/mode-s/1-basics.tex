@@ -1,6 +1,6 @@
 \chapter{Basics of Mode~S services} \label{chap:mode_s_basics}
 
-In chapter \ref{chap:intro}, an overview of different Mode~S services is given. Most of the services except the extended squitter are interrogations based, which means information is only transmitted upon request. The request, also known as \emph{uplink}, is transmitted using 1030 megahertz radio frequency. The reply (\emph{downlink}) signals are all transmitted using the 1090 megahertz radio frequency. Hence, all Mode~S downlink messages can be intercepted using the same setup as ADS-B.
+In chapter \ref{chap:intro}, an overview of different Mode~S services is given. Most of the services except the extended squitter are interrogations based, which means information is only transmitted upon request. The request, also known as \emph{uplink}, is transmitted using 1030 MHz radio frequency. The reply (\emph{downlink}) signals are all transmitted using the 1090 MHz radio frequency. Hence, all Mode~S downlink messages can be intercepted using the same setup as ADS-B.
 
 In the following chapters of this book, we are going to explain the interrogation based Mode~S services in four groups, specifically:
 
@@ -90,7 +90,7 @@ Modified AA   9933AA      1001 1001 0011 0011 1010 1010
 \end{verbatim}
 
 
-Denote the modified address as $P_\mathrm{MA}(x)$ and the Data Parity as $P_D(x)$, the calculation is of $P_D(x)$ is:
+Denoting the modified address as $P_\mathrm{MA}(x)$ and the Data Parity as $P_D(x)$, the calculation of $P_D(x)$ is:
 
 \begin{equation}
   \begin{split}
@@ -124,7 +124,7 @@ Payload:      A0001838CA380031440000
 Parity (AP):                        F24177
 \end{verbatim}
 
-In Figure \ref{fig:icao_revover}, the ICAO address recovering process is illustrated. We first use the Mode~S CRC algorithm to compute the remainder (parity) from only the payload data \texttt{A0001838CA380031440000}. The remainder is found to be \texttt{CE2CA7}. Then, by performing the polynomial addition (XOR for bitwise operation) with the actual parity included in the message, the ICAO address can be computed as \texttt{3C6DD0}.
+Figure \ref{fig:icao_revover} illustrates the ICAO address recovering process. We first use the Mode~S CRC algorithm to compute the remainder (parity) from only the payload data \texttt{A0001838CA380031440000}. The remainder is found to be \texttt{CE2CA7}. Then, by performing the polynomial addition (XOR for bitwise operation) with the actual parity included in the message, the ICAO address can be computed as \texttt{3C6DD0}.
 
 \begin{figure}[!ht]
   \centering
@@ -178,7 +178,7 @@ For the cases of Data Parity, it is still possible to recover the transponder ad
 
 It is worth noting that in either case, the resulting $A'(x)$ is the same as the actual transponder address ($A(x)$) only if no error has occurred during the transmission. If the message is corrupted, the obtained address will be different from the actual one.
 
-By combining with ICAO addresses obtained in ADS-B and other information independently decoded from Mode~S message, this process can also be used for detecting Mode~S errors as a third party observer. This method is described in \cite{sun2019pymodes}.
+By combining with ICAO addresses obtained in ADS-B and other information independently decoded from Mode~S messages, this process can also be used for detecting Mode~S errors as a third party observer. This method is described in \cite{sun2019pymodes}.
 
 \begin{notebox}{Try it out}
 Using \texttt{pyModeS}, we can obtain the ICAO address as: 
@@ -187,7 +187,13 @@ Using \texttt{pyModeS}, we can obtain the ICAO address as:
 import pyModeS as pms
 
 msg = "A0001838CA380031440000F24177"
-icao = pms.icao(msg)
+pms.icao(msg)
+\end{verbatim}
+
+Output: 
+
+\begin{verbatim}
+3C6DD0
 \end{verbatim}
 
 \end{notebox}

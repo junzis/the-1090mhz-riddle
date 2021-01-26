@@ -1,6 +1,6 @@
 \chapter{Mode~S enhanced surveillance}
 
-Mode~S Enhanced Surveillance (EHS) provides a set of advanced functionalities for the Mode~S transponders. Three different types of reports are included in EHS. They are designed to report vertical intent, turning performance, and airspeeds. In this chapter, the structures and decoding processes of these reports are explained.
+Mode~S Enhanced Surveillance (EHS) provides a set of advanced functionalities for the Mode~S transponders. Three different types of reports are included in EHS. They are designed to report vertical intent, turning performance, and airspeeds. This chapter explaines structures and decoding processes of these reports.
 
 \section{Selected vertical intention (BDS 4,0)}
 
@@ -40,7 +40,7 @@ Target altitude source & 87-88 & 55-56 & 2 \\ \hline
 \end{tabular}
 \end{table}
 
-Two different types of selected altitude fields are included in the message. Values in the \emph{MCP/FCU selected altitude} field are from the mode control panel or flight control unit. These are often inputs from the pilot. Values in \emph{FMS selected altitude} field are derived from the flight management system controlling the vertical profile, which often does not come from manual input.
+Two different types of selected altitude fields are included in the message. Values in the \emph{MCP/FCU selected altitude} field are from the mode control panel or flight control unit. These are often inputs from the pilot. Values in \emph{FMS selected altitude} field are derived from the flight management system controlling the vertical profile, which often does not come from manual input. In practice, FMS selected altitude values are often empty or unusable. When it is presented, the value is most the same as MCP/FCU selected altitude.
 
 The \emph{barometric pressure setting} value is the actual pressure in millibars (mb) subtracted by a constant of 800. If the actual value is below 800 mb (or above 1209 mb), the corresponding status bit (MB:27) is set to \0.
 
@@ -54,7 +54,7 @@ The last two bits in the MB field show the source of the target altitude. They h
 \end{verbatim}
 
 
-In Figure \ref{fig:bds40_example}, an example of how to decode a BDS 4,0 message is illustrated:
+Figure \ref{fig:bds40_example} illustrates an example of how to decode a BDS 4,0 message.
 
 \begin{figure}[ht]
   \centering
@@ -70,9 +70,15 @@ Using \texttt{pyModeS}, we can decode information of BDS 4,0 messages as:
 import pyModeS as pms
 
 msg = "A8001EBCAEE57730A80106DE1344"
-selaltfms = pms.commb.selalt40fms(msg)
-selaltmcp = pms.commb.selalt40mcp(msg)
-pressure = pms.commb.p40baro(msg)
+
+pms.commb.selalt40fms(msg)
+# 24000, FMS selected altitude (ft)
+
+pms.commb.selalt40mcp(msg)
+# 24000, MCP selected altitude (ft)
+
+pms.commb.p40baro(msg)
+# 1013.2, pressure (mb)
 \end{verbatim}
 
 \end{notebox}
@@ -122,7 +128,7 @@ True airspeed & 79-88 & 47-56 & 10 \\
 
 In this message, we can see three signed values, which are roll angle, track angle, and track angle rate. Two's complement coding (see section \ref{sec:two_complement}) should be used to calculate these values.
 
-In Figure \ref{fig:bds50_example}, an example of how to decode a BDS 5,0 message is illustrated.
+Figure \ref{fig:bds50_example} illustrates an example of how to decode a BDS 5,0 message.
 
 \begin{figure}[ht]
   \centering
@@ -139,11 +145,12 @@ import pyModeS as pms
 
 msg = "A80006ACF9363D3BBF9CE98F1E1D"
 
-roll_angle = pms.commb.roll50(msg)
-track_angle = pms.commb.trk50(msg)
-track_angle_rate = pms.commb.rtrk50(msg)
-ground_speed = pms.commb.gs50(msg)
-TAS = pms.commb.tas50(msg)
+pms.commb.roll50(msg)   # -9.7, roll angle (deg)
+pms.commb.trk50(msg)    # 140.273, track angle (deg)
+pms.commb.rtrk50(msg)   # -0.406, track angle rate (deg/s)
+pms.commb.gs50(msg)     # 476, ground speed (kt)
+pms.commb.tas50(msg)    # 466, TAS (kt)
+
 \end{verbatim}
 
 \end{notebox}
@@ -194,9 +201,9 @@ LSB: 32 ft/min &&& \\ \hline
 
 In this message, we can see a few signed values, such as heading and two vertical rates. Two's complement coding (see section \ref{sec:two_complement}) should be used to calculate these values.
 
-The magnetic heading is the aircraft's heading in respect to the magnetic North, which can be different from the true north (for example, used for the track angle from ADS-B and BDS 5,0). Often an aircraft obtains the magnetic heading by adding its true North heading with the magnetic declination from a world magnetic model, such as \cite{chulliat2015}. It is worth noting that the true North heading is not necessarily the same as the track angle due to the influence of wind.
+The magnetic heading is the aircraft's heading with respect to the magnetic North, which can be different from the true north (for example, used for the track angle from ADS-B and BDS 5,0). Often an aircraft obtains the magnetic heading by adding its true North heading with the magnetic declination from a world magnetic model, such as \cite{chulliat2015}. It is worth noting that the true North heading is not necessarily the same as the track angle due to the influence of wind.
 
-In the heading and speed report, two different kinds of vertical rates are reported. Barometric altitude rates are only derived from barometer measurements. Due to the lacking of filtering from air data input, significant noise is contained in these values. On the other hand, inertial vertical velocities are values provided by navigational equipment from different sources including the flight management computer. According to \cite{icao9688}, data sources with different levels of priorities are defined for these two values, which are listed in Table \ref{tb:vertical_rate_source}.
+In the heading and speed report, two different kinds of vertical rates are reported. Barometric altitude rates are only derived from barometer measurements. Since the source data from air data system is not filtered, significant noise is contained in these values. On the other hand, inertial vertical velocities are values provided by navigational equipment from different sources including the flight management computer. According to \cite{icao9688}, data sources with different levels of priorities are defined for these two values, which are listed in Table \ref{tb:vertical_rate_source}.
 
 \begin{table}[ht]
 \footnotesize
@@ -215,7 +222,7 @@ Inertial vertical velocity & 1. Flight Management Computer / GNSS integrated\\
 \end{table}
 
 
-In Figure \ref{fig:bds60_example}, the example on how to decode a BDS 6,0 message is illustrated.
+Figure \ref{fig:bds60_example} illustrates an example on how to decode a BDS 6,0 message.
 
 \begin{figure}[ht]
   \centering
@@ -232,11 +239,11 @@ import pyModeS as pms
 
 msg = "A80004AAA74A072BFDEFC1D5CB4F"
 
-heading = pms.commb.hdg60(msg)
-IAS = pms.commb.ias60(msg)
-Mach = pms.commb.mach60(msg)
-vertical_rate_baro = pms.commb.vr60baro(msg)
-vertical_rate_ins = pms.commb.vr60ins(msg)
+pms.commb.hdg60(msg)      # 110.391, heading (deg)
+pms.commb.ias60(msg)      # 259, ISA (kt)
+pms.commb.mach60(msg)     # 0.7, Mach (-)
+pms.commb.vr60baro(msg)   # -2144, baro vertical rate (ft/min)
+pms.commb.vr60ins(msg)    # -2016, INS vertical rate (ft/min)
 \end{verbatim}
 
 \end{notebox}

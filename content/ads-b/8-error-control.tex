@@ -20,7 +20,7 @@ The CRC \emph{remainder} term is confusingly defined in Mode~S literature and st
 
 \section{CRC error control}
 
-In Mode~S communications (including ADS-B), CRC error control coding is used. In all types of Mode~S downlink messages, the last 24 bits are reserved for the CRC remainder. In ADS-B, the CRC remainder is directly appended as the final 24 bits of the messages. However, in other types of Mode~S messages, those bits can be overlaid with other information (such as the ICAO address) using the \texttt{XOR} (\emph{exclusive disjunction}) operator before being appended to the message.
+Mode~S communications (including ADS-B) use CRC error control coding. In all types of Mode~S downlink messages, the last 24 bits are reserved for the CRC remainder. In ADS-B, the CRC remainder is directly appended as the final 24 bits of the messages. However, in other types of Mode~S messages, those bits can be overlaid with other information (such as the ICAO address) using the \texttt{XOR} (\emph{exclusive disjunction}) operator before being appended to the message.
 
 A basic CRC workflow is shown in Figure \ref{fig:crc_flow}. The diagram on the left-hand side shows how the CRC remainder is generated on the sender side. The diagram on the right-hand side shows how the same arithmetic can be used on the receiver side to validate the message.
 
@@ -31,7 +31,7 @@ A basic CRC workflow is shown in Figure \ref{fig:crc_flow}. The diagram on the l
 \end{figure}
 
 
-The binary polynomial falls in the finite field arithmetic \cite{carlitz1932}. The divisions of binary polynomials can essentially be considered as the \texttt{XOR} bitwise operations, which can be easily implemented and calculated by computers. In Figure \ref{fig:crc_example}, a CRC remainder calculation example is shown.
+The binary polynomial falls in the finite field arithmetic \cite{carlitz1932}. The divisions of binary polynomials can essentially be considered as the \texttt{XOR} bitwise operations, which can be easily implemented and calculated by computers. Figure \ref{fig:crc_example} illustrates a CRC remainder calculation example.
 
 
 
@@ -44,7 +44,7 @@ The binary polynomial falls in the finite field arithmetic \cite{carlitz1932}. T
 
 \section{ADS-B parity}
 
-The polynomial form of the divisor (generator) used for ADS-B (as well as other Mode~S messages) is shown as following \cite{gertz1984}:
+The polynomial form of the divisor (generator), $G(x)$, used for ADS-B (as well as other Mode~S messages) is \cite{gertz1984}:
 
 \begin{equation}
   \begin{split}
@@ -53,7 +53,7 @@ The polynomial form of the divisor (generator) used for ADS-B (as well as other 
   \end{split}
 \end{equation}
 
-where $G(x)$ represents the generator function. This generator code was found by \cite{kasami1964}, which is known for its efficiency to correct burst errors. A 24-bit remainder is generated using this generator. It can also be written in different formats as:
+This generator code was found by \cite{kasami1964}, which is known for its efficiency to correct burst errors. A 24-bit remainder is generated using this generator. It can also be written in different formats as:
 
 \begin{verbatim}
 Binary:   1111111111111010000001001
@@ -62,7 +62,7 @@ Octal:    177772011
 HEX:      1FFF409
 \end{verbatim}
 
-Knowing the logic of CRC, the computation of the remainder and the verification of error is fairly simple. Let  $x^{i}$ represent each bit of the message and $M(x)$ represent the polynomial corresponding ADS-B message, the CRC remainder (parity) $P(x)$ can thus be calculated as:
+Knowing the logic of CRC, the computation of the remainder and the verification of the error is fairly simple. Let  $x^{i}$ represent each bit of the message and $M(x)$ represent the polynomial corresponding to the ADS-B message, the CRC remainder (parity) $P(x)$ can thus be calculated as:
 
 \begin{equation}
   \begin{split}

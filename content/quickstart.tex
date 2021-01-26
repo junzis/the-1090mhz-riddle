@@ -4,7 +4,7 @@
 Chapter 1 introduced several fundamental concepts about Mode~S communication. This chapter focuses on the practical aspects of Mode~S data, specifically, how to receive and obtain information that is transmitted in Mode~S downlink communications. Mode~S signals are transmitted using 1090 MHz radio waves. Hence, the receiver and antenna have to be designed to work with this frequency. Nowadays, all necessary components required to obtain the Mode~S data can be easily made with low-cost off-the-shelf components. Several open-source software tools are available to support the extraction and decoding of data from Mode~S signals. In this chapter, we explain how to step up a functional hardware and software system to receive Mode~S data.
 
 \section{Range}
-Since Mode~S uses L band signals that follow the line-of-sight propagation, any obstructions between the transmitter and receiver can cause a significant amount of signals to be blocked. Assuming no obstacles between an aircraft and receiver and the transmitter has a sufficient amount of power, the maximum range of the receiver is determined by the curvature of the earth. Figure \ref{fig:max_range} illustrates how the maximum range of the receiver can be obtained.
+Since Mode~S uses L band signals that follow the line-of-sight propagation, any obstructions between the transmitter and receiver can cause a significant amount of signals to be blocked. Assuming that no obstacle exists between the aircraft and the receiver, and the transmitter has a sufficient amount of power, the maximum range of the receiver is determined by the curvature of the earth. Figure \ref{fig:max_range} illustrates how the maximum range of the receiver can be obtained.
 
 \begin{figure}[ht]
 \centering
@@ -21,7 +21,7 @@ Knowing the altitude of the receiver antenna, it is possible to determine the ma
   & = \left( \arccos \frac{R}{R+h_r} + \arccos \frac{R}{R+h_t} \right) R
 \end{align}
 
-\noindent where $R$ is the radius of the earth, while $h_t$ and $h_r$ are the height of the aircraft and receiver above the sea level. Using this equation, we can calculate the maximum receiving range for aircraft flying at different altitudes. In Figure \ref{fig:max_range_curve}, the maximum range curves calculated using several receiver heights are shown.
+\noindent where $R$ is the radius of the earth, while $h_t$ and $h_r$ are the height of the aircraft and receiver above the sea level. Using this equation, we can calculate the maximum receiving range for aircraft flying at different altitudes. Figure \ref{fig:max_range_curve} shows the maximum range curves calculated using several receiver heights.
 
 \begin{figure}[ht]
   \centering
@@ -31,21 +31,23 @@ Knowing the altitude of the receiver antenna, it is possible to determine the ma
 \end{figure}
 
 
-It should be noted that this figure shows the maximum radio range due to the curvature of the Earth. However, in real-life applications, Mode~S signal follows the Friis transmission model, which states that the maximum distance also depends on the power of the transmitter, as well as the directivities of the transmission and receiving antennas. When considering these factors, the actual radio range for the receiver might be more limited than the theoretical values shown in the previous figure.
+It should be noted that this figure shows the maximum radio range due to the curvature of the Earth. However, in real-life applications, Mode~S signal follows the Friis transmission model, which states that the maximum distance also depends on the power of the transmitter, as well as the directivities of the transmission and receiving antennas. When considering these factors, the actual radio range for the receiver is typically lower than the theoretical values shown in the previous figure.
 
 \section{Antenna}
-A large variety of commercial off-the-shelf antennas can be deployed to receive Mode~S signals. In principle, any antenna designed for the radio frequency around 1 GHz can be used for receiving Mode~S signals.
+In principle, any antenna designed for the radio frequency around 1 GHz can be used for receiving Mode~S signals. A large variety of commercial off-the-shelf antennas can be found nowadays. 
 
-However, it is not difficult to design your own antenna. The carrier frequency of Mode~S is 1090 MHz, which corresponds to the wavelength of 27.5 centimeters. In order to have an antenna that is tuned to this specific frequency, one can design the antenna simply using a piece of a conductor (metal wire) and a coaxial feeder cable. In Figure \ref{fig:antennas}, a few common antenna designs are shown.
+However, it is not difficult to design your own antenna. The carrier frequency of Mode~S is 1090 MHz, which corresponds to the wavelength of 27.5 centimeters. In order to have an antenna that is tuned to this specific frequency, one can design the antenna simply using a piece of a conductor (metal wire) and a coaxial feeder cable. Figure \ref{fig:antennas} shows a few common antenna designs.
 
 \begin{figure}[ht]
   \centering
-  \includegraphics[scale=0.9]{figures/quickstart/antennas.pdf}
+  \includegraphics[scale=0.95]{figures/quickstart/antennas.pdf}
   \caption{Common antenna designs}
   \label{fig:antennas}
 \end{figure}
 
-The monopole antenna and the dipole antenna both are half-wavelength ($\lambda/2$) antennas with a total conductor length of 13.75 cm. The ground plan antenna is a quarter-wavelength ($\lambda/4$) antenna, where the main pole is 6.875 cm.
+The monopole antenna and the dipole antenna both are half-wavelength ($\lambda/2$) antennas with a total conductor length of 13.75 cm. The ground plane antenna is a quarter-wavelength ($\lambda/4$) antenna, where the main pole is 6.875 cm.
+
+All these previous antennas are omnidirectional. Some time is also desirable to make use of directional antennas (such a Yagi antenna), for example, to receive messages coming from the airport direction with a higher receiving gain.
 
 For a remote installation where the antenna is far from the receiver (i.e. long coaxial cable between the antenna and receiver), the high-frequency signal of Mode~S can attenuate quickly. When the signal has arrived at the receiver end, the signal to noise ratio can become quite high. To overcome this limitation, an active antenna may be used.
 
@@ -63,13 +65,13 @@ The active antenna (see Figure \ref{fig:biastee_active_antenna}) has a low-noise
 
 Many modern Mode~S receivers are built using software-defined radio (SDR). An SDR usually can be tuned to a wide range of radio frequencies. The user can conveniently select the center frequency of the receiver and the sampling rate, as well as defined the bandwidth of the onboard low-pass filter if it is supported.
 
-For receiving ADS-B (and other types of Mode~S message), a RTL-SDR is the most common type of low-cost receiver to choose. Many different brands of RTL-SDR receivers exist; they are often built with the Realtek RTL2832U chipset. It can work with radio frequencies from 24 to 1766 MHz. The maximum sampling rate is 2.8 million samples per second (MSPS). Given that a Mode~S bit consists of a pulse cycle of 0.5 microseconds (see Figure \ref{fig:mode_s_uplink_pulses}), the minimum SDR sampling rate required for Mode~S is 2 MSPS. RLT-SDR devices just barely manage to meet this requirement.
+For receiving ADS-B (and other types of Mode~S message), a RTL-SDR is the most common type of low-cost receiver to choose. Many different brands of RTL-SDR receivers exist; they are often built with the Realtek RTL2832U chipset. It can work with radio frequencies from 24 to 1766 MHz. The maximum sampling rate is 2.8 million samples per second (MSPS). Given that a Mode~S bit consists of a pulse cycle of 0.5 {\textmu}s (see Figure \ref{fig:mode_s_uplink_pulses}), the minimum SDR sampling rate required for Mode~S is 2 MSPS. RLT-SDR devices just barely manage to meet this requirement.
 
 \begin{notebox}{Note}
   The maximum frequency range of RTL-SDR can be from 0 to 2220 MHz. However, the sensitivity drops off significantly outside the 24 - 1766 MHz range. The sampling rate can actually go up to a maximum of 3.2 million samples per second, but some samples may be dropped at this sampling rate. Hence, it is not stable.
 \end{notebox}
 
-SDRs that offer a higher performance also exist. They often support a larger frequency range with higher sampling rates. Some offer multiple transmitting (TX) and receiving (RX) channels. In Table \ref{tb:sdr}, a few examples of common SDR devices are given. The performance of RTL-SDR is listed as a comparison.
+SDRs that offer a higher performance also exist. They often support a larger frequency range with higher sampling rates. Some offer multiple transmitting (TX) and receiving (RX) channels. Table \ref{tb:sdr} listes a few examples of common SDR devices. The performance of RTL-SDR is listed as a comparison.
 
 \begin{table}[ht]
   \footnotesize
@@ -93,7 +95,7 @@ Several software tools are also available to work with some of these SDR devices
 
 \subsection{dump1090}
 
-\texttt{dump1090} is the most well-known open-source Mode~S decoder currently available. The software is written in C programming language and was originally developed by Salvatore Sanfilippo \footnote{https://github.com/antirez/dump1090} under the BSD 3-Clause license.
+\texttt{dump1090} is the most well-known open-source Mode~S decoder currently available. The software is written in C programming language and was originally developed by Salvatore Sanfilippo \footnote{https://github.com/antirez/dump1090} under the BSD-3-Clause license.
 
 Since its release in 2013, the repository has been forked and extended intensively on GitHub, creating more than 900 forks so far. Many of the branched versions contain different variations, such as support for additional hardware, additional decoded Mode~S messages, and additional output format. Currently, one of the most comprehensive forks is the repository maintained by FlightAware.\footnote{https://github.com/flightaware/dump1090} The following examples will be based on the FlightAware version of \texttt{dump1090}, using a Debian based Linux system.
 
@@ -148,19 +150,18 @@ DF:17 AA:451DBD CA:5 ME:9905B501800400
 
 \subsubsection{Raw Mode~S messages}
 
-If we only want to display the  raw messages, the \texttt{--raw} option can be provided, as follows:
+If we only want to display the  raw messages, the \texttt{----raw} option can be provided, as follows:
 
 \begin{verbatim}
 $ ./dump1090 --raw
 \end{verbatim}
 
-In this case, the terminal output will only contain the raw messages:
+In this case, the terminal output will only contain the raw messages, for example:
 
 \begin{verbatim}
 *5d4074358ad00c;
 *8d407435990dbd01900484f66c3c;
 *8d40743558af828cd326fe0c2fe9;
-*a00015b8c2680030a80000318667;
 *a80011b1e0da112fe0140060939f;
 *a00015b8c2680030a80000318667;
 *5d4074358ad030;
@@ -169,7 +170,7 @@ In this case, the terminal output will only contain the raw messages:
 
 \subsubsection{Interactive mode}
 
-\texttt{dump1090} can also provide a live view of all aircraft seen by the receiver through the use of the \texttt{--interactive} option:
+\texttt{dump1090} can also provide a live view of all aircraft seen by the receiver through the use of the \texttt{----interactive} option:
 
 \begin{verbatim}
 $ ./dump1090 --interactive
@@ -199,21 +200,24 @@ An example of the terminal output is shown in Figure \ref{fig:dump1090}.
 
 
 \subsection{pyModeS}
-\texttt{pyModeS} is an open-source Mode~S decoder project that I started in 2015, during my PhD research at TU Delft. It is a library that was originally designed to focus on lower level inference and decoding of individual raw Mode~S messages. Many users of \texttt{pyModeS} were researchers or developers who needed a Mode~S decoder package in the Python programming language. Later on, hardware support and live decoding were added, which made it more akin to \texttt{dump1090} of late.
+\texttt{pyModeS} is an open-source Mode~S decoder project that I started in 2015. It is a library that was originally designed to focus on lower level inference and decoding of individual raw Mode~S messages. Later on, hardware support and live decoding were added, which made it more akin to \texttt{dump1090} of late.
 
+\begin{notebox}{Note}
+  Some technical terms related to ADS-B and Mode~S are used in this section. They will be explained in detail in later chapters.
+\end{notebox}
 
 \subsubsection{Installation of pyModeS}
 
 As a Python library, it is possible to install the most recent stable version of \texttt{pyModeS} as:
 
 \begin{verbatim}
-pip install pyModeS
+pip install --upgrade pyModeS
 \end{verbatim}
 
 The latest development version for the GitHub can be installed as:
 
 \begin{verbatim}
-pip install git+https://github.com/junzis/pyModeS
+pip install --upgrade git+https://github.com/junzis/pyModeS
 \end{verbatim}
 
 
@@ -257,16 +261,17 @@ An example of the live view is shown in Figure \ref{fig:modeslive}.
 \begin{figure}[ht]
   \centering
   \includegraphics[scale=0.3]{figures/quickstart/modeslive.png}
-  \caption{Example of a \texttt{modeslive} aircraft live view}
+  \caption{Example of a live view of \texttt{modeslive} from \texttt{pyModeS}}
   \label{fig:modeslive}
 \end{figure}
 
+Real-time flight states are shown, including, for example, ICAO transponder code, call sign, position,  altitude, ground speed, true airspeed, indicated airspeed, Mach number, rate of climb, track angle, and heading.
 
 \subsubsection{Programming interface}
 
-Since \texttt{pyModeS} is designed as a low-level development library, its decoding functionalities can be easily accessed in Python. Some examples of accessing \texttt{pyModeS} are shown here.
+Since \texttt{pyModeS} is originally designed as a library aimed for research, and thanks to the use of Python programming language, one can easily make use of its low-level decoding functionalities.
 
-Core functions that provide access to extract the Downlink Format, ICAO address, ADS-B Type Code, as well as to perform parity check. For example:
+For example, core functions of \texttt{pyModeS} can be used to decode Downlink Format, ICAO address, ADS-B Type Code, as well as to perform parity check:
 
 \begin{verbatim}
 import pyModeS as pms
@@ -289,16 +294,16 @@ pms.adsb.altitude(msg)
 pms.adsb.velocity(msg)
 \end{verbatim}
 
-There are also a large number of functions designed to infer and decode Mode~S downlink messages. For example:
+There are also a number of functions designed to infer and decode Mode~S downlink messages. For example:
 
 \begin{verbatim}
-# Mode~S DF=4/20 altitude code
+# Mode S altitude code (DF=4/20)
 pms.common.altcode(msg)
 
-# Mode~S DF=5/21 squwak code
+# Mode S squwak code (DF=5/21)
 pms.common.idcode(msg)
 
-# Infer the Modes-S BDS code
+# Infer Modes S BDS code
 pms.bds.infer(msg)
 
 # BDS 4,0
@@ -321,6 +326,4 @@ pms.commb.vr60baro(msg)     # Barometric altitude rate (ft/min)
 pms.commb.vr60ins(msg)      # Inertial vertical speed (ft/min)
 \end{verbatim}
 
-There are several commonly used functions related to Mode~S decoding. A complete list of the APIs can be found in the \texttt{pyModeS} library API documentation.
-
-In the rest of this book, most of the decoding details with be explained, which will often reflect the source code from \texttt{pyModeS}.
+These are commonly used functions related to Mode~S decoding. A complete list of the APIs can be found in the \texttt{pyModeS} library API documentation. In the rest of this book, most of the decoding details are explained, which will often involving the use of \texttt{pyModeS} and reflect its source code.

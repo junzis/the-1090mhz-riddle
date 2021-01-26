@@ -1,8 +1,8 @@
 \chapter{Surface position}
 
-When an aircraft is on the ground, a different type of message is used to broadcast its position information. Unlike the airborne position message, the surface position message also includes the speed of the aircraft. Since no altitude information needs to be transmitted, this provides extra bits for extra information, such as speed and track angle.
+When an aircraft is on the ground, a different type of message is used to broadcast its position information. Unlike the airborne position message, the surface position message also includes the speed of the aircraft. Since no altitude information needs to be transmitted, this provides some extra bits for more information, such as speed and track angle.
 
-The surface position message has the Type Code from 5 to 8, which also represents the level of uncertainties in the position. And the structure of the surface position message ME field is shown as follows:
+The surface position message has Type Code from 5 to 8, which also represents the level of uncertainties in the position. And the structure of the surface position message ME field is:
 
 
 \begin{verbatim}
@@ -11,7 +11,7 @@ The surface position message has the Type Code from 5 to 8, which also represent
 +-------+--------+------+--------+------+------+-------------+-------------+
 \end{verbatim}
 
-We can see that the fields are defined similarly to the ones from airborne messages, except that the surveillance status and altitude bits are replaced by movement and ground track. The details of the fields are shown in Table \ref{tb:adsb-surf-pos-fields}
+We can see that the fields are defined similarly to the ones from airborne messages, except for the surveillance status and altitude bits which are replaced by movement and ground track. The details of the fields are shown in Table \ref{tb:adsb-surf-pos-fields}
 
 \begin{table}[ht]
 \caption{Surface position message structure}
@@ -81,7 +81,7 @@ First, the latitude zone size is four times smaller, which is defined as:
 \end{split}
 \end{equation}
 
-Similarly, the longitude zone size is also smaller, which is:
+Similarly, the longitude zone size is smaller too, which is:
 
 \begin{equation}
 \begin{split}
@@ -240,7 +240,13 @@ t1 = 1457996412
 lat_ref = 51.990
 lon_ref = 4.375
 
-position = pms.adsb.position(msg0, msg1, t0, t1, lat_ref, lon_ref)
+pms.adsb.position(msg0, msg1, t0, t1, lat_ref, lon_ref)
+\end{verbatim}
+
+Output: 
+
+\begin{verbatim}
+(52.32061, 4.73473)
 \end{verbatim}
 
 Note that the reference coordinates are needed for decoding the surface position. In this case the reference is the coordinates of the airfield. 
@@ -303,16 +309,19 @@ longitude: 4.735735
 \end{verbatim}
 
 \begin{notebox}{Try it out}
-Using \texttt{pyModeS}, we can perform the decoding of this locally unambiguous surface position as: 
+Using \texttt{pyModeS}, decode this locally unambiguous surface position as: 
 
 \begin{verbatim}
 import pyModeS as pms
-
 msg = "8C4841753A9A153237AEF0F275BE"
-lat_ref = 51.990
-lon_ref = 4.375
+lat_ref, lon_ref = 51.990, 4.375
+pms.adsb.position_with_ref(msg, lat_ref, lon_ref)
+\end{verbatim}
 
-position = pms.adsb.position_with_ref(msg, lat_ref, lon_ref)
+Output: 
+
+\begin{verbatim}
+(52.32061, 4.73473)
 \end{verbatim}
 
 \end{notebox}
@@ -335,16 +344,21 @@ The decimal value of track angle \texttt{0100001} is \texttt{33}. The track angl
 \end{equation}
 
 \begin{notebox}{Try it out}
-Using \texttt{pyModeS}, we can perform the decoding aircraft speed and track angle as: 
+Using \texttt{pyModeS}, decode aircraft speed and track angle as: 
 
 \begin{verbatim}
 import pyModeS as pms
-
 msg = "8C4841753A9A153237AEF0F275BE"
-
-spd, trk, vs, tag = pms.adsb.velocity(msg)
+pms.adsb.velocity(msg)
 \end{verbatim}
 
-Note that the last two parameters returned by the previous function are vertical speed and a tag indicate whether the speed is ground speed (GS) or airspeed (IAS/TAS).
+Output (speed, track angle, vertical speed, tag): 
+
+\begin{verbatim}
+17 92.8 0 GS
+\end{verbatim}
+
+
+Note that the last two parameters returned by the previous function are vertical speed and a flag indicating whether the speed is ground speed (GS) or airspeed (IAS/TAS).
 
 \end{notebox}

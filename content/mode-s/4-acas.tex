@@ -12,7 +12,13 @@
 
 This chapter will focus on ACAS II. The ACAS II is a system that utilizes the aircraft transponder, which interrogates the Mode~C and Mode~S transponders of nearby aircraft. When threats are detected, corresponding alerts are given to the pilots.
 
-Currently, the most common implementation of ACAS II is \emph{Traffic alert and Collision Avoidance System} (TCAS) II version 7.1, which was initiated by EUROCONTROL. It has been mandatory for aircraft in Europe since 2015. ACAS II works independently of the navigation system, FMS, and ATC. No input from these systems is considered for producing the alerts.
+Currently, the most common implementation of ACAS II is \emph{Traffic alert and Collision Avoidance System} (TCAS) II version 7.1, which was initiated by EUROCONTROL. It has been mandatory for aircraft in Europe since 2015. ACAS II works independently of the navigation system, FMS, and ATC. No input from these systems is considered for producing the alerts. 
+
+
+\begin{notebox}{Note}
+In the future, a new system developed by FAA, called ACAS X, is expected to replace the current ACAS II. It makes use of dynamic programming to generate resolution advisories and offers four performance capability variants for different air traffic scenarios. \cite{chomik2016}
+\end{notebox}
+  
 
 In ACAS II, TA and RA are triggered when certain thresholds to the closest point of approach (CPA) are passed. The thresholds depend on the altitude, speed, and heading of the aircraft. The examples of the TA and RA regions are illustrated in Figure \ref{fig:acas_regions}.
 
@@ -28,9 +34,9 @@ In ACAS II, TA and RA are triggered when certain thresholds to the closest point
 
 \section{ACAS with Mode~C transponders}
 
-ACAS system uses Mode~C only all-call interrogation to detect aircraft that are only equipped with Mode~A/C transponders. In this case, the ACAS system initiates a sequence of interrogations with increasing power.
+The ACAS system uses Mode~C only all-call interrogation to detect aircraft that are only equipped with Mode~A/C transponders. In this case, the ACAS system initiates a sequence of interrogations with increasing power.
 
-The interrogation pulse is slightly different from a Mode~A/C-only all-call interrogation. A special $S_1$ pulse (also known as "whisper-shout") is designed to reduce interference. The $S_1$ pulse is inserted 2 $\mu s$ ($\pm 0.15 \mu s$) before the $P_1$ pulse.
+The interrogation pulse is slightly different from a Mode~A/C-only all-call interrogation. A special $S_1$ pulse (also known as "whisper-shout") is designed to reduce interference. The $S_1$ pulse is inserted 2  {\textmu}s ($\pm 0.15 \mu s$) before the $P_1$ pulse.
 
 The reply should be sent with the following rules:
 
@@ -43,14 +49,14 @@ The reply should be sent with the following rules:
 
 \section{ACAS with Mode~S transponders}
 
-For Mode~S transponders, ACAS system employs a three-phase process, which includes the phases of \emph{detection}, \emph{surveillance}, and \emph{coordination}.
+For Mode~S transponders, the ACAS system employs a three-phase process, which includes the phases of \emph{detection}, \emph{surveillance}, and \emph{coordination}.
 
 For the detection phase, ACAS passively listens to Mode~S only all-call replies (DF=11). These all-call replies are usually generated as a result of ground SSR interrogations, or created by spontaneous acquisition squitter (broadcast of DF=11 message with interrogator code \0). In this process, aircraft with Mode~S transponders in the vicinity are discovered. ACAS may also listen to extended squitter messages (Downlink Format 17, ADS-B) to detect other aircraft.
 
-Once an aircraft is determined to be within the ACAS surveillance range, and within 10,000 ft of the own ACAS aircraft\footnote{This can be acquired through existing DF=0 and DF=4 replies, or through active interrogations}, ACAS will initiate a short air-air interrogation (UF=0) to acquire the range. The interrogation rate is defined as:
+Once another aircraft is determined to be within the ACAS surveillance range, and within 10,000 ft of the own aircraft\footnote{This can be acquired through existing DF=0 and DF=4 replies, or through active interrogations}, ACAS will initiate a short air-air interrogation (UF=0) to acquire the range. The interrogation rate is defined as:
 
 \begin{itemize}
-  \item Once every five cycles: when the target aircraft maintains in the surveillance range.
+  \item Once every five cycles: when the target aircraft remains in the surveillance range.
   \item Once every cycle: when the target aircraft is within 3 NM or with time to closest approach less than 60 s.
 \end{itemize}
 
@@ -64,7 +70,7 @@ The surveillance interrogation is stopped when all the following conditions are 
 \end{itemize}
 
 
-In Tables \ref{tb:acas_uf_0} and \ref{tb:acas_df_0}, fields for ACAS surveillance interrogation and reply messages are listed.
+Tables \ref{tb:acas_uf_0} and \ref{tb:acas_df_0} lists the fields for ACAS surveillance interrogation and reply messages.
 
 \begin{table}[ht]
   \centering
@@ -148,22 +154,22 @@ Once the target aircraft is within the RA region (a threat), ACAS initiates the 
 \end{table}
 
 
-Specific fields in above messages are defined as follows:
+Specific fields in the above mentioned messages are defined as follows:
 
 \begin{itemize}
-  \item \emph{Reply length (RL)}: 1 bit, defines the required reply format: \0 requires a reply with DF=0, while \1 requires reply with DF=16.
+  \item \emph{Reply length (RL)}: 1 bit, it defines the required reply format: \0 requires a reply with DF=0, while \1 requires reply with DF=16.
 
-  \item \emph{Acquisition (AQ)}: 1 bit, contains code that controls the content of RI field in the reply.
+  \item \emph{Acquisition (AQ)}: 1 bit, it contains code that controls the content of RI field in the reply.
 
-  \item \emph{Data selector (DS)}: 8 bits, indicates the BDS code of the MV content in reply with DF=16.
+  \item \emph{Data selector (DS)}: 8 bits, it indicates the BDS code of the MV content in reply with DF=16.
 
-  \item \emph{Vertical status (VS)}: 1 bit, indicates whether the aircraft is airborne (\0) or on the ground (\1).
+  \item \emph{Vertical status (VS)}: 1 bit, it indicates whether the aircraft is airborne (\0) or on the ground (\1).
 
-  \item \emph{Cross-link capability (CC)}: 1 bit, refers to the capability of reply DF=16 upon request of UF=0. When this 1-bit field is set to \1, the cross-link is supported. Otherwise, the field is set to \0.
+  \item \emph{Cross-link capability (CC)}: 1 bit, it refers to the capability of reply DF=16 upon request of UF=0. When this 1-bit field is set to \1, the cross-link is supported. Otherwise, the field is set to \0.
 
-  \item \emph{Sensitivity level (SL)}: 3 bits, represents the sensitivity level of the ACAS system. \0 indicates the ACAS is inoperative. Other values indicate the sensitivity level.
+  \item \emph{Sensitivity level (SL)}: 3 bits, it represents the sensitivity level of the ACAS system. \0 indicates the ACAS is inoperative. Other values indicate the sensitivity level.
 
-  \item \emph{Reply information (RI)}: 4 bits, indicates the type of reply to interrogating aircraft. For ACAS message, valid values are 0 and from 2 to 4. Other values are not part of the ACAS:
+  \item \emph{Reply information (RI)}: 4 bits, it indicates the type of reply to interrogating aircraft. For ACAS message, valid values are 0 and from 2 to 4. Other values are not part of the ACAS:
 
   \begin{quote}
     \texttt{0000}: No operating ACAS \\
@@ -172,7 +178,7 @@ Specific fields in above messages are defined as follows:
     \texttt{0111}: ACAS with vertical and horizontal resolution capability
   \end{quote}
 
-  \item \emph{Altitude Code (AC)}: 13 bits, encodes the altitude of the aircraft. It can be decoded according to section \ref{sec:alt_code}.
+  \item \emph{Altitude Code (AC)}: 13 bits, it encodes the altitude of the aircraft. It can be decoded according to section \ref{sec:alt_code}.
 
 \end{itemize}
 
@@ -185,7 +191,7 @@ Message U-definition (MU) is transmitted in ACAS coordination interrogation. MU 
 
 \subsection{UDS=3,0}
 
-When ACAS resolution information is transmitted in the UF=16 message, the first 8 bits of MU, U-definition subfields (UDS), is set to \texttt{0011 0000} (UDS=3,0). The corresponding fields are indicated in Table \ref{tb:acas_mu_uds30}.
+When ACAS resolution information is transmitted in the UF=16 message, the first 8 bits of MU, U-definition subfields (UDS), are set to \texttt{0011 0000} (UDS=3,0). The corresponding fields are indicated in Table \ref{tb:acas_mu_uds30}.
 
 \begin{table}[ht]
 \caption{UF=16, MU for ACAS resolution messages, UDS=3,0}
@@ -208,7 +214,7 @@ Aircraft address & MID & 65-88 & 33-56 & 24 \\ \hline
 \end{tabular}
 \end{table}
 
-The significance of fields are listed as follows:
+These fields can be interpreted as follows:
 
 \begin{itemize}
   \item \emph{Multiple threat bit (MTB)}: 1 bit, indicates whether multiple threats are present.
@@ -263,7 +269,7 @@ The significance of fields are listed as follows:
 
 \subsection{UDS=3,1} \label{sec:acas_ra}
 
-When UF=16 is used for RA broadcast, UDS is set to \texttt{0011 0001} (UDS=3,1). The corresponding fields are indicated in Table \ref{tb:acas_mu_uds31}.
+When UF=16 is used for RA broadcast, UDS is set to \texttt{0011 0001} (UDS=3,1). The corresponding fields are described in Table \ref{tb:acas_mu_uds31}.
 
 \begin{table}[ht]
 \caption{UF=16, MU for RA broadcast, UDS=3,1}
@@ -283,7 +289,7 @@ Mode~C altitude code & CAC & 76-88 & 44-56 & 13 \\ \hline
 \end{tabular}
 \end{table}
 
-The significance of fields are listed as follows:
+These fields can be interpreted as follows:
 
 \begin{itemize}
   \item \emph{Active RA (ARA)}: 14 bits, indicates the resolution advisory characteristics. It has to be interpreted together with the MTB field.

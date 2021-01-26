@@ -46,15 +46,15 @@ The first field of the message defined the figure of merit (FOM) / source of the
     \item 1: Inertial system (INS)
     \item 2: Global Navigation Satellite System (GNSS)
     \item 3: Distance measuring equipment-based navigation (DME/DME)
-    \item 4: Very High Frequency omnidirectional range / distance measuring equipment-based navigation (VOR/DME)
+    \item 4: Very High Frequency omnidirectional range / distance measuring equipment based navigation (VOR/DME)
     \item 5-15: Reserved
 \end{itemize}
 
-For static air temperature, the encoded value can be negative. Hence, two's complement coding (see section \ref{sec:two_complement}) is used for decoding. The actual maximum range of temperature is from -80 $^\circ$C to +60 $^\circ$C.
+For static air temperature, the encoded value can be negative. Hence, two's complement coding (see section \ref{sec:two_complement}) is used for encoding the value. The actual maximum range of temperature is from -80 $^\circ$C to +60 $^\circ$C.
 
 It is also worth pointing out a discrepancy in the design. The temperature is encoded using 10 bits, where the least significant bit value should have been 0.125$^\circ$. However, according to the official document \cite{icao9871v1}, the LSB value is 0.25$^\circ$. ICAO has planned to update this to 0.125$^\circ$ in the future. Most current implementations still use 0.25$^\circ$. 
 
-In Figure \ref{fig:bds44_example}, the decoding of an MRAR example message is shown.
+Figure \ref{fig:bds44_example} shows the decoding of an MRAR example message.
 
 \begin{figure}[ht]
     \centering
@@ -71,10 +71,10 @@ import pyModeS as pms
 
 msg = "A0001692185BD5CF400000DFC696"
 
-wind = pms.commb.wind44(msg)
-temperature = pms.commb.temp44(msg)
-pressure = pms.commb.p44(msg)
-humidity = pms.commb.hum44(msg)
+pms.commb.wind44(msg)   # (22, 344.5)
+pms.commb.temp44(msg)   # (-48.75, -24.375)
+pms.commb.p44(msg)      # None
+pms.commb.hum44(msg)    # None
 \end{verbatim}
 
 \end{notebox}
@@ -82,7 +82,7 @@ humidity = pms.commb.hum44(msg)
 \clearpage
 \section{Meteorological hazard report (BDS 4,5)}
 
-In MHR messages, different hazard condition levels are reported, such as turbulence, wind shear, microburst, icing, and wake vortex. It also includes temperature, pressure, and radio height. In Table \ref{tb:bds45}, the structure of the MHR message is shown.
+In MHR messages, different hazard condition levels are reported, such as turbulence, wind shear, microburst, icing, and wake vortex. It also includes temperature, pressure, and radio height. Table \ref{tb:bds45} shows the structure of the MHR message.
 
 It is worth noting that during real flights, MHR messages are much rarer than MARA messages. Whenever they are available, most of the messages only contain temperature information.
 
@@ -131,7 +131,7 @@ The levels for turbulence, wind shear, microburst, icing, and wake vortex are en
 
 As is the case for MRAR messages, the actual range of the temperature is from -80 $^\circ$C to +60 $^\circ$C, and it is encoded using the two's complement coding.
 
-In Figure \ref{fig:bds45_example}, the decoding of an example message is shown. Note that in this example, only the air temperature information is included. None of the hazard conditions is reported.
+Figure \ref{fig:bds45_example} shows the decoding of an example message. Note that in this example, only the air temperature information is included. None of the hazard conditions is reported.
 
 \begin{figure}[ht]
   \centering
@@ -142,6 +142,6 @@ In Figure \ref{fig:bds45_example}, the decoding of an example message is shown. 
 
 
 \begin{notebox}{Note}
-The availability of BDS 4,4 messages is quite low. Very few aircraft's transponders have these capabilities enabled. BDS 4,5 message is even rarer. When a message is transmitted, it is very common that information in many fields are not available.
+The availability of BDS 4,4 messages is quite low. Very few aircraft's transponders have these capabilities enabled. BDS 4,5 messages are even rarer. When such a message is transmitted, it is very common that the information in many fields is not available.
 \end{notebox}
 

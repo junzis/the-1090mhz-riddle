@@ -39,7 +39,7 @@ A - Z :   1 - 26
 If you are familiar with the ASCII (American Standard Code for Information Interchange) code, it is easy to identify that a callsign character is encoded using the lower 6 bits of the same character in ASCII.
 
 \section{Wake vortex category}
-The \texttt{CA} value in combination with \texttt{TC} value defines the wake vortex category of the aircraft. Note ADS-B has its own definition of wake categories, which is different from the common ICAO wake turbulence category definition. In Table \ref{tb:adsb_id_wake_category}, the definitions and related \texttt{TC} and \texttt{CA} codes are indicated.
+The \texttt{CA} value in combination with \texttt{TC} value defines the wake vortex category of the aircraft. Table \ref{tb:adsb_id_wake_category} lists the definitions and related \texttt{TC} and \texttt{CA} codes.
 
 \begin{table}[ht]
 \caption{Wake vortex in ADS-B identification and category message}
@@ -68,6 +68,14 @@ ANY & 0 & No category information \\ \hline\hline
 4 & 7 & Rotorcraft \\ \hline
 \end{tabular}
 \end{table}
+
+Note ADS-B has its own definition of wake categories, which is different from the ICAO wake turbulence category definition commonly used in aviation. The relationships of ICAO wake turbulence category (WTC) and ADS-B wake vortex category are:
+
+\begin{itemize}
+    \item ICAO WTC L (Light) is equivalent to ADS-B (TC=4, CA=1). 
+    \item ICAO WTC M (Medium) is equivalent to ADS-B (TC=4, CA=2 or CA=3). 
+    \item ICAO WTC H (Heavy) or J (Super) is equivalent to ADS-B (TC=4, CA=5). 
+\end{itemize}
 
 
 \section{Decoding example}
@@ -105,8 +113,11 @@ Using \texttt{pyModeS}, we can decode the callsign as follows:
 \begin{verbatim}
 import pyModeS as pms
 
-category = pms.adsb.category("8D4840D6202CC371C32CE0576098")
-callsign = pms.adsb.callsign("8D4840D6202CC371C32CE0576098")
+pms.adsb.category("8D4840D6202CC371C32CE0576098")
+# Output: 0
+
+pms.adsb.callsign("8D4840D6202CC371C32CE0576098")
+# Output: KLM1023_
 \end{verbatim}
 
 \end{notebox}

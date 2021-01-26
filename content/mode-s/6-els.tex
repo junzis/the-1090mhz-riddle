@@ -4,7 +4,7 @@ Mode~S Elementary Surveillance (ELS) provides a set of basic functionalities tha
 
 \section{Data link capability report (BDS 1,0)}
 
-This message is designed to report the data link capability of the Mode~S transponder installed. In Table \ref{tb:bds10}, all fields in this report are shown.
+This message is designed to report the data link capability of the installed Mode~S transponder. Table \ref{tb:bds10} shows all fields in this report.
 
 \begin{table}[ht]
 \centering
@@ -55,7 +55,7 @@ MSG     MB      Coding
                 1|1: Reserved for future versions
 \end{verbatim}
 
-2) Valid values for \emph{Mode~S subnetwork version number} are from 0 to 5, corresponds to compliance to a different version of ICAO documentations. Numbers 6 to 127 are currently unassigned. Numbers 0 to 5 can be interpreted:
+2) Valid values for \emph{Mode~S subnetwork version number} are from 0 to 5, corresponds to compliance to a different version of ICAO documentations. Numbers 6 to 127 are currently unassigned. Numbers 0 to 5 can be interpreted as:
 
 \begin{verbatim}
 0:  Subnetwork not available
@@ -67,7 +67,7 @@ MSG     MB      Coding
 >5: Reserved for future use
 \end{verbatim}
 
-3) \emph{Overlay Command Capability} indicated whether the transponder supports BDS overlay (Data Parity).
+3) \emph{Overlay Command Capability} indicates whether the transponder supports BDS overlay (Data Parity).
 
 4) When \emph{Transponder enhanced protocol indicator} bit is set to \1, the transponder is a Level 5 transponder. Value \0 indicates a Level 2 to 4 transponder.
 
@@ -85,7 +85,7 @@ MSG     MB      Coding
 
 This message is designed to report Common Usage Ground-initiated Comm-B (GICB) capabilities. The fields in this report are shown in Table \ref{tb:bds17}. In this table, each bit indicates whether the corresponding service is available from the transponder. 
 
-A bit is set to \1 when the corresponding register has a valid input that has been updated with the required rate. This means that the same aircraft would respond with different GICB reports due to the availability of the source data.
+A bit is set to \1 when the corresponding register has a valid input that has been updated at the required rate. This means that the same aircraft would respond with different GICB reports due to the availability of the relevant data.
 
 \begin{table}[ht]
 \footnotesize
@@ -159,7 +159,12 @@ msg = "A0000638FA81C10000000081A92F"
 capabilities = pms.commb.cap17(msg)
 \end{verbatim}
 
-A list of supporting BDS code will be returned.
+A list of supporting BDS code will be returned:
+
+\begin{verbatim}
+BDS05, BDS06, BDS07, BDS08, BDS09, BDS20, 
+BDS40, BDS50, BDS51, BDS52, BDS60
+\end{verbatim}
 
 \end{notebox}
 
@@ -326,10 +331,10 @@ MB:26=1   Do not turn right
 \end{verbatim}
 
 
-3) A RA terminated bit indicates whether previously generated RA has been terminated.
+3) An RA terminated bit indicates whether previously generated RA has been terminated.
 
 
-4) Threat type indicator contains 2 bits with the following meaning:
+4) The threat type indicator contains 2 bits with the following meaning:
 
 \begin{verbatim}
 00    No identity data in threat identity data

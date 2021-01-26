@@ -1,13 +1,15 @@
 \chapter{Uncertainties in ADS-B} \label{chap:uncertainty}
 
-There are many parameters in ADS-B that define the data quality of the position and velocity reports. With each evolution of the ADS-B versions, these parameters have been renamed and redefined. This creates a complicated landscape to understand and to analyze these indicators. This chapter is designed to give a better overview and mapping among data quality parameters across different ADS-B versions.
+There are many parameters in ADS-B that define the data quality of the position and velocity reports. These parameters serve as accuracy and confidence indicators for aircraft position and speed information transmitted in ADS-B messages.
+
+With each evolution of the ADS-B versions, these parameters have been renamed and redefined. This creates a complicated landscape to understand and to analyze these indicators. This chapter is designed to give a better overview and mapping among data quality parameters across different ADS-B versions.
 
 \section{Terminology}
 In general, there are three types of data quality indicators:
 
 \begin{itemize}
   \item \textbf{Uncertainty indicators}: These indicators are introduced in version 0. Parameter values indicate that at least 95\% of measurements are within the allowed uncertainty bounds.
-  \item \textbf{Accuracy indicators}: These indicators are first introduced in version 1 and are intended to replace previous uncertainty indicators. Parameter values also indicate that at least 95\% of measurements are within the allowed accuracy bounds.
+  \item \textbf{Accuracy indicators}: These indicators are first introduced in version 1 and are intended to be a drop-in replacement for uncertainty indicators in version 0. Parameter values also indicate that at least 95\% of measurements are within the allowed accuracy bounds.
   \item \textbf{Integrity indicators}: These indicators are also first introduced in version 1, replacing the uncertainty indicators from version 0.
 \end{itemize}
 
@@ -28,7 +30,7 @@ Surveillance integrity level & SIL & 1, 2 & 0 - 3 \\ \hline
 \end{tabular}
 \end{table}
 
-Each quality indicator also relates to a set of parameters that express the exact amount of uncertainties, errors, or probabilities. In Table \ref{tb:uncertainty-parameters}, these parameters are listed.
+Each quality indicator also relates to a set of parameters that express the exact amount of uncertainties, errors, or probabilities. Table \ref{tb:uncertainty-parameters} lists these parameters.
 
 
 \begin{table}[ht]
@@ -140,7 +142,7 @@ It is worth noting that, in the case of airborne position with GNSS height (TC=2
 
 \subsection{Navigation uncertainty category - rate (NUCr)}
 
-The Navigation Uncertainty Category - rate (NUCr) is used to indicate the uncertainty of the horizontal and vertical speeds. The bits representing NUCr can be found in the airborne velocity message (TC=19). The NUCr is located at message bit 43-45 (or ME bit 11-13), which defines the 95\% of the error in horizontal and vertical speed as shown in Table \ref{tb:nucr-params}.
+The Navigation Uncertainty Category - rate (NUCr) is used to indicate the uncertainty of the horizontal and vertical speeds. The bits representing NUCr can be found in the airborne velocity message (TC=19). The NUCr is located at message bits 43-45 (or ME bits 11-13), which defines the 95\% of the error in horizontal and vertical speed as shown in Table \ref{tb:nucr-params}.
 
 \begin{table}[ht]
 \caption{NUCr parameters and their values}

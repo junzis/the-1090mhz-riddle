@@ -1,4 +1,4 @@
-\chapter{Inferencing of BDS codes}
+\chapter{Inferencing of BDS codes} \label{chap:bds_infer}
 
 In chapter \ref{chap:comm-b}, we discussed the basic structure and protocols of Mode~S Comm-B messages. Each message type is identified by an 8-bit Comm-B Data Selector (BDS) code, which is only transmitted in the uplink message but not included in the downlink message. As third parties observing the replies to Mode~S surveillance interrogations, we must first determine the BDS code before decoding the content of any Comm-B messages. 
 
@@ -7,13 +7,13 @@ In chapter \ref{chap:comm-b}, we discussed the basic structure and protocols of 
 
 Each Mode~S message has a predefined structure and variables. For almost all common Comm-B message types, there are rules for certain bits. For example, these bits are:
 \begin{itemize}
-    \item Reserved bits: Those are bits in the different message types that are reserved for future use. They all have to be zeros. If any of the bits is not zero, the possibility of a certain BDS code should be ruled out.
+    \item Reserved bits: These are bits in the different message types that are reserved for future use. They all have to be zeros. If any of the bits is not zero, the possibility of a certain BDS code should be ruled out.
     \item Status bits: Some fields in Comm-B messages have their corresponding status bits. When a status bit is set to zero, all bits in the field must be zero. If the field contains non zero bits, the possibility of a certain BDS code can be ruled out.
-    \item Value rules: Different fields in the messages also have different physical ranges. For example, the Mach number in BDS 6,0 should not be higher than 1, and the temperature value in BDS 4,4 should be between -80$^\circ C$ and 60$^\circ C$. These constants can also be used to exclude certain BDS codes.
+    \item Value rules: Different fields in the messages also have different physical ranges. For example, the Mach number in BDS 6,0 should not be higher than 1, and the temperature value in BDS 4,4 should be between -80$^\circ C$ and 60$^\circ C$. These constants can then be used to exclude certain BDS codes.
 \end{itemize}
 
 
-In Tables \ref{tb:bds_rule_els}, \ref{tb:bds_rule_ehs}, and \ref{tb:bds_rule_mrar}, the rules for identifiying different types of ELS, EHS, and meteorlogical messages are shown.
+Tables \ref{tb:bds_rule_els}, \ref{tb:bds_rule_ehs}, and \ref{tb:bds_rule_mrar} show the rules for identifiying different types of ELS, EHS, and meteorlogical messages.
 
 
 \begin{table}
@@ -105,7 +105,7 @@ In Tables \ref{tb:bds_rule_els}, \ref{tb:bds_rule_ehs}, and \ref{tb:bds_rule_mra
 
 \section{Identification of BSD 5,0 and 6,0}
 
-Of all the previously mentioned message types, BDS 5,0 and BDS 6,0 are the two message types that share the most similar structures. From Table \ref{tb:bds_rule_ehs}, we can see the differences are present in bit 12/13 and bit 45/46 of BDS 5,0 and BDS 6,0. This similarity can cause a number of messages to be identified as both BDS 5,0 and 6,0 messages.
+Of all the previously mentioned message types, BDS 5,0 and BDS 6,0 are the two message types that share the most similar structures. From Table \ref{tb:bds_rule_ehs}, we can see the differences are in bit 12/13 and bit 45/46 of BDS 5,0 / BDS 6,0. This similarity can cause a number of messages to be identified as both BDS 5,0 and 6,0 messages.
 
 In order to distinguish between these two messages, we need to utilize the information contained in the messages. BDS 5,0 and BDS 6,0 both contain aircraft speed information. We can design the additional check using the following logic:
 
@@ -122,7 +122,7 @@ If the previous logic does not eliminate one of the two possibilities, we need t
 The basic BDS code identification logic is relatively simple. It checks all criteria from all message types and decides whether all but one BDS code can be eliminated. In this example section, we are only going to show how a message with both possibilities of BDS 5,0 and BDS 6,0 can be identified.
 
 
-In Figure \ref{fig:bds_bds_infer_example_1}, the identification of a DF=20 message is shown. 
+Figure \ref{fig:bds_bds_infer_example_1} shows the identification of a DF=20 message. 
 
 \begin{figure}[ht]
 \centering
@@ -133,7 +133,7 @@ In Figure \ref{fig:bds_bds_infer_example_1}, the identification of a DF=20 messa
 
 We see that BDS 6,0 is identified since the difference between the ground speed and airspeed is too high in the BDS 5,0 assumption.
 
-In Figure \ref{fig:bds_bds_infer_example_2}, the identification of a DF=21 message is shown. In DF=21 messages, the altitude code is not included. Thus, we have to rely on other information, such as speed and track angle from ADS-B to validate the BDS code. The assumption from BDS 5,0 conforms to the ADS-B information.
+Figure \ref{fig:bds_bds_infer_example_2} shows the identification of a DF=21 message. In DF=21 messages, the altitude code is not included. Thus, we have to rely on other information, such as speed and track angle from ADS-B to validate the BDS code. The assumption about it being BDS 5,0 corroborates the speed information from ADS-B.
 
 \begin{figure}[ht]
 \centering
@@ -152,9 +152,15 @@ msg1 = "A0001838E519F33160240142D7FA"
 bds1 = pms.bds.infer(msg1)
 
 msg2 = "A8001EBCFFFB23286004A73F6A5B"
-bds2 = pms.bds.infer(msg2)
+bds2 = pms.bds.infer(msg2) 
 \end{verbatim}
 
-This first BDS code should be \texttt{BDS60} and the second one should be \texttt{BDS50}.
+The first BDS code should be BDS60. The second message has the possibility of being either BDS50 or BDS60, we can further infer the type based on ADS-B information:
+
+\begin{verbatim}
+bds2 = pms.bds.is50or60(msg2, 320, 250, 14000)
+\end{verbatim}
+
+The final BDS code should be BDS50. 
 
 \end{notebox}

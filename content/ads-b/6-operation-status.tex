@@ -1,8 +1,7 @@
 \chapter{Aircraft operation status}\label{aircraft-operation-status}
 
-The aircraft operational status message is designed to provide various information on an aircraft. The message has been defined in all ADS-B versions. But in practice, it is not implemented in ADS-B version 0. In ADS-B version 0, the structures include information related to aircraft operational capabilities and status for different stages of the flight. From version 1 onward, the operational status includes more information, such as ADS-B version, accuracy, and integrity indicators.
+The aircraft operational status message is designed to provide various information on an aircraft. It is transmitted with Type Code 31 (\texttt{TC=31}). The structures of this message type differ significantly over different ADS-B versions. The message has been defined in all ADS-B versions. But in practice, it is not implemented in ADS-B version 0. From version 1 onward, the operational status includes more information, such as ADS-B version, accuracy, and integrity indicators. 
 
-The operation status message is transmitted with Type Code 31 (\texttt{TC=31}). The structures of this message type differ significantly over different ADS-B versions.
 
 \section{Version 0}
 
@@ -29,12 +28,12 @@ Reserved & & 73-88 & 41-56 & 16 \\ \hline
 \end{tabular}
 \end{table}
 
-However, even all the parameter fields are defined. All 
-\texttt{CC} and \text{OM} bits are reserved in the third and fourth blocks according to \cite{icao9871v1}, which eventually made the definitions un-usable for version 0 transponders. As version 0 transponders do not transmit any operation status messages, the absence of TC=31 messages can help identify transponder version 0, which is discussed in chapter \ref{chap:adsb-basic}.
+However, even though all the parameter fields are defined, all 
+\texttt{CC} and \text{OM} bits are reserved in the third and fourth blocks according to \cite{icao9871v1}, which eventually made the definitions unusable for version 0 transponders. As version 0 transponders do not transmit any operation status messages, the absence of TC=31 messages can help identify transponder version 0, which is discussed in chapter \ref{chap:adsb-basic}.
 
 \section{Version 1}
 
-From version 1 onward, the operational status report is implemented and broadcast by the transponder. In Table \ref{tb:adsb-operational-status-v1}, the structure of operational message in version 1 is defined.
+From version 1 onward, the operational status report is implemented and broadcast by the transponder. Table \ref{tb:adsb-operational-status-v1} lists the structure of operational message in version 1.
 
 \begin{table}[ht]
 \caption{Aircraft operational status (Version 1)}
@@ -69,7 +68,7 @@ ST=1: Surface capacity codes (12 bits) &&&& \\
 
 Bits 73 to 86, which are unused in the previous version, are now defined with new parameters. These parameters include ADS-B version number and various indicators related to the accuracy of the state measurements broadcast by the aircraft in other types of ADS-B messages.
 
-It is worth noting that the definitions of some fields with the sub-type of the message, which differentiate between airborne status messages and surface status messages.
+It is worth noting that the definition of sub-types for some fields allow us to differentiate between airborne status messages and surface status messages.
 
 
 \section{Version 2}
