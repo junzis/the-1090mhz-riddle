@@ -17,26 +17,26 @@ Table \ref{tb:bds40} shows the structure of the message.
 \hline
 \textbf{FIELD} & \textbf{MSG} & \textbf{MB} & \textbf{BITS} \\ \hline
 Status (for MCP/FCU selected altitude) & 33 & 1 & 1 \\ \cdashline{1-4}
-MCP/FCU selected altitude & 34-45 & 2-13 & 12 \\
+MCP/FCU selected altitude & 34--45 & 2--13 & 12 \\
 ~~Range: {[}0, 65520{]} ft &&& \\
 ~~LSB: 16 ft &&& \\ \hline
 Status (for FMS selected altitude) & 46 & 14 & 1 \\ \cdashline{1-4}
-FMS selected altitude & 47-58 & 15-26 & 12 \\
+FMS selected altitude & 47--58 & 15--26 & 12 \\
 ~~Range: {[}0, 65520{]} ft &&&\\
 ~~LSB: 16 ft &&& \\ \hline
 Status (for barometric press setting) & 59 & 27 & 1 \\ \cdashline{1-4}
-Barometric pressure setting  & 60-71 & 28-39 & 12 \\
+Barometric pressure setting  & 60--71 & 28--39 & 12 \\
 ~~Note: actual value minus 800 mb &&& \\
 ~~Range: {[}0, 410{]} mb &&& \\
 ~~LSB: 0.1 mb &&& \\ \hline
-Reserved (all zeros) & 72-79 & 40-47 & 8 \\ \hline
+Reserved (all zeros) & 72--79 & 40--47 & 8 \\ \hline
 Status of MCP/FCU mode & 80 & 48 & 1 \\ \cdashline{1-4}
 VNAV mode & 81 & 49 & 1 \\ \cdashline{1-4}
 Alt hold mode & 82 & 50 & 1 \\ \cdashline{1-4}
 Approach mode & 83 & 51 & 1 \\ \hline
-Reserved (all zeros) & 84-85 & 52-53 & 2 \\ \hline
+Reserved (all zeros) & 84--85 & 52--53 & 2 \\ \hline
 Status of target altitude source & 86 & 54 & 1 \\ \cdashline{1-4}
-Target altitude source & 87-88 & 55-56 & 2 \\ \hline
+Target altitude source & 87--88 & 55--56 & 2 \\ \hline
 \end{tabular}
 \end{table}
 
@@ -64,7 +64,7 @@ Figure \ref{fig:bds40_example} illustrates an example of how to decode a BDS 4,0
 \end{figure}
 
 \begin{notebox}{Try it out}
-Using \texttt{pyModeS}, we can decode information of BDS 4,0 messages as: 
+Using pyModeS, we can decode information of BDS 4,0 messages as: 
 
 \begin{verbatim}
 import pyModeS as pms
@@ -102,33 +102,33 @@ Table \ref{tb:bds50} shows the structure of the message.
 \textbf{FIELD} & \textbf{MSG} & \textbf{MB} & \textbf{BITS} \\ \hline
 Status (for roll angle) & 33 & 1 & 1 \\ \cdashline{1-4}
 Sign & 34 & 2 & 1 \\ \cdashline{1-4}
-Roll angle & 35-43 & 3-11 & 9\\
+Roll angle & 35--43 & 3--11 & 9\\
 ~~Range: {[}-90, +90{]} degrees &&& \\
 ~~LSB: 45/256 degrees &&& \\ \hline
 Status (for track angle) & 44 & 12 & 1 \\ \cdashline{1-4}
 Sign & 45 & 13 & 1 \\ \cdashline{1-4}
-True track angle & 46-55 & 14-23 & 10 \\
+True track angle & 46--55 & 14--23 & 10 \\
 ~~Range: {[}-180, 180{]} degrees &&& \\
 ~~LSB: 90/512 degrees &&& \\ \hline
 Status (for ground speed) & 56 & 24 & 1 \\ \cdashline{1-4}
-Ground speed & 57-66 & 25-34 & 10\\
+Ground speed & 57--66 & 25--34 & 10\\
 ~~Range: {[}0, 2046{]} kt &&& \\
 ~~LSB: 2 kt &&& \\ \hline
 Status (for track angle rate) & 67 & 35 & 1 \\ \cdashline{1-4}
 Sign & 68 & 36 & 1 \\ \cdashline{1-4}
-Track angle rate & 69-77 & 37-45 & 9 \\
+Track angle rate & 69--77 & 37--45 & 9 \\
 ~~Range: {[}-16, 16{]} degrees/second &&& \\
 ~~LSB: 8/256 degrees/second &&& \\ \hline
 Status (for true airspeed) & 78 & 46 & 1 \\ \cdashline{1-4}
-True airspeed & 79-88 & 47-56 & 10 \\
+True airspeed & 79--88 & 47--56 & 10 \\
 ~~Range: {[}0, 2046{]} kt &&& \\
 ~~LSB: 2 kt &&& \\ \hline
 \end{tabular}
 \end{table}
 
-In this message, we can see three signed values, which are roll angle, track angle, and track angle rate. Two's complement coding (see section \ref{sec:two_complement}) should be used to calculate these values.
+In this message, we can see three signed values, which are roll angle, track angle, and track angle rate. Two's complement coding (see section \ref{sec:two_complement}) should be used to calculate these values. 
 
-Figure \ref{fig:bds50_example} illustrates an example of how to decode a BDS 5,0 message.
+The following Figure \ref{fig:bds50_example} shows an example of decoding a BDS 5,0 message.
 
 \begin{figure}[ht]
   \centering
@@ -138,7 +138,7 @@ Figure \ref{fig:bds50_example} illustrates an example of how to decode a BDS 5,0
 \end{figure}
 
 \begin{notebox}{Try it out}
-Using \texttt{pyModeS}, we can decode information of BDS 5,0 messages as: 
+Using pyModeS, we can decode information of BDS 5,0 messages as: 
 
 \begin{verbatim}
 import pyModeS as pms
@@ -175,25 +175,25 @@ Table \ref{tb:bds60} shows the structure of the message.
 \textbf{FIELD} & \textbf{MSG} & \textbf{MB} & \textbf{BITS} \\ \hline
 Status (for magnetic heading) & 33 & 1 & 1 \\ \cdashline{1-4}
 Sign & 34 & 2 & 1 \\ \cdashline{1-4}
-Magnetic heading & 35-44 & 3-12 & 10\\
+Magnetic heading & 35--44 & 3--12 & 10\\
 Range: {[}-180, +180{]} degrees &&& \\
 LSB: 90/512 degrees &&& \\ \hline
 Status (for indicated airspeed) & 45 & 13 & 1 \\ \cdashline{1-4}
-Indicated airspeed  & 46-55 & 14-23 & 10\\
+Indicated airspeed  & 46--55 & 14--23 & 10\\
 Range: {[}0, 1023{]} kt &&& \\
 LSB: 1 kt &&& \\ \hline
 Status (for Mach number) & 56 & 24 & 1 \\ \cdashline{1-4}
-Mach number & 57-66 & 25-34 & 10\\
+Mach number & 57--66 & 25--34 & 10\\
 Range: {[}0, 4.092{]} &&&\\
 LSB: 0.004 &&& \\ \hline
 Status (for barometric altitude rate) & 67 & 35 & 1 \\ \cdashline{1-4}
 Sign & 68 & 36 & 1 \\ \cdashline{1-4}
-Barometric altitude rate  & 69-77 & 37-45 & 9 \\
+Barometric altitude rate  & 69--77 & 37--45 & 9 \\
 Range: {[}-16384, +16352{]} ft/min &&& \\
 LSB: 32 ft/min &&& \\ \hline
 Status (for inertial vertical velocity) & 78 & 46 & 1 \\ \cdashline{1-4}
 Sign & 79 & 47 & 1 \\ \cdashline{1-4}
-Inertial vertical velocity & 80-88 & 48-56 & 9\\
+Inertial vertical velocity & 80--88 & 48--56 & 9\\
 Range: {[}-16384, +16352{]} ft/min &&& \\
 LSB: 32 ft/min &&& \\ \hline
 \end{tabular}
@@ -203,7 +203,7 @@ In this message, we can see a few signed values, such as heading and two vertica
 
 The magnetic heading is the aircraft's heading with respect to the magnetic North, which can be different from the true north (for example, used for the track angle from ADS-B and BDS 5,0). Often an aircraft obtains the magnetic heading by adding its true North heading with the magnetic declination from a world magnetic model, such as \cite{chulliat2015}. It is worth noting that the true North heading is not necessarily the same as the track angle due to the influence of wind.
 
-In the heading and speed report, two different kinds of vertical rates are reported. Barometric altitude rates are only derived from barometer measurements. Since the source data from air data system is not filtered, significant noise is contained in these values. On the other hand, inertial vertical velocities are values provided by navigational equipment from different sources including the flight management computer. According to \cite{icao9688}, data sources with different levels of priorities are defined for these two values, which are listed in Table \ref{tb:vertical_rate_source}.
+In the heading and speed report, two different kinds of vertical rates are reported. Barometric altitude rates are only derived from barometer measurements. Since the source data from air data system is not filtered, significant noise is contained in these values. In contrast, inertial vertical velocities are values provided by navigational equipment from different sources including the flight management computer. According to \cite{icao9688}, data sources with different levels of priorities are defined for these two values, which are listed in Table \ref{tb:vertical_rate_source}.
 
 \begin{table}[ht]
 \footnotesize
@@ -214,10 +214,10 @@ In the heading and speed report, two different kinds of vertical rates are repor
 \hline
 \textbf{Parameter} & \textbf{Input Data Source Priorities} \\ \hline
 Barometric altitude rate & 1. Air Data System\\ 
-& 2. Inertial Reference System / Flight Management System \\ \hline
+& 2. Inertial Reference System/Flight Management System \\ \hline
 Inertial vertical velocity & 1. Flight Management Computer / GNSS integrated\\ 
 & 2. Flight Management Computer (General)\\
-& 3. Inertial Reference System / Flight Management System \\ \hline
+& 3. Inertial Reference System/Flight Management System \\ \hline
 \end{tabular}
 \end{table}
 
@@ -232,7 +232,7 @@ Figure \ref{fig:bds60_example} illustrates an example on how to decode a BDS 6,0
 \end{figure}
 
 \begin{notebox}{Try it out}
-Using \texttt{pyModeS}, we can decode information of BDS 6,0 messages as: 
+Using pyModeS, we can decode information of BDS 6,0 messages as: 
 
 \begin{verbatim}
 import pyModeS as pms

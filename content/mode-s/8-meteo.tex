@@ -15,44 +15,44 @@ In MRAR messages, information on wind, air temperature, pressure, and humidity i
 \begin{tabular}{|l|l|l|l|}
 \hline
 \textbf{FIELD} & \textbf{MSG} & \textbf{MB} & \textbf{BITS} \\ \hline
-Figure of merit / source & 33-36 & 1-4 & 4 \\ \hline
+Figure of merit / source & 33--36 & 1--4 & 4 \\ \hline
 Status (for wind) & 37 & 5 & 1 \\ \cdashline{1-4}
-Wind speed & 38-46 & 6-14 & 9 \\
+Wind speed & 38--46 & 6--14 & 9 \\
 ~~Range: {[}0, 511{]} knots &&& \\ 
 ~~LSB: 1 knots &&& \\ \cdashline{1-4}
-Wind direction & 47-55 & 15-23 & 9\\
+Wind direction & 47--55 & 15--23 & 9\\
 ~~Range: {[}0, 360{]} degrees &&& \\
 ~~LSB: 180/256 degrees &&& \\ \hline
 Sign (for temperature) & 56 & 24 & 1 \\ \cdashline{1-4}
-Static air temperature & 57-66 & 25-34 & 10\\
+Static air temperature & 57--66 & 25--34 & 10\\
 ~~Range: {[}-128, +128{]} $^\circ$C &&& \\
 ~~LSB: 0.25 $^\circ$C &&& \\ \hline
 Status (for pressure) & 67 & 35 & 1 \\ \cdashline{1-4}
-Average static pressure & 68-78 & 36-46 & 11 \\
+Average static pressure & 68--78 & 36--46 & 11 \\
 ~~Range: {[}0, 2048{]} hPa &&& \\
 ~~LSB: 1 hPa &&& \\ \hline
 Status (for turbulence) & 79 & 47 & 1 \\ \cdashline{1-4}
-Turbulence & 80-81 & 48-49 & 2 \\ \hline
+Turbulence & 80--81 & 48--49 & 2 \\ \hline
 Status (for humidity) & 82 & 50 & 1 \\ \cdashline{1-4}
-Humidity & 83-88 & 51-56 & 6 \\
+Humidity & 83--88 & 51--56 & 6 \\
 ~~Range: {[}0\%, 100\%{]} &&& \\
 ~~LSB: 100/64 \% &&& \\ \hline
 \end{tabular}
 \end{table}
 
-The first field of the message defined the figure of merit (FOM) / source of the information. The values indicate the following:
+The first field of the message defined the figure of merit (FOM)/source of the information. The values indicate the following:
 \begin{itemize}
     \item 0: Invalid
     \item 1: Inertial system (INS)
     \item 2: Global Navigation Satellite System (GNSS)
     \item 3: Distance measuring equipment-based navigation (DME/DME)
-    \item 4: Very High Frequency omnidirectional range / distance measuring equipment based navigation (VOR/DME)
-    \item 5-15: Reserved
+    \item 4: Very High Frequency omnidirectional range/distance measuring equipment based navigation (VOR/DME)
+    \item 5--15: Reserved
 \end{itemize}
 
 For static air temperature, the encoded value can be negative. Hence, two's complement coding (see section \ref{sec:two_complement}) is used for encoding the value. The actual maximum range of temperature is from -80 $^\circ$C to +60 $^\circ$C.
 
-It is also worth pointing out a discrepancy in the design. The temperature is encoded using 10 bits, where the least significant bit value should have been 0.125$^\circ$. However, according to the official document \cite{icao9871v1}, the LSB value is 0.25$^\circ$. ICAO has planned to update this to 0.125$^\circ$ in the future. Most current implementations still use 0.25$^\circ$. 
+It is also worth pointing out a discrepancy in the design. The temperature is encoded using 10 bits, where the least significant bit value should have been 0.125$^\circ$. However, according to the official document \cite{icao9871v1}, the LSB value is 0.25$^\circ$. ICAO is planning to update this to 0.125$^\circ$ in the future. Most current implementations still use 0.25$^\circ$. 
 
 Figure \ref{fig:bds44_example} shows the decoding of an MRAR example message.
 
@@ -64,7 +64,7 @@ Figure \ref{fig:bds44_example} shows the decoding of an MRAR example message.
   \end{figure}
   
 \begin{notebox}{Try it out}
-Using \texttt{pyModeS}, we can decode information of BDS 4,4 messages as: 
+Using pyModeS, we can decode information of BDS 4,4 messages as: 
 
 \begin{verbatim}
 import pyModeS as pms
@@ -95,29 +95,29 @@ It is worth noting that during real flights, MHR messages are much rarer than MA
 \hline
 \textbf{FIELD} & \textbf{MSG} & \textbf{MB} & \textbf{BITS} \\ \hline
 Status (for turbulence) & 33 & 1 & 1 \\ \cdashline{1-4}
-Turbulence & 34-35 & 2-3 & 2 \\ \hline
+Turbulence & 34--35 & 2--3 & 2 \\ \hline
 Status (for wind shear) & 36 & 4 & 1 \\ \cdashline{1-4}
-Wind shear & 37-38 & 5-6 & 2 \\ \hline
+Wind shear & 37--38 & 5--6 & 2 \\ \hline
 Status (for microburst) & 39 & 7 & 1 \\ \cdashline{1-4}
-Microburst & 40-41 & 8-9 & 2 \\ \hline
+Microburst & 40--41 & 8--9 & 2 \\ \hline
 Status (for icing) & 42 & 10 & 1 \\ \cdashline{1-4}
-Icing & 43-44 & 11-12 & 2 \\ \hline
+Icing & 43--44 & 11--12 & 2 \\ \hline
 Status (for wake vortex) & 45 & 13 & 1 \\ \cdashline{1-4}
-Wake vortex & 46-47 & 14-15 & 2 \\ \hline
+Wake vortex & 46--47 & 14--15 & 2 \\ \hline
 Status (for temperature) & 48 & 16 & 1 \\ \cdashline{1-4}
 Sign (for temperature) & 49 & 17 & 1 \\ \cdashline{1-4}
-Static air temperature & 50-58 & 18-26 & 9 \\
+Static air temperature & 50--58 & 18--26 & 9 \\
 ~~Range: {[}-128, +128{]} $^\circ$C &&& \\
 ~~LSB: 0.25 $^\circ$C &&& \\ \hline
 Status (for pressure) & 59 & 27 & 1 \\ \cdashline{1-4}
-Average static pressure & 60-70 & 28-38 & 11\\
+Average static pressure & 60--70 & 28--38 & 11\\
 ~~Range: {[}0, 2048{]} hPa &&& \\
 ~~LSB: 1 hPa &&&  \\ \hline
 Status (for height) & 71 & 39 & 1 \\ \cdashline{1-4}
-Radio height & 72-83 & 40-51 & 12 \\
+Radio height & 72--83 & 40--51 & 12 \\
 ~~Range: {[}0, 65 528{]} ft &&& \\
 ~~LSB: 16 ft &&& \\ \hline
-Reserved & 84-88 & 52-56 & 5 \\ \hline
+Reserved & 84--88 & 52--56 & 5 \\ \hline
 \end{tabular}
 \end{table}
 

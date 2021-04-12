@@ -8,7 +8,7 @@ With each evolution of the ADS-B versions, these parameters have been renamed an
 In general, there are three types of data quality indicators:
 
 \begin{itemize}
-  \item \textbf{Uncertainty indicators}: These indicators are introduced in version 0. Parameter values indicate that at least 95\% of measurements are within the allowed uncertainty bounds.
+  \item \textbf{Uncertainty indicators}: These indicators are introduced in the ADS-B version 0. Parameter values indicate that at least 95\% of measurements are within the allowed uncertainty bounds.
   \item \textbf{Accuracy indicators}: These indicators are first introduced in version 1 and are intended to be a drop-in replacement for uncertainty indicators in version 0. Parameter values also indicate that at least 95\% of measurements are within the allowed accuracy bounds.
   \item \textbf{Integrity indicators}: These indicators are also first introduced in version 1, replacing the uncertainty indicators from version 0.
 \end{itemize}
@@ -21,12 +21,12 @@ Commonly, two parameters are related to the position and velocity separately in 
 \begin{tabular}{|l|l|l|l|}
 \hline
 \textbf{Indicator} & \textbf{Acronym} & \textbf{Version} & \textbf{Values} \\ \hline
-Navigation uncertainty category - position & NUCp & 0 & 0 - 9 \\ \hline
-Navigation uncertainty category - rate (velocity) & NUCr & 0 & 0 - 4 \\ \hline
-Navigation accuracy category - position & NACp & 1, 2 & 0 - 11 \\ \hline
-Navigation accuracy category - velocity & NACv & 1, 2 & 0 - 4 \\ \hline
-Navigation integrity category & NIC & 1, 2 & 0 - 11 \\ \hline
-Surveillance integrity level & SIL & 1, 2 & 0 - 3 \\ \hline
+Navigation uncertainty category--position & NUCp & 0 & 0--9 \\ \hline
+Navigation uncertainty category--rate (velocity) & NUCr & 0 & 0--4 \\ \hline
+Navigation accuracy category--position & NACp & 1, 2 & 0--11 \\ \hline
+Navigation accuracy category--velocity & NACv & 1, 2 & 0--4 \\ \hline
+Navigation integrity category & NIC & 1, 2 & 0--11 \\ \hline
+Surveillance integrity level & SIL & 1, 2 & 0--3 \\ \hline
 \end{tabular}
 \end{table}
 
@@ -55,7 +55,7 @@ SIL (V1,2) & Probability of exceeding horizontal containment radius & P-RC \\ \c
 \end{tabular}
 \end{table}
 
-These parameters are identified by different bits from different messages. Due to the evolution of ADS-B versions, the definitions can also differ. In order to correctly obtain these parameters, the version of ADS-B transponder used must be identified. This can be based on the logic explained in chapter \ref{chap:adsb-basic}.
+These parameters are identified by different bits from different messages. Due to the evolution of ADS-B versions, the definitions can also differ. In order to correctly obtain these parameters, the version of ADS-B transponder used must be identified. This can be based on the logic explained in Chapter \ref{chap:adsb-basic}.
 
 In the rest of this chapter, these parameters are explained in detail according to different ADS-B versions. The changes in the same parameters between different versions are also indicated.
 
@@ -137,12 +137,12 @@ In general, a higher NUCp number (lower TC number) represents higher confidence 
 \end{tabular}
 \end{table}
 
-It is worth noting that, in the case of airborne position with GNSS height (TC=20-22), HPL and RCxy are defined with slight differences compared to other types of position messages. In addition, the containment radius for the vertical position (\texttt{RCv}) is also defined in this message. This is possible because the altitude is obtained from GNSS sources.
+It is worth noting that, in the case of airborne position with GNSS height (TC=20--22), HPL, and RCxy are defined with slight differences compared to other types of position messages. In addition, the containment radius for the vertical position (\texttt{RCv}) is also defined in this message. This is possible because the altitude is obtained from GNSS sources.
 
 
 \subsection{Navigation uncertainty category - rate (NUCr)}
 
-The Navigation Uncertainty Category - rate (NUCr) is used to indicate the uncertainty of the horizontal and vertical speeds. The bits representing NUCr can be found in the airborne velocity message (TC=19). The NUCr is located at message bits 43-45 (or ME bits 11-13), which defines the 95\% of the error in horizontal and vertical speed as shown in Table \ref{tb:nucr-params}.
+The Navigation Uncertainty Category - rate (NUCr) is used to indicate the uncertainty of the horizontal and vertical speeds. The bits representing NUCr can be found in the airborne velocity message (TC=19). The NUCr is located at message bits 43--45 (or ME bits 11--13), which defines the 95\% of the error in horizontal and vertical speed as shown in Table \ref{tb:nucr-params}.
 
 \begin{table}[ht]
 \caption{NUCr parameters and their values}
@@ -205,9 +205,9 @@ The NIC Supplement bit (NICs) is introduced in the operation status messages (TC
 \end{tabular}
 \end{table}
 
-\subsection{Navigation accuracy category - position (NACp)}
+\subsection{Navigation accuracy category -- position (NACp)}
 
-NACp is introduced in ADS-B version 1 as a complementary indicator of NIC. The NACp can be obtained from the operational status message, message frame bits 77-80 (or ME bits 45-48).
+NACp is introduced in ADS-B version 1 as a complementary indicator of NIC. The NACp can be obtained from the operational status message, message frame bits 77--80 (or ME bits 45--48).
 
 With NACp, the 95\% horizontal and vertical accuracy bounds can be determined. They are the estimated position uncertainty (EPU) and the vertical estimated position uncertainty (VEPU), which are also known as the horizontal figure of merit (HFOM) and the vertical figure of merit (VFOM) in GNSS. 
 
@@ -245,9 +245,9 @@ NACp and its related parameter values are defined in Table \ref{tb:nacp-params}.
 
 
 
-\subsection{Navigation accuracy category - velocity (NACv)}
+\subsection{Navigation accuracy category -- velocity (NACv)}
 
-NACv is introduced in version 1 to replace the NUCv from version 0. The bits are located at the same location and have the same definitions of values. These bits are contained in airborne velocity message (TC=19) message bits 43-45 (or ME bits 11-13). It defines the 95\% of the errors in horizontal and vertical speeds. The detailed definitions of the Horizontal Figure of Merit for rate (HFOMr) and Vertical Figure of Merit for rate (HFOMr) are shown in Table \ref{tb:nacv-params}.
+NACv is introduced in version 1 to replace the NUCv from version 0. The bits are located at the same location and have the same definitions of values. These bits are contained in airborne velocity message (TC=19) message bits 43--45 (or ME bits 11--13). It defines the 95\% of the errors in horizontal and vertical speeds. The detailed definitions of the Horizontal Figure of Merit for rate (HFOMr) and Vertical Figure of Merit for rate (HFOMr) are shown in Table \ref{tb:nacv-params}.
 
 \begin{table}[!ht]
 \caption{NACv parameters and their values}
@@ -266,7 +266,7 @@ NACv is introduced in version 1 to replace the NUCv from version 0. The bits are
 
 \subsection{Surveillance integrity level (SIL)}
 
-SIL is introduced in version 1 and used to indicate the probability of measurements exceeding the containment radius. The SIL value can also be found in the operational status message (TC=31), message bits 83-84 (or ME bits 51-52)
+SIL is introduced in version 1 and used to indicate the probability of measurements exceeding the containment radius. The SIL value can also be found in the operational status message (TC=31), message bits 83--84 (or ME bits 51--52)
 
 Each SIL value corresponds to two probabilities that describe the horizontal (P-RC) and vertical (P-VPL) components respectively. The definitions are as follows:
 
@@ -299,7 +299,7 @@ In version 2, NIC levels can be obtained with three additional supplement bits n
 
 \begin{itemize}
   \item NICa is located in the operational status message (TC=31) (message bit 76 or ME bit 44), which is the same as in ADS-B version 1.
-  \item NICb is located in the airborne position message (TC=9-18), message bit 40 or ME bit 8), where the Single Antenna Flag was located in previous ADS-B versions.
+  \item NICb is located in the airborne position message (TC=9--18), message bit 40 or ME bit 8), where the Single Antenna Flag was located in previous ADS-B versions.
   \item NICc is also located in the operational status message (TC=31) (message bit 52 or ME bit 20).
 \end{itemize}
 
@@ -351,8 +351,8 @@ In version 2, an additional SIL supplement bit (SILs) is introduced to better di
 \end{itemize}
 
 
-The values related to SIL remain the same as what is shown in Table \ref{tb:sil-params}.
+The values related to SIL remain the same as shown in Table \ref{tb:sil-params}.
 
 \subsection{NACp and NACv}
 
-NACp and NACv in version 2 remain the same as in version 1. Related parameters and definitions can be found in the previous Table \ref{tb:nacp-params} and Table \ref{tb:nacv-params} respectively.
+NACp and NACv in version 2 remain the same as in version 1. Related parameters and definitions can be found in the previous Table \ref{tb:nacp-params} and Table \ref{tb:nacv-params}, respectively.
