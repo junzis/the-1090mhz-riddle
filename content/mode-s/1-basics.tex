@@ -1,6 +1,6 @@
 \chapter{Basics of Mode~S services} \label{chap:mode_s_basics}
 
-In chapter \ref{chap:intro}, an overview of different Mode~S services is given. Most of the services except the extended squitter are interrogations based, which means information is only transmitted upon request. The request, also known as \emph{uplink}, is transmitted using 1030 MHz radio frequency. The reply (\emph{downlink}) signals are all transmitted using the 1090 MHz radio frequency. Hence, all Mode~S downlink messages can be intercepted using the same setup as ADS-B.
+In Chapter \ref{chap:intro}, an overview of different Mode~S services is given. Most of the services except the extended squitter are interrogations based, which means information is only transmitted upon request. The request, also known as `\emph{uplink}', is transmitted using 1030 MHz radio frequency. The reply (`\emph{downlink}') signals are all transmitted using the 1090 MHz radio frequency. Hence, all Mode~S downlink messages can be intercepted using the same setup as ADS-B.
 
 In the following chapters of this book, we are going to explain the interrogation based Mode~S services in four groups, specifically:
 
@@ -21,7 +21,7 @@ In this chapter, we discuss some of the common aspects regarding the decoding of
 
 \section{Mode~S message structures}
 
-Based on Figure \ref{fig:mode_s_uplink_pulses} from the introduction chapter, we see that there are two types of Mode~S messages in terms of message length. Table \ref{tb:mode_s_formats} indicates that among the current 11 different downlink formats, 4 are short messages consisting of 56 bits. The other 7 are long messages with 112 bits. All formats share the same structure of a header consisting of 5 bits format code and 24 bits parity at the end, as shown in the Figure \ref{fig:modes_msg_structures}.
+Based on Figure \ref{fig:mode_s_uplink_pulses} from the introduction chapter, we see that there are two types of Mode~S messages in terms of message length. Table \ref{tb:mode_s_formats} indicates that among the current 11 different downlink formats, four are short messages consisting of 56 bits. The other seven are long messages with 112 bits. All formats share the same structure of a header consisting of 5 bits of format code and 24 bits parity at the end, as shown in the Figure \ref{fig:modes_msg_structures}.
 
 \begin{figure}[!ht]
   \centering
@@ -54,7 +54,7 @@ Based on Figure \ref{fig:mode_s_uplink_pulses} from the introduction chapter, we
 
 \section{Parity} \label{sec:parity}
 
-Mode~S uses three types of parity. The first one is what is used for ADS-B in the extended squitter (see chapter \ref{chap:adsb_parity}). The other two types of parities are Address Parity (AP) and Data Parity (DP).
+Mode~S uses three types of parity. The first one is what is used for ADS-B in the extended squitter (see Chapter \ref{chap:adsb_parity}). The other two types of parities are Address Parity (AP) and Data Parity (DP).
 
 For any type of Mode~S messages, the parity can be calculated as follows:
 
@@ -83,12 +83,13 @@ When DP is in use, the parity is overlaid with the modified ICAO address, Modifi
 
 \begin{verbatim}
 ICAO:         DD33AA      1101 1101 0011 0011 1010 1010
+
                                       XOR
+
 BDS 4,4       440000      0100 0100 0000 0000 0000 0000
 -------------------------------------------------------
 Modified AA   9933AA      1001 1001 0011 0011 1010 1010
 \end{verbatim}
-
 
 Denoting the modified address as $P_\mathrm{MA}(x)$ and the Data Parity as $P_D(x)$, the calculation of $P_D(x)$ is:
 
@@ -181,7 +182,7 @@ It is worth noting that in either case, the resulting $A'(x)$ is the same as the
 By combining with ICAO addresses obtained in ADS-B and other information independently decoded from Mode~S messages, this process can also be used for detecting Mode~S errors as a third party observer. This method is described in \cite{sun2019pymodes}.
 
 \begin{notebox}{Try it out}
-Using \texttt{pyModeS}, we can obtain the ICAO address as: 
+Using pyModeS, we can obtain the ICAO address as: 
 
 \begin{verbatim}
 import pyModeS as pms

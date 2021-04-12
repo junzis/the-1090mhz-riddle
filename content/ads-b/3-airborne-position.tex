@@ -18,22 +18,22 @@ There are eight fields, and the details of all fields are listed in Table \ref{t
 \begin{tabular}{|l|l|l|l|l|}
 \hline
 \textbf{FIELD} & \textbf{} & \textbf{MSG} & \textbf{ME} & \textbf{BITS} \\ \hline
-Type Code  & TC & 33-37 & 1-5 & 5 \\ 
-~~9-18: with barometric altitude  & & & &\\ 
-~~20-22: with GNSS altitude  & & & &\\ \hline
-Surveillance status  & SS & 38-39 & 6-7 & 2\\
+Type Code  & TC & 33--37 & 1--5 & 5 \\ 
+~~9--18: with barometric altitude  & & & &\\ 
+~~20--22: with GNSS altitude  & & & &\\ \hline
+Surveillance status  & SS & 38--39 & 6--7 & 2\\
 ~~0: No condition & & & &\\ 
 ~~1: Permanent alert & & & &\\ 
 ~~2: Temporary alert & & & &\\ 
 ~~3: SPI condition & & & & \\ \hline
 Single antenna flag & SAF & 40 & 8 & 1 \\ \hline
-Encoded altitude & ALT & 41-52 & 9-20 & 12 \\ \hline
+Encoded altitude & ALT & 41--52 & 9--20 & 12 \\ \hline
 Time & T & 53 & 21 & 1 \\ \hline
 CPR Format  & F & 54 & 22 & 1 \\
 ~~0: even frame & & & &\\
 ~~1: odd frame  & & & &\\ \hline
-Encoded latitude & LAT-CPR & 55-71 & 23-39 & 17 \\ \hline
-Encoded longitude & LON-CPR & 72-88 & 40-56 & 17 \\ \hline
+Encoded latitude & LAT-CPR & 55--71 & 23--39 & 17 \\ \hline
+Encoded longitude & LON-CPR & 72--88 & 40--56 & 17 \\ \hline
 \end{tabular}
 \end{table}
 
@@ -48,9 +48,9 @@ It is important to emphasize that the encoded latitude and longitude are not the
 \section{An over-simplified example}
 First of all, we will use a simple example to explain the basic ideas behind the CPR position encoding. CPR divides 2D space into two different grids. Two message types are used to encode the positions with different grids.
 
-In the following simple example, we want to encode position $(9, 7)$ in a $16\times16$ discrete world. Normally, this would require 4 bits each to encode the $x$ and $y$ coordinates, which is $(1001, 0111)$.
+In the following simple example, we want to encode position $(9, 7)$ in a $16\times16$ discrete world. Normally, this would require four bits each to encode the $x$ and $y$ coordinates, which is $(1001, 0111)$.
 
-In the simple "CPR" algorithm, we first define two different grids. The even grid has a size of $4\times4$, while the odd grid has a size of $5\times5$. This is illustrated in Figure \ref{fig:cpr_simple_1}.
+For this simplified algorithm, we first define two different grids. The even grid has a size of $4\times4$, while the odd grid has a size of $5\times5$. This is illustrated in Figure \ref{fig:cpr_simple_1}.
 
 
 \begin{figure}[!ht]
@@ -59,7 +59,7 @@ In the simple "CPR" algorithm, we first define two different grids. The even gri
   \label{fig:cpr_simple_1}
 \end{figure}
 
-With these two grids, we can encode the local positions within each grid systems, which are $(1,3)$ and $(4,2)$ respectively. Now, the position can be encoded only using 3 bits. 
+With these two grids, we can encode the local positions within each grid systems, which are $(1,3)$ and $(4,2)$, respectively. Now, the position can be encoded only using three bits. 
 
 When the odd and even messages are received, each message alone has different possible global positions, which are shown in Figure \ref{fig:cpr_simple_2}.
 
@@ -160,7 +160,7 @@ lat < -87   ->    NL = 1
 
 In each position message, bit 54 determines whether it is an odd or even type. \0 indicates an even message, while \1 indicates an odd message.
 
-Bits 55-71 and bits 72-88 represent the fractions of the latitude and longitude within the latitude and longitude grid, denoted as $\mathrm{lat}_\mathrm{cpr}$ and $\mathrm{lon}_\mathrm{cpr}$:
+Bits 55--71 and bits 72--88 represent the fractions of the latitude and longitude within the latitude and longitude grid, denoted as $\mathrm{lat}_\mathrm{cpr}$ and $\mathrm{lon}_\mathrm{cpr}$:
 
 \begin{equation}
   \begin{split}
@@ -277,7 +277,7 @@ Similarly, the final longitude is chosen according to the timestamps of the mess
 It is worth noting that the longitudes in position messages are between 0 and 360 degrees. We often need to convert them to the range between -180 and 180 degrees, which is consistent with aviation conventions. We can convert them as:
 
 \begin{equation}
-  \mathrm{lon} = \mathrm{lon} - 360,  \quad \text{if}~\mathrm{lon} \ge 180
+  \mathrm{lon} = \mathrm{lon} - 360,  \quad \text{if}~\mathrm{lon} \ge 180.
 \end{equation}
 
 \subsection{Decoding example}
@@ -361,7 +361,7 @@ The final longitude (based on the even message) is calculated as:
 \end{align}
 
 \begin{notebox}{Try it out}
-Using \texttt{pyModeS}, we can perform the previous calculation of globally unambiguous position as: 
+Using pyModeS, we can perform the previous calculation of globally unambiguous position as: 
 
 \begin{verbatim}
 import pyModeS as pms
@@ -386,7 +386,7 @@ Output:
 
 \section{Locally unambiguous position decoding}
 
-Previously, a globally unambiguous position has been decoded using a pair of odd and even messages. In this part, we will discuss how to decode the ADS-B position with one message and a previous reference position that is obtained using globally unambiguous decoding.
+Previously, a globally unambiguous position was decoded using a pair of odd and even messages. In this part, we will discuss how to decode the ADS-B position with one message and a previous reference position that is obtained using globally unambiguous decoding.
 
 This method offers the possibility to continuous decode aircraft using only one message. It computes the latitude index (j) and the longitude index (m) based on this existing reference position and can be applied to both odd and even messages.
 
@@ -495,7 +495,7 @@ Next, the longitude can be calculated as follows:
 % lon:    3.91937
 
 \begin{notebox}{Try it out}
-Using \texttt{pyModeS}, we can perform the previous locally unambiguous position calculation as: 
+Using pyModeS, we can perform the previous locally unambiguous position calculation as: 
 
 \begin{verbatim}
 import pyModeS as pms
@@ -518,17 +518,17 @@ Output:
 
 \section{Altitude decoding}
 
-The altitude of the aircraft can be decoded with one position message, regardless of it being an even or odd type. However, depending on the type code of the messages, the altitudes are decoded differently. Table \ref{tb:adsb-tc} from chapter \ref{chap:adsb-basic} shows two different types of altitudes. They are:
+The altitude of the aircraft can be decoded with one position message, regardless of it being an even or odd type. However, depending on the type code of the messages, the altitudes are decoded differently. Table \ref{tb:adsb-tc} from Chapter \ref{chap:adsb-basic} shows two different types of altitudes. They are:
 
 \begin{itemize}
-\item \textbf{TC=9-18}: Airborne position, with barometric altitude encoded (in feet)
-\item \textbf{TC=20-22}: Airborne position, with GNSS Height encoded (in meters)
+\item \textbf{TC=9--18}: Airborne position, with barometric altitude encoded (in feet)
+\item \textbf{TC=20--22}: Airborne position, with GNSS Height encoded (in meters)
 \end{itemize}
 
 \subsection{Barometric altitude}
-For barometric altitude (TC between 9 and 18), the 8th bit of the 12-bit altitude field is the \emph{Q bit}. It indicates whether the altitude is encoded with an increment of 25 ft or 100 ft.
+For barometric altitude (TC between 9 and 18), the 8th bit of the 12-bit altitude field is the \emph{Q bit}. It indicates whether the altitude is encoded with an increment of 25 feet or 100 feet.
 
-When $Q=1$, the altitude is encoded with a 25 ft increment. Removing the Q-bit, the altitude shall be the multiple of 25 ft minus 1000 ft:
+When $Q=1$, the altitude is encoded with a 25 feet increment. Removing the Q-bit, the altitude shall be the multiple of 25 feet minus 1000 feet:
 
 \begin{equation}
   h = 25 ~ N - 1000 \quad \text{(ft)}
@@ -554,9 +554,7 @@ The altitude of the aircraft becomes:
 1560 \times 25 - 1000 = 38000 \quad \text{(ft)}
 \end{equation}
 
-In the case where the altitude is higher than 50175 ft, a 100 ft increment is used. In this situation, the Q bit is set to \0, and the rest of the bits are encoded using Gray code \cite{doran2007}.
-
-It is worth noting that it is possible for all altitude bits to be zeros, rather than zero altitude, it indicates that the altitude information is not available.
+In the case where the altitude is higher than 50175 feet, a 100 feet increment is used. In this situation, the Q bit is set to \0, and the rest of the bits are encoded using Gray code \cite{doran2007}. It is worth noting that it is possible for all altitude bits to be zeros,which indicates that the altitude information is not available.
 
 
 \subsection{GNSS height}
@@ -564,7 +562,7 @@ It is worth noting that it is possible for all altitude bits to be zeros, rather
 When the position message has the Type Code from 20 to 22, the 12-bit altitude field is used for the encoding of the GNSS height. The GNSS height is derived from the global positioning satellites, and the decimal value of all 12 bits translates into the height of aircraft in meters.
 
 \begin{notebox}{Try it out}
-Using \texttt{pyModeS}, we can perform the altitude decoding as: 
+Using pyModeS, we can perform the altitude decoding as: 
 
 \begin{verbatim}
 import pyModeS as pms
@@ -579,7 +577,6 @@ Output (altitude in feet):
 \begin{verbatim}
 38000
 \end{verbatim}
-
 \end{notebox}
 
 
@@ -589,7 +586,7 @@ Output (altitude in feet):
 It is recommended to perform a so-called \emph{reasonable test} to validate the decoded position. There are a couple of ways to perform such test to examine the plausibility of decoded positions:
 
 \begin{enumerate}
-  \item The first approach is to use the receiver position. The decoded position should not exceed the coverage of the receiver. See chapter \ref{chap:quickstart}, Figure \ref{fig:max_range_curve}.
+  \item The first approach is to use the receiver position. The decoded position should not exceed the coverage of the receiver. See Chapter \ref{chap:quickstart}, Figure \ref{fig:max_range_curve}.
 
   \item A further test is to use more than one pair of different messages to produce multiple globally unambiguous positions. Then, the distance between these positions can be used to examine whether the decoded positions are reasonable.
 \end{enumerate}

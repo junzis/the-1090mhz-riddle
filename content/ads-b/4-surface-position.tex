@@ -19,18 +19,18 @@ We can see that the fields are defined similarly to the ones from airborne messa
 \begin{tabular}{|l|l|l|l|l|}
 \hline
 \textbf{FIELD} & \textbf{} & \textbf{MSG} & \textbf{ME} & \textbf{BITS} \\ \hline
-Type Code & TC & 33-37 & 1-5 & 5 \\ \hline
-Movement & MOV & 38-44 & 6-12 & 7 \\ \hline
+Type Code & TC & 33--37 & 1--5 & 5 \\ \hline
+Movement & MOV & 38--44 & 6--12 & 7 \\ \hline
 Status for ground track & S & 45 & 13 & 1\\
 ~~0: Invalid & & & &\\
 ~~1: Valid & & & &\\ \hline
-Ground track & TRK & 46-52 & 14-20 & 7 \\ \hline
+Ground track & TRK & 46--52 & 14--20 & 7 \\ \hline
 Time & T & 53 & 21 & 1 \\ \hline
 CPR Format  & F & 54 & 22 & 1\\
 ~~0: even frame & & & &\\
 ~~1: odd frame & & & &\\ \hline
-Encoded latitude & LAR-CPR & 55-71 & 23-39 & 17 \\ \hline
-Encoded longitude & LON-CPR & 72-88 & 40-56 & 17 \\ \hline
+Encoded latitude & LAR-CPR & 55--71 & 23--39 & 17 \\ \hline
+Encoded longitude & LON-CPR & 72--88 & 40--56 & 17 \\ \hline
 \end{tabular}
 \end{table}
 
@@ -46,14 +46,14 @@ The movement field encodes the aircraft ground speed. The ground speed of the ai
 \textbf{Encoded speed} & \textbf{Ground speed range} & \textbf{Quantization} \\ \hline
 0 & Speed not available &  \\ \hline
 1 & Stopped (v $<$ 0.125 kt) &  \\ \hline
-2 - 8 & 0.125 $\leq$ v $<$ 1 kt & 0.125 kt steps \\ \hline
-9 - 12 & 1 kt $\leq$ v $<$ 2 kt & 0.25 kt steps \\ \hline
-13 - 38 & 2 kt $\leq$ v $<$ 15 kt & 0.5 kt steps \\ \hline
-39 - 93 & 15 kt $\leq$ v $<$ 70 kt & 1 kt steps \\ \hline
-94 - 108 & 70 kt $\leq$ v $<$ 100 kt & 2 kt steps \\ \hline
-109 - 123 & 100 kt $\leq$ v $<$ 175 kt & 5 kt steps \\ \hline
+2--8 & 0.125 $\leq$ v $<$ 1 kt & 0.125 kt steps \\ \hline
+9--12 & 1 kt $\leq$ v $<$ 2 kt & 0.25 kt steps \\ \hline
+13--38 & 2 kt $\leq$ v $<$ 15 kt & 0.5 kt steps \\ \hline
+39--93 & 15 kt $\leq$ v $<$ 70 kt & 1 kt steps \\ \hline
+94--108 & 70 kt $\leq$ v $<$ 100 kt & 2 kt steps \\ \hline
+109--123 & 100 kt $\leq$ v $<$ 175 kt & 5 kt steps \\ \hline
 124 & v $\ge$ 175 kt &  \\ \hline
-125 - 127 & Reserved &  \\ \hline
+125--127 & Reserved &  \\ \hline
 \end{tabular}
 \end{table}
 
@@ -70,7 +70,7 @@ When the status for the ground track field is set to 0, the information containe
 
 \section{Position}
 
-Like coordinates from airborne messages, the surface latitude and longitude are also encoded in the Compact Position Reporting (CPR) format. CPR format bit indicates whether the message is a \emph{even} or \emph{odd} message. There are only a few slight differences in decoding the surface position positions. 
+Like coordinates from airborne messages, the surface latitude and longitude are also encoded in the Compact Position Reporting (CPR) format. CPR format bit indicates whether the message is an \emph{even} or \emph{odd} message. There are only a few slight differences in decoding the surface position positions. 
 
 First, the latitude zone size is four times smaller, which is defined as:
 
@@ -90,15 +90,15 @@ Similarly, the longitude zone size is smaller too, which is:
 \end{split}
 \end{equation}
 
-The algorithm used to encode the position is essentially the same as the one used for encoding airborne position. All the other equations from chapter \ref{chap:airborn-position} can be used to decode surface position.
+The algorithm used to encode the position is essentially the same as the one used for encoding airborne position. All the other equations from Chapter \ref{chap:airborn-position} can be used to decode surface position.
 
-The main difference, when compared to the airborne position, is that the original number of bits used for encoding surface coordinates is 19 instead of 17. However in the message, only the lower-order 17 bits are included and transmitted in the surface message. Thus, there can be multiple solutions for a pair of odd and even messages, even when globally unambiguous decoding is used. To identify the correct solution, a reference position needs to be given. This can be the position of the receiver or the location of the airfield.
+The main difference, when compared to the airborne position, is that the original number of bits used for encoding surface coordinates is 19 instead of 17. However, in the message, only the lower-order 17 bits are included and transmitted in the surface message. Thus, there can be multiple solutions for a pair of odd and even messages, even when globally unambiguous decoding is used. To identify the correct solution, a reference position needs to be given. This can be the position of the receiver or the location of the airfield.
 
 When employing locally unambiguous decoding, the reference position needs to be within 45 nautical miles of the actual location. Commonly, the positions of the airport is used.
 
-With the equations from section \ref{sec:cpr_airborne_global_lat}, the solution refers to the latitude located at the northern hemisphere. We need to compute a southern hemisphere solution by subtracting this value with 90 degrees. The final correct latitude is the one that is closet to the reference position.
+With the equations from section \ref{sec:cpr_airborne_global_lat}, the solution refers to the latitude located at the northern hemisphere. We need to compute a southern hemisphere solution by subtracting this value with 90 degrees. The final correct latitude is the one that is closest to the reference position.
 
-Similarly, with the equations from section \ref{sec:cpr_airborne_global_lon}, the solution refers only the longitude in the 0 to 90 degrees quadrant. We need to compute the other three possible solutions by adding 90, 180, and 270 degrees. The final correct longitude is also the one that is closet to the reference position.
+Similarly, with the equations from section \ref{sec:cpr_airborne_global_lon}, the solution refers only the longitude in the 0 to 90 degrees quadrant. We need to compute the other three possible solutions by adding 90, 180, and 270 degrees. The final correct longitude is also the one that is closest to the reference position.
 
 
 
@@ -191,7 +191,10 @@ we can continue to calculate the global position. Since the even message is the 
 The southern hemisphere latitude solution is:
 
 \begin{equation}
-    \mathrm{lat}_S = 52.320607072215964 - 90 = -37.679392927784036
+  \begin{split}
+    \mathrm{lat}_S &= 52.320607072215964 - 90 \\
+    &= -37.679392927784036
+  \end{split}
 \end{equation}
   
 By comparing the result with the reference latitude (51.990), the final latitude value is the one located in the northern hemisphere.
@@ -219,7 +222,7 @@ The three other possible solutions are:
 \end{split}
 \end{equation}
 
-By comparing with the reference longitude (4.375), the final longitude is the one located in the first quadrant. Combining the result of previously obtained latitude, the final decoded coordinates (rounded up to 6 decimal position) are:
+By comparing with the reference longitude (4.375), the final longitude is the one located in the first quadrant. Combining the result of previously obtained latitude, the final decoded coordinates (rounded up to the 6th decimal position) are:
 
 
 \begin{verbatim}
@@ -228,7 +231,7 @@ longitude: 4.734735
 \end{verbatim}
 
 \begin{notebox}{Try it out}
-Using \texttt{pyModeS}, we can perform the decoding of this globally unambiguous surface position as: 
+Using pyModeS, we can perform the decoding of this globally unambiguous surface position as: 
 
 \begin{verbatim}
 import pyModeS as pms
@@ -309,7 +312,7 @@ longitude: 4.735735
 \end{verbatim}
 
 \begin{notebox}{Try it out}
-Using \texttt{pyModeS}, decode this locally unambiguous surface position as: 
+Using pyModeS, decode this locally unambiguous surface position as: 
 
 \begin{verbatim}
 import pyModeS as pms
@@ -331,7 +334,7 @@ Output:
 
 As a continuation of the previous example, we can also calculate the speed and track angle from the movement and track fields.
 
-The decimal value of movement \texttt{0101001} is \texttt{41}. Based on Table \ref{tb:adsb-surf-pos-mov}, the speed is encoded using 1 kt steps. Thus, the speed of aircraft is:
+The decimal value of movement \texttt{0101001} is 41. Based on Table \ref{tb:adsb-surf-pos-mov}, the speed is encoded using 1 kt steps. Thus, the speed of aircraft is:
 
 \begin{equation}
   15 + (42 - 39) \times 1 = 17 kt
@@ -344,7 +347,7 @@ The decimal value of track angle \texttt{0100001} is \texttt{33}. The track angl
 \end{equation}
 
 \begin{notebox}{Try it out}
-Using \texttt{pyModeS}, decode aircraft speed and track angle as: 
+Using pyModeS, decode aircraft speed and track angle as: 
 
 \begin{verbatim}
 import pyModeS as pms

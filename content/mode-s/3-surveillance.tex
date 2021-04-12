@@ -14,12 +14,12 @@ The structure of altitude and identity surveillance replies are similar, as show
   \begin{tabular}[t]{|l|l|l|l|}
   \hline
   \textbf{FIELD} & \textbf{} & \textbf{MSG} & \textbf{BITS} \\ \hline
-  Downlink format   & DF & 1-5    & 5   \\ \hline
-  Flight status     & FS & 6-8    & 3   \\ \hline
-  Downlink request  & DR & 9-13   & 5   \\ \hline
-  Utility message   & UM & 14-19  & 6   \\ \hline
-  Altitude code     & AC & 20-32  & 13  \\ \hline
-  Address parity    & AP & 33-56  & 24  \\ \hline
+  Downlink format   & DF & 1--5    & 5   \\ \hline
+  Flight status     & FS & 6--8    & 3   \\ \hline
+  Downlink request  & DR & 9--13   & 5   \\ \hline
+  Utility message   & UM & 14--19  & 6   \\ \hline
+  Altitude code     & AC & 20--32  & 13  \\ \hline
+  Address parity    & AP & 33--56  & 24  \\ \hline
   \end{tabular}
 \end{table}
 
@@ -30,12 +30,12 @@ The structure of altitude and identity surveillance replies are similar, as show
   \begin{tabular}[t]{|l|l|l|l|}
   \hline
   \textbf{FIELD} & \textbf{} & \textbf{MSG} & \textbf{BITS} \\ \hline
-  Downlink format   & DF & 1-5    & 5   \\ \hline
-  Flight status     & FS & 6-8    & 3   \\ \hline
-  Downlink request  & DR & 9-13   & 5   \\ \hline
-  Utility message   & UM & 14-19  & 6   \\ \hline
-  Identity code     & ID & 20-32  & 13  \\ \hline
-  Address parity    & AP & 33-56  & 24  \\ \hline
+  Downlink format   & DF & 1--5    & 5   \\ \hline
+  Flight status     & FS & 6--8    & 3   \\ \hline
+  Downlink request  & DR & 9--13   & 5   \\ \hline
+  Utility message   & UM & 14--19  & 6   \\ \hline
+  Identity code     & ID & 20--32  & 13  \\ \hline
+  Address parity    & AP & 33--56  & 24  \\ \hline
   \end{tabular}
 \end{table}
   
@@ -92,7 +92,7 @@ The definitions of the common fields are:
 
 \section{Altitude code} \label{sec:alt_code}
 
-The 13-bit altitude code can be encoded in 25-ft increments, 100-ft increments, or in metric units (m). The 7th bit (MSG bit 28) is defined as the M bit. When the M bit is set to \0, the 9th bit (MSG bit 30) is defined as the Q bit.
+The 13-bit altitude code can be encoded in 25 feet increments, 100 feet increments, or in metric unit of meters. The 7th bit (MSG bit 28) is defined as the M bit. When the M bit is set to \0, the 9th bit (MSG bit 30) is defined as the Q bit.
 
 The decoding rules are as follows:
 
@@ -101,7 +101,7 @@ The decoding rules are as follows:
 
   \item When M=1, removing the M bit, the remaining 12 bits represent the altitude in meters.
 
-  \item When M=0 and Q=1, removing the M and Q bits, the remaining 11 bits encode the altitude with 25 ft increments. Denote $N$ as the decimal value of the remaining 11 bits. The altitude is calculated as $25 \times N - 1000$ ft.
+  \item When M=0 and Q=1, removing the M and Q bits, the remaining 11 bits encode the altitude with 25 feet increments. Denote $N$ as the decimal value of the remaining 11 bits. The altitude is calculated as $25 \times N - 1000$ feet.
 
   \item When M=0 and Q=0, the remaining bits are defined as follows:
 
@@ -112,12 +112,12 @@ The decoding rules are as follows:
 +----+----+----+----+----+----+---+----+---+----+----+----+----+
 \end{verbatim}
 
-  This structure corresponds to the Mode~C altitude reply. This structure is used to encode altitudes above 50187.5 ft.
+  This structure corresponds to the Mode~C altitude reply. This structure is used to encode altitudes above 50187.5 feet.
 
 \end{itemize}
 
 \begin{notebox}{Try it out}
-Using \texttt{pyModeS}, we can calculate the altitude code as: 
+Using pyModeS, we can calculate the altitude code as: 
 
 \begin{verbatim}
 import pyModeS as pms
@@ -173,7 +173,7 @@ Finally, the four octal digit squawk code can be decoded from the binary groups 
 \end{verbatim}
 
 \begin{notebox}{Try it out}
-Using \texttt{pyModeS}, we can calculate the squawk code as: 
+Using pyModeS, we can calculate the squawk code as: 
 
 \begin{verbatim}
 import pyModeS as pms

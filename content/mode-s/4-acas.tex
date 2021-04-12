@@ -16,7 +16,7 @@ Currently, the most common implementation of ACAS II is \emph{Traffic alert and 
 
 
 \begin{notebox}{Note}
-In the future, a new system developed by FAA, called ACAS X, is expected to replace the current ACAS II. It makes use of dynamic programming to generate resolution advisories and offers four performance capability variants for different air traffic scenarios. \cite{chomik2016}
+In the future, a new system developed by FAA, called `ACAS X', is expected to replace the current ACAS II. It makes use of dynamic programming to generate resolution advisories and offers four performance capability variants for different air traffic scenarios. \cite{chomik2016}
 \end{notebox}
   
 
@@ -36,7 +36,7 @@ In ACAS II, TA and RA are triggered when certain thresholds to the closest point
 
 The ACAS system uses Mode~C only all-call interrogation to detect aircraft that are only equipped with Mode~A/C transponders. In this case, the ACAS system initiates a sequence of interrogations with increasing power.
 
-The interrogation pulse is slightly different from a Mode~A/C-only all-call interrogation. A special $S_1$ pulse (also known as "whisper-shout") is designed to reduce interference. The $S_1$ pulse is inserted 2  {\textmu}s ($\pm 0.15 \mu s$) before the $P_1$ pulse.
+The interrogation pulse is slightly different from a Mode~A/C-only all-call interrogation. A special $S_1$ pulse (also known as `whisper-shout') is designed to reduce interference. The $S_1$ pulse is inserted 2  {\textmu}s ($\pm 0.15 \mu s$) before the $P_1$ pulse.
 
 The reply should be sent with the following rules:
 
@@ -79,14 +79,14 @@ Tables \ref{tb:acas_uf_0} and \ref{tb:acas_df_0} lists the fields for ACAS surve
   \begin{tabular}[t]{|l|l|l|l|}
   \hline
   \textbf{FIELD} & \textbf{} & \textbf{MSG} & \textbf{BITS} \\ \hline
-  Uplink Format & UF & 1-5 & 5 \\ \hline
-  Reserved &  & 6-8 & 3 \\ \hline
+  Uplink Format & UF & 1--5 & 5 \\ \hline
+  Reserved &  & 6--8 & 3 \\ \hline
   Reply length & RL & 9 & 1 \\ \hline
-  Reserved &  & 10-13 & 4 \\ \hline
+  Reserved &  & 10--13 & 4 \\ \hline
   Acquisition & AQ & 14 & 1 \\ \hline
-  Data selector & DS & 15-22 & 8 \\ \hline
-  Reserved &  & 23-32 & 10 \\ \hline
-  Address parity & AP & 33-56 & 24 \\ \hline
+  Data selector & DS & 15--22 & 8 \\ \hline
+  Reserved &  & 23--32 & 10 \\ \hline
+  Address parity & AP & 33--56 & 24 \\ \hline
   \end{tabular}
 \end{table}
 
@@ -98,16 +98,16 @@ Tables \ref{tb:acas_uf_0} and \ref{tb:acas_df_0} lists the fields for ACAS surve
   \begin{tabular}[t]{|l|l|l|l|}
   \hline
   \textbf{FIELD} & \textbf{} & \textbf{MSG} & \textbf{BITS} \\ \hline
-  Downlink Format & DF & 1-5 & 5 \\ \hline
+  Downlink Format & DF & 1--5 & 5 \\ \hline
   Vertical status & VS & 6 & 1 \\ \hline
   Cross-link capability & CC & 7 & 1 \\ \hline
   Reserved &  & 8 & 1 \\ \hline
-  Sensitivity level & SL & 9-11 & 3 \\ \hline
-  Reserved &  & 12-13 & 2 \\ \hline
-  Reply information & RI & 14-17 & 4 \\ \hline
-  Reserved &  & 18-19 & 2 \\ \hline
-  Altitude code & AC & 20-32 & 13 \\ \hline
-  Address parity & AP & 33-56 & 24 \\ \hline
+  Sensitivity level & SL & 9--11 & 3 \\ \hline
+  Reserved &  & 12--13 & 2 \\ \hline
+  Reply information & RI & 14--17 & 4 \\ \hline
+  Reserved &  & 18--19 & 2 \\ \hline
+  Altitude code & AC & 20--32 & 13 \\ \hline
+  Address parity & AP & 33--56 & 24 \\ \hline
   \end{tabular}
 \end{table}
 
@@ -122,14 +122,14 @@ Once the target aircraft is within the RA region (a threat), ACAS initiates the 
   \begin{tabular}[t]{|l|l|l|l|}
   \hline
   \textbf{FIELD} & \textbf{} & \textbf{MSG} & \textbf{BITS} \\ \hline
-  Uplink Format & UF & 1-5 & 5 \\ \hline
-  Reserved &  & 6-8 & 3 \\ \hline
+  Uplink Format & UF & 1--5 & 5 \\ \hline
+  Reserved &  & 6--8 & 3 \\ \hline
   Reply length & RL & 9 & 1 \\ \hline
-  Reserved &  & 10-13 & 4 \\ \hline
+  Reserved &  & 10--13 & 4 \\ \hline
   Acquisition & AQ & 14 & 1 \\ \hline
-  Reserved &  & 15-32 & 18 \\ \hline
-  Message, U & MU & 33-88 & 56 \\ \hline
-  Address parity & AP & 33-56 & 24 \\ \hline
+  Reserved &  & 15--32 & 18 \\ \hline
+  Message, U & MU & 33--88 & 56 \\ \hline
+  Address parity & AP & 33--56 & 24 \\ \hline
   \end{tabular}
 \end{table}%
 
@@ -140,16 +140,16 @@ Once the target aircraft is within the RA region (a threat), ACAS initiates the 
   \begin{tabular}[t]{|l|l|l|l|}
   \hline
   \textbf{FIELD} & \textbf{} & \textbf{MSG} & \textbf{BITS} \\ \hline
-  Downlink Format & DF & 1-5 & 5 \\ \hline
+  Downlink Format & DF & 1--5 & 5 \\ \hline
   Vertical status & VS & 6 & 1 \\ \hline
-  Reserved &  & 7-8 & 2 \\ \hline
-  Sensitivity level & SL & 9-11 & 3 \\ \hline
-  Reserved &  & 12-13 & 2 \\ \hline
-  Reply information & RI & 14-17 & 4 \\ \hline
-  Reserved &  & 18-19 & 2 \\ \hline
-  Altitude code & AC & 20-32 & 13 \\ \hline
-  Message, V & MV & 33-88 & 56 \\ \hline
-  Address parity & AP & 89-112 & 24 \\ \hline
+  Reserved &  & 7--8 & 2 \\ \hline
+  Sensitivity level & SL & 9--11 & 3 \\ \hline
+  Reserved &  & 12--13 & 2 \\ \hline
+  Reply information & RI & 14--17 & 4 \\ \hline
+  Reserved &  & 18--19 & 2 \\ \hline
+  Altitude code & AC & 20--32 & 13 \\ \hline
+  Message, V & MV & 33--88 & 56 \\ \hline
+  Address parity & AP & 89--112 & 24 \\ \hline
   \end{tabular}
 \end{table}
 
@@ -199,18 +199,18 @@ When ACAS resolution information is transmitted in the UF=16 message, the first 
 \begin{tabular}{|l|l|l|l|l|}
 \hline
 \textbf{FIELD} & \textbf{} & \textbf{MSG} & \textbf{MU} & \textbf{BITS} \\ \hline
-U-definition subfield 1 [0011] & UDS1 & 33-36 & 1-4 & 4 \\ \hline
-U-definition subfield 2 [0000] & UDS2 & 37-40 & 5-8 & 4 \\ \hline
+U-definition subfield 1 [0011] & UDS1 & 33--36 & 1--4 & 4 \\ \hline
+U-definition subfield 2 [0000] & UDS2 & 37--40 & 5--8 & 4 \\ \hline
 Reserved &  & 41 & 9 & 1 \\ \hline
 Multiple threat bit & MTB & 42 & 10 & 1 \\ \hline
-Cancel vertical RAC & CVC & 43-44 & 11-12 & 2 \\ \hline
-Vertical RAC & VRC & 45-46 & 13-14 & 2 \\ \hline
-Cancel Horizontal RAC & CHC & 47-49 & 15-17 & 3 \\ \hline
-Horizontal RAC & HRC & 50-52 & 18-20 & 3 \\ \hline
-Reserved &  & 53-55 & 21-23 & 3 \\ \hline
-Horizontal sense bits & HSB & 56-60 & 24-28 & 5 \\ \hline
-Vertical sense bits & VSB & 61-64 & 29-32 & 4 \\ \hline
-Aircraft address & MID & 65-88 & 33-56 & 24 \\ \hline
+Cancel vertical RAC & CVC & 43--44 & 11--12 & 2 \\ \hline
+Vertical RAC & VRC & 45--46 & 13--14 & 2 \\ \hline
+Cancel Horizontal RAC & CHC & 47--49 & 15--17 & 3 \\ \hline
+Horizontal RAC & HRC & 50--52 & 18--20 & 3 \\ \hline
+Reserved &  & 53--55 & 21--23 & 3 \\ \hline
+Horizontal sense bits & HSB & 56--60 & 24--28 & 5 \\ \hline
+Vertical sense bits & VSB & 61--64 & 29--32 & 4 \\ \hline
+Aircraft address & MID & 65--88 & 33--56 & 24 \\ \hline
 \end{tabular}
 \end{table}
 
@@ -277,15 +277,15 @@ When UF=16 is used for RA broadcast, UDS is set to \texttt{0011 0001} (UDS=3,1).
 \begin{tabular}{|l|l|l|l|l|}
 \hline
 \textbf{FIELD} & \textbf{} & \textbf{MSG} & \textbf{MU} & \textbf{BITS} \\ \hline
-U-definition subfield 1 [0011] & UDS1 & 33-36 & 1-4 & 4 \\ \hline
-U-definition subfield 2 [0001] & UDS2 & 37-40 & 5-8 & 4 \\ \hline
-Active RAs & ARA & 41-54 & 9-22 & 14 \\ \hline
-RAC's record & RAC & 55-58 & 23-26 & 4 \\ \hline
+U-definition subfield 1 [0011] & UDS1 & 33--36 & 1--4 & 4 \\ \hline
+U-definition subfield 2 [0001] & UDS2 & 37--40 & 5--8 & 4 \\ \hline
+Active RAs & ARA & 41--54 & 9--22 & 14 \\ \hline
+RAC's record & RAC & 55--58 & 23--26 & 4 \\ \hline
 RA terminated indicator & RAT & 59 & 27 & 1 \\ \hline
 Multiple threat encounter & MTE & 60 & 28 & 1 \\ \hline
-Reserved &  & 61-62 & 29-30 & 2 \\ \hline
-Mode~A identity code & AID & 63-75 & 31-43 & 13 \\ \hline
-Mode~C altitude code & CAC & 76-88 & 44-56 & 13 \\ \hline
+Reserved &  & 61--62 & 29--30 & 2 \\ \hline
+Mode~A identity code & AID & 63--75 & 31--43 & 13 \\ \hline
+Mode~C altitude code & CAC & 76--88 & 44--56 & 13 \\ \hline
 \end{tabular}
 \end{table}
 
@@ -305,7 +305,7 @@ These fields can be interpreted as follows:
         Bit 45: RA is a sense reversal (\1) or not (\0) \\
         Bit 46: RA is altitude crossing (\1) or not (\0) \\
         Bit 47: RA is positive (\1) or vertical speed limit (\0) \\
-        Bit 48-54: Reserved for ACAS III
+        Bit 48--54: Reserved for ACAS III
       \end{quote}
 
       \item When ARA first bit (MSG bit 41) is \0 and MTE is \1:
@@ -318,7 +318,7 @@ These fields can be interpreted as follows:
         Bit 45: RA requires a positive descent (\1) or not (\0) \\
         Bit 46: RA requires a crossing (\1) or not (\0) \\
         Bit 47: RA is a sense reversal (\1) or not (\0) \\
-        Bit 48-54: Reserved for ACAS III
+        Bit 48--54: Reserved for ACAS III
       \end{quote}
 
       \item When ARA first bit (MSG bit 41) is \0 and MTE is \0, no vertical RA is generated.
@@ -360,10 +360,10 @@ When UF=16 is used for ACAS broadcast, UDS is set to \texttt{0011 0010} (UDS=3,2
 \begin{tabular}{|l|l|l|l|l|}
 \hline
 \textbf{FIELD} & \textbf{} & \textbf{MSG} & \textbf{MU} & \textbf{BITS} \\ \hline
-U-definition subfield 1 [0011] & UDS1 & 33-36 & 1-4 & 4 \\ \hline
-U-definition subfield 2 [0010] & UDS2 & 37-40 & 5-8 & 4 \\ \hline
-Reserved &  & 41-64 & 9-32 & 24 \\ \hline
-Aircraft address & MID & 65-8 & 33-56 & 24 \\ \hline
+U-definition subfield 1 [0011] & UDS1 & 33--36 & 1--4 & 4 \\ \hline
+U-definition subfield 2 [0010] & UDS2 & 37--40 & 5--8 & 4 \\ \hline
+Reserved &  & 41--64 & 9--32 & 24 \\ \hline
+Aircraft address & MID & 65--8 & 33--56 & 24 \\ \hline
 \end{tabular}
 \end{table}
 
@@ -383,13 +383,13 @@ Similar to MU in the UF=16 message, MV in the DF=16 message contains a few commo
 \begin{tabular}{|l|l|l|l|l|}
 \hline
 \textbf{FIELD} & \textbf{} & \textbf{MSG} & \textbf{MV} & \textbf{BITS} \\ \hline
-V-definition subfield 1 [0011] & VDS1 & 33-36 & 1-4 & 4 \\ \hline
-V-definition subfield 2 [0000] & VDS2 & 37-40 & 5-8 & 4 \\ \hline
-Active RAs & ARA & 41-54 & 9-22 & 14 \\ \hline
-RAC's record & RAC & 55-58 & 23-26 & 4 \\ \hline
+V-definition subfield 1 [0011] & VDS1 & 33--36 & 1--4 & 4 \\ \hline
+V-definition subfield 2 [0000] & VDS2 & 37--40 & 5--8 & 4 \\ \hline
+Active RAs & ARA & 41--54 & 9--22 & 14 \\ \hline
+RAC's record & RAC & 55--58 & 23--26 & 4 \\ \hline
 RA terminated indicator & RAT & 59 & 27 & 1 \\ \hline
 Multiple threat encounter & MTE & 60 & 28 & 1 \\ \hline
-Reserved &  & 61-88 & 29-56 & 28 \\ \hline
+Reserved &  & 61--88 & 29--56 & 28 \\ \hline
 \end{tabular}
 \end{table}
 

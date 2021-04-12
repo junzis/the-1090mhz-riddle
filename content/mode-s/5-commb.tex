@@ -2,7 +2,7 @@
 
 Comm-B messages count for a large portion of the Mode~S selective interrogation responses. The message can have a downlink format of either 20 or 21, depending on whether the aircraft identity code or altitude code is included in the message.
 
-Comm-B protocol supports many different types of messages (up to 255). Several important surveillance services utilize some of the Comm-B message types (see Figure \ref{fig:mode_s_services} from the Chapter \ref{chap:intro}). In this book, we are mainly interested in three types of services, which are Mode~S Elementary Surveillance (ELS), Mode~S Enhanced Surveillance (EHS), and Meteorological information. By decoding these messages, we can discover some additional information regarding an aircraft.
+Comm-B protocol supports many different types of messages (up to 255). Several important surveillance services utilize some of the Comm-B message types (see Figure \ref{fig:mode_s_services} from Chapter \ref{chap:intro}). In this book, we are mainly interested in three types of services, which are Mode~S Elementary Surveillance (ELS), Mode~S Enhanced Surveillance (EHS), and Meteorological information. By decoding these messages, we can discover some additional information regarding an aircraft.
 
 
 \section{Structure}
@@ -16,13 +16,13 @@ Comm-B messages have similar structures as surveillance replies (DF=4/5). The st
   \begin{tabular}[t]{|l|l|l|l|}
   \hline
   \textbf{FIELD} & \textbf{} & \textbf{MSG} & \textbf{BITS} \\ \hline
-  Downlink format         & DF & 1-5    & 5   \\ \hline
-  Flight status           & FS & 6-8    & 3   \\ \hline
-  Downlink request        & DR & 9-13   & 5   \\ \hline
-  Utility message         & UM & 14-19  & 6   \\ \hline
-  Altitude code           & AC & 20-32  & 13  \\ \hline
-  Message, Comm-B         & MB & 33-88  & 56  \\ \hline
-  Parity  &  & 89-112  & 24  \\ \hline
+  Downlink format         & DF & 1--5    & 5   \\ \hline
+  Flight status           & FS & 6--8    & 3   \\ \hline
+  Downlink request        & DR & 9--13   & 5   \\ \hline
+  Utility message         & UM & 14--19  & 6   \\ \hline
+  Altitude code           & AC & 20--32  & 13  \\ \hline
+  Message, Comm-B         & MB & 33--88  & 56  \\ \hline
+  Parity  &  & 89--112  & 24  \\ \hline
   \end{tabular}
 \end{table}
 
@@ -34,17 +34,17 @@ Comm-B messages have similar structures as surveillance replies (DF=4/5). The st
   \begin{tabular}[t]{|l|l|l|l|}
   \hline
   \textbf{FIELD} & \textbf{} & \textbf{MSG} & \textbf{BITS} \\ \hline
-  Downlink format         & DF & 1-5    & 5   \\ \hline
-  Flight status           & FS & 6-8    & 3   \\ \hline
-  Downlink request        & DR & 9-13   & 5   \\ \hline
-  Utility message         & UM & 14-19  & 6   \\ \hline
-  Identity code           & ID & 20-32  & 13  \\ \hline
-  Message, Comm-B         & MB & 33-88  & 56  \\ \hline
-  Parity  &  & 89-112  & 24  \\ \hline
+  Downlink format         & DF & 1--5    & 5   \\ \hline
+  Flight status           & FS & 6--8    & 3   \\ \hline
+  Downlink request        & DR & 9--13   & 5   \\ \hline
+  Utility message         & UM & 14--19  & 6   \\ \hline
+  Identity code           & ID & 20--32  & 13  \\ \hline
+  Message, Comm-B         & MB & 33--88  & 56  \\ \hline
+  Parity  &  & 89--112  & 24  \\ \hline
   \end{tabular}
 \end{table}
 
-The definitions of these common fields are the same as surveillance replies in chapter \ref{chap:surv_reply}. In addition, depending on the request from the surveillance radar, either address parity or data parity (see chapter \ref{chap:mode_s_basics}) can be included in the downlink message.
+The definitions of these common fields are the same as surveillance replies in Chapter \ref{chap:surv_reply}. In addition, depending on the request from the surveillance radar, either address parity or data parity (see Chapter \ref{chap:mode_s_basics}) can be included in the downlink message.
 
 
 \section{BDS}

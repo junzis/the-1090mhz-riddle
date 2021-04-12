@@ -1,6 +1,6 @@
 \chapter{Airborne velocity}
 
-Airborne velocities are all transmitted with Type Code 19 (\texttt{TC=19}). The general structure of the message is shown in Table \ref{tb:adsb-velocity-bits}. Four different subtypes are defined in bits 6-8 of the ME field. All sub-types share a similar overall message structure, with the different definitions from message bits 14 to 35 (or frame bits 46 to 67). 
+Airborne velocities are all transmitted with Type Code 19 (\texttt{TC=19}). The general structure of the message is shown in Table \ref{tb:adsb-velocity-bits}. Four different subtypes are defined in bits 6--8 of the ME field. All sub-types share a similar overall message structure, with the different definitions from message bits 14 to 35 (or frame bits 46 to 67). 
 
 \begin{table}[ht]
 \caption{Airborne velocity message structure}
@@ -10,32 +10,32 @@ Airborne velocities are all transmitted with Type Code 19 (\texttt{TC=19}). The 
 \hline
 \textbf{FIELD} & & \textbf{MSG} & \textbf{ME} & \textbf{BITS} \\ \hline
 \hline
-\textbf{Type Code} & TC & 33-37 & 1-5 & 5\\
+\textbf{Type Code} & TC & 33--37 & 1--5 & 5\\
 ~~TC=19 {[}Binary: 10011{]} &&&& \\ \hline
-\textbf{Sub-type} & ST & 38-40 & 6-8 & 3\\
+\textbf{Sub-type} & ST & 38--40 & 6--8 & 3\\
 \hline
 \textbf{Intent change flag} & IC & 41 & 9 & 1 \\ \hline
 \textbf{IFR capability flag} & IFR & 42 & 10 & 1 \\ \hline
-\textbf{Navigation uncertainty category for velocity} & & 43-45 & 11-13 & 3\\
+\textbf{Navigation uncertainty category for velocity} & & 43--45 & 11--13 & 3\\
 ~~ADS-B version 0 & NUCr &&&\\
-~~ADS-B version 1-2 & NUCv &&&\\ \hline
+~~ADS-B version 1--2 & NUCv &&&\\ \hline
 \hline
-\textbf{Sub-type specific fields} & & 46-67 & 14-35 & 22\\
+\textbf{Sub-type specific fields} & & 46--67 & 14--35 & 22\\
 ~~Refer to Table \ref{tb:adsb-velocity-bits-14-35-gs} and Table \ref{tb:adsb-velocity-bits-14-35-as} &&&& \\ \hline
 \hline
 \textbf{Source bit for vertical rate} & VrSrc & 38 & 36 & 1 \\
 ~~0: GNSS, 1: Barometer &&&&\\ \hline
 \textbf{Sign bit for vertical rate}  & Svr & 69 & 37 & 1 \\
 ~~0: Up, 1: Down &&&& \\ \hline
-\textbf{Vertical rate} & VR & 70-78 & 38-46 & 9\\
+\textbf{Vertical rate} & VR & 70--78 & 38--46 & 9\\
 ~~All zeros: no information &&&&\\
 ~~LSB: 64 ft/min &&&&\\
 ~~VR = 64 x (Decimal value - 1) &&&& \\ \hline
-\textbf{Reserved} &  & 79-80 & 47-48 & 2 \\ \hline
+\textbf{Reserved} &  & 79--80 & 47--48 & 2 \\ \hline
 \textbf{Sign bit for GNSS and Baro altitudes difference} & SDif & 81 & 49 & 1\\
 ~~0: GNSS alt above Baro alt &&&& \\
 ~~1: GNSS alt below Baro alt &&&& \\ \hline
-\textbf{Difference between GNSS and Baro altitudes} & dAlt & 82-88 & 50-56 & 7\\
+\textbf{Difference between GNSS and Baro altitudes} & dAlt & 82--88 & 50--56 & 7\\
 ~~All zeros: no information &&&&\\
 ~~LSB: 25 ft &&&& \\ \hline
 \end{tabular}
@@ -47,7 +47,7 @@ Sub-type 2 and 4 are designed for supersonic aircraft. Their message structures 
 
 These messages contain more information than just horizontal and vertical velocity. Two other significant types of information are the navigation uncertainty category for velocity, and the difference between the GNSS height and barometric altitude. 
 
-Comparing to position messages, the decoding of velocity messages is more straightforward since there is no complicated encoding scheme. We will use two example messages to illustrate the decoding process in the rest of this chapter:
+Compared to position messages, the decoding of velocity messages is more straightforward since there is no complicated encoding scheme. We will use two example messages to illustrate the decoding process in the rest of this chapter:
 
 \begin{verbatim}
 Message A:  8D485020994409940838175B284F (sub-type 1)
@@ -92,7 +92,7 @@ Message B (sub-type 3):
 +-----+---+--+---+---+-----------+-----+---+---------+----+----+-------+
 \end{verbatim}
 
-Here, the second rows and third rows of the messages are binary and decimal values respectively.
+Here, the second rows and third rows of the messages are binary and decimal values, respectively.
 
 
 \section{Vertical rate}
@@ -101,7 +101,7 @@ The method for decoding vertical rate and its related parameters are the same fo
 
 First of all, the vertical rate source bit \texttt{VrSrc} (ME bit 36) indicates the source of the altitude measurements. GNSS altitude is encoded as \0, while \1 encodes the barometric altitude.
 
-The direction of aircraft vertical movement can be read from \texttt{Svr} bit (ME bit 37), with \0 and \1 referring to climb and descent respectively. The encoded vertical rate value \texttt{VR} can be computed using message ME bits 38 to 46. If the 9-bit block contains all zeros, the vertical rate information is not available.
+The direction of aircraft vertical movement can be read from \texttt{Svr} bit (ME bit 37), with \0 and \1 referring to climb and descent, respectively. The encoded vertical rate value \texttt{VR} can be computed using message ME bits 38 to 46. If the 9-bit block contains all zeros, the vertical rate information is not available.
 
 The final vertical rate ($\mathrm{VS}$) is calculated as:
 
@@ -130,9 +130,9 @@ which indicates that the aircraft B is descending with a vertical speed of 2304 
 
 \section{GNSS and barometric altitudes difference}
 
-The last 8 bits of the ME field contain the difference between the barometric and GNSS altitudes. Of these 8 bits, the first one indicates the sign for the value of the remaining ones. When it is \1, the value is negative. This means the GNSS altitude is below the barometric altitude.
+The last eight bits of the ME field contain the difference between the barometric and GNSS altitudes. Of these eight bits, the first one indicates the sign for the value of the remaining ones. When it is \1, the value is negative. This means the GNSS altitude is below the barometric altitude.
 
-The value is encoded with the increment of 25 ft, and the equation to calculate the altitude difference is:
+The value is encoded with the increment of 25 feet, and the equation to calculate the altitude difference is:
 
 \begin{equation}
   \Delta h = s (n - 1) \times 25
@@ -149,7 +149,7 @@ Based on the example \texttt{Message A}, the difference between GNSS and baromet
 When all the bits are zeros (as shown in \texttt{Message B}) or ones, the information is not available.
 
 
-\section{Sub-type 1 and 2: ground speed decoding}
+\section{Sub-type 1 and 2: Ground speed decoding}
 
 The velocity information fields of subtype 1 and 2 messages consist of the East-West velocity component and the North-South velocity component, as well as the signs for these two values. The structure of ME bits 14 to 35 is shown in Table \ref{tb:adsb-velocity-bits-14-35-gs}.
 
@@ -164,25 +164,25 @@ The velocity information fields of subtype 1 and 2 messages consist of the East-
 \textbf{Direction for E-W velocity component} & Dew & 46 & 14 & 1\\
 ~~0: from West to East &&&&\\
 ~~1: from East to West &&&& \\ \hline
-\textbf{East-West velocity component} & Vew & 47-56 & 15-24 & 10\\
+\textbf{East-West velocity component} & Vew & 47--56 & 15--24 & 10\\
 ~~All zeros: no information available &&&& \\
 ~~Sub-type 1: Speed = Decimal value - 1 &&&& \\
 ~~Sub-type 2: Speed = 4 x (Decimal value - 1) &&&& \\
-~~Unit: knots &&&& \\ \hline
+~~Unit: Knots &&&& \\ \hline
 \textbf{Direction for N-S velocity component} & Dns & 57 & 25 & 1 \\
 ~~0: from South to North &&&& \\
 ~~1: from North to South &&&& \\ \hline
-\textbf{North-South velocity component} & Vns & 58-67 & 26-35 & 10\\
-~~All zeros: no information available &&&&\\
+\textbf{North-South velocity component} & Vns & 58--67 & 26--35 & 10\\
+~~All zeros: No information available &&&&\\
 ~~Sub-type 1: Speed = Decimal value - 1 &&&&\\
 ~~Sub-type 2: Speed = 4 x (Decimal value - 1) &&&&\\
-~~Unit: knots &&&& \\ \hline
+~~Unit: Knots &&&& \\ \hline
 \end{tabular}
 \end{table}
 
 Here, we can see that ME bits 14 and 25 are sign bits indicating the directions of each component. Each 10-bit block following these sign bits encodes a velocity component. It is important to point out that when any of the 10-bit blocks contains only zeros, no velocity information is available. For supersonic velocity (sub-type 2), the final velocity components are multiplied by a factor of 4.
 
-To calculate the velocity, four values are needed: \texttt{Sew}, \texttt{Vew},  \texttt{Sns}, \texttt{Vns}. It is common to consider speed vector's West-East and South-North component as positive values, which are denoted as $V_x$ and $V_y$. The formulas for sub-type 1 (subsonic) and sub-type 2 (supersonic) differ by a factor of 4.
+To calculate the velocity, four values are needed, which are \texttt{Sew}, \texttt{Vew},  \texttt{Sns}, and \texttt{Vns}. It is common to consider speed vector's West-East and South-North component as positive values, which are denoted as $V_x$ and $V_y$. The formulas for sub-type 1 (subsonic) and sub-type 2 (supersonic) differ by a factor of 4.
 
 For subsonic speed (sub-type 1), the speed components can be computed as:
 
@@ -239,7 +239,7 @@ the final aircraft speed and track angle are calculated as:
 where the aircraft speed is 159.20 kt and the track angle is 182.88 degrees.
 
 
-\section{Subtype 3 and 4: airspeed decoding}
+\section{Sub-type 3 and 4: Airspeed decoding}
 
 ADS-B velocity messages with sub-type 3 or 4 are broadcast when the ground speed of the aircraft is not known. This could happen when, for example, aircraft positions cannot be obtained due to the low availability of GNSS satellites. Furthermore, instead of West/East and South/North components, speed and heading are encoded directly. Table \ref{tb:adsb-velocity-bits-14-35-as} explains the details of message fields.
 
@@ -253,13 +253,13 @@ ADS-B velocity messages with sub-type 3 or 4 are broadcast when the ground speed
 \textbf{Status bit for magnetic heading}  & SH & 46 & 14 & 1\\
 ~~0: not available &&&& \\
 ~~1: available &&&& \\ \hline
-\textbf{Magnetic heading} & HDG & 47-56 & 15-24 & 10 \\
+\textbf{Magnetic heading} & HDG & 47--56 & 15--24 & 10 \\
 ~~LSB: 360/1024 degrees &&&& \\
-~~Heading = Decimal value x 360 / 1024 &&&& \\ \hline
+~~Heading = Decimal value $\times 360 / 1024$ &&&& \\ \hline
 \textbf{Airspeed type} & T & 57 & 25 & 1\\
 ~~0: Indicated airspeed (IAS) &&&& \\
 ~~1: True airspeed (TAS) &&&& \\ \hline
-\textbf{Airspeed} & AS & 58-67 & 26-35 & 10 \\
+\textbf{Airspeed} & AS & 58--67 & 26--35 & 10 \\
 ~~All zeros: no information available &&&& \\
 ~~Sub-type 1: Speed = Decimal value - 1 &&&& \\
 ~~Sub-type 2: Speed = 4 x (Decimal value - 1) &&&& \\
@@ -311,7 +311,7 @@ With airspeed type \texttt{T=1}, we can also determine that the speed refers to 
 
 
 \begin{notebox}{Try it out}
-Using \texttt{pyModeS}, we can perform the decoding the airborne velocities messages as follows: 
+Using pyModeS, we can perform the decoding the airborne velocities messages as follows: 
 
 \begin{verbatim}
 import pyModeS as pms
