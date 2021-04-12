@@ -49,7 +49,7 @@ MSG     MB      Coding
 70      38      0: ACAS generating TAs only
                 1: ACAS generating TAs and RAs
 --------------------------------------------------------------
-72|71   37|36   0|0: RTCA/DO-185 (pre-ACAS)
+72|71   40|39   0|0: RTCA/DO-185 (pre-ACAS)
                 0|1: RTCA/DO-185A
                 1|0: RTCA/DO-185B or EUROCAE ED 143
                 1|1: Reserved for future versions
@@ -266,7 +266,7 @@ Threat identity data & 63--86 & 31--56 & 26 \\ \hline
 \hline
 \textbf{MB:9} & \textbf{MB:28} & \textbf{} \\ \hline
 0 & 0 & No RA has been generated \\ \hline
-0 & 1 & Multiple threats, RA is intended to provide vertical separation blew some threats and above some other threats \\ \hline
+0 & 1 & Multiple threats, RA is intended to provide vertical separation below some threats and above some other threats \\ \hline
 1 & 0 & Only one threat \\ \hline
 0 & 1 & Multiple threats, RA is intended to provide vertical separation in the same direction \\ \hline
 \end{tabular}
