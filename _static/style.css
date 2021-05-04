@@ -62,11 +62,19 @@ pre > code{
 }
 
 .maintext h1 {
+  font-size: 2em;
   margin-top: 0.2em;
   border-bottom: 1px dashed #ddd;
+  padding-bottom: 5px;
 }
 
-.maintext h2, .maintext h3 {
+.maintext h2{
+  font-size: 1.7em;
+  margin-top: 1em;
+}
+
+.maintext h3 {
+  font-size: 1.5em;
   margin-top: 1em;
 }
 
@@ -149,4 +157,11 @@ h2:before {
 h3:before {
   content: counter(h2counter) "." counter(h3counter) ".\0000a0\0000a0";
   counter-increment: h3counter;
+}
+
+
+img.cover{
+  width: 250px;
+  padding: 0;
+  float:right;
 }

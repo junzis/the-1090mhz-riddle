@@ -8,7 +8,9 @@ do
     --toc \
     --toc-depth=3 \
     --mathjax \
-    --variable editat=$fn
+    --variable editat=$fn \
+    --extract-media _build/html/figures
+
 done
 
 for file in content/*.tex
@@ -81,6 +83,10 @@ find _build/html/content/ -name '*.html' -exec sed -i 's/embed\(.*\)pdf/img\1png
 find _build/html/content/ads-b/ -maxdepth 1 -name '*.html' -exec sed -i 's/_build\/html/\.\.\/\.\./g' {} \;
 find _build/html/content/mode-s/ -maxdepth 1 -name '*.html' -exec sed -i 's/_build\/html/\.\.\/\.\./g' {} \;
 find _build/html/content/ -maxdepth 1 -name '*.html' -exec sed -i 's/_build\/html/\.\./g' {} \;
+find _build/html/ -maxdepth 1 -name '*.html' -exec sed -i 's/_build\/html\///g' {} \;
+
+sed -i 's/embed\(.*\)pdf/img\1png/g' _build/html/index.html;
+sed -i 's/<img/<img class="cover" /g' _build/html/index.html;
 
 
 cd _build/html/figures/
