@@ -1,4 +1,4 @@
-\chapter{Airborne collision avoidance system}
+\chapter{Airborne collision avoidance system} \label{chap:acas}
 
 \section{Background}
 
@@ -36,7 +36,7 @@ In ACAS II, TA and RA are triggered when certain thresholds to the closest point
 
 The ACAS system uses Mode~C only all-call interrogation to detect aircraft that are only equipped with Mode~A/C transponders. In this case, the ACAS system initiates a sequence of interrogations with increasing power.
 
-The interrogation pulse is slightly different from a Mode~A/C-only all-call interrogation. A special $S_1$ pulse (also known as `whisper-shout') is designed to reduce interference. The $S_1$ pulse is inserted 2  {\textmu}s ($\pm 0.15 \mu s$) before the $P_1$ pulse.
+The interrogation pulse is slightly different from a Mode~A/C-only all-call interrogation. A special $S_1$ pulse (also known as `whisper-shout') is designed to reduce interference. The $S_1$ pulse is inserted 2  μs ($\pm 0.15 \mu s$) before the $P_1$ pulse.
 
 The reply should be sent with the following rules:
 
@@ -167,7 +167,7 @@ Specific fields in the above mentioned messages are defined as follows:
 
   \item \emph{Cross-link capability (CC)}: 1 bit, it refers to the capability of reply DF=16 upon request of UF=0. When this 1-bit field is set to \1, the cross-link is supported. Otherwise, the field is set to \0.
 
-  \item \emph{Sensitivity level (SL)}: 3 bits, it represents the sensitivity level of the ACAS system. \0 indicates the ACAS is inoperative. Other values indicate the sensitivity level.
+  \item \emph{Sensitivity level (SL)}: 3 bits, it represents the sensitivity level of the ACAS system, except that \0 indicates the ACAS is inoperative.
 
   \item \emph{Reply information (RI)}: 4 bits, it indicates the type of reply to interrogating aircraft. For ACAS message, valid values are 0 and from 2 to 4. Other values are not part of the ACAS:
 
@@ -398,4 +398,4 @@ We can see that the structure of the MV fields is similar to MU fields of RA bro
 \subsection{Other VDS}
 When the first eight bits are not \texttt{0011 0000}, the MV field contain the Ground-initiated Comm-B information that was requested in DS field of uplink (UF=0) in Table \ref{tb:acas_uf_0}. Comm-B will be explained in the next chapter.
 
-It is worth noting that the DS value is not transmitted in the MV field. Thus, it is difficult for us to know what data is contained in the MV field for VDS other than \texttt{3,0}.
+% It is worth noting that the DS value is not transmitted in the MV field. Thus, it is difficult to know what data is contained in the MV field for VDS other than \texttt{3,0}.

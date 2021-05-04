@@ -4,9 +4,7 @@ Mode~S Enhanced Surveillance (EHS) provides a set of advanced functionalities fo
 
 \section{Selected vertical intention (BDS 4,0)}
 
-The selected vertical intention message is designed for air traffic control to obtain an aircraft's current vertical intentions. For example, an aircraft controller can use this information to check whether an aircraft is complying with an altitude command. 
-
-Table \ref{tb:bds40} shows the structure of the message.
+The selected vertical intention message is designed for air traffic control to obtain an aircraft's current vertical intentions. For example, an aircraft controller can use this information to check whether an aircraft is complying with an altitude command. Table \ref{tb:bds40} shows the structure of the message.
 
 \begin{table}[ht]
 \renewcommand{\arraystretch}{1.1}
@@ -40,7 +38,7 @@ Target altitude source & 87--88 & 55--56 & 2 \\ \hline
 \end{tabular}
 \end{table}
 
-Two different types of selected altitude fields are included in the message. Values in the \emph{MCP/FCU selected altitude} field are from the mode control panel or flight control unit. These are often inputs from the pilot. Values in \emph{FMS selected altitude} field are derived from the flight management system controlling the vertical profile, which often does not come from manual input. In practice, FMS selected altitude values are often empty or unusable. When it is presented, the value is most the same as MCP/FCU selected altitude.
+Two different types of selected altitude fields are included in the message. Values in the \emph{MCP/FCU selected altitude} field are from the mode control panel or flight control unit. These are often inputs from the pilot. Values in \emph{FMS selected altitude} field are derived from the flight management system controlling the vertical profile, which often does not come from manual input. In practice, FMS selected altitude values are often empty or unusable. When it is presented, the value is mostly the same as MCP/FCU selected altitude.
 
 The \emph{barometric pressure setting} value is the actual pressure in millibars (mb) subtracted by a constant of 800. If the actual value is below 800 mb (or above 1209 mb), the corresponding status bit (MB:27) is set to \0.
 
@@ -126,7 +124,7 @@ True airspeed & 79--88 & 47--56 & 10 \\
 \end{tabular}
 \end{table}
 
-In this message, we can see three signed values, which are roll angle, track angle, and track angle rate. Two's complement coding (see section \ref{sec:two_complement}) should be used to calculate these values. 
+In this message, three signed values are shown, which are roll angle, track angle, and track angle rate. Two's complement coding (see section \ref{sec:two_complement}) should be used to calculate these values. 
 
 The following Figure \ref{fig:bds50_example} shows an example of decoding a BDS 5,0 message.
 
@@ -160,9 +158,7 @@ pms.commb.tas50(msg)    # 466, TAS (kt)
 
 \section{Heading and speed report (BDS 6,0)}
 
-The heading and speed report is designed to downlink various airspeed and vertical rate to air traffic controllers. In this type of message, indicated airspeed (IAS), Mach number, barometric altitude rate, inertial vertical velocity, and the magnetic heading of the aircraft are provided.
-
-Table \ref{tb:bds60} shows the structure of the message.
+The heading and speed report is designed to downlink various airspeed and vertical rate to air traffic controllers. In this message, indicated airspeed (IAS), Mach number, barometric altitude rate, inertial vertical velocity, and the magnetic heading of the aircraft are provided. Table \ref{tb:bds60} shows the structure of the message.
 
 
 \begin{table}[ht]
@@ -199,9 +195,9 @@ LSB: 32 ft/min &&& \\ \hline
 \end{tabular}
 \end{table}
 
-In this message, we can see a few signed values, such as heading and two vertical rates. Two's complement coding (see section \ref{sec:two_complement}) should be used to calculate these values.
+In this message, there are a few signed values, such as heading and two vertical rates. Two's complement coding (see section \ref{sec:two_complement}) should be used to calculate these values.
 
-The magnetic heading is the aircraft's heading with respect to the magnetic North, which can be different from the true north (for example, used for the track angle from ADS-B and BDS 5,0). Often an aircraft obtains the magnetic heading by adding its true North heading with the magnetic declination from a world magnetic model, such as \cite{chulliat2015}. It is worth noting that the true North heading is not necessarily the same as the track angle due to the influence of wind.
+The magnetic heading is the aircraft's heading with respect to the magnetic North, which can be different from the true north (for example, used for the track angle from ADS-B and BDS 5,0). Often, an aircraft obtains the magnetic heading by adding its true North heading with the magnetic declination from a world magnetic model, such as \cite{chulliat2015}. It is worth noting that the true North heading is not necessarily the same as the track angle due to the influence of wind.
 
 In the heading and speed report, two different kinds of vertical rates are reported. Barometric altitude rates are only derived from barometer measurements. Since the source data from air data system is not filtered, significant noise is contained in these values. In contrast, inertial vertical velocities are values provided by navigational equipment from different sources including the flight management computer. According to \cite{icao9688}, data sources with different levels of priorities are defined for these two values, which are listed in Table \ref{tb:vertical_rate_source}.
 

@@ -41,9 +41,9 @@ Airborne velocities are all transmitted with Type Code 19 (\texttt{TC=19}). The 
 \end{tabular}
 \end{table}
 
-Subtypes 1 and 2 are used to report ground speeds of aircraft. Subtypes 3 and 4 are used to report aircraft true airspeed or indicated airspeed. Reporting of airspeed in ADS-B only occurs when aircraft position cannot be determined based on the GNSS system.\footnote{In the real world, subtype 3 messages are very rare.} 
+Subtypes 1 and 2 are used to report ground speeds of aircraft. Subtypes 3 and 4 are used to report aircraft true airspeed or indicated airspeed. Reporting of airspeed in ADS-B only occurs when aircraft position cannot be determined based on the GNSS system. In the real world, subtype 3 messages are very rare. 
 
-Sub-type 2 and 4 are designed for supersonic aircraft. Their message structures are identical to subtypes 1 and 3, but with the speed resolution of 4 kt instead of 1 kt. However, since there are no operational supersonic airliners currently, there is no ADS-B airborne velocity message with sub-type 2 and 4 at this moment.
+Sub-type 2 and 4 are designed for supersonic aircraft. Their message structures are identical to subtypes 1 and 3, but with the speed resolution of 4 kt instead of 1 kt. However, since there are no operational supersonic airliners currently, there is no ADS-B airborne velocity message with sub-type 2 and 4 at this moment.\footnote{It is possible that with strong tail wind, the ground speed of an aircraft may appear to be ``supersonic'' during the flight.}
 
 These messages contain more information than just horizontal and vertical velocity. Two other significant types of information are the navigation uncertainty category for velocity, and the difference between the GNSS height and barometric altitude. 
 
@@ -54,11 +54,11 @@ Message A:  8D485020994409940838175B284F (sub-type 1)
 Message B:  8DA05F219B06B6AF189400CBC33F (sub-type 3)
 \end{verbatim}
 
-Downlink format, ICAO address, ME field, and CRC remainder of both messages are as follows:
+Downlink format, ICAO address, ME field, and parity of both messages are as follows:
 
 \begin{verbatim}
 +-----+----+--------+----------------+--------+
-+     | DF | ICAO   | ME             |  CRC   |
++     | DF | ICAO   | ME             |  PI    |
 +-----+----+--------+----------------+--------+
 + A   | 8D | 485020 | 99440994083817 | 5B284F |
 +-----+----+--------+----------------+--------+
@@ -103,7 +103,7 @@ First of all, the vertical rate source bit \texttt{VrSrc} (ME bit 36) indicates 
 
 The direction of aircraft vertical movement can be read from \texttt{Svr} bit (ME bit 37), with \0 and \1 referring to climb and descent, respectively. The encoded vertical rate value \texttt{VR} can be computed using message ME bits 38 to 46. If the 9-bit block contains all zeros, the vertical rate information is not available.
 
-The final vertical rate ($\mathrm{VS}$) is calculated as:
+The final vertical speed ($\mathrm{VS}$) is calculated as:
 
 \begin{equation}
   \mathrm{VS} = (2S_{vr} - 1) \cdot 64 \cdot (V_R - 1)
@@ -130,7 +130,7 @@ which indicates that the aircraft B is descending with a vertical speed of 2304 
 
 \section{GNSS and barometric altitudes difference}
 
-The last eight bits of the ME field contain the difference between the barometric and GNSS altitudes. Of these eight bits, the first one indicates the sign for the value of the remaining ones. When it is \1, the value is negative. This means the GNSS altitude is below the barometric altitude.
+The last eight bits of the ME field contain the difference between the barometric and GNSS altitudes. Of these eight bits, the first bit indicates the sign for the value of the remaining bits. When it is \1, the value is negative. This means the GNSS altitude is below the barometric altitude.
 
 The value is encoded with the increment of 25 feet, and the equation to calculate the altitude difference is:
 
@@ -138,7 +138,7 @@ The value is encoded with the increment of 25 feet, and the equation to calculat
   \Delta h = s (n - 1) \times 25
 \end{equation}
 
-where $s$ is the sign and $n$ is the decimal value of the encoded difference.
+where $s$ is the sign and $n$ is the decimal value of the encoded altitude difference.
 
 Based on the example \texttt{Message A}, the difference between GNSS and barometric altitude is:
 
@@ -146,7 +146,7 @@ Based on the example \texttt{Message A}, the difference between GNSS and baromet
   \Delta h = 1 (23 - 1) \times 25 = 550 ~\text{ft}
 \end{equation}
 
-When all the bits are zeros (as shown in \texttt{Message B}) or ones, the information is not available.
+When all the bits are zeros (as shown in \texttt{Message B}) or ones, this information is not available.
 
 
 \section{Sub-type 1 and 2: Ground speed decoding}
@@ -241,7 +241,7 @@ where the aircraft speed is 159.20 kt and the track angle is 182.88 degrees.
 
 \section{Sub-type 3 and 4: Airspeed decoding}
 
-ADS-B velocity messages with sub-type 3 or 4 are broadcast when the ground speed of the aircraft is not known. This could happen when, for example, aircraft positions cannot be obtained due to the low availability of GNSS satellites. Furthermore, instead of West/East and South/North components, speed and heading are encoded directly. Table \ref{tb:adsb-velocity-bits-14-35-as} explains the details of message fields.
+ADS-B velocity messages with sub-type 3 or 4 are broadcast when the ground speed of the aircraft is not known. This could happen when, for example, aircraft positions cannot be obtained due to the low availability of GNSS satellites. Furthermore, instead of West/East and South/North components, speed and heading are encoded directly. Table \ref{tb:adsb-velocity-bits-14-35-as} lists the details of message fields.
 
 \begin{table}[ht]
 \caption{Velocity fields of sub-type 3 and 4 (ME bit 14 to 35)}

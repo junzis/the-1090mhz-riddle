@@ -1,9 +1,9 @@
 \chapter{ADS-B Basics} \label{chap:adsb-basic}
-ADS-B is short for Automatic Dependent Surveillance-Broadcast. It is a satellite-based surveillance system. Parameters such as position, velocity, and identification are transmitted through Mode~S Extended Squitter (1090 MHz). Nowadays, the majority of aircraft broadcast ADS-B messages constantly. Starting from the year 2020, civil aviation aircraft in Europe and United States are required to be ADS-B compliant. Old aircraft which are not compliant with ADS-B requirements are required to be retrofitted within a few years.
+ADS-B is short for Automatic Dependent Surveillance-Broadcast. It is a satellite-based surveillance system. Parameters such as position, velocity, and identification are transmitted through Mode~S Extended Squitter (1090 MHz). Nowadays, the majority of aircraft broadcast ADS-B messages constantly. Starting from the year 2020, civil aviation aircraft in Europe and United States are required to be ADS-B compliant. Old aircraft which are not compliant with ADS-B requirements are required to be retrofitted or phased out within a number of years.
 
 \section{Message structure}
 
-An ADS-B frame is 112 bits long and consists of five main parts, as follows:
+An ADS-B frame is 112 bits long and consists of five main parts, shown as follows:
 
 \begin{verbatim}
 +----------+----------+-------------+------------------------+-----------+
@@ -11,9 +11,7 @@ An ADS-B frame is 112 bits long and consists of five main parts, as follows:
 +----------+----------+-------------+------------------------+-----------+
 \end{verbatim}
 
-Civil aircraft ADS-B message starts with the Downlink Format 17. It corresponds to \texttt{10001} in binary for the first 5 bits. Bits 6--8 indicated the transponder capability. After that, the 24-bit transponder code (also known as ICAO code) is included. The last two segments are 56-bit payload and 24-bit parity.
-
-Table \ref{tb:adsb-structure} lists the key information of an ADS-B message.
+Civil aircraft ADS-B message starts with the Downlink Format 17. It corresponds to \texttt{10001} in binary for the first 5 bits. Bits 6--8 indicated the transponder capability. After that, the 24-bit transponder code (also known as ICAO code) is included. The last two segments are 56-bit payload and 24-bit parity. Table \ref{tb:adsb-structure} lists the key information of an ADS-B message.
 
 \begin{table}[!ht]
 \centering
@@ -63,7 +61,7 @@ The second field of an ADS-B message consists of three bits that indicate the tr
 
 \section{ICAO address}
 
-In each ADS-B message, the sender (originating aircraft) can be identified using the Mode~S transponder code assigned according to ICAO regulations \cite{blythe2011}. The Mode~S transponder code is also often referred as \emph{ICAO address}, or \emph{hex code}. 
+In each ADS-B message, the sender aircraft can be identified using the Mode~S transponder code assigned according to ICAO regulations \cite{blythe2011}. The Mode~S transponder code is also often referred as \emph{ICAO address}, or \emph{hex code}. 
 
 The ICAO address is located from 9 to 32 bits in binary (or 3 to 8 in hexadecimal positions). A unique ICAO address is assigned to each Mode~S transponder of an aircraft and serves as the unique identifier for each aircraft. 
 
@@ -121,7 +119,7 @@ It can be converted into binary conveniently. The structure of the binary messag
 
 The first five bits show that the downlink format is \texttt{17} (or \texttt{10001} in binary), which indicates the message is an ADS-B message. The first five bits of the \texttt{ME} field shows that the type code is \texttt{4} (or binary \texttt{00100}), which indicates the message is an identification message.
 
-In the example above, The ICAO address is \texttt{4840D6} (or \texttt{010010000100} in binary format). Various online tools can be used to find out more about the aircraft with a given ICAO address.\footnote{For example, an online database from OpenSky can be used:\\ https://opensky-network.org/aircraft-database} For instance, using the previous ICAO \texttt{4840D6} example, it will return the result of a \texttt{Fokker\ 70} with the registration of \texttt{PH-KZD}.
+In this example, The ICAO address is \texttt{4840D6} (\texttt{010010000100000011010110} in binary format). Various online tools can be used to find out more about the aircraft with a given ICAO address.\footnote{For example, an online database from OpenSky can be used:\\ https://opensky-network.org/aircraft-database} For instance, using the previous ICAO \texttt{4840D6} example, it will return the result of a \texttt{Fokker\ 70} with the registration of \texttt{PH-KZD}.
 
 
 \begin{notebox}{Try it out}
@@ -149,9 +147,7 @@ Output:
 
 \section{Availability and transmission rate}
 
-Different ADS-B messages have different transmission rates. The update frequency also differs depending on whether the aircraft is on-ground or airborne, as well as whether the aircraft is still or moving when on the ground.
-
-Table \ref{tb:adsb-transmission-rate} indicates the transmission rate of these messages.
+Different ADS-B messages have different transmission rates. The update frequency also differs depending on whether the aircraft is on-ground or airborne, as well as whether the aircraft is still or moving when on the ground. Table \ref{tb:adsb-transmission-rate} indicates the transmission rate of these messages.
 
 \begin{table}[ht]
   \footnotesize
@@ -173,14 +169,14 @@ Table \ref{tb:adsb-transmission-rate} indicates the transmission rate of these m
   \end{tabular}
 \end{table}
 
-For Target states and Operational status messages, when there is a change in some key parameters, the transmission is changed to a higher rate for approximately 24 seconds.
+It is worth noting that for Target states and Operational status messages, when there is a change in some key parameters, the transmission is changed to a higher rate for approximately 24 seconds.
 
 
 
 
 \section{ADS-B versions}
 
-Since ADS-B was first introduced, there have been three different versions of implementations. The main reason for these updates is to include more information (types of data) in ADS-B. The documentation available on these versions and differences is quite far from user-friendly. The official ICAO 9871 document \cite{icao9871v1} is confusing to read. In this section, I have put the difference pieces of scattered information together.
+Since ADS-B was first introduced, there have been three different versions of implementations. The main reason for these updates is to include more information in ADS-B. The documentation available on these versions and differences is quite far from user-friendly. The official ICAO 9871 document \cite{icao9871v1} is confusing to read. In this section, I have put the difference pieces of scattered information together.
 
 There are three ADS-B versions implemented so far, starting from version 0 (specification defined in RTCA document DO-260). Version 1 was introduced around 2008 (DO-260A), and version 2 around 2012 (DO-260B). Version 3 is currently being developed. Next, major changes in version 1 and version 2 are summarized.
 

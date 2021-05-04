@@ -1,7 +1,7 @@
 \chapter{Quick Start: Hardware and Software to Receive Mode~S Signals}
 \label{chap:quickstart}
 
-Chapter 1 introduced several fundamental concepts about Mode~S communication. This chapter focuses on the practical aspects of Mode~S data, specifically, how to receive and obtain information that is transmitted in Mode~S downlink communications. Mode~S signals are transmitted using 1090 MHz radio waves. Hence, the receiver and antenna have to be designed to work with this frequency. Nowadays, all necessary components required to obtain the Mode~S data can be easily made with low-cost off-the-shelf components. Several open-source software tools are available to support the extraction and decoding of data from Mode~S signals. In this chapter, we explain how to step up a functional hardware and software system to receive Mode~S data.
+Chapter 1 introduced several fundamental concepts about Mode~S communication. This chapter focuses on the practical aspects of acquiring Mode~S data, specifically, how to receive and obtain messages that are transmitted in Mode~S downlink communications. Mode~S signals are transmitted using 1090 MHz radio waves. Hence, the receiver and antenna have to be designed to work with this frequency. Nowadays, all necessary components required to obtain the Mode~S data can be easily made with low-cost off-the-shelf components. Several open-source software tools are available to support the extraction and decoding of data from Mode~S signals. In this chapter, we explain how to step up a functional hardware and software system to receive Mode~S data.
 
 \section{Range}
 Since Mode~S uses L band signals that follow the line-of-sight propagation, any obstructions between the transmitter and receiver can cause a significant amount of signals to be blocked. Assuming that no obstacle exists between the aircraft and the receiver, and the transmitter has a sufficient amount of power, the maximum range of the receiver is determined by the curvature of the earth. Figure \ref{fig:max_range} illustrates how the maximum range of the receiver can be obtained.
@@ -65,7 +65,7 @@ The active antenna (see Figure \ref{fig:biastee_active_antenna}) has a low-noise
 
 Many modern Mode~S receivers are built using software-defined radio (SDR). An SDR usually can be tuned to a wide range of radio frequencies. The user can conveniently select the center frequency of the receiver and the sampling rate, as well as defined the bandwidth of the onboard low-pass filter if it is supported.
 
-For receiving ADS-B (and other types of Mode~S message), a RTL-SDR is the most common type of low-cost receiver to choose. Many different brands of RTL-SDR receivers exist; they are often built with the Realtek RTL2832U chipset. It can work with radio frequencies from 24 to 1766 MHz. The maximum sampling rate is 2.8 million samples per second (MSPS). Given that a Mode~S bit consists of a pulse cycle of 0.5 {\textmu}s (see Figure \ref{fig:mode_s_uplink_pulses}), the minimum SDR sampling rate required for Mode~S is 2 MSPS. RLT-SDR devices just barely manage to meet this requirement.
+For receiving ADS-B (and other types of Mode~S message), a RTL-SDR is the most common type of low-cost receiver to choose. Many different brands of RTL-SDR receivers exist; they are often built with the Realtek RTL2832U chipset. It can work with radio frequencies from 24 to 1766 MHz. The maximum sampling rate is 2.8 million samples per second (MSPS). Given that a Mode~S bit consists of a pulse cycle of 0.5 μs (see Figure \ref{fig:mode_s_uplink_pulses}), the minimum SDR sampling rate required for Mode~S is 2 MSPS. RLT-SDR devices just barely manage to meet this requirement.
 
 \begin{notebox}{Note}
   The maximum frequency range of RTL-SDR can be from 0 to 2220 MHz. However, the sensitivity drops off significantly outside the 24 -- 1766 MHz range. The sampling rate can actually go up to a maximum of 3.2 million samples per second, but some samples may be dropped at this sampling rate. So, it is not stable.
@@ -91,7 +91,7 @@ SDRs that offer a higher performance also exist. They often support a larger fre
 
 \section{Software tools}
 
-Several software tools are also available to work with some of these SDR devices and decode Mode~S and ADS-B signals directly. In this section, we explain how to use two open-source tools, which are \texttt{dump1090} and \texttt{pyModeS}.
+Several software tools are available to work with some of these SDR devices and decode Mode~S and ADS-B signals directly. In this section, we explain how to use two open-source tools, which are \texttt{dump1090} and \texttt{pyModeS}.
 
 \subsection{dump1090}
 
@@ -297,15 +297,14 @@ pms.adsb.velocity(msg)
 There are also a number of functions designed to infer and decode Mode~S downlink messages. For example:
 
 \begin{verbatim}
-# Mode S altitude code (DF=4/20)
-pms.common.altcode(msg)
+pms.common.altcode(msg)   # Mode S altitude code (DF=4/20)
+pms.common.idcode(msg)    # Mode S squwak code (DF=5/21)
+pms.bds.infer(msg)        # Infer Modes S BDS code
+\end{verbatim}
 
-# Mode S squwak code (DF=5/21)
-pms.common.idcode(msg)
+Once a Mode~S message type is identified, type specific functions can be used to decode corresponding parameters.
 
-# Infer Modes S BDS code
-pms.bds.infer(msg)
-
+\begin{verbatim}
 # BDS 4,0
 pms.commb.selalt40mcp(msg)  # MCP/FCU selected altitude (ft)
 pms.commb.selalt40fms(msg)  # FMS selected altitude (ft)
@@ -326,4 +325,6 @@ pms.commb.vr60baro(msg)     # Barometric altitude rate (ft/min)
 pms.commb.vr60ins(msg)      # Inertial vertical speed (ft/min)
 \end{verbatim}
 
-These are commonly used functions related to Mode~S decoding. A complete list of the APIs can be found in the \texttt{pyModeS} library API documentation. In the rest of this book, most of the decoding details are explained, which will often involving the use of \texttt{pyModeS} and reflect its source code.
+These are some commonly used functions related to Mode~S decoding. A complete list of the APIs can be found in the \texttt{pyModeS} library API documentation. 
+
+These functionalities may seem complicated at this moment. In the rest of this book, I will explain all the details related to the decoding of these ADS-B and Mode~S messages. Throughout the rest of chapters, I will make use of \texttt{pyModeS} to demonstrate the decoding.

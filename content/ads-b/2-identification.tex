@@ -69,7 +69,7 @@ ANY & 0 & No category information \\ \hline\hline
 \end{tabular}
 \end{table}
 
-Note ADS-B has its own definition of wake categories, which is different from the ICAO wake turbulence category definition commonly used in aviation. The relationships of ICAO wake turbulence category (WTC) and ADS-B wake vortex category are:
+It is worth noting that ADS-B has its own definition of wake categories, which is different from the ICAO wake turbulence category definition commonly used in aviation. The relationships of ICAO wake turbulence category (WTC) and ADS-B wake vortex category are:
 
 \begin{itemize}
     \item ICAO WTC L (Light) is equivalent to ADS-B (TC=4, CA=1). 
@@ -80,7 +80,7 @@ Note ADS-B has its own definition of wake categories, which is different from th
 
 \section{Decoding example}
 
-Let us use the following raw message as an example for decoding:
+Let us use the following raw message as an example to demonstrate the decoding:
 
 \begin{verbatim}
 8D4840D6202CC371C32CE0576098
@@ -96,13 +96,10 @@ BIN: 00100000001011001100001101110001110000110010110011100000
 The structure of the ME field can be decomposed as follows:
 
 \begin{verbatim}
-+-----+---+------+------+------+------+------+------+------+------+
-|00100|000|001011|001100|001101|110001|110000|110010|110011|100000|
-+-----+---+------+------+------+------+------+------+------+------+
-|TC   |CA |11    |12    |13    |49    |48    |50    |51    |32    |
-+-----+---+------+------+------+------+------+------+------+------+
-|4    |0  |K     |L     |M     |1     |0     |2     |3     |_     |
-+-----+---+------+------+------+------+------+------+------+------+
+00100 000 001011 001100 001101 110001 110000 110010 110011 100000 
+
+ TC   CA    11     12     13     49     48     50     51     32     
+  4    0     K      L      M      1      0      2      3      _      
 \end{verbatim}
 
 With \texttt{TC=4}, we can confirm it is an identification and category message. The decoded identity (callsign) of the aircraft is \texttt{KLM1023} (with the trailing space ignored). With \texttt{CA=0}, we can see that the aircraft did not transmit any information on the wake vortex category.

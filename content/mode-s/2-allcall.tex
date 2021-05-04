@@ -20,14 +20,14 @@ Parity/interrogator identifier & PI & 33--56 & 24 \\ \hline
 The fields can be decoded as follows:
 
 \begin{itemize}
-  \item The definition of transponder capability is the same as in ADS-B messages (Table \ref{tb:transponder_capability} in Chapter \ref{chap:adsb-basic}).
+  \item CA: The definition of transponder capability is the same as in ADS-B messages (Table \ref{tb:transponder_capability} in Chapter \ref{chap:adsb-basic}).
 
-  \item The address refers to the 24-bit transponder address.
+  \item AA: The address refers to the 24-bit transponder address.
 
-  \item The decoding of PI is similar to the decoding of ADS-B parity (Chapter \ref{chap:adsb_parity}). 
+  \item PI: The decoding of PI is similar to the decoding of ADS-B parity (Chapter \ref{chap:adsb_parity}). 
 \end{itemize}
 
-For a message with downlink format 11, PI is overlaid with the interrogator identifier.\footnote{In fact, PI in ADS-B is also overlaid with the interrogator identifier. However, since ADS-B is not interrogation-based, the identifier is set to 0. Thus, PI is always the same as the CRC remainder in ADS-B.} Hence, assuming there is no error in the data, the CRC will produce the interrogator identifier code for all-call replies.
+For a message with downlink format 11, PI is overlaid with the interrogator identifier.\footnote{In fact, PI in ADS-B is also overlaid with the interrogator identifier. However, since ADS-B is not interrogation-based, the identifier is set to 0. Thus, PI is always the same as the CRC remainder in ADS-B.} Hence, assuming there is no error in the data, the CRC will produce the interrogator identifier code for all-call replies. The interrogator identifier code can be zero. In this case the message is generated due to a spontaneous acquisition squitter (see Chapter \ref{chap:acas}).
 
 
 A decoding example is shown as follows:

@@ -2,7 +2,7 @@ html:
 	make pdf
 	bash tex2html.sh
 	cp _static/*.css _build/html/
-	pdftk A=_build/pdf/book.pdf B=cover/front.pdf C=cover/back.pdf cat B1 A2-end C1 output _build/html/book-the_1090mhz_riddle-junzi_sun.pdf
+	pdftk A=_build/pdf/book.pdf B=cover/front.pdf C=cover/back.pdf cat B1 A4 A C1 output _build/html/book-the_1090mhz_riddle-junzi_sun.pdf
 
 pdf:
 	pdflatex -output-directory=/tmp -synctex=1 book.tex

@@ -1,6 +1,6 @@
 \chapter{Airborne position} \label{chap:airborn-position}
 
-The aircraft airborne position message is used to broadcast the position and altitude of the aircraft. It has the Type Code from 9 to 18 or from 20 to 22. When Type Code is from 9 to 18, the encoded altitude represents the barometric altitude of the aircraft. When the Type Code is from 20 to 22, the encoded altitude contains the GNSS altitude of the aircraft. The Type Code value is related to the uncertainties in the position, which will be discussed in a later chapter.
+The aircraft airborne position message is used to broadcast the position and altitude of the aircraft. It has the Type Code 9--18 and 20--22. When Type Code is from 9 to 18, the encoded altitude represents the barometric altitude of the aircraft. When the Type Code is from 20 to 22, the encoded altitude contains the GNSS altitude of the aircraft. The Type Code value is related to the uncertainties in the position, which will be discussed in a later chapter.
 
 The structure of the ADS-B airborne position message ME field is shown as follows:
 
@@ -37,7 +37,7 @@ Encoded longitude & LON-CPR & 72--88 & 40--56 & 17 \\ \hline
 \end{tabular}
 \end{table}
 
-It is important to emphasize that the encoded latitude and longitude are not the actual latitude and longitude values. Instead, the position information is encoded in a Compact Position Reporting (CPR) format, which requires fewer bits to encode positions with higher resolution. The CPR offers a trade-off between global position ambiguity and local position accuracy. Two types of position messages (identified by the odd and even frame flag) are broadcast alternately. There are two different ways to decode an airborne position based on these messages:
+It is important to emphasize that the encoded latitude and longitude are not the actual latitude and longitude values. Instead, the position information is encoded in a Compact Position Reporting (CPR) format, which requires fewer bits to encode positions with higher resolution. The CPR offers a trade-off between global position ambiguity and local position accuracy. Two types of position messages (identified by the odd and even frame bit) are broadcast alternately. There are two different ways to decode an airborne position based on these messages:
 
 \begin{enumerate}
 \item \textbf{Globally unambiguous position decoding}: Without a known position to start with, using both types of messages to decode the position.
@@ -143,7 +143,7 @@ Given the latitude, this function yields the number of longitude zones between 1
   \mathrm{NL}(\mathrm{lat}) = floor \left\{ \dfrac{2 \pi}{\arccos \left[ 1 - \dfrac{1-\cos \left( \dfrac{\pi}{2~N_Z} \right)}{\cos^2\left(\dfrac{\pi}{180} \cdot \mathrm{lat} \right)} \right] } \right\}
 \end{equation}
 
-For latitudes that are close to the equator or the poles, one of following values is returned:
+For latitudes that are close to the equator or the poles, the following values are used:
 
 \begin{verbatim}
 lat = 0     ->    NL = 59
@@ -158,7 +158,7 @@ lat < -87   ->    NL = 1
 
 \subsection{Calculation of latitude} \label{sec:cpr_airborne_global_lat}
 
-In each position message, bit 54 determines whether it is an odd or even type. \0 indicates an even message, while \1 indicates an odd message.
+In each position message, bit 54 determines whether it is an odd or even frame. \0 indicates an even message, while \1 indicates an odd message.
 
 Bits 55--71 and bits 72--88 represent the fractions of the latitude and longitude within the latitude and longitude grid, denoted as $\mathrm{lat}_\mathrm{cpr}$ and $\mathrm{lon}_\mathrm{cpr}$:
 
@@ -386,13 +386,15 @@ Output:
 
 \section{Locally unambiguous position decoding}
 
-Previously, a globally unambiguous position was decoded using a pair of odd and even messages. In this part, we will discuss how to decode the ADS-B position with one message and a previous reference position that is obtained using globally unambiguous decoding.
+Previously, a globally unambiguous position was decoded using a pair of odd and even messages. This section explains how to decode the ADS-B position with one message and a previous reference position that is obtained using globally unambiguous decoding.
 
-This method offers the possibility to continuous decode aircraft using only one message. It computes the latitude index (j) and the longitude index (m) based on this existing reference position and can be applied to both odd and even messages.
+This method offers the possibility to continuous decode aircraft using only one message. It computes the latitude index ($j$) and the longitude index ($m$) based on this existing reference position and can be applied to both odd and even messages.
 
 \subsection{The reference position}
 
-The reference position should be close to the actual position, which must be within a 180 NM range. For example, this can be the position of the aircraft that has been decoded in the previous update. The range limitation is to ensure the consistency of the latitude and longitude zones between the reference position and the decoding position. The reference position is denoted as ($\mathrm{lat}_\mathrm{ref}$, $\mathrm{lon}_\mathrm{ref}$).
+The reference position should be close to the actual position, which must be within a 180 NM range. For example, this can be the position of the aircraft that has been decoded in the previous update.\footnote{Not knowing the speed of aircraft, it is common to consider a position decoded within 10 seconds as a valid reference position.} 
+
+The range limitation is to ensure the consistency of the latitude and longitude zones between the reference position and the decoding position. The reference position is denoted as ($\mathrm{lat}_\mathrm{ref}$, $\mathrm{lon}_\mathrm{ref}$).
 
 \subsection{Calculation of latitude}
 
@@ -449,13 +451,17 @@ Knowing the longitude zone index, the longitude of the new position is:
 
 \subsection{Decoding example}
 
-Next, we illustrate the decoding process of the messages from the previous example with a reference position. The message and the reference position are as follows:
+Next, we illustrate the decoding process of the messages from the previous example with a reference position. The message is:
 
 \begin{verbatim}
 Message:   8D40621D58C382D690C8AC2863A7
 ME (data):         58C382D690C8AC
+\end{verbatim}
 
-Reference position: (52.258, 3.918)
+The reference position we will use is:
+
+\begin{verbatim}
+(52.258, 3.918)
 \end{verbatim}
 
 We can easily convert the message data to binary format as:
@@ -470,23 +476,34 @@ We can easily convert the message data to binary format as:
 +-------+-----+--------------+---+---+-------------------+-------------------+
 \end{verbatim}
 
-First, since this is an even message ($i=0$), we can calculate the latitude as follows:
+Since this is an even message ($i=0$), we can calculate dLat and latitude index ($j$) as follows:
 
 \begin{align}
   \mathrm{dLat} &= \frac{360}{4 \times 15 - 0} = 6 \\
   j &= floor \left( \frac{52.258}{6} \right) + floor \left[ \frac{mod(52.258, 6)}{6} - \frac{93000}{2^{17}}  + \frac{1}{2} \right] = 8 \\
-  \mathrm{lat} &= 6 \times \left( 8 + \frac{93000}{2^{17}} \right) = 52.2572021484375
 \end{align}
 
-Next, the longitude can be calculated as follows:
+The latitude can be obtained as:
+
+\begin{equation}
+  \mathrm{lat} = 6 \times \left( 8 + \frac{93000}{2^{17}} \right) = 52.2572021484375
+\end{equation}
+
+Next, we can calculate dLon and longitude index ($m$) as:
 
 \begin{align}
   \mathrm{dLon} &= \frac{360}{max \Big( \mathrm{NL}(\mathrm{lat}_\mathrm{even})-0, 1 \Big)} = \frac{360}{max(36, 1)} = 10 \\
   m &= floor \left( \frac{3.918}{10} \right) + floor \left( \frac{mod(3.918, 10)}{10} - \frac{51372}{2^{17}}  + \frac{1}{2}  \right) = 0 \\
-  \mathrm{lon} &= 10 \times \left(0 + \frac{51372}{2^{17}} \right) = 3.91937255859375
 \end{align}
 
-%
+
+Finally, the aircraft longitude is:
+
+\begin{equation}
+  \mathrm{lon} = 10 \times \left(0 + \frac{51372}{2^{17}} \right) = 3.91937255859375
+\end{equation}
+
+
 % d_lat:  6
 % j:      8
 % lat:    52.25720
@@ -554,12 +571,14 @@ The altitude of the aircraft becomes:
 1560 \times 25 - 1000 = 38000 \quad \text{(ft)}
 \end{equation}
 
-In the case where the altitude is higher than 50175 feet, a 100 feet increment is used. In this situation, the Q bit is set to \0, and the rest of the bits are encoded using Gray code \cite{doran2007}. It is worth noting that it is possible for all altitude bits to be zeros,which indicates that the altitude information is not available.
+In the case where the altitude is higher than 50175 feet, a 100 feet increment is used. In this situation, the Q bit is set to \0, and the rest of the bits are encoded using Gray code \cite{doran2007}. 
+
+It is worth noting that it is possible for all altitude bits to be zeros,which indicates that the altitude information is not available.
 
 
 \subsection{GNSS height}
 
-When the position message has the Type Code from 20 to 22, the 12-bit altitude field is used for the encoding of the GNSS height. The GNSS height is derived from the global positioning satellites, and the decimal value of all 12 bits translates into the height of aircraft in meters.
+When the position message has the Type Code from 20 to 22, the 12-bit altitude field is used for the encoding of the GNSS height. The GNSS height is derived from the global positioning satellites, and the decimal value of all 12 bits translates into the height of aircraft in meters.\footnote{This SI unit is commonly converted feet for consistency.}
 
 \begin{notebox}{Try it out}
 Using pyModeS, we can perform the altitude decoding as: 
@@ -582,6 +601,8 @@ Output (altitude in feet):
 
 
 \section{Verification of decoded positions}
+
+The CPR decoding algorithm does not guarantee the correct decoding of all positions. In rare cases, wrong positions can be calculated. 
 
 It is recommended to perform a so-called \emph{reasonable test} to validate the decoded position. There are a couple of ways to perform such test to examine the plausibility of decoded positions:
 

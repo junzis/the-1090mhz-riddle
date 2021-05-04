@@ -1,6 +1,6 @@
 \chapter{Error control in ADS-B} \label{chap:adsb_parity}
 
-In almost all digital telecommunications, error control is an essential capability. An adequate error control coding scheme in telecommunication allows a receiver to validate the correctness of the information that has been transmitted. Sometimes, it also provides the receiver with the ability to correct errors. Depending on the characteristics of the communication channel and the types of messages, different error control coding schemes can be adopted.
+In almost all digital telecommunications, error control is essential. An adequate error control coding scheme in telecommunication allows the receiver to validate the correctness of the information that has been transmitted. Sometimes, it also provides the receiver with the ability to correct errors. Depending on the characteristics of the communication channel and the types of messages, different error control coding schemes can be adopted.
 
 For error detection, three types of error control codes are broadly used, which are 1) parity, 2) checksum, and 3) cyclic redundancy check (CRC)\cite{grami2015}. Though there are similarities among these concepts, they should not be confused:
 
@@ -33,13 +33,12 @@ A basic CRC workflow is shown in Figure \ref{fig:crc_flow}. The diagram on the l
 
 The binary polynomial falls in the finite field arithmetic \cite{carlitz1932}. The divisions of binary polynomials can essentially be considered as the \texttt{XOR} bitwise operations, which can be easily implemented and calculated by computers. Figure \ref{fig:crc_example} illustrates a CRC remainder calculation example.
 
-
-
 \begin{figure}[ht]
-  \includegraphics[scale=0.8]{figures/crc/crc_example.pdf}
+  \includegraphics[scale=0.9]{figures/crc/crc_example.pdf}
   \caption{A CRC example with a 4-bit divisor and 3-bit remainder}
   \label{fig:crc_example}
 \end{figure}
+
 
 
 \section{ADS-B parity}
@@ -53,14 +52,7 @@ The polynomial form of the divisor (generator), $G(x)$, used for ADS-B (as well 
   \end{split}
 \end{equation}
 
-This generator code was found by \cite{kasami1964}, which is known for its efficiency to correct burst errors. A 24-bit remainder is generated using this generator. It can also be written in different formats as:
-
-\begin{verbatim}
-Binary:   1111111111111010000001001
-Decimal:  33551369
-Octal:    177772011
-HEX:      1FFF409
-\end{verbatim}
+This generator code was found by \cite{kasami1964}, which is known for its efficiency to correct burst errors. It can represented in binary formats as \texttt{1111111111111010000001001} (or \texttt{1FFF409} in hexadecimal format). A 24-bit CRC remainder is generated using this generator for each ADS-B message.
 
 Knowing the logic of CRC, the computation of the remainder and the verification of the error is fairly simple. Let  $x^{i}$ represent each bit of the message and $M(x)$ represent the polynomial corresponding to the ADS-B message, the CRC remainder (parity) $P(x)$ can thus be calculated as:
 

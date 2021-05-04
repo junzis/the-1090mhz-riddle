@@ -2,35 +2,42 @@
 
 \thispagestyle{empty}
 
-\vspace*{2\bigskipamount}
-
-%% Print the title.
-{\makeatletter
-\titlestyle\bfseries\Huge\@title
-\makeatother}
-
-%% Print the optional subtitle.
-{\makeatletter
-\ifx\@subtitle\undefined\else
-    \bigskip
-    \titlefont\titleshape\LARGE\@subtitle
-\fi
-\makeatother}
 
 
-\vspace*{8\bigskipamount}
+
+{
+    \centering
+    \vspace*{2\bigskipamount}
+        
+    %% Print the title.
+    {\makeatletter
+    \titlestyle\bfseries\Huge\@title
+    \makeatother}
+
+    %% Print the optional subtitle.
+    {\makeatletter
+    \ifx\@subtitle\undefined\else
+        \bigskip
+        \titlefont\titleshape\LARGE\@subtitle
+    \fi
+    \makeatother}
 
 
-%% Print the full name of the author.
-\makeatletter
-{\huge\titlefont\bfseries{Junzi}\ {SUN}}
-\makeatother
+    \vspace*{30\bigskipamount}
 
-\vspace*{8\bigskipamount}
 
-\makeatletter
-{\large\titlefont{TU Delft OPEN Publishing}}
-\makeatother
+    %% Print the full name of the author.
+    \makeatletter
+    {
+        \Large{\titlefont\bfseries{Junzi}\ {SUN}} \\
+        \vspace*{1\bigskipamount}
+        \normalsize{Faculty of Aerospace Engineering} \\
+        \normalsize{Delft University of Technology} \\
+    }
+    \makeatother
+
+}
+
 
 
 \clearpage
@@ -38,30 +45,34 @@
 
 \thispagestyle{empty}
 
-\vspace*{19\bigskipamount}
+\vspace*{16\bigskipamount}
 
 
 Title: The 1090 Megahertz Riddle
 
-\medskip
+\smallskip
 
 Subtitle: A Guide to Decoding Mode S and ADS-B Signals
 
-\medskip
+\smallskip
 
 Author: Junzi Sun
 
-\medskip
+\smallskip
 
 Edition: 2
 
-\medskip
+\smallskip
 
 Keywords: Aircraft Surveillance, Radar, Decoding, Mode~A/C, Mode~S, ADS-B, Comm-B, ELS, EHS, MRAR.
 
-\medskip
+\smallskip
 
 Publisher: TU Delft OPEN Publishing
+
+\smallskip
+
+Cover design: Junzi Sun
 
 \vspace{4\bigskipamount}
 
@@ -70,7 +81,8 @@ Copyright \textcopyright\ 2021 by Junzi Sun
 
 \medskip
 
-Published under CC BY-NC-SA 4.0 license.
+Published under CC BY-NC-SA 4.0 license.\\
+\url{https://creativecommons.org/licenses/by-nc-sa/4.0/}
 
 \medskip
 ISBN: 978-94-6366-402-8

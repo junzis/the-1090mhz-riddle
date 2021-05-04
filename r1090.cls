@@ -38,7 +38,7 @@
 
 
 \usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
+\usepackage[LGR,T1]{fontenc}
 
 
 \usepackage[headings]{ncchdr}
@@ -61,6 +61,7 @@
 % customized color
 \definecolor{gray97}{gray}{0.97}
 \definecolor{gray95}{gray}{0.95}
+\definecolor{gray90}{gray}{0.90}
 \definecolor{gray70}{gray}{0.7}
 \definecolor{gray50}{gray}{0.5}
 \definecolor{gray40}{gray}{0.4}
@@ -96,13 +97,15 @@
 \usepackage[most]{tcolorbox}
 \newtcolorbox{notebox}[2][]{
   boxed title style={boxrule=0pt, sharp corners},
+  colback=gray90,
   attach boxed title to top left={xshift=2mm,yshift=-3mm},
   enhanced,
   sharp corners,
   top=4mm,
   boxrule=0.5pt,
   title=#2,#1,
-  fontupper=\small
+  fontupper=\small,
+  enlarge top by=3mm
 }
 
 
@@ -117,11 +120,11 @@
  {\endSaveVerbatim
   \fboxsep=1em
   \center
-  \colorbox{gray95}{\footnotesize\BUseVerbatim{cverb}}%
+  \colorbox{gray90}{\footnotesize\BUseVerbatim{cverb}}%
   \endcenter}
 
 \LetLtxMacro{\oldtexttt}{\texttt}
-\renewcommand{\texttt}[1]{\colorbox{gray95}{\oldtexttt{#1}}}
+\renewcommand{\texttt}[1]{\colorbox{gray90}{\oldtexttt{#1}}}
 % [end verbatim and texttt style]
 
 
@@ -192,3 +195,23 @@
 %      \def\@oddfoot{\reset@font\hfil}
 %      \let\@evenhead\@empty\let\@evenfoot\@oddfoot}
 % \makeatother
+
+\if@print
+  \usepackage{background}
+  \usetikzlibrary{calc}
+
+  \backgroundsetup{
+    scale=1,
+    opacity=1,
+    angle=0,
+    color=gray,
+    contents={
+      \begin{tikzpicture}[remember picture, overlay]
+        \draw [line width=0.2mm]
+            ($ (current page.south west) + (3mm, 3mm) $)
+            rectangle
+            ($ (current page.north east) + (-3mm, -3mm)$);
+      \end{tikzpicture}
+    }
+  }
+\fi

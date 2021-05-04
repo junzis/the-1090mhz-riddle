@@ -1,8 +1,8 @@
 \chapter{Uncertainties in ADS-B} \label{chap:uncertainty}
 
-There are many parameters in ADS-B that define the data quality of the position and velocity reports. These parameters serve as accuracy and confidence indicators for aircraft position and speed information transmitted in ADS-B messages.
+There are many parameters in ADS-B that define the quality of data in the position and velocity reports. These parameters serve as accuracy and confidence indicators for aircraft position and speed information transmitted in ADS-B messages.
 
-With each evolution of the ADS-B versions, these parameters have been renamed and redefined. This creates a complicated landscape to understand and to analyze these indicators. This chapter is designed to give a better overview and mapping among data quality parameters across different ADS-B versions.
+With each evolution of the ADS-B versions, these parameters have been renamed and redefined. These updates complicate the understanding and analysis of uncertainties in ADS-B. This chapter is designed to give a better overview of the uncertainty indicators in different ADS-B versions, and it also gives a clear mapping between the the indicators and actual uncertainty values.
 
 \section{Terminology}
 In general, there are three types of data quality indicators:
@@ -40,8 +40,8 @@ Each quality indicator also relates to a set of parameters that express the exac
 \hline
 \textbf{} & \textbf{Parameter} &  \\ \hline
 NUCp (V0) & Horizontal protection limit & HPL \\ \cline{2-3}
- & 95\% containment radius on horizontal position error & RCxy \\ \cline{2-3}
- & 95\% containment radius on vertical position error & RCz \\ \hline
+ & 95\% containment radius on horizontal position error & Rc/μ \\ \cline{2-3}
+ & 95\% containment radius on vertical position error & Rc/v \\ \hline
 NUCr (V0) & Horizontal velocity error (95\%) & HVE \\ \cline{2-3}
  & Vertical velocity error (95\%) & VVE \\ \hline
 NACp (V1,2) & Estimated position uncertainty (95\% horizontal accuracy - p). a.k.a. horizontal figure of merit (HFOM) in GNSS & EPU \\ \cline{2-3}
@@ -55,7 +55,7 @@ SIL (V1,2) & Probability of exceeding horizontal containment radius & P-RC \\ \c
 \end{tabular}
 \end{table}
 
-These parameters are identified by different bits from different messages. Due to the evolution of ADS-B versions, the definitions can also differ. In order to correctly obtain these parameters, the version of ADS-B transponder used must be identified. This can be based on the logic explained in Chapter \ref{chap:adsb-basic}.
+These parameters are identified by different bits from different messages. Due to the evolution of ADS-B versions, the definitions can also differ. In order to correctly obtain these parameters, the ADS-B transponder version must be identified. This can be based on the logic explained in Chapter \ref{chap:adsb-basic}.
 
 In the rest of this chapter, these parameters are explained in detail according to different ADS-B versions. The changes in the same parameters between different versions are also indicated.
 
@@ -106,14 +106,14 @@ NUCp & 9 & 8 & 0 \\ \hline
 
 \end{table}
 
-In general, a higher NUCp number (lower TC number) represents higher confidence in the position measurement. When dealing with position uncertainty, the horizontal protection limit (HPL), the containment radius on horizontal position error (RCxy), and the containment radius on vertical position error (RCz) are used to quantify the uncertainties. All values are shown in Table \ref{tb:nucp-params}.
+In general, a higher NUCp number (lower TC number) represents higher confidence in the position measurement. When dealing with position uncertainty, the horizontal protection limit (HPL), the containment radius on horizontal position error (denoted as Rc/μ), and the containment radius on vertical position error (denoted as Rc/v) are used to quantify the uncertainties. All values are shown in Table \ref{tb:nucp-params}.
 
 \begin{table}[!ht]
 \caption{NUCp parameters and their values}
 \label{tb:nucp-params}
 \begin{tabular}{|l|l|l|l|l|}
 \hline
-\textbf{TC} & \textbf{NUCp} & \textbf{HPL} & \textbf{RCxy} & \textbf{RCz} \\ \hline \hline
+\textbf{TC} & \textbf{NUCp} & \textbf{HPL} & \textbf{Rc/μ} & \textbf{Rc/v} \\ \hline \hline
 0 & 0 & N/A & N/A & N/A \\ \hline
 5 & 9 & \textless 7.5 m & \textless 3 m & N/A \\ \hline
 6 & 8 & \textless 25 m & \textless 10 m & N/A \\ \hline
@@ -137,7 +137,7 @@ In general, a higher NUCp number (lower TC number) represents higher confidence 
 \end{tabular}
 \end{table}
 
-It is worth noting that, in the case of airborne position with GNSS height (TC=20--22), HPL, and RCxy are defined with slight differences compared to other types of position messages. In addition, the containment radius for the vertical position (\texttt{RCv}) is also defined in this message. This is possible because the altitude is obtained from GNSS sources.
+It is worth noting that, in the case of airborne position with GNSS height (TC=20--22), HPL, and Rc/μ are defined with slight differences compared to other types of position messages. In addition, the containment radius for the vertical position (Rc/v) is also defined in this message. This is possible because the altitude is obtained from GNSS sources.
 
 
 \subsection{Navigation uncertainty category - rate (NUCr)}
@@ -163,12 +163,12 @@ The Navigation Uncertainty Category - rate (NUCr) is used to indicate the uncert
 \section{Version 1}
 
 
-In ADS-B version 1, the uncertainty category is removed, replaced by the accuracy category and the integrity category. Both NUCp and NUCr from version 0 do not exist in version 1. New indicators introduced in version 1 are NACp, NACv, NIC, and SIL.
+In ADS-B version 1, the uncertainty category is removed, replaced by the accuracy category and the integrity category. Both NUCp and NUCr from version 0 no longer exist in version 1. New indicators introduced in version 1 are NACp, NACv, NIC, and SIL.
 
 
 \subsection{Navigation integrity category (NIC)}
 
-NIC is designed to replace NUCp from version 0, but with more levels included. Like NUCp in version 0, the Navigation Integrity Category (NIC) is related to the Type Code. However, Type Code and NIC do not have a one-to-one mapping relationship. With more levels defined, a supplemental bit is required to distinguish two levels represented by some of the same Type Codes.
+NIC is designed to replace NUCp from version 0, but with more levels included. Like NUCp in version 0, the Navigation Integrity Category (NIC) is related to the Type Code. However, Type Code and NIC no longer have a one-to-one mapping relationship. With more levels defined, a supplemental bit is required to distinguish two levels represented by some of the same Type Codes.
 
 The NIC Supplement bit (NICs) is introduced in the operation status messages (TC=31) and located at the message bit 76 (or ME bit 44). The relationship between TC, NIC, and Rc are listed in Table \ref{tb:nic-params-v1}.
 

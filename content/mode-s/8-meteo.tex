@@ -52,7 +52,7 @@ The first field of the message defined the figure of merit (FOM)/source of the i
 
 For static air temperature, the encoded value can be negative. Hence, two's complement coding (see section \ref{sec:two_complement}) is used for encoding the value. The actual maximum range of temperature is from -80 $^\circ$C to +60 $^\circ$C.
 
-It is also worth pointing out a discrepancy in the design. The temperature is encoded using 10 bits, where the least significant bit value should have been 0.125$^\circ$. However, according to the official document \cite{icao9871v1}, the LSB value is 0.25$^\circ$. ICAO is planning to update this to 0.125$^\circ$ in the future. Most current implementations still use 0.25$^\circ$. 
+It is also worth pointing out a discrepancy in the design. The temperature is encoded using 10 bits, where the least significant bit value should have been 0.125$^\circ$. However, according to the official document \cite{icao9871v1}, the LSB value is 0.25$^\circ$. ICAO is planning to update this to 0.125$^\circ$ in the future. However, most current implementations still use 0.25$^\circ$. 
 
 Figure \ref{fig:bds44_example} shows the decoding of an MRAR example message.
 
@@ -84,7 +84,7 @@ pms.commb.hum44(msg)    # None
 
 In MHR messages, different hazard condition levels are reported, such as turbulence, wind shear, microburst, icing, and wake vortex. It also includes temperature, pressure, and radio height. Table \ref{tb:bds45} shows the structure of the MHR message.
 
-It is worth noting that during real flights, MHR messages are much rarer than MARA messages. Whenever they are available, most of the messages only contain temperature information.
+It is worth noting that during real flights, MHR messages are much rarer than MARA messages. Based on the tests I conducted, whenever MRAR messages are detected, most of the them only contain temperature information.
 
 \begin{table}[ht]
 \renewcommand{\arraystretch}{1.1}
