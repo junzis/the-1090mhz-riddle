@@ -106,7 +106,11 @@ The direction of aircraft vertical movement can be read from \texttt{Svr} bit (M
 The final vertical speed ($\mathrm{VS}$) is calculated as:
 
 \begin{equation}
-  \mathrm{VS} = (2S_{vr} - 1) \cdot 64 \cdot (V_R - 1)
+  \mathrm{VS} =   
+   \begin{cases}
+     64 (V_R - 1), & S_{vr} = 0 \\
+     -64 (V_R - 1), & S_{vr} = 1
+   \end{cases}
 \end{equation}
 
 where the final vertical speed has the unit of ft/min.
@@ -114,7 +118,7 @@ where the final vertical speed has the unit of ft/min.
 Based on the example \texttt{Message A}, the vertical speed is calculated as:
 
 \begin{equation}
-  \mathrm{VS}_A = (2 \times 0 - 1) \times 64 \times (37 -1) = -832 ~\text{ft/min}
+  \mathrm{VS}_A = -64 \times (37 -1) = -832 ~\text{ft/min}
 \end{equation}
 
 which indicates that the aircraft A is descending with a vertical speed of 832 ft/min.
@@ -122,7 +126,7 @@ which indicates that the aircraft A is descending with a vertical speed of 832 f
 Based on the example \texttt{Message B}, the vertical speed is calculated as:
 
 \begin{equation}
-  \mathrm{VS}_B = (2 \times 0 - 1) \times 64 \times (14 -1) = -2304 ~\text{ft/min}
+  \mathrm{VS}_B = -64 \times (14 -1) = -2304 ~\text{ft/min}
 \end{equation}
 
 which indicates that the aircraft B is descending with a vertical speed of 2304 ft/min.
@@ -187,17 +191,34 @@ To calculate the velocity, four values are needed, which are \texttt{Sew}, \text
 For subsonic speed (sub-type 1), the speed components can be computed as:
 
 \begin{align}
-  V_x &= (-2S_{ew} + 1) (V_{ew} - 1) \\
-  V_y &= (-2S_{ns} + 1) (V_{ns} - 1)
+  V_x &= 
+  \begin{cases}
+    V_{ew} - 1, & S_{ew} = 0 \\
+    -1(V_{ew} - 1), & S_{ew} = 1
+  \end{cases}
+ \\
+  V_y &= 
+  \begin{cases}
+    V_{ns} - 1, & S_{ns} = 0 \\
+    -1(V_{ns} - 1), & S_{ns} = 1
+  \end{cases}
 \end{align}
 
 For supersonic speed (sub-type 2), the speed components can be computed as:
 
 \begin{align}
-  V_x &= 4 \cdot (-2S_{ew} + 1) (V_{ew} - 1)\\
-  V_y &= 4 \cdot (-2S_{ns} + 1) (V_{ns} - 1)
+  V_x &= 
+  \begin{cases}
+    4(V_{ew} - 1), & S_{ew} = 0 \\
+    -4(V_{ew} - 1), & S_{ew} = 1
+  \end{cases}
+ \\
+  V_y &= 
+  \begin{cases}
+    4(V_{ns} - 1), & S_{ns} = 0 \\
+    -4((V_{ns} - 1), & S_{ns} = 1
+  \end{cases}
 \end{align}
-
 
 The final ground speed ($V$) of aircraft is:
 
@@ -230,8 +251,8 @@ Message A, ME bit 14-35
 the final aircraft speed and track angle are calculated as:
 
 \begin{align}
-  V_x &= (-2 \times 1 + 1) \times (9 - 1)  = -8 \\
-  V_y &= (-2 \times 1 + 1) \times (160 - 1) = -159 \\
+  V_x &= -1 (9 - 1)  = -8 \\
+  V_y &= -1 (160 - 1) = -159 \\
   V &= \sqrt{(-9)^2+ (-160)^2} = 159.20 \\
   \lambda &= arctan2(-9, -160) \times \frac{360}{2\pi} = 182.88
 \end{align}
