@@ -165,3 +165,31 @@ img.cover{
   padding: 0;
   float:right;
 }
+
+.citation {
+  background-color: #eee;
+  font-style: italic;
+  font-size: 0.9em;
+}
+
+.references::before{
+  content: "References in this page:";
+  display: block;
+  height: 30px;
+  font-size: 1.1em;
+  font-weight: bold;
+}
+
+.csl-bib-body {
+  font-size: 0.8em;
+}
+
+.csl-entry {
+  margin-bottom: 10px;
+  padding-left: 5px;
+  border-left: 5px solid #eee;
+}
+
+.csl-entry:hover {
+  background: #eee;
+}

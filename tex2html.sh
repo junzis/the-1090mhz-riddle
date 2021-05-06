@@ -7,6 +7,9 @@ do
     --css style.css \
     --toc \
     --toc-depth=3 \
+    --citeproc \
+    --bibliography=references.bib \
+    --csl=_static/acm-siggraph.csl \
     --mathjax \
     --variable editat=$fn \
     --extract-media _build/html/figures
@@ -23,6 +26,9 @@ do
     --css style.css \
     --toc \
     --toc-depth=3 \
+    --citeproc \
+    --bibliography=references.bib \
+    --csl=_static/acm-siggraph.csl \
     --mathjax \
     --variable rootdir="../" \
     --variable editat=$fn \
@@ -40,6 +46,9 @@ do
     --css style.css \
     --toc \
     --toc-depth=3 \
+    --citeproc \
+    --bibliography=references.bib \
+    --csl=_static/acm-siggraph.csl \
     --mathjax \
     --variable rootdir="../../" \
     --variable editat=$fn \
@@ -56,6 +65,9 @@ do
     --css style.css \
     --toc \
     --toc-depth=3 \
+    --citeproc \
+    --bibliography=references.bib \
+    --csl=_static/acm-siggraph.csl \
     --mathjax \
     --variable rootdir="../../" \
     --variable editat=$fn \
@@ -73,6 +85,9 @@ do
     --css style.css \
     --toc \
     --toc-depth=3 \
+    --citeproc \
+    --bibliography=references.bib \
+    --csl=_static/acm-siggraph.csl \
     --mathjax \
     --variable rootdir="../" \
     --variable editat=$fn
