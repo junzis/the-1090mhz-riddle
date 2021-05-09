@@ -63,7 +63,7 @@ The active antenna (see Figure \ref{fig:biastee_active_antenna}) has a low-noise
 
 \section{Receiver}
 
-Many modern Mode~S receivers are built using software-defined radio (SDR). An SDR usually can be tuned to a wide range of radio frequencies. The user can conveniently select the center frequency of the receiver and the sampling rate, as well as defined the bandwidth of the onboard low-pass filter if it is supported.
+Many modern Mode~S receivers are built using software-defined radio (SDR). An SDR usually can be tuned to a wide range of radio frequencies. The user can conveniently select the center frequency of the receiver and the sampling rate, as well as define the bandwidth of the onboard low-pass filter if it is supported.
 
 For receiving ADS-B (and other types of Mode~S message), a RTL-SDR is the most common type of low-cost receiver to choose. Many different brands of RTL-SDR receivers exist; they are often built with the Realtek RTL2832U chipset. It can work with radio frequencies from 24 to 1766 MHz. The maximum sampling rate is 2.8 million samples per second (MSPS). Given that a Mode~S bit consists of a pulse cycle of 0.5 μs (see Figure \ref{fig:mode_s_uplink_pulses}), the minimum SDR sampling rate required for Mode~S is 2 MSPS. RLT-SDR devices just barely manage to meet this requirement.
 

@@ -51,7 +51,7 @@ The reply should be sent with the following rules:
 
 For Mode~S transponders, the ACAS system employs a three-phase process, which includes the phases of \emph{detection}, \emph{surveillance}, and \emph{coordination}.
 
-For the detection phase, ACAS passively listens to Mode~S only all-call replies (DF=11). These all-call replies are usually generated as a result of ground SSR interrogations, or created by spontaneous acquisition squitter (broadcast of DF=11 message with interrogator code \0). In this process, aircraft with Mode~S transponders in the vicinity are discovered. ACAS may also listen to extended squitter messages (Downlink Format 17, ADS-B) to detect other aircraft.
+For the detection phase, ACAS passively listens to Mode~S only all-call replies (DF=11). These all-call replies are usually generated as a result of ground SSR interrogations, or created by spontaneous acquisition squitter (broadcast of DF=11 message with interrogator code \0). In this process, aircraft with Mode~S transponders in the vicinity are discovered. ACAS may also listen to extended squitter messages (Downlink Format 17, ADS-B) to detect other aircrafts.
 
 Once another aircraft is determined to be within the ACAS surveillance range, and within 10,000 ft of the own aircraft\footnote{This can be acquired through existing DF=0 and DF=4 replies, or through active interrogations}, ACAS will initiate a short air-air interrogation (UF=0) to acquire the range. The interrogation rate is defined as:
 
