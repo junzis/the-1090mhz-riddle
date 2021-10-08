@@ -158,7 +158,7 @@ lat < -87   ->    NL = 1
 
 \subsection{Calculation of latitude} \label{sec:cpr_airborne_global_lat}
 
-In each position message, bit 54 determines whether it is an odd or even frame. \0 indicates an even message, while \1 indicates an odd message.
+In each position message, bit 54 determines whether it is an odd or even frame. \texttt{0} indicates an even message, while \texttt{1} indicates an odd message.
 
 Bits 55--71 and bits 72--88 represent the fractions of the latitude and longitude within the latitude and longitude grid, denoted as $\mathrm{lat}_\mathrm{cpr}$ and $\mathrm{lon}_\mathrm{cpr}$:
 
@@ -325,7 +325,7 @@ It is possible to extract the encoded CPR latitude and longitude binary and conv
 We can calculate the latitude index, $j$, as:
 
 \begin{equation}
-  j = floor \left( 59 \times \frac{93000}{2^{17}} - 60 \times \frac{51372}{2^{17}} + \frac{1}{2}  \right) = 8
+  j = floor \left( 59 \times \frac{93000}{2^{17}} - 60 \times \frac{74158}{2^{17}} + \frac{1}{2}  \right) = 8
 \end{equation}
 
 Then, we can decode the latitudes from both even and odd messages:
@@ -571,7 +571,7 @@ The altitude of the aircraft becomes:
 1560 \times 25 - 1000 = 38000 \quad \text{(ft)}
 \end{equation}
 
-In the case where the altitude is higher than 50175 feet, a 100 feet increment is used. In this situation, the Q bit is set to \0, and the rest of the bits are encoded using Gray code \cite{doran2007}. 
+In the case where the altitude is higher than 50175 feet, a 100 feet increment is used. In this situation, the Q bit is set to \texttt{0}, and the rest of the bits are encoded using Gray code \cite{doran2007}. 
 
 It is worth noting that it is possible for all altitude bits to be zeros,which indicates that the altitude information is not available.
 

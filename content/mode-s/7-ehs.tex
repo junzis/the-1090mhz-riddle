@@ -40,7 +40,7 @@ Target altitude source & 87--88 & 55--56 & 2 \\ \hline
 
 Two different types of selected altitude fields are included in the message. Values in the \emph{MCP/FCU selected altitude} field are from the mode control panel or flight control unit. These are often inputs from the pilot. Values in \emph{FMS selected altitude} field are derived from the flight management system controlling the vertical profile, which often does not come from manual input. In practice, FMS selected altitude values are often empty or unusable. When it is presented, the value is mostly the same as MCP/FCU selected altitude.
 
-The \emph{barometric pressure setting} value is the actual pressure in millibars (mb) subtracted by a constant of 800. If the actual value is below 800 mb (or above 1209 mb), the corresponding status bit (MB:27) is set to \0.
+The \emph{barometric pressure setting} value is the actual pressure in millibars (mb) subtracted by a constant of 800. If the actual value is below 800 mb (or above 1209 mb), the corresponding status bit (MB:27) is set to \texttt{0}.
 
 The last two bits in the MB field show the source of the target altitude. They have the following meaning:
 

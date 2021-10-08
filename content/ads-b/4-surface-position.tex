@@ -60,13 +60,13 @@ The movement field encodes the aircraft ground speed. The ground speed of the ai
 
 \section{Ground track}
 
-When the status for the ground track field is set to \1, the ground track is encoded with a precision of (and rounded to) 360/128 degrees. Zero degrees represents an aircraft ground track that is aligned with the true north. Based on the encoded value ($n$), the ground track ($\chi$) is calculated as:
+When the status for the ground track field is set to \texttt{1}, the ground track is encoded with a precision of (and rounded to) 360/128 degrees. Zero degrees represents an aircraft ground track that is aligned with the true north. Based on the encoded value ($n$), the ground track ($\chi$) is calculated as:
 
 \begin{equation}
     \chi = \frac{360~n}{128} \quad \text{(degrees)}
 \end{equation}
 
-When the status for the ground track field is set to \0, the information contained in the ground track fields should be considered as invalid.
+When the status for the ground track field is set to \texttt{0}, the information contained in the ground track fields should be considered as invalid.
 
 \section{Position}
 
