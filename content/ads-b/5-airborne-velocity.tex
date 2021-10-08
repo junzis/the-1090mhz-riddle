@@ -99,9 +99,9 @@ Here, the second rows and third rows of the messages are binary and decimal valu
 
 The method for decoding vertical rate and its related parameters are the same for different sub-types.
 
-First of all, the vertical rate source bit \texttt{VrSrc} (ME bit 36) indicates the source of the altitude measurements. GNSS altitude is encoded as \0, while \1 encodes the barometric altitude.
+First of all, the vertical rate source bit \texttt{VrSrc} (ME bit 36) indicates the source of the altitude measurements. GNSS altitude is encoded as \texttt{0}, while \texttt{1} encodes the barometric altitude.
 
-The direction of aircraft vertical movement can be read from \texttt{Svr} bit (ME bit 37), with \0 and \1 referring to climb and descent, respectively. The encoded vertical rate value \texttt{VR} can be computed using message ME bits 38 to 46. If the 9-bit block contains all zeros, the vertical rate information is not available.
+The direction of aircraft vertical movement can be read from \texttt{Svr} bit (ME bit 37), with \texttt{0} and \texttt{1} referring to climb and descent, respectively. The encoded vertical rate value \texttt{VR} can be computed using message ME bits 38 to 46. If the 9-bit block contains all zeros, the vertical rate information is not available.
 
 The final vertical speed ($\mathrm{VS}$) is calculated as:
 
@@ -118,7 +118,7 @@ where the final vertical speed has the unit of ft/min.
 Based on the example \texttt{Message A}, the vertical speed is calculated as:
 
 \begin{equation}
-  \mathrm{VS}_A = -64 \times (37 -1) = -832 ~\text{ft/min}
+  \mathrm{VS}_A = -64 \times (14 - 1) = -832 ~\text{ft/min}
 \end{equation}
 
 which indicates that the aircraft A is descending with a vertical speed of 832 ft/min.
@@ -126,7 +126,7 @@ which indicates that the aircraft A is descending with a vertical speed of 832 f
 Based on the example \texttt{Message B}, the vertical speed is calculated as:
 
 \begin{equation}
-  \mathrm{VS}_B = -64 \times (14 -1) = -2304 ~\text{ft/min}
+  \mathrm{VS}_B = -64 \times (37 - 1) = -2304 ~\text{ft/min}
 \end{equation}
 
 which indicates that the aircraft B is descending with a vertical speed of 2304 ft/min.
@@ -134,7 +134,7 @@ which indicates that the aircraft B is descending with a vertical speed of 2304 
 
 \section{GNSS and barometric altitudes difference}
 
-The last eight bits of the ME field contain the difference between the barometric and GNSS altitudes. Of these eight bits, the first bit indicates the sign for the value of the remaining bits. When it is \1, the value is negative. This means the GNSS altitude is below the barometric altitude.
+The last eight bits of the ME field contain the difference between the barometric and GNSS altitudes. Of these eight bits, the first bit indicates the sign for the value of the remaining bits. When it is \texttt{1}, the value is negative. This means the GNSS altitude is below the barometric altitude.
 
 The value is encoded with the increment of 25 feet, and the equation to calculate the altitude difference is:
 

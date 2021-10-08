@@ -51,7 +51,7 @@ The reply should be sent with the following rules:
 
 For Mode~S transponders, the ACAS system employs a three-phase process, which includes the phases of \emph{detection}, \emph{surveillance}, and \emph{coordination}.
 
-For the detection phase, ACAS passively listens to Mode~S only all-call replies (DF=11). These all-call replies are usually generated as a result of ground SSR interrogations, or created by spontaneous acquisition squitter (broadcast of DF=11 message with interrogator code \0). In this process, aircraft with Mode~S transponders in the vicinity are discovered. ACAS may also listen to extended squitter messages (Downlink Format 17, ADS-B) to detect other aircraft.
+For the detection phase, ACAS passively listens to Mode~S only all-call replies (DF=11). These all-call replies are usually generated as a result of ground SSR interrogations, or created by spontaneous acquisition squitter (broadcast of DF=11 message with interrogator code \texttt{0}). In this process, aircraft with Mode~S transponders in the vicinity are discovered. ACAS may also listen to extended squitter messages (Downlink Format 17, ADS-B) to detect other aircraft.
 
 Once another aircraft is determined to be within the ACAS surveillance range, and within 10,000 ft of the own aircraft\footnote{This can be acquired through existing DF=0 and DF=4 replies, or through active interrogations}, ACAS will initiate a short air-air interrogation (UF=0) to acquire the range. The interrogation rate is defined as:
 
@@ -157,17 +157,17 @@ Once the target aircraft is within the RA region (a threat), ACAS initiates the 
 Specific fields in the above mentioned messages are defined as follows:
 
 \begin{itemize}
-  \item \emph{Reply length (RL)}: 1 bit, it defines the required reply format: \0 requires a reply with DF=0, while \1 requires reply with DF=16.
+  \item \emph{Reply length (RL)}: 1 bit, it defines the required reply format: \texttt{0} requires a reply with DF=0, while \texttt{1} requires reply with DF=16.
 
   \item \emph{Acquisition (AQ)}: 1 bit, it contains code that controls the content of RI field in the reply.
 
   \item \emph{Data selector (DS)}: 8 bits, it indicates the BDS code of the MV content in reply with DF=16.
 
-  \item \emph{Vertical status (VS)}: 1 bit, it indicates whether the aircraft is airborne (\0) or on the ground (\1).
+  \item \emph{Vertical status (VS)}: 1 bit, it indicates whether the aircraft is airborne (\texttt{0}) or on the ground (\texttt{1}).
 
-  \item \emph{Cross-link capability (CC)}: 1 bit, it refers to the capability of reply DF=16 upon request of UF=0. When this 1-bit field is set to \1, the cross-link is supported. Otherwise, the field is set to \0.
+  \item \emph{Cross-link capability (CC)}: 1 bit, it refers to the capability of reply DF=16 upon request of UF=0. When this 1-bit field is set to \texttt{1}, the cross-link is supported. Otherwise, the field is set to \texttt{0}.
 
-  \item \emph{Sensitivity level (SL)}: 3 bits, it represents the sensitivity level of the ACAS system, except that \0 indicates the ACAS is inoperative.
+  \item \emph{Sensitivity level (SL)}: 3 bits, it represents the sensitivity level of the ACAS system, except that \texttt{0} indicates the ACAS is inoperative.
 
   \item \emph{Reply information (RI)}: 4 bits, it indicates the type of reply to interrogating aircraft. For ACAS message, valid values are 0 and from 2 to 4. Other values are not part of the ACAS:
 
@@ -295,37 +295,37 @@ These fields can be interpreted as follows:
   \item \emph{Active RA (ARA)}: 14 bits, indicates the resolution advisory characteristics. It has to be interpreted together with the MTB field.
 
     \begin{itemize}
-      \item When ARA first bit (MSG bit 41) is \1 and MTE is either \0 or \1:
+      \item When ARA first bit (MSG bit 41) is \texttt{1} and MTE is either \texttt{0} or \texttt{1}:
 
       \begin{quote}
         \small
-        Bit 42: RA is corrective (\1) or preventive (\0) \\
-        Bit 43: RA is downward sense (\1) or upward sense (\0) \\
-        Bit 44: RA is increased rate (\1) or not (\0) \\
-        Bit 45: RA is a sense reversal (\1) or not (\0) \\
-        Bit 46: RA is altitude crossing (\1) or not (\0) \\
-        Bit 47: RA is positive (\1) or vertical speed limit (\0) \\
+        Bit 42: RA is corrective (\texttt{1}) or preventive (\texttt{0}) \\
+        Bit 43: RA is downward sense (\texttt{1}) or upward sense (\texttt{0}) \\
+        Bit 44: RA is increased rate (\texttt{1}) or not (\texttt{0}) \\
+        Bit 45: RA is a sense reversal (\texttt{1}) or not (\texttt{0}) \\
+        Bit 46: RA is altitude crossing (\texttt{1}) or not (\texttt{0}) \\
+        Bit 47: RA is positive (\texttt{1}) or vertical speed limit (\texttt{0}) \\
         Bit 48--54: Reserved for ACAS III
       \end{quote}
 
-      \item When ARA first bit (MSG bit 41) is \0 and MTE is \1:
+      \item When ARA first bit (MSG bit 41) is \texttt{0} and MTE is \texttt{1}:
 
       \begin{quote}
         \small
-        Bit 42: RA requires a correction in the upward sense (\1) or not (\0) \\
-        Bit 43: RA requires a positive climb (\1) or not (\0) \\
-        Bit 44: RA requires a correction in the downward sense (\1) or not (\0) \\
-        Bit 45: RA requires a positive descent (\1) or not (\0) \\
-        Bit 46: RA requires a crossing (\1) or not (\0) \\
-        Bit 47: RA is a sense reversal (\1) or not (\0) \\
+        Bit 42: RA requires a correction in the upward sense (\texttt{1}) or not (\texttt{0}) \\
+        Bit 43: RA requires a positive climb (\texttt{1}) or not (\texttt{0}) \\
+        Bit 44: RA requires a correction in the downward sense (\texttt{1}) or not (\texttt{0}) \\
+        Bit 45: RA requires a positive descent (\texttt{1}) or not (\texttt{0}) \\
+        Bit 46: RA requires a crossing (\texttt{1}) or not (\texttt{0}) \\
+        Bit 47: RA is a sense reversal (\texttt{1}) or not (\texttt{0}) \\
         Bit 48--54: Reserved for ACAS III
       \end{quote}
 
-      \item When ARA first bit (MSG bit 41) is \0 and MTE is \0, no vertical RA is generated.
+      \item When ARA first bit (MSG bit 41) is \texttt{0} and MTE is \texttt{0}, no vertical RA is generated.
     \end{itemize}
 
 
-  \item \emph{RAC's record (RAC)}: 4 bits, contains current active RACs that are received from other ACAS aircraft (if any). Each of the four bits in this field indicates the following RAC when set to \1. When a bit is set to \0, the corresponding RAC is inactive.
+  \item \emph{RAC's record (RAC)}: 4 bits, contains current active RACs that are received from other ACAS aircraft (if any). Each of the four bits in this field indicates the following RAC when set to \texttt{1}. When a bit is set to \texttt{0}, the corresponding RAC is inactive.
 
   \begin{quote}
     \small
@@ -339,7 +339,7 @@ These fields can be interpreted as follows:
   \item \emph{RA terminated indicator (RAT)}: 1 bit, indicates whether ACAS is currently generating RA in the ARA field or RA in the ARA field has been terminated.\footnote{The Mode~S transponder is still required to report RA 18 seconds after it is terminated by ACAS. Hence, the RAT field is used.}
 
 
-  \item \emph{Multiple threat encounter (MTE)}: 1 bit, indicates whether multiple threats are currently being processed by the ACAS resolution. When MTE is set to \0, either one threat is being processed (ARA bit 41 sets to \1) or no threat is being processed (ARA bit 41 sets to \0). When MTE is set to \1, multiple threats are being processed.
+  \item \emph{Multiple threat encounter (MTE)}: 1 bit, indicates whether multiple threats are currently being processed by the ACAS resolution. When MTE is set to \texttt{0}, either one threat is being processed (ARA bit 41 sets to \texttt{1}) or no threat is being processed (ARA bit 41 sets to \texttt{0}). When MTE is set to \texttt{1}, multiple threats are being processed.
 
   \item \emph{Mode~A identity code (AID)}: 13 bits, contains the Mode~A identity code (sqwake code) of the reporting aircraft. It can be decoded according to section \ref{sec:id_code}.
 
