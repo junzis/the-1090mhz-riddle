@@ -12,7 +12,7 @@ do
     --csl=_static/acm-siggraph.csl \
     --mathjax \
     --variable editat=$fn \
-    --extract-media _build/html/figures
+    --extract-media _build/html
 
 done
 
@@ -32,7 +32,7 @@ do
     --mathjax \
     --variable rootdir="../" \
     --variable editat=$fn \
-    --extract-media _build/html/figures
+    --extract-media _build/html
 done
 
 
@@ -52,7 +52,7 @@ do
     --mathjax \
     --variable rootdir="../../" \
     --variable editat=$fn \
-    --extract-media _build/html/figures
+    --extract-media _build/html
 done
 
 for file in content/mode-s/*.tex
@@ -71,7 +71,7 @@ do
     --mathjax \
     --variable rootdir="../../" \
     --variable editat=$fn \
-    --extract-media _build/html/figures
+    --extract-media _build/html
 done
 
 
@@ -104,9 +104,15 @@ sed -i 's/embed\(.*\)pdf/img\1png/g' _build/html/index.html;
 sed -i 's/<img/<img class="cover" /g' _build/html/index.html;
 
 
-cd _build/html/figures/
-for pdf_file in *.pdf ; do
-  echo "converting ${pdf_file}"
-  convert -density 100 "${pdf_file}" -colorspace RGB "${pdf_file%.*}".png
-  rm ${pdf_file}
-done
+cd _build/html/
+# for pdf_file in *.pdf ; do
+#   echo "converting ${pdf_file}"
+#   convert -density 100 "${pdf_file}" -colorspace RGB "${pdf_file%.*}".png
+#   rm ${pdf_file}
+# done
+
+find cover figures -type f -name '*.pdf' -print0 |
+  while IFS= read -r -d '' pdf_file; do 
+    convert -density 100 "${pdf_file}" -colorspace RGB "${pdf_file%.*}".png
+    rm ${pdf_file}
+  done
