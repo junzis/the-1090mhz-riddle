@@ -88,7 +88,7 @@ There are two types of Mode~S downlink signals, the short reply and the long rep
   \label{fig:mode_s_downlink_pulses}
 \end{figure}
 
-The 16-bit fix preamble can be represented as \texttt{1010000101000000} in binary. The information contained in the data block is modulated using the Pulse Position Modulation (PPM), which is a type of amplitude modulation. In PPM, the \texttt{1} bit is represented by a 0.5 μs of pulse followed by a 0.5 μs flat signal. The \texttt{0} bit is reversed compared to the \texttt{1} bit, which is represented by a 0.5 μs flat signal and followed by a 0.5 μs pulse.
+The 16-bit fixed preamble can be represented as \texttt{1010000101000000} in binary. The information contained in the data block is modulated using the Pulse Position Modulation (PPM), which is a type of amplitude modulation. In PPM, the \texttt{1} bit is represented by a 0.5 μs of pulse followed by a 0.5 μs flat signal. The \texttt{0} bit is reversed compared to the \texttt{1} bit, which is represented by a 0.5 μs flat signal and followed by a 0.5 μs pulse.
 
 \begin{notebox}{Note}
   Mode~S uplink and downlink signals use different modulation methods. The uplink uses phase modulation, while the downlink uses amplitude modulation. Phase modulation requires slightly more complicated hardware implementation but has a better performance in terms of error tolerance. 
@@ -178,7 +178,7 @@ The Mode~S Elementary Surveillance consists of four BDS codes (10, 17, 20, and 3
 
 The Mode~S Enhanced Surveillance consists of three BDS codes (40, 50, and 60). It provides much more additional information on aircraft states, such as selected altitudes, true airspeed, indicated airspeed, Mach number, bank angle, and turn rate.
 
-In addition to the common ELS and EHS, the meteorological routine air report (MRAR), and the meteorological hazard report (MHR) are also interrogated in some controlled airspaces. These reports provide weather-related information such as wind and temperature that are measured by the aircraft sensors. Another important service, Airborne Collision Avoidance System (ACAS), also uses the Mode S transponder for comminucation. All these services will be explained in details in this book.
+In addition to the common ELS and EHS, the meteorological routine air report (MRAR), and the meteorological hazard report (MHR) are also interrogated in some controlled airspaces. These reports provide weather-related information such as wind and temperature that are measured by the aircraft sensors. Another important service, Airborne Collision Avoidance System (ACAS), also uses the Mode S transponder for communication. All these services will be explained in details in this book.
 
 
 \section{Summary}
