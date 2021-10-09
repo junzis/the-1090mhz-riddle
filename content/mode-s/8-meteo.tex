@@ -40,7 +40,7 @@ Humidity & 83--88 & 51--56 & 6 \\
 \end{tabular}
 \end{table}
 
-The first field of the message defined the figure of merit (FOM)/source of the information. The values indicate the following:
+The first field of the message defines the figure of merit (FOM)/source of the information. The values indicate the following:
 \begin{itemize}
     \item 0: Invalid
     \item 1: Inertial system (INS)
@@ -84,7 +84,7 @@ pms.commb.hum44(msg)    # None
 
 In MHR messages, different hazard condition levels are reported, such as turbulence, wind shear, microburst, icing, and wake vortex. It also includes temperature, pressure, and radio height. Table \ref{tb:bds45} shows the structure of the MHR message.
 
-It is worth noting that during real flights, MHR messages are much rarer than MARA messages. Based on the tests I conducted, whenever MRAR messages are detected, most of the them only contain temperature information.
+It is worth noting that during real flights, MHR messages are much rarer than MRAR messages. Based on the tests I conducted, whenever MRAR messages are detected, most of the them only contain temperature information.
 
 \begin{table}[ht]
 \renewcommand{\arraystretch}{1.1}

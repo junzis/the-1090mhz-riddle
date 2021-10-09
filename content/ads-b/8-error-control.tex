@@ -52,7 +52,7 @@ The polynomial form of the divisor (generator), $G(x)$, used for ADS-B (as well 
   \end{split}
 \end{equation}
 
-This generator code was found by \cite{kasami1964}, which is known for its efficiency to correct burst errors. It can represented in binary formats as \texttt{1111111111111010000001001} (or \texttt{1FFF409} in hexadecimal format). A 24-bit CRC remainder is generated using this generator for each ADS-B message.
+This generator code was found by \cite{kasami1964}, which is known for its efficiency to correct burst errors. It can be represented in binary format as \texttt{1111111111111010000001001} (or \texttt{1FFF409} in hexadecimal format). A 24-bit CRC remainder is generated using this generator for each ADS-B message.
 
 Knowing the logic of CRC, the computation of the remainder and the verification of the error is fairly simple. Let  $x^{i}$ represent each bit of the message and $M(x)$ represent the polynomial corresponding to the ADS-B message, the CRC remainder (parity) $P(x)$ can thus be calculated as:
 
