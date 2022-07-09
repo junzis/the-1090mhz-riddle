@@ -1,7 +1,7 @@
 \chapter{Quick Start: Hardware and Software to Receive Mode~S Signals}
 \label{chap:quickstart}
 
-Chapter 1 introduced several fundamental concepts about Mode~S communication. This chapter focuses on the practical aspects of acquiring Mode~S data, specifically, how to receive and obtain messages that are transmitted in Mode~S downlink communications. Mode~S signals are transmitted using 1090 MHz radio waves. Hence, the receiver and antenna have to be designed to work with this frequency. Nowadays, all necessary components required to obtain the Mode~S data can be easily made with low-cost off-the-shelf components. Several open-source software tools are available to support the extraction and decoding of data from Mode~S signals. In this chapter, we explain how to step up a functional hardware and software system to receive Mode~S data.
+Chapter 1 introduced several fundamental concepts about Mode~S communication. This chapter focuses on the practical aspects of acquiring Mode~S data, specifically, how to receive and obtain messages that are transmitted in Mode~S downlink communications. Mode~S signals are transmitted using 1090 MHz radio waves. Hence, the receiver and antenna have to be designed to work with this frequency. Nowadays, all necessary components required to obtain the Mode~S data can be easily made with low-cost off-the-shelf components. Several open-source software tools are available to support the extraction and decoding of data from Mode~S signals. In this chapter, we explain how to set up a functional hardware and software system to receive Mode~S data.
 
 \section{Range}
 Since Mode~S uses L band signals that follow the line-of-sight propagation, any obstructions between the transmitter and receiver can cause a significant amount of signals to be blocked. Assuming that no obstacle exists between the aircraft and the receiver, and the transmitter has a sufficient amount of power, the maximum range of the receiver is determined by the curvature of the earth. Figure \ref{fig:max_range} illustrates how the maximum range of the receiver can be obtained.
@@ -103,7 +103,7 @@ Since its release in 2013, the repository has been forked and extended intensive
 The latest version of \texttt{dump1090} source code can be downloaded as follows:
 
 \begin{verbatim}
-$ git checkout https://github.com/flightaware/dump1090.git
+$ git clone https://github.com/flightaware/dump1090.git
 \end{verbatim}
 
 Before compiling the code, following dependencies must be installed:

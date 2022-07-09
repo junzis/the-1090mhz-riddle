@@ -92,12 +92,12 @@ The definitions of the common fields are:
 
 \section{Altitude code} \label{sec:alt_code}
 
-The 13-bit altitude code can be encoded in 25 feet increments, 100 feet increments, or in metric unit of meters. The 7th bit (MSG bit 28) is defined as the M bit. When the M bit is set to \0, the 9th bit (MSG bit 30) is defined as the Q bit.
+The 13-bit altitude code can be encoded in 25 feet increments, 100 feet increments, or in metric unit of meters. The 7th bit (MSG bit 28) is defined as the M bit. When the M bit is set to \texttt{0}, the 9th bit (MSG bit 30) is defined as the Q bit.
 
 The decoding rules are as follows:
 
 \begin{itemize}
-  \item When all bits are set to \0, altitude information is not available or invalid.
+  \item When all bits are set to \texttt{0}, altitude information is not available or invalid.
 
   \item When M=1, removing the M bit, the remaining 12 bits represent the altitude in meters.
 

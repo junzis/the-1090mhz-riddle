@@ -71,23 +71,23 @@ MSG     MB      Coding
 
 3) \emph{Overlay Command Capability} indicates whether the transponder supports BDS overlay (Data Parity).
 
-4) When \emph{Transponder enhanced protocol indicator} bit is set to \1, the transponder is a Level 5 transponder. Value \0 indicates a Level 2 to 4 transponder.
+4) When \emph{Transponder enhanced protocol indicator} bit is set to \texttt{1}, the transponder is a Level 5 transponder. Value \texttt{0} indicates a Level 2 to 4 transponder.
 
-5) When \emph{Mode~S specific services capability} bit is set to \1, at least one Mode~S specific service is supported.\footnote{The additional specific services are BDS codes other than \texttt{0,2}, \texttt{0,3}, \texttt{1,0}, \texttt{1,7}-\texttt{1,C}, \texttt{2,0}, and \texttt{3,0}}.
+5) When \emph{Mode~S specific services capability} bit is set to \texttt{1}, at least one Mode~S specific service is supported.\footnote{The additional specific services are BDS codes other than \texttt{0,2}, \texttt{0,3}, \texttt{1,0}, \texttt{1,7}-\texttt{1,C}, \texttt{2,0}, and \texttt{3,0}}.
 
 6) \emph{Aircraft identification capability} indicates availability of identification (Callsign).
 
-7) When \emph{Squitter capability subfield} bit is set to \1, both BDS 0,5 and \texttt{0,6} registers have been updated in the past 9 to 11 seconds.
+7) When \emph{Squitter capability subfield} bit is set to \texttt{1}, both BDS 0,5 and \texttt{0,6} registers have been updated in the past 9 to 11 seconds.
 
 8) \emph{Surveillance identifier code} determines whether the transponder has the surveillance identification code capability.
 
-9) \emph{Common usage GICB capability report} is set to \1 every time the GICB capacity report (BDS 1,7) is changed. Register \texttt{1,7} is sampled every minute to check for changes.
+9) \emph{Common usage GICB capability report} is set to \texttt{1} every time the GICB capacity report (BDS 1,7) is changed. Register \texttt{1,7} is sampled every minute to check for changes.
 
 \section{Common usage GICB capability report (BDS 1,7)}
 
 This message is designed to report Common Usage Ground-initiated Comm-B (GICB) capabilities. The fields in this report are shown in Table \ref{tb:bds17}. In this table, each bit indicates whether the corresponding service is available from the transponder. 
 
-A bit is set to \1 when the corresponding register has a valid input that has been updated at the required rate. This means that the same aircraft would respond with different GICB reports due to the availability of the relevant data.
+A bit is set to \texttt{1} when the corresponding register has a valid input that has been updated at the required rate. This means that the same aircraft would respond with different GICB reports due to the availability of the relevant data.
 
 \begin{table}[ht]
 \footnotesize
@@ -138,7 +138,7 @@ MB:               FA81C100000000
 MB BIN:   11111010100000011100000100000000000000000000000000000000
 \end{verbatim}
 
-From the MB field, we can identify that following bits are set to \1:
+From the MB field, we can identify that following bits are set to \texttt{1}:
 
 \begin{verbatim}
 Bit: 1, 2, 3, 4, 5, 7, 9, 16, 17, 18, 24
@@ -196,7 +196,7 @@ Character 8 & 83--88 & 51--56 & 6 \\ \hline
 \end{table}
 
 
-The first eight bits indicates the BDS code \texttt{0010 0000} (\texttt{2,0} in hexadecimal). Each of the callsign characters is represented by six bits. We first need to convert the binary numbers to decimals. Each decimal value corresponds to the index of the letter in the following character map:
+The first eight bits indicate the BDS code \texttt{0010 0000} (\texttt{2,0} in hexadecimal). Each of the callsign characters is represented by six bits. We first need to convert the binary numbers to decimals. Each decimal value corresponds to the index of the letter in the following character map:
 
 \begin{verbatim}
 #ABCDEFGHIJKLMNOPQRSTUVWXYZ##### ###############0123456789######
@@ -251,7 +251,7 @@ Resolution advisory complements record & 55--58 & 23--26 & 4 \\ \hline
 RA terminated & 59 & 27 & 1 \\ \hline
 Multiple threat encounter & 60 & 28 & 1 \\ \hline
 Threat type indicator & 61--62 & 29--30 & 2 \\ \hline
-Threat identity data & 63--86 & 31--56 & 26 \\ \hline
+Threat identity data & 63--88 & 31--56 & 26 \\ \hline
 \end{tabular}
 \end{table}
 

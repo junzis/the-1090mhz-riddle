@@ -201,7 +201,7 @@ Output:
 
 Two's complement coding is used for representing negative numbers in some Mode~S messages, for example, heading and vertical rates in BDS 5,0 and BDS 6,0 messages. Every parameter in Mode~S using two's complement coding include a 1-bit sign and n-bit value.
 
-1) If the sign bit is \0, the result is simply the decimal representation of the value bits.
+1) If the sign bit is \texttt{0}, the result is simply the decimal representation of the value bits.
 
 For example, we have the following representation of a signed parameter:
 
@@ -214,13 +214,13 @@ For example, we have the following representation of a signed parameter:
 The result is the decimal representation of the last nine value bits, which is \texttt{467}.
 
 
-2) If the sign bit is \1, we first calculate the decimal representation of the value bits ($x$) and then calculate the negative value as:
+2) If the sign bit is \texttt{1}, we first calculate the decimal representation of the value bits ($x$) and then calculate the negative value as:
 
 \begin{equation}
   x - 2^n
 \end{equation}
 
-For example, if we changed the signed bit in the previous example to \1, as follows:
+For example, if we changed the signed bit in the previous example to \texttt{1}, as follows:
 
 \begin{verbatim}
  sign    value
@@ -228,7 +228,7 @@ For example, if we changed the signed bit in the previous example to \1, as foll
   1    111010011
 \end{verbatim}
 
-since the sign bit is \1 and there are \texttt{9} value bits, the final value is calculated as:
+since the sign bit is \texttt{1} and there are \texttt{9} value bits, the final value is calculated as:
 \begin{equation}
   467 - 2^9 = -45
 \end{equation}

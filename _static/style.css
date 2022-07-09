@@ -193,3 +193,22 @@ img.cover{
 .csl-entry:hover {
   background: #eee;
 }
+
+.notebox {
+  padding: 0.5em 1em;
+  background: #EBF7F8;
+  font-size: 0.9em;
+  margin-bottom: 1em;
+}
+
+.notebox p {
+  margin: 1em 0;
+}
+
+.notebox p span {
+  font-weight: bold;
+}
+
+.notebox p span::after {
+  content: ":";
+}
