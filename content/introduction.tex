@@ -31,7 +31,7 @@ The slant distance of an aircraft does not always correspond to the horizontal d
 
 The secondary surveillance radar (SSR), also known as the air traffic control radar beacon system (ATCRBS), was designed to provide air traffic controllers more information than what is provided by the primary radar. The secondary radar can be installed separately or installed on top of the primary radar. It uses a different radio frequency to actively interrogate the aircraft and receive information transmitted by the aircraft.
 
-The SSR transmits interrogations using the 1030 MHz radio frequency and the aircraft transponder transmits replies using the 1090 MHz radio frequency. In the early design of SSR, two civilian communication protocols (Mode~A and Mode~C) were introduced. Mode~A and Mode~C respectively allow the SSR to continuously interrogate the identity (squawk code) and the altitude of an aircraft. The squawk code in Mode A is a unique 4-octal digit code given by air traffic controllers to aircraft in their flight information region for identification. The altitude in Mode C refers to the barometric altitude obtained from the aircraft's air data system. 
+The SSR transmits interrogations using the 1030 MHz radio frequency and the aircraft transponder transmits replies using the 1090 MHz radio frequency. In the early design of SSR, two civilian communication protocols (Mode~A and Mode~C) were introduced. Mode~A and Mode~C respectively allow the SSR to continuously interrogate the identity (squawk code) and the altitude of an aircraft. The squawk code in Mode~A is a unique 4-octal digit code given by air traffic controllers to aircraft in their flight information region for identification. The altitude in Mode~C refers to the barometric altitude obtained from the aircraft's air data system. 
 
 Although Mode~A and Mode~C provide additional information to air traffic controllers, they present several design challenges \cite{icao1983}. The secondary surveillance radar initiates Mode~A and C interrogations with two different pulse patterns, which are shown in Figure \ref{fig:mode_ac_uplink_pulses}.
 
@@ -109,7 +109,7 @@ When a Mode~A/C transponder receives this interrogation, the last pulse P4 is ig
 This is one of the several different interrogation pulse patterns from a Mode~A/C compatible Mode~S radar. In addition, Mode~S SSRs can perform both Mode~A/C and Mode~S interrogations. 
 
 \begin{notebox}{Note}
-  The Mode A/C/S All-Call is being phased out, as new transponders stop replying to this type of interrogations. It is common for Mode~S SSR makes use of Mode~S only All-Call interrogation with the standard Mode~S uplink (format 11) as shown in Figure \ref{fig:mode_s_uplink_pulses}.
+  The Mode~A/C/S All-Call is being phased out, as new transponders stop replying to this type of interrogations. It is common for Mode~S SSR makes use of Mode~S only All-Call interrogation with the standard Mode~S uplink (format 11) as shown in Figure \ref{fig:mode_s_uplink_pulses}.
 \end{notebox}
 
 
@@ -162,7 +162,7 @@ It is worth emphasizing that ADS-B is a broadcast-based surveillance system. Unl
 Different types of ADS-B messages are identified by Type Codes. The structures of these messages are all defined in ICAO documents, such as in \cite{icao9871v1} and \cite{rtca2011mops}. In Part I of this book, we will explain how these different types of ADS-B messages can be decoded.
 
 \begin{notebox}{Note}
-  In this book, ADS-B only refers to the ADS-B standard implemented through Mode S extended squitter. Originally, there were three candidates to build ADS-B: Mode~S Extended Squitter, VHF Data Link - Mode~4 (VDL4), and Universal Access Transceiver (UAT). Different specifications are designed for these frequency channels \cite{rtca2011mops, rtca2002uat}. However, the Mode~S extended squitter implementation of ADS-B is the most adopted one among all candidates. UAT is only partially implemented in some countries like the USA, while VDL4 did not go beyond the testing phase.
+  In this book, ADS-B only refers to the ADS-B standard implemented through Mode~S extended squitter. Originally, there were three candidates to build ADS-B: Mode~S Extended Squitter, VHF Data Link - Mode~4 (VDL4), and Universal Access Transceiver (UAT). Different specifications are designed for these frequency channels \cite{rtca2011mops, rtca2002uat}. However, the Mode~S extended squitter implementation of ADS-B is the most adopted one among all candidates. UAT is only partially implemented in some countries like the USA, while VDL4 did not go beyond the testing phase.
 \end{notebox}
 
 
@@ -178,7 +178,7 @@ The Mode~S Elementary Surveillance consists of four BDS codes (10, 17, 20, and 3
 
 The Mode~S Enhanced Surveillance consists of three BDS codes (40, 50, and 60). It provides much more additional information on aircraft states, such as selected altitudes, true airspeed, indicated airspeed, Mach number, bank angle, and turn rate.
 
-In addition to the common ELS and EHS, the meteorological routine air report (MRAR), and the meteorological hazard report (MHR) are also interrogated in some controlled airspaces. These reports provide weather-related information such as wind and temperature that are measured by the aircraft sensors. Another important service, Airborne Collision Avoidance System (ACAS), also uses the Mode S transponder for communication. All these services will be explained in details in this book.
+In addition to the common ELS and EHS, the meteorological routine air report (MRAR), and the meteorological hazard report (MHR) are also interrogated in some controlled airspaces. These reports provide weather-related information such as wind and temperature that are measured by the aircraft sensors. Another important service, Airborne Collision Avoidance System (ACAS), also uses the Mode~S transponder for communication. All these services will be explained in details in this book.
 
 
 \section{Summary}
