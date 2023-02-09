@@ -132,6 +132,7 @@
 \usepackage{floatrow}
 \floatsetup[table]{font=small,capposition=top}
 \renewcommand{\arraystretch}{1.1}
+\usepackage{tabularx}
 
 % chapter title style
 \usepackage{titlesec}

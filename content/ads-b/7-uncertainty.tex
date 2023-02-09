@@ -36,23 +36,23 @@ Each quality indicator also relates to a set of parameters that express the exac
 \begin{table}[ht]
 \caption{Parameters related with uncertainty, accuracy, and integrity}
 \label{tb:uncertainty-parameters}
-\begin{tabular}{|l|p{8cm}|l|}
+\begin{tabularx}{\textwidth}{|l|X|l|}
 \hline
 \textbf{} & \textbf{Parameter} &  \\ \hline
-NUCp (V0) & Horizontal protection limit & HPL \\ \cline{2-3}
+\multirow{3}{*}{NUCp (V0)} & Horizontal protection limit & HPL \\ \cline{2-3}
  & 95\% containment radius on horizontal position error & Rc/μ \\ \cline{2-3}
  & 95\% containment radius on vertical position error & Rc/v \\ \hline
-NUCr (V0) & Horizontal velocity error (95\%) & HVE \\ \cline{2-3}
+\multirow{2}{*}{NUCr (V0)} & Horizontal velocity error (95\%) & HVE \\ \cline{2-3}
  & Vertical velocity error (95\%) & VVE \\ \hline
-NACp (V1,2) & Estimated position uncertainty (95\% horizontal accuracy - p). a.k.a. horizontal figure of merit (HFOM) in GNSS & EPU \\ \cline{2-3}
+\multirow{2}{*}{NACp (V1,2)} & Estimated position uncertainty (95\% horizontal accuracy - p). a.k.a. horizontal figure of merit (HFOM) in GNSS & EPU \\ \cline{2-3}
  & Vertical estimated position uncertainty (95\% vertical accuracy - p). a.k.a. vertical figure of merit (VFOM) in GNSS & VEPU \\ \hline
-NACv (V1,2) & Horizontal figure of merit (95\% horizontal accuracy - v) & HFOMr \\ \cline{2-3}
+\multirow{2}{*}{NACv (V1,2)} & Horizontal figure of merit (95\% horizontal accuracy - v) & HFOMr \\ \cline{2-3}
  & Vertical figure of merit (95\% horizontal accuracy - v) & VFOMr \\ \hline
-NIC (V1,2) & Horizontal containment radius limit & RC \\ \cline{2-3}
+\multirow{2}{*}{NIC (V1,2)} & Horizontal containment radius limit & RC \\ \cline{2-3}
  & Vertical protection limit & VPL \\ \hline
-SIL (V1,2) & Probability of exceeding horizontal containment radius & P-RC \\ \cline{2-3}
+\multirow{2}{*}{SIL (V1,2)} & Probability of exceeding horizontal containment radius & P-RC \\ \cline{2-3}
  & Probability of exceeding vertical integrity containment region & P-VPL \\ \hline
-\end{tabular}
+\end{tabularx}
 \end{table}
 
 These parameters are identified by different bits from different messages. Due to the evolution of ADS-B versions, the definitions can also differ. In order to correctly obtain these parameters, the ADS-B transponder version must be identified. This can be based on the logic explained in Chapter \ref{chap:adsb-basic}.
