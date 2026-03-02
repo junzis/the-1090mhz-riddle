@@ -1,7 +1,6 @@
 book.pdf
 
 .DS_Store
-_build
 revisions
 
 # Byte-compiled / optimized / DLL files
