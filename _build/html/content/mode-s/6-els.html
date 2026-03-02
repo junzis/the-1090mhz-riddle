@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+  <meta name="author" content="Junzi Sun">
+
+
+  <title>The 1090MHz Riddle</title>
+  <style type="text/css">code{white-space: pre;}</style>
+
+
+
+  <link rel="stylesheet" href="../../bootstrap.min.css">
+  <link rel="stylesheet" href="../../style.css">
+
+  <script
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet"> 
+
+<script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js"
+  integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+" crossorigin="anonymous">
+</script>
+
+</head>
+<body>
+
+<div class="container">
+
+<div class="d-flex flex-row align-items-end">
+	<div>
+		<h1 class="title">The 1090 Megahertz Riddle <span class="h5">(second edition)</span></h1>
+		<div class="subtitle">A Guide to Decoding Mode S and ADS-B Signals</div>
+	</div>
+	<div class='ml-auto chapter-nav'>
+    <div class="author">By: <strong>Junzi Sun</strong> (<a href="http://junzis.com">junzis.com</a>)</div>
+	</div>
+</div>
+
+<hr>
+
+<div class="row">
+<div class="col-md-4 col-lg-3">
+<nav>
+  <a href="../../index.html" type="button"
+      class="btn btn-sm btn-outline-info btn-light">
+      <i class="fas fa-home"></i> Home
+  </a>
+
+  <br>
+
+  <a href="../../book-the_1090mhz_riddle-junzi_sun.pdf"
+      type="button" class="btn btn-sm btn-outline-info">
+    <i class="far fa-file-pdf"></i> Download PDF book
+  </a>
+
+  <br>
+
+  <a href="../../index.html#cite-this-book" type="button"
+      class="btn btn-sm btn-outline-info btn-light">
+    <i class="fas fa-quote-left"></i> Cite this book
+  </a>
+
+  <br>
+
+  <a href="http://mode-s.org" type="button"
+      class="btn btn-sm btn-outline-dark btn-light">
+    <i class="fas fa-angle-double-left"></i> mode-s.org
+  </a>
+
+  <hr>
+
+  <h1>Book chapters</h1>
+  <ul>
+    <li><a href="../../misc/preface.html">0. Preface</a></li>
+    <li><a href="../../content/introduction.html">1. Introduction</a></li>
+    <li><a href="../../content/quickstart.html">2. Quick start</a></li>
+    <li>ADS-B</li>
+    <ul>
+      <li><a href="../../content/ads-b/1-basics.html">3. ADS-B basics</a></li>
+      <li><a href="../../content/ads-b/2-identification.html">4. Aircraft Identification</a></li>
+      <li><a href="../../content/ads-b/3-airborne-position.html">5. Airborne Position</a></li>
+      <li><a href="../../content/ads-b/4-surface-position.html">6. Surface Position</a></li>
+      <li><a href="../../content/ads-b/5-airborne-velocity.html">7. Airborne Velocity</a></li>
+      <li><a href="../../content/ads-b/6-operation-status.html">8. Operation Status</a></li>
+      <li><a href="../../content/ads-b/7-uncertainty.html">9. Uncertainty</a></li>
+      <li><a href="../../content/ads-b/8-error-control.html">10. Error Control</a></li>
+    </ul>
+    <li>Mode S</li>
+    <ul>
+      <li><a href="../../content/mode-s/1-basics.html">11. Mode S basics</a></li>
+      <li><a href="../../content/mode-s/2-allcall.html">12. All-call reply</a></li>
+      <li><a href="../../content/mode-s/3-surveillance.html">13. Surveillance reply</a></li>
+      <li><a href="../../content/mode-s/4-acas.html">14. ACAS</a></li>
+      <li><a href="../../content/mode-s/5-commb.html">15. Comm-B replies</a></li>
+      <li><a href="../../content/mode-s/6-els.html">16. Elementary surveillance</a></li>
+      <li><a href="../../content/mode-s/7-ehs.html">17. Enhanced surveillance</a></li>
+      <li><a href="../../content/mode-s/8-meteo.html">18. Meteorological services</a></li>
+      <li><a href="../../content/mode-s/9-inference.html">19. BDS code inference</a></li>
+    </ul>
+    <li><a href="../../content/conclusion.html">20. Conclusion</a></li>
+    <li>Related</li>
+    <ul>
+      <li><a href="../../misc/about.html">About the author</a></li>
+      <li><a href="../../misc/ack.html">Acknowledgements</a></li>
+    </ul>
+  </ul>
+</nav>
+
+<hr>
+<nav id="TOC">
+<h1>In this page</h1>
+<ul>
+<li><a href="#mode-s-elementary-surveillance"
+id="toc-mode-s-elementary-surveillance">Mode S elementary
+surveillance</a>
+<ul>
+<li><a href="#data-link-capability-report-bds-10"
+id="toc-data-link-capability-report-bds-10">Data link capability report
+(BDS 1,0)</a></li>
+<li><a href="#common-usage-gicb-capability-report-bds-17"
+id="toc-common-usage-gicb-capability-report-bds-17">Common usage GICB
+capability report (BDS 1,7)</a></li>
+<li><a href="#aircraft-identification-bds-20"
+id="toc-aircraft-identification-bds-20">Aircraft identification (BDS
+2,0)</a></li>
+<li><a href="#acas-active-resolution-advisory-bds-30"
+id="toc-acas-active-resolution-advisory-bds-30">ACAS active resolution
+advisory (BDS 3,0)</a></li>
+</ul></li>
+</ul>
+</nav>
+
+</div>
+
+
+<div class="col-md-8 col-lg-9 maintext">
+
+<div class="float-right">
+  <a href="https://github.com/junzis/the-1090mhz-riddle/edit/master/content/mode-s/6-els.tex"
+    class='btn btn-sm btn-outline-dark'> <i class="fas fa-edit"></i> Recommend edits</a>
+</div>
+
+<h1 id="mode-s-elementary-surveillance">Mode S elementary
+surveillance</h1>
+<p>Mode S Elementary Surveillance (ELS) provides a set of basic
+functionalities that are supported by the Mode S transponders. These
+basic functionalities include the reporting of aircraft identity,
+altitude, transponder capability, and flight status. The set of BDS
+codes included in ELS are <code>1,0</code>, <code>1,7</code>,
+<code>2,0</code>, and <code>3,0</code>.</p>
+<h2 id="data-link-capability-report-bds-10">Data link capability report
+(BDS 1,0)</h2>
+<p>This message is designed to report the data link capability of the
+installed Mode S transponder. Table <a href="#tb:bds10"
+data-reference-type="ref" data-reference="tb:bds10">1.1</a> shows all
+fields in this message.</p>
+<div id="tb:bds10">
+<table>
+<caption>Data link capability report (BDS 1,0), MB field</caption>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>FIELD</strong></th>
+<th style="text-align: left;"><strong>MSG</strong></th>
+<th style="text-align: left;"><strong>MB</strong></th>
+<th style="text-align: left;"><strong>BITS</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">BDS Code <span>[</span>0001
+0000<span>]</span></td>
+<td style="text-align: left;">33–40</td>
+<td style="text-align: left;">1–8</td>
+<td style="text-align: left;">8</td>
+</tr>
+<tr>
+<td style="text-align: left;">Configuration flag</td>
+<td style="text-align: left;">41</td>
+<td style="text-align: left;">9</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">Reserved
+<span>[</span>00000<span>]</span></td>
+<td style="text-align: left;">42–46</td>
+<td style="text-align: left;">10–14</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr>
+<td style="text-align: left;">Overlay Command Capability (OCC)</td>
+<td style="text-align: left;">47</td>
+<td style="text-align: left;">15</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">Reserved for ACAS</td>
+<td style="text-align: left;">48</td>
+<td style="text-align: left;">16</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">Mode S subnetwork version number</td>
+<td style="text-align: left;">49–55</td>
+<td style="text-align: left;">17–23</td>
+<td style="text-align: left;">7</td>
+</tr>
+<tr>
+<td style="text-align: left;">Transponder enhanced protocol
+indicator</td>
+<td style="text-align: left;">56</td>
+<td style="text-align: left;">24</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">Mode S specific services capability</td>
+<td style="text-align: left;">57</td>
+<td style="text-align: left;">25</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">Uplink ELM average throughput
+capacity</td>
+<td style="text-align: left;">58–60</td>
+<td style="text-align: left;">26–28</td>
+<td style="text-align: left;">3</td>
+</tr>
+<tr>
+<td style="text-align: left;">Downlink ELM throughput</td>
+<td style="text-align: left;">61–64</td>
+<td style="text-align: left;">29–32</td>
+<td style="text-align: left;">4</td>
+</tr>
+<tr>
+<td style="text-align: left;">Aircraft identification capability</td>
+<td style="text-align: left;">65</td>
+<td style="text-align: left;">33</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">Squitter capability subfield (SCS)</td>
+<td style="text-align: left;">66</td>
+<td style="text-align: left;">34</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">Surveillance identifier code (SIC)</td>
+<td style="text-align: left;">67</td>
+<td style="text-align: left;">35</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">Common usage GICB capability report</td>
+<td style="text-align: left;">68</td>
+<td style="text-align: left;">36</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">Reserved for ACAS</td>
+<td style="text-align: left;">69–72</td>
+<td style="text-align: left;">37–40</td>
+<td style="text-align: left;">4</td>
+</tr>
+<tr>
+<td style="text-align: left;">Data terminal equipment (DTE) status</td>
+<td style="text-align: left;">73–80</td>
+<td style="text-align: left;">41–56</td>
+<td style="text-align: left;">16</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>In the data link capability report, the first eight bits indicate the
+BDS number, which is <code>1,0</code>, or <code>0001 0000</code> in
+binary format.</p>
+<p>The definitions of the other fields are explained as follows:</p>
+<p>1) ACAS related bits can be decoded as:</p>
+<pre><code>MSG     MB      Coding
+--------------------------------------------------------------
+48      16      0: ACAS failed or on standby
+                1: ACAS operating
+--------------------------------------------------------------
+69      37      0: Hybrid surveillance not operational
+                1: Hybrid surveillance fitted and operational
+--------------------------------------------------------------
+70      38      0: ACAS generating TAs only
+                1: ACAS generating TAs and RAs
+--------------------------------------------------------------
+72|71   40|39   0|0: RTCA/DO-185 (pre-ACAS)
+                0|1: RTCA/DO-185A
+                1|0: RTCA/DO-185B or EUROCAE ED 143
+                1|1: Reserved for future versions</code></pre>
+<p>2) Valid values for <em>Mode S subnetwork version number</em> are
+from 0 to 5, corresponds to the compliance to a different version of
+ICAO documentations. Numbers 6 to 127 are currently unassigned. Numbers
+0 to 5 can be interpreted as:</p>
+<pre><code>0:  Subnetwork not available
+1:  ICAO Doc 9688 (1996)
+2:  ICAO Doc 9688 (1998)
+3:  ICAO Annex 10, Vol III, Amdt 77
+4:  ICAO Doc 9871 (Ed 1), RTCA DO-181D, EUROCAE ED-73C
+5:  ICAO Doc 9871 (Ed 2), RTCA DO-181E, EUROCAE ED-73E
+&gt;5: Reserved for future use</code></pre>
+<p>3) <em>Overlay Command Capability</em> indicates whether the
+transponder supports BDS overlay (Data Parity).</p>
+<p>4) When <em>Transponder enhanced protocol indicator</em> bit is set
+to <code>1</code>, the transponder is a Level 5 transponder. Value
+<code>0</code> indicates a Level 2 to 4 transponder.</p>
+<p>5) When <em>Mode S specific services capability</em> bit is set to
+<code>1</code>, at least one Mode S specific service is supported.<a
+href="#fn1" class="footnote-ref" id="fnref1"
+role="doc-noteref"><sup>1</sup></a>.</p>
+<p>6) <em>Aircraft identification capability</em> indicates availability
+of identification (Callsign).</p>
+<p>7) When <em>Squitter capability subfield</em> bit is set to
+<code>1</code>, both BDS 0,5 and <code>0,6</code> registers have been
+updated in the past 9 to 11 seconds.</p>
+<p>8) <em>Surveillance identifier code</em> determines whether the
+transponder has the surveillance identification code capability.</p>
+<p>9) <em>Common usage GICB capability report</em> is set to
+<code>1</code> every time the GICB capacity report (BDS 1,7) is changed.
+Register <code>1,7</code> is sampled every minute to check for
+changes.</p>
+<h2 id="common-usage-gicb-capability-report-bds-17">Common usage GICB
+capability report (BDS 1,7)</h2>
+<p>This message is designed to report Common Usage Ground-initiated
+Comm-B (GICB) capabilities. The fields in this report are shown in Table
+<a href="#tb:bds17" data-reference-type="ref"
+data-reference="tb:bds17">1.2</a>. In this table, each bit indicates
+whether the corresponding service is available from the transponder.</p>
+<p>A bit is set to <code>1</code> when the corresponding register has a
+valid input that has been updated at the required rate. This means that
+the same aircraft would respond with different GICB reports due to the
+availability of the relevant data.</p>
+<div id="tb:bds17">
+<table>
+<caption>Common usage GICB capability report (BDS 1,0), MB
+field</caption>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>FIELD</strong></th>
+<th style="text-align: left;"><strong>MSG</strong></th>
+<th style="text-align: left;"><strong>MB</strong></th>
+<th style="text-align: left;"><strong>BITS</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">0,5 Extended squitter airborne
+position</td>
+<td style="text-align: left;">33</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">0,6 Extended squitter surface
+position</td>
+<td style="text-align: left;">34</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">0,7 Extended squitter status</td>
+<td style="text-align: left;">35</td>
+<td style="text-align: left;">3</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">0,8 Extended squitter identification and
+category</td>
+<td style="text-align: left;">36</td>
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">0,9 Extended squitter airborne velocity
+information</td>
+<td style="text-align: left;">37</td>
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">0,A Extended squitter event-driven
+information</td>
+<td style="text-align: left;">38</td>
+<td style="text-align: left;">6</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">2,0 Aircraft identification</td>
+<td style="text-align: left;">39</td>
+<td style="text-align: left;">7</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">2,1 Aircraft registration number</td>
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">8</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">4,0 Selected vertical intention</td>
+<td style="text-align: left;">41</td>
+<td style="text-align: left;">9</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">4,1 Next waypoint identifier</td>
+<td style="text-align: left;">42</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">4,2 Next waypoint position</td>
+<td style="text-align: left;">43</td>
+<td style="text-align: left;">11</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">4,3 Next waypoint information</td>
+<td style="text-align: left;">44</td>
+<td style="text-align: left;">12</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">4,4 Meteorological routine report</td>
+<td style="text-align: left;">45</td>
+<td style="text-align: left;">13</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">4,5 Meteorological hazard report</td>
+<td style="text-align: left;">46</td>
+<td style="text-align: left;">14</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">4.8 VHF channel report</td>
+<td style="text-align: left;">47</td>
+<td style="text-align: left;">15</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">5,0 Track and turn report</td>
+<td style="text-align: left;">48</td>
+<td style="text-align: left;">16</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">5,1 Position coarse</td>
+<td style="text-align: left;">49</td>
+<td style="text-align: left;">17</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">5,2 Position fine</td>
+<td style="text-align: left;">50</td>
+<td style="text-align: left;">18</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">5,3 Air-referenced state vector</td>
+<td style="text-align: left;">51</td>
+<td style="text-align: left;">19</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">5,4 Waypoint 1</td>
+<td style="text-align: left;">52</td>
+<td style="text-align: left;">20</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">5,5 Waypoint 2</td>
+<td style="text-align: left;">53</td>
+<td style="text-align: left;">21</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">5,6 Waypoint 3</td>
+<td style="text-align: left;">54</td>
+<td style="text-align: left;">22</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">5,F Quasi-static parameter monitoring</td>
+<td style="text-align: left;">55</td>
+<td style="text-align: left;">23</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">6,0 Heading and speed report</td>
+<td style="text-align: left;">56</td>
+<td style="text-align: left;">24</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">Reserved for aircraft capability</td>
+<td style="text-align: left;">57</td>
+<td style="text-align: left;">25</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">Reserved for aircraft capability</td>
+<td style="text-align: left;">58</td>
+<td style="text-align: left;">26</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">E,1 Reserved for Mode S BITE (Built In
+Test Equipment)</td>
+<td style="text-align: left;">59</td>
+<td style="text-align: left;">27</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">E,2 Reserved for Mode S BITE (Built In
+Test Equipment)</td>
+<td style="text-align: left;">60</td>
+<td style="text-align: left;">28</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">F,1 Military applications</td>
+<td style="text-align: left;">61</td>
+<td style="text-align: left;">29</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">Reserved</td>
+<td style="text-align: left;">62–80</td>
+<td style="text-align: left;">30–56</td>
+<td style="text-align: left;">17</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>We can use the following message as an example:</p>
+<pre><code>MSG:      A0000638FA81C10000000081A92F
+MB:               FA81C100000000
+MB BIN:   11111010100000011100000100000000000000000000000000000000</code></pre>
+<p>From the MB field, we can identify that following bits are set to
+<code>1</code>:</p>
+<pre><code>Bit: 1, 2, 3, 4, 5, 7, 9, 16, 17, 18, 24</code></pre>
+<p>Hence, BDS codes supported by the transponder are:</p>
+<pre><code>BDS05 BDS06 BDS07 BDS08 BDS09     &lt; ADSB
+BDS20                             &lt; ELS
+BDS40 BDS50 BDS51 and BDS60       &lt; EHS</code></pre>
+<div class="notebox">
+<p><span>Try it out</span> Using pyModeS, we can decode the GICB
+information as:</p>
+<pre><code>import pyModeS as pms
+
+msg = &quot;A0000638FA81C10000000081A92F&quot;
+capabilities = pms.commb.cap17(msg)</code></pre>
+<p>A list of supporting BDS code will be returned:</p>
+<pre><code>BDS05, BDS06, BDS07, BDS08, BDS09, BDS20, 
+BDS40, BDS50, BDS51, BDS52, BDS60</code></pre>
+</div>
+<h2 id="aircraft-identification-bds-20">Aircraft identification (BDS
+2,0)</h2>
+<p>Similar to an ADS-B aircraft identification message, the callsign of
+an aircraft can be decoded from BDS 2,0 messages. The structure of the
+MB field is defined in Table <a href="#tb:bds30"
+data-reference-type="ref" data-reference="tb:bds30">1.3</a>.</p>
+<div id="tb:bds30">
+<table>
+<caption>Aircraft identification (BDS 2,0), MB field</caption>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>FIELD</strong></th>
+<th style="text-align: left;"><strong>MSG</strong></th>
+<th style="text-align: left;"><strong>MB</strong></th>
+<th style="text-align: left;"><strong>BITS</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">BDS Code <span>[</span>0010
+0000<span>]</span></td>
+<td style="text-align: left;">33–40</td>
+<td style="text-align: left;">1–8</td>
+<td style="text-align: left;">8</td>
+</tr>
+<tr>
+<td style="text-align: left;">Character 1</td>
+<td style="text-align: left;">41–46</td>
+<td style="text-align: left;">9–14</td>
+<td style="text-align: left;">6</td>
+</tr>
+<tr>
+<td style="text-align: left;">Character 2</td>
+<td style="text-align: left;">47–52</td>
+<td style="text-align: left;">15–20</td>
+<td style="text-align: left;">6</td>
+</tr>
+<tr>
+<td style="text-align: left;">Character 3</td>
+<td style="text-align: left;">53–58</td>
+<td style="text-align: left;">21–26</td>
+<td style="text-align: left;">6</td>
+</tr>
+<tr>
+<td style="text-align: left;">Character 4</td>
+<td style="text-align: left;">59–64</td>
+<td style="text-align: left;">27–32</td>
+<td style="text-align: left;">6</td>
+</tr>
+<tr>
+<td style="text-align: left;">Character 5</td>
+<td style="text-align: left;">65–70</td>
+<td style="text-align: left;">33–38</td>
+<td style="text-align: left;">6</td>
+</tr>
+<tr>
+<td style="text-align: left;">Character 6</td>
+<td style="text-align: left;">71–76</td>
+<td style="text-align: left;">39–44</td>
+<td style="text-align: left;">6</td>
+</tr>
+<tr>
+<td style="text-align: left;">Character 7</td>
+<td style="text-align: left;">77–82</td>
+<td style="text-align: left;">45–50</td>
+<td style="text-align: left;">6</td>
+</tr>
+<tr>
+<td style="text-align: left;">Character 8</td>
+<td style="text-align: left;">83–88</td>
+<td style="text-align: left;">51–56</td>
+<td style="text-align: left;">6</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The first eight bits indicate the BDS code <code>0010 0000</code>
+(<code>2,0</code> in hexadecimal). Each of the callsign characters is
+represented by six bits. We first need to convert the binary numbers to
+decimals. Each decimal value corresponds to the index of the letter in
+the following character map:</p>
+<pre><code>#ABCDEFGHIJKLMNOPQRSTUVWXYZ##### ###############0123456789######</code></pre>
+<p>It is worth noting that this character mapping is the same as the one
+used for ADS-B identification, which also corresponds to a part of the
+ASCII code map.</p>
+<p>The following is an example on how to decode the callsign from a
+sample BDS 2,0 message:</p>
+<pre><code>MSG:  A000083E202CC371C31DE0AA1CCF
+MB:           202CC371C31DE0
+-----------------------------------------------------------------------------
+MB BIN:  0010 0000 001011 001100 001101 110001 110000 110001 110111 100000
+HEX:        2    0
+DEC:                 11     12     13     49     48     49     55     32
+CHR:                 K      L      M      1      0      1      7     [SPACE]
+-----------------------------------------------------------------------------
+ID:   KLM1017</code></pre>
+<div class="notebox">
+<p><span>Try it out</span> Using pyModeS, we can decode the callsign in
+this message as:</p>
+<pre><code>import pyModeS as pms
+
+msg = &quot;A000083E202CC371C31DE0AA1CCF&quot;
+callsign = pms.commb.cs20(msg)</code></pre>
+<p>Callsign <code>KLM1017_</code> will be returned by the previous
+function. The space character is replace by <code>_</code> in
+pyModeS.</p>
+</div>
+<h2 id="acas-active-resolution-advisory-bds-30">ACAS active resolution
+advisory (BDS 3,0)</h2>
+<p>The BDS 3,0 message is used to report resolution advisories (RA)
+generated by ACAS equipment. The structure of the MB field is defined in
+Table <a href="#tb:bds20" data-reference-type="ref"
+data-reference="tb:bds20">1.4</a>.<a href="#fn2" class="footnote-ref"
+id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<div id="tb:bds20">
+<table>
+<caption>ACAS active resolution advisory (BDS 3,0), MB field</caption>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>FIELD</strong></th>
+<th style="text-align: left;"><strong>MSG</strong></th>
+<th style="text-align: left;"><strong>MB</strong></th>
+<th style="text-align: left;"><strong>BITS</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">BDS Code <span>[</span>0011
+0000<span>]</span></td>
+<td style="text-align: left;">33–40</td>
+<td style="text-align: left;">1–8</td>
+<td style="text-align: left;">8</td>
+</tr>
+<tr>
+<td style="text-align: left;">Active resolution advisories</td>
+<td style="text-align: left;">41–54</td>
+<td style="text-align: left;">9–22</td>
+<td style="text-align: left;">14</td>
+</tr>
+<tr>
+<td style="text-align: left;">Resolution advisory complements
+record</td>
+<td style="text-align: left;">55–58</td>
+<td style="text-align: left;">23–26</td>
+<td style="text-align: left;">4</td>
+</tr>
+<tr>
+<td style="text-align: left;">RA terminated</td>
+<td style="text-align: left;">59</td>
+<td style="text-align: left;">27</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">Multiple threat encounter</td>
+<td style="text-align: left;">60</td>
+<td style="text-align: left;">28</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">Threat type indicator</td>
+<td style="text-align: left;">61–62</td>
+<td style="text-align: left;">29–30</td>
+<td style="text-align: left;">2</td>
+</tr>
+<tr>
+<td style="text-align: left;">Threat identity data</td>
+<td style="text-align: left;">63–88</td>
+<td style="text-align: left;">31–56</td>
+<td style="text-align: left;">26</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>1) The first 8 bits show the BDS code of <code>3,0</code> or
+<code>0011 0000</code> in binary format.</p>
+<p>2) The 14-bit active resolution advisories (ARA) indicate the
+characteristics of the RA generated by the ACAS associated with the
+transponder. To decode the information, we need to decode MB bit 9 (MSG
+bit 41) and MB bit 28 (MSG bit 60). Table <a href="#tb:bds30_mb9_mb28"
+data-reference-type="ref" data-reference="tb:bds30_mb9_mb28">1.5</a>
+shows how to interpret these two bits.</p>
+<div id="tb:bds30_mb9_mb28">
+<table>
+<caption>BDS 3,0 MB bits 9 and 28</caption>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>MB:9</strong></th>
+<th style="text-align: left;"><strong>MB:28</strong></th>
+<th style="text-align: left;"><strong></strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">No RA has been generated</td>
+</tr>
+<tr>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">Multiple threats, RA is intended to
+provide vertical separation below some threats and above some other
+threats</td>
+</tr>
+<tr>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">Only one threat</td>
+</tr>
+<tr>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">Multiple threats, RA is intended to
+provide vertical separation in the same direction</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>MB bits 16–22 are reserved for ACAS III. When <code>MB:9=1</code>,
+the meanings of MB bits from 10 to 15 are shown in Table <a
+href="#tb:bds30_mb10-22_1" data-reference-type="ref"
+data-reference="tb:bds30_mb10-22_1">1.6</a>.</p>
+<div id="tb:bds30_mb10-22_1">
+<table>
+<caption>BDS 3,0 MB bits 10 to 15 (MB:9=1)</caption>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>MB</strong></th>
+<th style="text-align: left;"><strong>Value</strong></th>
+<th style="text-align: left;"><strong></strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">RA is preventive</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">RA is corrective</td>
+</tr>
+<tr>
+<td style="text-align: left;">11</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">Upward sense RA has been generated</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">Downward sense RA has been generated</td>
+</tr>
+<tr>
+<td style="text-align: left;">12</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">RA is not increased rate</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">RA is increased rate</td>
+</tr>
+<tr>
+<td style="text-align: left;">13</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">RA is not a sense reversal</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">RA is a sense reversal</td>
+</tr>
+<tr>
+<td style="text-align: left;">14</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">RA is not altitude crossing</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">RA is altitude crossing</td>
+</tr>
+<tr>
+<td style="text-align: left;">15</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">RA is vertical speed limit</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">RA is positive</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>When <code>MB:9=0</code> and <code>MB:28=1</code>, the meanings of MB
+bits from 10 to 15 are shown in Table <a href="#tb:bds30_mb10-22_2"
+data-reference-type="ref"
+data-reference="tb:bds30_mb10-22_2">1.7</a>.</p>
+<div id="tb:bds30_mb10-22_2">
+<table>
+<caption>BDS 3,0 MB bits 10 to 15 (MB:9=0 MB:28=1)</caption>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>MB</strong></th>
+<th style="text-align: left;"><strong>Value</strong></th>
+<th style="text-align: left;"><strong></strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">RA does not require a correction in the
+upward sense</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">RA requires a correction in the upward
+sense</td>
+</tr>
+<tr>
+<td style="text-align: left;">11</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">RA does not require a positive climb</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">RA requires a positive climb</td>
+</tr>
+<tr>
+<td style="text-align: left;">12</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">RA does not require a correction in the
+downward sense</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">RA requires a correction in the downward
+sense</td>
+</tr>
+<tr>
+<td style="text-align: left;">13</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">RA does not require a positive
+descend</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">RA requires a positive descend</td>
+</tr>
+<tr>
+<td style="text-align: left;">14</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">RA does not require a crossing</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">RA requires a crossing</td>
+</tr>
+<tr>
+<td style="text-align: left;">15</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">RA is not a sense reversal</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">RA is a sense reversal</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>) The resolution advisory complements (RAC) record consists of four
+bits, and each bit has the following meaning:</p>
+<pre><code>MB:23=1   Do not pass below
+MB:24=1   Do not pass above
+MB:25=1   Do not turn left
+MB:26=1   Do not turn right</code></pre>
+<p>3) An RA terminated bit indicates whether previously generated RA has
+been terminated.</p>
+<p>4) The threat type indicator contains two bits with the following
+meaning:</p>
+<pre><code>00    No identity data in threat identity data
+01    Threat identity data contains a Mode S transponder address
+10    Threat identity data contains altitude, range, and bearing
+11    Not assigned</code></pre>
+<p>When the threat type indicator is <code>01</code>, MB bits 31–54
+contain the 24-bit Mode S transponder address and the last two bits are
+set to zero.</p>
+<p>When the threat type indicator is <code>10</code>, MB bits 31–56 is
+divided into three different segments.</p>
+<ul>
+<li><p>MB bits 31–43 contain the 13-bit threat altitude code. It is the
+same structure as the altitude code from section <a href="#sec:alt_code"
+data-reference-type="ref"
+data-reference="sec:alt_code">[sec:alt_code]</a>.</p></li>
+<li><p>MB bits 44–50 contain the most recent threat range from ACAS.
+When it is 0, no range estimation is available. When it is 127, the
+range is greater than 12.55 nautical miles. For other values, the range
+is calculated as <span class="math inline">\((n-1) / 10 \pm
+0.05\)</span> nautical miles.</p></li>
+<li><p>MB bits 51–56 contain the most recent estimated bearing of the
+threat aircraft, relative to their own heading. When it is 0, no
+estimation is available. Values larger than 60 are not assigned. For
+other values (from 1 to 60), the bearing range is calculated as <span
+class="math inline">\([6(n-1), 6n]\)</span> in degrees.</p></li>
+</ul>
+<section id="footnotes" class="footnotes footnotes-end-of-document"
+role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1"><p>The additional specific services are BDS codes other
+than <code>0,2</code>, <code>0,3</code>, <code>1,0</code>,
+<code>1,7</code>-<code>1,C</code>, <code>2,0</code>, and
+<code>3,0</code><a href="#fnref1" class="footnote-back"
+role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>The decoding is also subject to the version of
+aircraft’s TCAS version. For example, TCAS Version 7.0 does not comply
+with this interpretations.<a href="#fnref2" class="footnote-back"
+role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+<footer class="mastfoot">
+  <div class="text-right">
+    <p> © Copyright 2021 <a href="https://junzis.com">Junzi Sun</a>. Build with LaTeX, Pandoc, and GitHub</p>
+  </div>
+</footer>
+
+</div>
+</div>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-74700456-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-74700456-1');
+</script>
+
+</body>
+</html>

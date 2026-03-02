@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+  <meta name="author" content="Junzi Sun">
+
+
+  <title>The 1090MHz Riddle</title>
+  <style type="text/css">code{white-space: pre;}</style>
+
+
+
+  <link rel="stylesheet" href="../../bootstrap.min.css">
+  <link rel="stylesheet" href="../../style.css">
+
+  <script
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet"> 
+
+<script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js"
+  integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+" crossorigin="anonymous">
+</script>
+
+</head>
+<body>
+
+<div class="container">
+
+<div class="d-flex flex-row align-items-end">
+	<div>
+		<h1 class="title">The 1090 Megahertz Riddle <span class="h5">(second edition)</span></h1>
+		<div class="subtitle">A Guide to Decoding Mode S and ADS-B Signals</div>
+	</div>
+	<div class='ml-auto chapter-nav'>
+    <div class="author">By: <strong>Junzi Sun</strong> (<a href="http://junzis.com">junzis.com</a>)</div>
+	</div>
+</div>
+
+<hr>
+
+<div class="row">
+<div class="col-md-4 col-lg-3">
+<nav>
+  <a href="../../index.html" type="button"
+      class="btn btn-sm btn-outline-info btn-light">
+      <i class="fas fa-home"></i> Home
+  </a>
+
+  <br>
+
+  <a href="../../book-the_1090mhz_riddle-junzi_sun.pdf"
+      type="button" class="btn btn-sm btn-outline-info">
+    <i class="far fa-file-pdf"></i> Download PDF book
+  </a>
+
+  <br>
+
+  <a href="../../index.html#cite-this-book" type="button"
+      class="btn btn-sm btn-outline-info btn-light">
+    <i class="fas fa-quote-left"></i> Cite this book
+  </a>
+
+  <br>
+
+  <a href="http://mode-s.org" type="button"
+      class="btn btn-sm btn-outline-dark btn-light">
+    <i class="fas fa-angle-double-left"></i> mode-s.org
+  </a>
+
+  <hr>
+
+  <h1>Book chapters</h1>
+  <ul>
+    <li><a href="../../misc/preface.html">0. Preface</a></li>
+    <li><a href="../../content/introduction.html">1. Introduction</a></li>
+    <li><a href="../../content/quickstart.html">2. Quick start</a></li>
+    <li>ADS-B</li>
+    <ul>
+      <li><a href="../../content/ads-b/1-basics.html">3. ADS-B basics</a></li>
+      <li><a href="../../content/ads-b/2-identification.html">4. Aircraft Identification</a></li>
+      <li><a href="../../content/ads-b/3-airborne-position.html">5. Airborne Position</a></li>
+      <li><a href="../../content/ads-b/4-surface-position.html">6. Surface Position</a></li>
+      <li><a href="../../content/ads-b/5-airborne-velocity.html">7. Airborne Velocity</a></li>
+      <li><a href="../../content/ads-b/6-operation-status.html">8. Operation Status</a></li>
+      <li><a href="../../content/ads-b/7-uncertainty.html">9. Uncertainty</a></li>
+      <li><a href="../../content/ads-b/8-error-control.html">10. Error Control</a></li>
+    </ul>
+    <li>Mode S</li>
+    <ul>
+      <li><a href="../../content/mode-s/1-basics.html">11. Mode S basics</a></li>
+      <li><a href="../../content/mode-s/2-allcall.html">12. All-call reply</a></li>
+      <li><a href="../../content/mode-s/3-surveillance.html">13. Surveillance reply</a></li>
+      <li><a href="../../content/mode-s/4-acas.html">14. ACAS</a></li>
+      <li><a href="../../content/mode-s/5-commb.html">15. Comm-B replies</a></li>
+      <li><a href="../../content/mode-s/6-els.html">16. Elementary surveillance</a></li>
+      <li><a href="../../content/mode-s/7-ehs.html">17. Enhanced surveillance</a></li>
+      <li><a href="../../content/mode-s/8-meteo.html">18. Meteorological services</a></li>
+      <li><a href="../../content/mode-s/9-inference.html">19. BDS code inference</a></li>
+    </ul>
+    <li><a href="../../content/conclusion.html">20. Conclusion</a></li>
+    <li>Related</li>
+    <ul>
+      <li><a href="../../misc/about.html">About the author</a></li>
+      <li><a href="../../misc/ack.html">Acknowledgements</a></li>
+    </ul>
+  </ul>
+</nav>
+
+<hr>
+<nav id="TOC">
+<h1>In this page</h1>
+<ul>
+<li><a href="#chap:adsb_parity" id="toc-chap:adsb_parity">Error control
+in ADS-B</a>
+<ul>
+<li><a href="#crc-error-control" id="toc-crc-error-control">CRC error
+control</a></li>
+<li><a href="#ads-b-parity" id="toc-ads-b-parity">ADS-B parity</a></li>
+</ul></li>
+</ul>
+</nav>
+
+</div>
+
+
+<div class="col-md-8 col-lg-9 maintext">
+
+<div class="float-right">
+  <a href="https://github.com/junzis/the-1090mhz-riddle/edit/master/content/ads-b/8-error-control.tex"
+    class='btn btn-sm btn-outline-dark'> <i class="fas fa-edit"></i> Recommend edits</a>
+</div>
+
+<h1 id="chap:adsb_parity">Error control in ADS-B</h1>
+<p>In almost all digital telecommunications, error control is essential.
+An adequate error control coding scheme in telecommunication allows the
+receiver to validate the correctness of the information that has been
+transmitted. Sometimes, it also provides the receiver with the ability
+to correct errors. Depending on the characteristics of the communication
+channel and the types of messages, different error control coding
+schemes can be adopted.</p>
+<p>For error detection, three types of error control codes are broadly
+used, which are 1) parity, 2) checksum, and 3) cyclic redundancy check
+(CRC)<span class="citation" data-cites="grami2015">[Grami 2015]</span>.
+Though there are similarities among these concepts, they should not be
+confused:</p>
+<ul>
+<li><p>Parity is the simplest form of error detection. Commonly, the
+message is divided into segments of equal length. One parity bit is
+added to each segment and sent along with the message. The parity bit
+ensures either an even or odd number of <code>1</code> bits are
+contained in the segment. It guarantees the detection of at least
+one-bit errors. A two-dimensional parity check is also common, where
+additional parity bits are added to the same n-th bit in the
+segments.</p></li>
+<li><p>Checksum bits are longer and computed differently. The message is
+also first divided into segments of equal length. The checksum is
+generated by adding the segments using the <em>ones’ complements
+arithmetic</em> and sent along with the message. On the receiving side,
+the same arithmetic can be applied, where the complement of the sum
+should be zero.</p></li>
+<li><p>CRC is an algorithm based on binary polynomial arithmetic. A
+pre-defined divisor (also known as ‘generator’) is used to compute the
+remainder using the binary polynomial division. The CRC remainder is
+appended to the message. The receiving side can run the same process on
+the entire message to check whether the remainder is zero. CRC is a much
+stronger method for error detection. It also offers the ability to
+correct errors <span class="citation" data-cites="mandel2009">[Mandel
+and Mache 2009]</span>.</p></li>
+</ul>
+<div class="notebox">
+<p><span>Note</span> The CRC <em>remainder</em> term is confusingly
+defined in Mode S literature and standards. Many documents refer it as
+<em>parity</em> or <em>checksum</em>. To be consistent with Mode S
+standards, such as <span class="citation"
+data-cites="icao9871v1 rtca2011mops">[ICAO 2008; RTCA 2011]</span>,
+parity, checksum, and CRC remainder are considered to be synonyms in
+this book. They all refer to the CRC remainder.</p>
+</div>
+<h2 id="crc-error-control">CRC error control</h2>
+<p>Mode S communications (including ADS-B) use CRC error control coding.
+In all types of Mode S downlink messages, the last 24 bits are reserved
+for the CRC remainder. In ADS-B, the CRC remainder is directly appended
+as the final 24 bits of the messages. However, in other types of Mode S
+messages, those bits can be overlaid with other information (such as the
+ICAO address) using the <code>XOR</code> (<em>exclusive
+disjunction</em>) operator before being appended to the message.</p>
+<p>A basic CRC workflow is shown in Figure <a href="#fig:crc_flow"
+data-reference-type="ref" data-reference="fig:crc_flow">1.1</a>. The
+diagram on the left-hand side shows how the CRC remainder is generated
+on the sender side. The diagram on the right-hand side shows how the
+same arithmetic can be used on the receiver side to validate the
+message.</p>
+<figure id="fig:crc_flow">
+<img src="../../figures/crc/crc_flow.png" />
+<figcaption>The CRC error control processes</figcaption>
+</figure>
+<p>The binary polynomial falls in the finite field arithmetic <span
+class="citation" data-cites="carlitz1932">[Carlitz 1932]</span>. The
+divisions of binary polynomials can essentially be considered as the
+<code>XOR</code> bitwise operations, which can be easily implemented and
+calculated by computers. Figure <a href="#fig:crc_example"
+data-reference-type="ref" data-reference="fig:crc_example">1.2</a>
+illustrates a CRC remainder calculation example.</p>
+<figure id="fig:crc_example">
+<img src="../../figures/crc/crc_example.png" />
+<figcaption>A CRC example with a 4-bit divisor and 3-bit
+remainder</figcaption>
+</figure>
+<h2 id="ads-b-parity">ADS-B parity</h2>
+<p>The polynomial form of the divisor (generator), <span
+class="math inline">\(G(x)\)</span>, used for ADS-B (as well as other
+Mode S messages) is <span class="citation" data-cites="gertz1984">[Gertz
+1984]</span>:</p>
+<p><span class="math display">\[\begin{split}
+  G(x) = &amp;x^{24}+x^{23}+x^{22}+x^{21}+x^{20}+x^{19}+x^{18}+x^{17} \\
+         &amp;+x^{16}+x^{15}+x^{14}+x^{13}+x^{12}+x^{10}+x^{3}+1
+  \end{split}\]</span></p>
+<p>This generator code was found by <span class="citation"
+data-cites="kasami1964">[Kasami and Matoba 1964]</span>, which is known
+for its efficiency to correct burst errors. It can be represented in
+binary format as <code>1111111111111010000001001</code> (or
+<code>1FFF409</code> in hexadecimal format). A 24-bit CRC remainder is
+generated using this generator for each ADS-B message.</p>
+<p>Knowing the logic of CRC, the computation of the remainder and the
+verification of the error is fairly simple. Let <span
+class="math inline">\(x^{i}\)</span> represent each bit of the message
+and <span class="math inline">\(M(x)\)</span> represent the polynomial
+corresponding to the ADS-B message, the CRC remainder (parity) <span
+class="math inline">\(P(x)\)</span> can thus be calculated as:</p>
+<p><span class="math display">\[\begin{split}
+    M(x) &amp;= \sum_{i=0}^{87} a_i x^i , \quad a_i \in (0, 1)\\
+    P(x) &amp;= M(x) ~ \% ~ G(x)
+  \end{split}\]</span></p>
+<p>In the following pseudocode, the algorithm for computing the
+remainder of an ADS-B message is shown:</p>
+<pre><code>generator = 1111111111111010000001001
+
+data_hex = 8D406B902015A678D4D220[000000]  # 11 + 3 zero bytes
+
+data = 1000110101000000011010 1110010000001000000001  # 88 bits
+       0101101001100111100011 0101001101001000100000
+      [000000000000000000000000]  # append 24 zero bits
+
+FOR i FROM 0 TO (112-24):
+  IF data[i] IS 1:
+    data[i:i+24] = data[i:i+24] XOR generator
+
+remainder = data[-24:]
+
+# final result: 101010100100101111011010, or AA4BDA in hexadecimal</code></pre>
+<p>To check whether an error occurs in the message, replace the
+<code>data_hex</code> in the previous example with the received message
+and run the same CRC process. The message is correct if all final 24
+remainder bits are zeros.</p>
+<div class="notebox">
+<p><span>Try it out</span> Using pyModeS, we can check the correctness
+of a ADS-B message as:</p>
+<pre><code>import pyModeS as pms
+
+msgA = &quot;8D406B902015A678D4D220AA4BDA&quot;
+msgB = &quot;8D4CA251204994B1C36E60A5343D&quot;
+
+remainderA = pms.crc(msgA)  # should be 0
+remainderB = pms.crc(msgB)  # should be 16</code></pre>
+<p>When the remainder is zero, the message is not corrupted. Otherwise,
+the error has occurred during the transmission.</p>
+</div>
+<div id="refs" class="references csl-bib-body hanging-indent"
+role="list">
+<div id="ref-carlitz1932" class="csl-entry" role="listitem">
+<span class="smallcaps">Carlitz, L.</span> 1932. The arithmetic of
+polynomials in a galois field. <em>American Journal of Mathematics</em>
+<em>54</em>, 1, 39–50.
+</div>
+<div id="ref-gertz1984" class="csl-entry" role="listitem">
+<span class="smallcaps">Gertz, J.L.</span> 1984. <em>Fundamentals of
+mode s parity coding</em>. Massachusetts Institute of Technology,
+Lincoln Laboratory.
+</div>
+<div id="ref-grami2015" class="csl-entry" role="listitem">
+<span class="smallcaps">Grami, A.</span> 2015. <em><a
+href="https://doi.org/10.1016/B978-0-12-407682-2.00010-7">Introduction
+to digital communications</a></em>. Academic Press.
+</div>
+<div id="ref-icao9871v1" class="csl-entry" role="listitem">
+<span class="smallcaps">ICAO</span>. 2008. <em>Technical provisions for
+mode s services and extended squitter</em>. International Civil Aviation
+Organization.
+</div>
+<div id="ref-kasami1964" class="csl-entry" role="listitem">
+<span class="smallcaps">Kasami, T. and Matoba, S.</span> 1964. <a
+href="https://doi.org/10.1109/TIT.1964.1053665">Some efficient shortened
+cyclic codes for burst-error correction (corresp.)</a>. <em>IEEE
+Transactions on Information Theory</em> <em>10</em>, 3, 252–253.
+</div>
+<div id="ref-mandel2009" class="csl-entry" role="listitem">
+<span class="smallcaps">Mandel, T. and Mache, J.</span> 2009.
+Investigating CRC polynomials that correct burst errors. <em>ICWN</em>,
+632–637.
+</div>
+<div id="ref-rtca2011mops" class="csl-entry" role="listitem">
+<span class="smallcaps">RTCA</span>. 2011. Minimum operational
+performance standards for 1090MHz extended squitter automatic dependent
+surveillance-broadcast (ADS-b) and traffic information
+services-broadcast (TIS-b)[j]. <em>RTCA DO-260B</em> <em>1</em>, 1,
+1365–1372.
+</div>
+</div>
+
+<footer class="mastfoot">
+  <div class="text-right">
+    <p> © Copyright 2021 <a href="https://junzis.com">Junzi Sun</a>. Build with LaTeX, Pandoc, and GitHub</p>
+  </div>
+</footer>
+
+</div>
+</div>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-74700456-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-74700456-1');
+</script>
+
+</body>
+</html>

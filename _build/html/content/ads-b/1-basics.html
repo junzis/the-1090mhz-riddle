@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+  <meta name="author" content="Junzi Sun">
+
+
+  <title>The 1090MHz Riddle</title>
+  <style type="text/css">code{white-space: pre;}</style>
+
+
+
+  <link rel="stylesheet" href="../../bootstrap.min.css">
+  <link rel="stylesheet" href="../../style.css">
+
+
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet"> 
+
+<script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js"
+  integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+" crossorigin="anonymous">
+</script>
+
+</head>
+<body>
+
+<div class="container">
+
+<div class="d-flex flex-row align-items-end">
+	<div>
+		<h1 class="title">The 1090 Megahertz Riddle <span class="h5">(second edition)</span></h1>
+		<div class="subtitle">A Guide to Decoding Mode S and ADS-B Signals</div>
+	</div>
+	<div class='ml-auto chapter-nav'>
+    <div class="author">By: <strong>Junzi Sun</strong> (<a href="http://junzis.com">junzis.com</a>)</div>
+	</div>
+</div>
+
+<hr>
+
+<div class="row">
+<div class="col-md-4 col-lg-3">
+<nav>
+  <a href="../../index.html" type="button"
+      class="btn btn-sm btn-outline-info btn-light">
+      <i class="fas fa-home"></i> Home
+  </a>
+
+  <br>
+
+  <a href="../../book-the_1090mhz_riddle-junzi_sun.pdf"
+      type="button" class="btn btn-sm btn-outline-info">
+    <i class="far fa-file-pdf"></i> Download PDF book
+  </a>
+
+  <br>
+
+  <a href="../../index.html#cite-this-book" type="button"
+      class="btn btn-sm btn-outline-info btn-light">
+    <i class="fas fa-quote-left"></i> Cite this book
+  </a>
+
+  <br>
+
+  <a href="http://mode-s.org" type="button"
+      class="btn btn-sm btn-outline-dark btn-light">
+    <i class="fas fa-angle-double-left"></i> mode-s.org
+  </a>
+
+  <hr>
+
+  <h1>Book chapters</h1>
+  <ul>
+    <li><a href="../../misc/preface.html">0. Preface</a></li>
+    <li><a href="../../content/introduction.html">1. Introduction</a></li>
+    <li><a href="../../content/quickstart.html">2. Quick start</a></li>
+    <li>ADS-B</li>
+    <ul>
+      <li><a href="../../content/ads-b/1-basics.html">3. ADS-B basics</a></li>
+      <li><a href="../../content/ads-b/2-identification.html">4. Aircraft Identification</a></li>
+      <li><a href="../../content/ads-b/3-airborne-position.html">5. Airborne Position</a></li>
+      <li><a href="../../content/ads-b/4-surface-position.html">6. Surface Position</a></li>
+      <li><a href="../../content/ads-b/5-airborne-velocity.html">7. Airborne Velocity</a></li>
+      <li><a href="../../content/ads-b/6-operation-status.html">8. Operation Status</a></li>
+      <li><a href="../../content/ads-b/7-uncertainty.html">9. Uncertainty</a></li>
+      <li><a href="../../content/ads-b/8-error-control.html">10. Error Control</a></li>
+    </ul>
+    <li>Mode S</li>
+    <ul>
+      <li><a href="../../content/mode-s/1-basics.html">11. Mode S basics</a></li>
+      <li><a href="../../content/mode-s/2-allcall.html">12. All-call reply</a></li>
+      <li><a href="../../content/mode-s/3-surveillance.html">13. Surveillance reply</a></li>
+      <li><a href="../../content/mode-s/4-acas.html">14. ACAS</a></li>
+      <li><a href="../../content/mode-s/5-commb.html">15. Comm-B replies</a></li>
+      <li><a href="../../content/mode-s/6-els.html">16. Elementary surveillance</a></li>
+      <li><a href="../../content/mode-s/7-ehs.html">17. Enhanced surveillance</a></li>
+      <li><a href="../../content/mode-s/8-meteo.html">18. Meteorological services</a></li>
+      <li><a href="../../content/mode-s/9-inference.html">19. BDS code inference</a></li>
+    </ul>
+    <li><a href="../../content/conclusion.html">20. Conclusion</a></li>
+    <li>Related</li>
+    <ul>
+      <li><a href="../../misc/about.html">About the author</a></li>
+      <li><a href="../../misc/ack.html">Acknowledgements</a></li>
+    </ul>
+  </ul>
+</nav>
+
+<hr>
+<nav id="TOC">
+<h1>In this page</h1>
+<ul>
+<li><a href="#chap:adsb-basic" id="toc-chap:adsb-basic">ADS-B Basics</a>
+<ul>
+<li><a href="#message-structure" id="toc-message-structure">Message
+structure</a></li>
+<li><a href="#capability" id="toc-capability">Capability</a></li>
+<li><a href="#icao-address" id="toc-icao-address">ICAO address</a></li>
+<li><a href="#ads-b-message-types" id="toc-ads-b-message-types">ADS-B
+message types</a></li>
+<li><a href="#example-of-ads-b-message-structure"
+id="toc-example-of-ads-b-message-structure">Example of ADS-B message
+structure</a></li>
+<li><a href="#availability-and-transmission-rate"
+id="toc-availability-and-transmission-rate">Availability and
+transmission rate</a></li>
+<li><a href="#ads-b-versions" id="toc-ads-b-versions">ADS-B versions</a>
+<ul>
+<li><a href="#from-version-0-to-1" id="toc-from-version-0-to-1">From
+version 0 to 1</a></li>
+<li><a href="#from-version-1-to-2" id="toc-from-version-1-to-2">From
+version 1 to 2</a></li>
+<li><a href="#identification-of-the-ads-b-version"
+id="toc-identification-of-the-ads-b-version">Identification of the ADS-B
+Version</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+
+</div>
+
+
+<div class="col-md-8 col-lg-9 maintext">
+
+<div class="float-right">
+  <a href="https://github.com/junzis/the-1090mhz-riddle/edit/master/content/ads-b/1-basics.tex"
+    class='btn btn-sm btn-outline-dark'> <i class="fas fa-edit"></i> Recommend edits</a>
+</div>
+
+<h1 id="chap:adsb-basic">ADS-B Basics</h1>
+<p>ADS-B is short for Automatic Dependent Surveillance-Broadcast. It is
+a satellite-based surveillance system. Parameters such as position,
+velocity, and identification are transmitted through Mode S Extended
+Squitter (1090 MHz). Nowadays, the majority of aircraft broadcast ADS-B
+messages constantly. Starting from the year 2020, civil aviation
+aircraft in Europe and United States are required to be ADS-B compliant.
+Old aircraft which are not compliant with ADS-B requirements are
+required to be retrofitted or phased out within a number of years.</p>
+<h2 id="message-structure">Message structure</h2>
+<p>An ADS-B frame is 112 bits long and consists of five main parts,
+shown as follows:</p>
+<pre><code>+----------+----------+-------------+------------------------+-----------+
+|  DF (5)  |  CA (3)  |  ICAO (24)  |         ME (56)        |  PI (24)  |
++----------+----------+-------------+------------------------+-----------+</code></pre>
+<p>Civil aircraft ADS-B message starts with the Downlink Format 17. It
+corresponds to <code>10001</code> in binary for the first 5 bits. Bits
+6–8 indicated the transponder capability. After that, the 24-bit
+transponder code (also known as ICAO code) is included. The last two
+segments are 56-bit payload and 24-bit parity. Table <a
+href="#tb:adsb-structure" data-reference-type="ref"
+data-reference="tb:adsb-structure">1.1</a> lists the key information of
+an ADS-B message.</p>
+<div id="tb:adsb-structure">
+<table>
+<caption>Structure of ADS-B frame</caption>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Bit</strong></th>
+<th style="text-align: left;"><strong>No. bits</strong></th>
+<th style="text-align: left;"><strong>Abbreviation</strong></th>
+<th style="text-align: left;"><strong>Information</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">1–5</td>
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">DF</td>
+<td style="text-align: left;">Downlink Format</td>
+</tr>
+<tr>
+<td style="text-align: left;">6–8</td>
+<td style="text-align: left;">3</td>
+<td style="text-align: left;">CA</td>
+<td style="text-align: left;">Transponder capability</td>
+</tr>
+<tr>
+<td style="text-align: left;">9–32</td>
+<td style="text-align: left;">24</td>
+<td style="text-align: left;">ICAO</td>
+<td style="text-align: left;">ICAO aircraft address</td>
+</tr>
+<tr>
+<td style="text-align: left;">33–88</td>
+<td style="text-align: left;">56</td>
+<td style="text-align: left;">ME</td>
+<td style="text-align: left;">Message, extended squitter</td>
+</tr>
+<tr>
+<td style="text-align: left;">(33–37)</td>
+<td style="text-align: left;">(5)</td>
+<td style="text-align: left;">(TC)</td>
+<td style="text-align: left;">(Type code)</td>
+</tr>
+<tr>
+<td style="text-align: left;">89–112</td>
+<td style="text-align: left;">24</td>
+<td style="text-align: left;">PI</td>
+<td style="text-align: left;">Parity/Interrogator ID</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>It is worth noting that the ADS-B Extended Squitter sent from a
+Mode S transponder uses Downlink Format 17 (<code>DF=17</code>).
+Non-Transponder-based ADS-B Transmitting Subsystems and TIS-B
+Transmitting equipment use Downlink Format 18 (<code>DF=18</code>). By
+using Downlink Format 18 instead of 17, an ADS-B/TIS-B Receiving
+Subsystem will know that the message comes from equipment that cannot be
+interrogated.</p>
+<h2 id="capability">Capability</h2>
+<p>The second field of an ADS-B message consists of three bits that
+indicate the transponder level. The capability value can be a decimal
+value between 0 and 7. The definitions of these values are shown in
+Table <a href="#tb:transponder_capability" data-reference-type="ref"
+data-reference="tb:transponder_capability">1.2</a>.</p>
+<div id="tb:transponder_capability">
+<table>
+<caption>Mode S transponder capability (CA)</caption>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>CA</strong></th>
+<th style="text-align: left;"><strong>Definition</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">Level 1 transponder</td>
+</tr>
+<tr>
+<td style="text-align: left;">1–3</td>
+<td style="text-align: left;">Reserved</td>
+</tr>
+<tr>
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">Level 2+ transponder,</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">with ability to set CA to 7,</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">on-ground</td>
+</tr>
+<tr>
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">Level 2+ transponder,</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">with ability to set CA to 7,</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">airborne</td>
+</tr>
+<tr>
+<td style="text-align: left;">6</td>
+<td style="text-align: left;">Level 2+ transponder,</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">with ability to set CA to 7,</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">either on-ground or airborne</td>
+</tr>
+<tr>
+<td style="text-align: left;">7</td>
+<td style="text-align: left;">Signifies the Downlink Request value is
+0,</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">or the Flight Status is 2, 3, 4, or
+5,</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">either airborne or on the ground</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="icao-address">ICAO address</h2>
+<p>In each ADS-B message, the sender aircraft can be identified using
+the Mode S transponder code assigned according to ICAO regulations <span
+class="citation" data-cites="blythe2011">[Blythe et al. 2011]</span>.
+The Mode S transponder code is also often referred as <em>ICAO
+address</em>, or <em>hex code</em>.</p>
+<p>The ICAO address is located from 9 to 32 bits in binary (or 3 to 8 in
+hexadecimal positions). A unique ICAO address is assigned to each Mode S
+transponder of an aircraft and serves as the unique identifier for each
+aircraft.</p>
+<p>In principle, this code does not change over the lifetime of the
+aircraft. However, it is possible to reprogram a transponder so that the
+messages contain a different address. This has been observed for some
+military aircraft, as well as some private airplanes opt-in for the FAA
+Privacy ICAO Address System <span class="citation"
+data-cites="gray2019">[Gray and Barrett 2019]</span>.</p>
+<h2 id="ads-b-message-types">ADS-B message types</h2>
+<p>To identify what information is contained in an ADS-B message, we
+need to take a look at the Type Code of the message. The Type Code is
+located at bits 33–37 (or the first 5 bits of the <code>ME</code>
+segment). In the following Table <a href="#tb:adsb-tc"
+data-reference-type="ref" data-reference="tb:adsb-tc">1.3</a>, the
+relationships between each Type Code and its information contained in
+the <code>ME</code> segment are shown.</p>
+<div id="tb:adsb-tc">
+<table>
+<caption>ADS-B Type Code and content</caption>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Type Code</strong></th>
+<th style="text-align: left;"><strong>Data frame content</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">1–4</td>
+<td style="text-align: left;">Aircraft identification</td>
+</tr>
+<tr>
+<td style="text-align: left;">5–8</td>
+<td style="text-align: left;">Surface position</td>
+</tr>
+<tr>
+<td style="text-align: left;">9–18</td>
+<td style="text-align: left;">Airborne position (w/Baro Altitude)</td>
+</tr>
+<tr>
+<td style="text-align: left;">19</td>
+<td style="text-align: left;">Airborne velocities</td>
+</tr>
+<tr>
+<td style="text-align: left;">20–22</td>
+<td style="text-align: left;">Airborne position (w/GNSS Height)</td>
+</tr>
+<tr>
+<td style="text-align: left;">23–27</td>
+<td style="text-align: left;">Reserved</td>
+</tr>
+<tr>
+<td style="text-align: left;">28</td>
+<td style="text-align: left;">Aircraft status</td>
+</tr>
+<tr>
+<td style="text-align: left;">29</td>
+<td style="text-align: left;">Target state and status information</td>
+</tr>
+<tr>
+<td style="text-align: left;">31</td>
+<td style="text-align: left;">Aircraft operation status</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="example-of-ads-b-message-structure">Example of ADS-B message
+structure</h2>
+<p>Let us use an example to illustrate the decoding process. First, a
+raw message is received, which is represented in hexadecimal format:</p>
+<pre><code>8D4840D6202CC371C32CE0576098</code></pre>
+<p>It can be converted into binary conveniently. The structure of the
+binary message is shown as follows:</p>
+<pre><code>+-----+------------+--------------+----------------------+--------------+
+| HEX | 8D         | 4840D6       | 202CC371C32CE0       | 576098       |
++-----+------------+--------------+----------------------+--------------+
+| BIN | 10001  101 | 010010000100 | [00100]0000010110011 | 010101110110 |
+|     |            | 000011010110 | 00001101110001110000 | 000010011000 |
+|     |            |              | 110010110011100000   |              |
++-----+------------+--------------+----------------------+--------------+
+| DEC |  17    5   |              | [4] ...............  |              |
++-----+------------+--------------+----------------------+--------------+
+|     |  DF    CA  |   ICAO       |          ME          | PI           |
+|     |            |              | [TC] ..............  |              |
++-----+------------+--------------+----------------------+--------------+</code></pre>
+<p>The first five bits show that the downlink format is <code>17</code>
+(or <code>10001</code> in binary), which indicates the message is an
+ADS-B message. The first five bits of the <code>ME</code> field shows
+that the type code is <code>4</code> (or binary <code>00100</code>),
+which indicates the message is an identification message.</p>
+<p>In this example, The ICAO address is <code>4840D6</code>
+(<code>010010000100000011010110</code> in binary format). Various online
+tools can be used to find out more about the aircraft with a given ICAO
+address.<a href="#fn1" class="footnote-ref" id="fnref1"
+role="doc-noteref"><sup>1</sup></a> For instance, using the previous
+ICAO <code>4840D6</code> example, it will return the result of a
+<code>Fokker 70</code> with the registration of <code>PH-KZD</code>.</p>
+<div class="notebox">
+<p><span>Try it out</span> Using pyModeS, we can find out what
+information is contained in this ADS-B message:</p>
+<pre><code>import pyModeS as pms
+pms.tell(&quot;8D4840D6202CC371C32CE0576098&quot;)</code></pre>
+<p>Output:</p>
+<pre><code>         Message: 8D4840D6202CC371C32CE0576098 
+    ICAO address: 4840D6 
+ Downlink Format: 17 
+        Protocol: Mode S Extended Squitter (ADS-B) 
+            Type: Identification and category 
+        Callsign: KLM1023_ </code></pre>
+</div>
+<h2 id="availability-and-transmission-rate">Availability and
+transmission rate</h2>
+<p>Different ADS-B messages have different transmission rates. The
+update frequency also differs depending on whether the aircraft is
+on-ground or airborne, as well as whether the aircraft is still or
+moving when on the ground. Table <a href="#tb:adsb-transmission-rate"
+data-reference-type="ref"
+data-reference="tb:adsb-transmission-rate">1.4</a> indicates the
+transmission rate of these messages.</p>
+<div id="tb:adsb-transmission-rate">
+<table>
+<caption>ADS-B message transmission rates (ADS-B version 2)</caption>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Messages</strong></th>
+<th style="text-align: left;"><strong>TC</strong></th>
+<th style="text-align: left;"><strong>Ground (still)</strong></th>
+<th style="text-align: left;"><strong>Ground (moving)</strong></th>
+<th style="text-align: left;"><strong>Airborne</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Aircraft identification</td>
+<td style="text-align: left;">1–4</td>
+<td style="text-align: left;">0.1 Hz</td>
+<td style="text-align: left;">0.2 Hz</td>
+<td style="text-align: left;">0.2 Hz</td>
+</tr>
+<tr>
+<td style="text-align: left;">Surface position</td>
+<td style="text-align: left;">5–8</td>
+<td style="text-align: left;">0.2 Hz</td>
+<td style="text-align: left;">2 Hz</td>
+<td style="text-align: left;">-</td>
+</tr>
+<tr>
+<td style="text-align: left;">Airborne position</td>
+<td style="text-align: left;">9–18, 20–22</td>
+<td style="text-align: left;">-</td>
+<td style="text-align: left;">-</td>
+<td style="text-align: left;">2 Hz</td>
+</tr>
+<tr>
+<td style="text-align: left;">Airborne velocity</td>
+<td style="text-align: left;">19</td>
+<td style="text-align: left;">-</td>
+<td style="text-align: left;">-</td>
+<td style="text-align: left;">2 Hz</td>
+</tr>
+<tr>
+<td rowspan="2" style="text-align: left;">Aircraft status</td>
+<td rowspan="2" style="text-align: left;">28</td>
+<td colspan="3" style="text-align: left;">0.2 Hz (<em>no TCAS RA and
+Squawk Code change</em>)</td>
+</tr>
+<tr>
+<td colspan="3" style="text-align: left;">1.25 Hz (<em>change in TCAS RA
+or Squawk Code</em>)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Target states and status</td>
+<td style="text-align: left;">29</td>
+<td style="text-align: left;">-</td>
+<td style="text-align: left;">-</td>
+<td style="text-align: left;">0.8 Hz</td>
+</tr>
+<tr>
+<td rowspan="2" style="text-align: left;">Operational status</td>
+<td rowspan="2" style="text-align: left;">31</td>
+<td rowspan="2" style="text-align: left;">0.2 Hz</td>
+<td colspan="2" style="text-align: left;">0.4 Hz (<em>no NIC/NAC/SIL
+change</em>)</td>
+</tr>
+<tr>
+<td colspan="2" style="text-align: left;">1.25 Hz (<em>change in
+NIC/NAC/SIL</em>)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>It is worth noting that for Target states and Operational status
+messages, when there is a change in some key parameters, the
+transmission is changed to a higher rate for approximately 24
+seconds.</p>
+<h2 id="ads-b-versions">ADS-B versions</h2>
+<p>Since ADS-B was first introduced, there have been three different
+versions of implementations. The main reason for these updates is to
+include more information in ADS-B. The documentation available on these
+versions and differences is quite far from user-friendly. The official
+ICAO 9871 document <span class="citation" data-cites="icao9871v1">[ICAO
+2008]</span> is confusing to read. In this section, I have put the
+different pieces of scattered information together.</p>
+<p>There are three ADS-B versions implemented so far, starting from
+version 0 (specification defined in RTCA document DO-260). Version 1 was
+introduced around 2008 (DO-260A), and version 2 around 2012 (DO-260B).
+Version 3 is currently being developed. Next, major changes in version 1
+and version 2 are summarized.</p>
+<h3 id="from-version-0-to-1">From version 0 to 1</h3>
+<p>The most significant changes in version 1 are new message types and
+replacing the previous uncertainty indicators with the new integrity
+indicators. Details of all major changes in ADS-B version 1 are:</p>
+<ul>
+<li><p>Added Type Code 28 and 31 messages.</p>
+<ul>
+<li><p>TC=28: Aircraft status – Emergency/priority status and ACAS RA
+Broadcast.</p></li>
+<li><p>TC=31: Operational status.</p></li>
+</ul></li>
+<li><p>Removed the <em>Navigational uncertainty categories</em> (NUC).
+Introduced the new <em>Navigation integrity category</em> (NIC) and
+<em>Surveillance integrity level</em> (SIL).</p>
+<ul>
+<li><p>Both the Type Code and a NIC Supplement bit (NICs) are used to
+define the NIC.</p></li>
+<li><p>NIC Supplement bit is included in operation status message
+(TC=31).</p></li>
+</ul></li>
+<li><p>The ADS-B version number is now indicated in operation status
+message (TC=31).</p></li>
+</ul>
+<h3 id="from-version-1-to-2">From version 1 to 2</h3>
+<p>In version 2, the integrity categories are refined comparing to
+version 1. Details of major changes in version 2 are:</p>
+<ul>
+<li><p>Re-defined the structure and content of TC=28 and TC=31
+messages.</p></li>
+<li><p>Introduced two additional NIC supplement bits.</p></li>
+<li><p><code>NICa</code> is defined in operational status messages.
+(TC=31)</p></li>
+<li><p><code>NICb</code> is defined in airborne position messages.
+(TC=9–18)</p></li>
+<li><p><code>NICc</code> is defined in operational status messages.
+(TC=31)</p></li>
+<li><p>Introduced an additional <em>Horizontal Containment Radius</em>
+(Rc) level within NIC=6 of the airborne position message
+(TC=13).</p></li>
+</ul>
+<h3 id="identification-of-the-ads-b-version">Identification of the ADS-B
+Version</h3>
+<p>There are two steps to check the ADS-B version, due to the fact that
+ADS-B version information in version 0 is not included in any
+message.</p>
+<ol>
+<li><p>Step 1: Check whether an aircraft is broadcasting ADS-B messages
+with TC=31 at all. If no message is ever reported, it is safe to assume
+that the version is version 0.</p></li>
+<li><p>Step 2: If messages with TC=31 are received, check the version
+numbers located in the bits 41–43 in ME (or bits 73–75 in the
+message).</p></li>
+</ol>
+<p>After identifying the correct ADS-B version for an aircraft (which
+does not change often), one can decode related TC=28 and TC=31 messages
+accordingly.</p>
+<div id="refs" class="references csl-bib-body hanging-indent"
+role="list">
+<div id="ref-blythe2011" class="csl-entry" role="listitem">
+<span class="smallcaps">Blythe, W., Anderson, H., and King, N.</span>
+2011. <em>Ads-b implementation and operations guidance document</em>.
+International Civil Aviation Organization.
+</div>
+<div id="ref-gray2019" class="csl-entry" role="listitem">
+<span class="smallcaps">Gray, D.E. and Barrett, C.W.</span> 2019.
+<em>Privacy impact assessment (PIA) - federal aviation administration
+(FAA) privacy ICAO address system</em>. U.S. Department of
+Transportation.
+</div>
+<div id="ref-icao9871v1" class="csl-entry" role="listitem">
+<span class="smallcaps">ICAO</span>. 2008. <em>Technical provisions for
+mode s services and extended squitter</em>. International Civil Aviation
+Organization.
+</div>
+</div>
+<section id="footnotes" class="footnotes footnotes-end-of-document"
+role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1"><p>For example, an online database from OpenSky can be
+used:<br />
+https://opensky-network.org/aircraft-database<a href="#fnref1"
+class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+<footer class="mastfoot">
+  <div class="text-right">
+    <p> © Copyright 2021 <a href="https://junzis.com">Junzi Sun</a>. Build with LaTeX, Pandoc, and GitHub</p>
+  </div>
+</footer>
+
+</div>
+</div>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-74700456-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-74700456-1');
+</script>
+
+</body>
+</html>

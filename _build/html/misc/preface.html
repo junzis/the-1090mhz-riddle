@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+  <meta name="author" content="Junzi Sun">
+
+
+  <title>The 1090MHz Riddle</title>
+  <style type="text/css">code{white-space: pre;}</style>
+
+
+
+  <link rel="stylesheet" href="../bootstrap.min.css">
+  <link rel="stylesheet" href="../style.css">
+
+
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet"> 
+
+<script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js"
+  integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+" crossorigin="anonymous">
+</script>
+
+</head>
+<body>
+
+<div class="container">
+
+<div class="d-flex flex-row align-items-end">
+	<div>
+		<h1 class="title">The 1090 Megahertz Riddle <span class="h5">(second edition)</span></h1>
+		<div class="subtitle">A Guide to Decoding Mode S and ADS-B Signals</div>
+	</div>
+	<div class='ml-auto chapter-nav'>
+    <div class="author">By: <strong>Junzi Sun</strong> (<a href="http://junzis.com">junzis.com</a>)</div>
+	</div>
+</div>
+
+<hr>
+
+<div class="row">
+<div class="col-md-4 col-lg-3">
+<nav>
+  <a href="../index.html" type="button"
+      class="btn btn-sm btn-outline-info btn-light">
+      <i class="fas fa-home"></i> Home
+  </a>
+
+  <br>
+
+  <a href="../book-the_1090mhz_riddle-junzi_sun.pdf"
+      type="button" class="btn btn-sm btn-outline-info">
+    <i class="far fa-file-pdf"></i> Download PDF book
+  </a>
+
+  <br>
+
+  <a href="../index.html#cite-this-book" type="button"
+      class="btn btn-sm btn-outline-info btn-light">
+    <i class="fas fa-quote-left"></i> Cite this book
+  </a>
+
+  <br>
+
+  <a href="http://mode-s.org" type="button"
+      class="btn btn-sm btn-outline-dark btn-light">
+    <i class="fas fa-angle-double-left"></i> mode-s.org
+  </a>
+
+  <hr>
+
+  <h1>Book chapters</h1>
+  <ul>
+    <li><a href="../misc/preface.html">0. Preface</a></li>
+    <li><a href="../content/introduction.html">1. Introduction</a></li>
+    <li><a href="../content/quickstart.html">2. Quick start</a></li>
+    <li>ADS-B</li>
+    <ul>
+      <li><a href="../content/ads-b/1-basics.html">3. ADS-B basics</a></li>
+      <li><a href="../content/ads-b/2-identification.html">4. Aircraft Identification</a></li>
+      <li><a href="../content/ads-b/3-airborne-position.html">5. Airborne Position</a></li>
+      <li><a href="../content/ads-b/4-surface-position.html">6. Surface Position</a></li>
+      <li><a href="../content/ads-b/5-airborne-velocity.html">7. Airborne Velocity</a></li>
+      <li><a href="../content/ads-b/6-operation-status.html">8. Operation Status</a></li>
+      <li><a href="../content/ads-b/7-uncertainty.html">9. Uncertainty</a></li>
+      <li><a href="../content/ads-b/8-error-control.html">10. Error Control</a></li>
+    </ul>
+    <li>Mode S</li>
+    <ul>
+      <li><a href="../content/mode-s/1-basics.html">11. Mode S basics</a></li>
+      <li><a href="../content/mode-s/2-allcall.html">12. All-call reply</a></li>
+      <li><a href="../content/mode-s/3-surveillance.html">13. Surveillance reply</a></li>
+      <li><a href="../content/mode-s/4-acas.html">14. ACAS</a></li>
+      <li><a href="../content/mode-s/5-commb.html">15. Comm-B replies</a></li>
+      <li><a href="../content/mode-s/6-els.html">16. Elementary surveillance</a></li>
+      <li><a href="../content/mode-s/7-ehs.html">17. Enhanced surveillance</a></li>
+      <li><a href="../content/mode-s/8-meteo.html">18. Meteorological services</a></li>
+      <li><a href="../content/mode-s/9-inference.html">19. BDS code inference</a></li>
+    </ul>
+    <li><a href="../content/conclusion.html">20. Conclusion</a></li>
+    <li>Related</li>
+    <ul>
+      <li><a href="../misc/about.html">About the author</a></li>
+      <li><a href="../misc/ack.html">Acknowledgements</a></li>
+    </ul>
+  </ul>
+</nav>
+
+<hr>
+<nav id="TOC">
+<h1>In this page</h1>
+<ul>
+<li><a href="#preface" id="toc-preface">Preface</a></li>
+</ul>
+</nav>
+
+</div>
+
+
+<div class="col-md-8 col-lg-9 maintext">
+
+<div class="float-right">
+  <a href="https://github.com/junzis/the-1090mhz-riddle/edit/master/misc/preface.tex"
+    class='btn btn-sm btn-outline-dark'> <i class="fas fa-edit"></i> Recommend edits</a>
+</div>
+
+<h1 class="unnumbered" id="preface">Preface</h1>
+<p>This book provides researchers, engineers, and students a practical
+guide to decoding ADS-B and other types of common Mode S messages. It
+consolidates the information from various ICAO documentation and other
+literature to provide readers easy access to key knowledge of Mode S and
+ADS-B and related topics. The book extensively uses examples and sample
+Python code to explain the decoding process.</p>
+<p>Back in 2015, I joined TU Delft to undertake PhD research on
+analyzing and modeling aircraft performance using open aircraft
+surveillance data. ADS-B data served as my primary data source.
+Frustrated with the lack of open literature on ADS-B and Mode S, I
+created a live online project to document my experience in decoding
+ADS-B data, entitled the <em>ADS-B Decoding Guide</em>. As the guide
+grew in popularity, I started receiving questions, feedback, and
+suggestions from the research community all over the world. This input
+greatly helped me to fix and improve the content of the decoding
+guide.</p>
+<p>By then, I also started to incorporate Mode S Enhanced Surveillance
+data into my research, which required me to further develop tools for
+inferring and decoding new types of messages. At the same time, I
+created more content for the online book. Due to the increasing interest
+expressed and demand from readers, I started writing a more
+comprehensive book focused on the decoding practice of the data, which
+was the starting point for this book, <em>the 1090 Megahertz
+Riddle</em>.</p>
+<p>During these years of work with ADS-B and Mode S data, I created a
+Python decoding library, <em>pyModeS</em>, which welcomed contributions
+from GitHub users from all over the world. In this book, some decoding
+examples are shown using <em>pyModeS</em>. However, knowledge of Python
+is not required to understand the topics covered in this book.</p>
+<p>In 2019, I completed my PhD and continued as a faculty member in the
+aerospace engineering faculty of TU Delft. By then, I had time to
+reflect on aircraft surveillance data from a new perspective and decided
+to make a major update of the book’s content.</p>
+<p>The result is this text, which is both the second edition of <em>the
+1090 Megahertz Riddle</em> and one of the first books from TU Delft’s
+OPEN publishing initiative. It is published as an open access book,
+under the CC-BY-NC-SA 4.0 license. The LaTeX source of the book is also
+shared on GitHub, where future comments and pull requests are greatly
+appreciated.</p>
+<div class="flushright">
+<p>Junzi Sun<br />
+Delft, the Netherlands<br />
+April, 2021</p>
+</div>
+
+<footer class="mastfoot">
+  <div class="text-right">
+    <p> © Copyright 2021 <a href="https://junzis.com">Junzi Sun</a>. Build with LaTeX, Pandoc, and GitHub</p>
+  </div>
+</footer>
+
+</div>
+</div>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-74700456-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-74700456-1');
+</script>
+
+</body>
+</html>

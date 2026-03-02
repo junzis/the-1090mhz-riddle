@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+  <meta name="author" content="Junzi Sun">
+
+
+  <title>The 1090MHz Riddle</title>
+  <style type="text/css">code{white-space: pre;}</style>
+
+
+
+  <link rel="stylesheet" href="../../bootstrap.min.css">
+  <link rel="stylesheet" href="../../style.css">
+
+
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet"> 
+
+<script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js"
+  integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+" crossorigin="anonymous">
+</script>
+
+</head>
+<body>
+
+<div class="container">
+
+<div class="d-flex flex-row align-items-end">
+	<div>
+		<h1 class="title">The 1090 Megahertz Riddle <span class="h5">(second edition)</span></h1>
+		<div class="subtitle">A Guide to Decoding Mode S and ADS-B Signals</div>
+	</div>
+	<div class='ml-auto chapter-nav'>
+    <div class="author">By: <strong>Junzi Sun</strong> (<a href="http://junzis.com">junzis.com</a>)</div>
+	</div>
+</div>
+
+<hr>
+
+<div class="row">
+<div class="col-md-4 col-lg-3">
+<nav>
+  <a href="../../index.html" type="button"
+      class="btn btn-sm btn-outline-info btn-light">
+      <i class="fas fa-home"></i> Home
+  </a>
+
+  <br>
+
+  <a href="../../book-the_1090mhz_riddle-junzi_sun.pdf"
+      type="button" class="btn btn-sm btn-outline-info">
+    <i class="far fa-file-pdf"></i> Download PDF book
+  </a>
+
+  <br>
+
+  <a href="../../index.html#cite-this-book" type="button"
+      class="btn btn-sm btn-outline-info btn-light">
+    <i class="fas fa-quote-left"></i> Cite this book
+  </a>
+
+  <br>
+
+  <a href="http://mode-s.org" type="button"
+      class="btn btn-sm btn-outline-dark btn-light">
+    <i class="fas fa-angle-double-left"></i> mode-s.org
+  </a>
+
+  <hr>
+
+  <h1>Book chapters</h1>
+  <ul>
+    <li><a href="../../misc/preface.html">0. Preface</a></li>
+    <li><a href="../../content/introduction.html">1. Introduction</a></li>
+    <li><a href="../../content/quickstart.html">2. Quick start</a></li>
+    <li>ADS-B</li>
+    <ul>
+      <li><a href="../../content/ads-b/1-basics.html">3. ADS-B basics</a></li>
+      <li><a href="../../content/ads-b/2-identification.html">4. Aircraft Identification</a></li>
+      <li><a href="../../content/ads-b/3-airborne-position.html">5. Airborne Position</a></li>
+      <li><a href="../../content/ads-b/4-surface-position.html">6. Surface Position</a></li>
+      <li><a href="../../content/ads-b/5-airborne-velocity.html">7. Airborne Velocity</a></li>
+      <li><a href="../../content/ads-b/6-operation-status.html">8. Operation Status</a></li>
+      <li><a href="../../content/ads-b/7-uncertainty.html">9. Uncertainty</a></li>
+      <li><a href="../../content/ads-b/8-error-control.html">10. Error Control</a></li>
+    </ul>
+    <li>Mode S</li>
+    <ul>
+      <li><a href="../../content/mode-s/1-basics.html">11. Mode S basics</a></li>
+      <li><a href="../../content/mode-s/2-allcall.html">12. All-call reply</a></li>
+      <li><a href="../../content/mode-s/3-surveillance.html">13. Surveillance reply</a></li>
+      <li><a href="../../content/mode-s/4-acas.html">14. ACAS</a></li>
+      <li><a href="../../content/mode-s/5-commb.html">15. Comm-B replies</a></li>
+      <li><a href="../../content/mode-s/6-els.html">16. Elementary surveillance</a></li>
+      <li><a href="../../content/mode-s/7-ehs.html">17. Enhanced surveillance</a></li>
+      <li><a href="../../content/mode-s/8-meteo.html">18. Meteorological services</a></li>
+      <li><a href="../../content/mode-s/9-inference.html">19. BDS code inference</a></li>
+    </ul>
+    <li><a href="../../content/conclusion.html">20. Conclusion</a></li>
+    <li>Related</li>
+    <ul>
+      <li><a href="../../misc/about.html">About the author</a></li>
+      <li><a href="../../misc/ack.html">Acknowledgements</a></li>
+    </ul>
+  </ul>
+</nav>
+
+<hr>
+<nav id="TOC">
+<h1>In this page</h1>
+<ul>
+<li><a href="#mode-s-enhanced-surveillance"
+id="toc-mode-s-enhanced-surveillance">Mode S enhanced surveillance</a>
+<ul>
+<li><a href="#selected-vertical-intention-bds-40"
+id="toc-selected-vertical-intention-bds-40">Selected vertical intention
+(BDS 4,0)</a></li>
+<li><a href="#track-and-turn-report-bds-50"
+id="toc-track-and-turn-report-bds-50">Track and turn report (BDS
+5,0)</a></li>
+<li><a href="#heading-and-speed-report-bds-60"
+id="toc-heading-and-speed-report-bds-60">Heading and speed report (BDS
+6,0)</a></li>
+</ul></li>
+</ul>
+</nav>
+
+</div>
+
+
+<div class="col-md-8 col-lg-9 maintext">
+
+<div class="float-right">
+  <a href="https://github.com/junzis/the-1090mhz-riddle/edit/master/content/mode-s/7-ehs.tex"
+    class='btn btn-sm btn-outline-dark'> <i class="fas fa-edit"></i> Recommend edits</a>
+</div>
+
+<h1 id="mode-s-enhanced-surveillance">Mode S enhanced surveillance</h1>
+<p>Mode S Enhanced Surveillance (EHS) provides a set of advanced
+functionalities for the Mode S transponders. Three different types of
+reports are included in EHS. They are designed to report vertical
+intent, turning performance, and airspeeds. This chapter explains
+structures and decoding processes of these reports.</p>
+<h2 id="selected-vertical-intention-bds-40">Selected vertical intention
+(BDS 4,0)</h2>
+<p>The selected vertical intention message is designed for air traffic
+control to obtain an aircraft’s current vertical intentions. For
+example, an aircraft controller can use this information to check
+whether an aircraft is complying with an altitude command. Table <a
+href="#tb:bds40" data-reference-type="ref"
+data-reference="tb:bds40">1.1</a> shows the structure of the
+message.</p>
+<div id="tb:bds40">
+<table>
+<caption>Selected intention (BDS 4,0), MB field</caption>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>FIELD</strong></th>
+<th style="text-align: left;"><strong>MSG</strong></th>
+<th style="text-align: left;"><strong>MB</strong></th>
+<th style="text-align: left;"><strong>BITS</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Status (for MCP/FCU selected
+altitude)</td>
+<td style="text-align: left;">33</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">MCP/FCU selected altitude</td>
+<td style="text-align: left;">34–45</td>
+<td style="text-align: left;">2–13</td>
+<td style="text-align: left;">12</td>
+</tr>
+<tr>
+<td style="text-align: left;">  Range: <span>[</span>0,
+65520<span>]</span> ft</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">  LSB: 16 ft</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">Status (for FMS selected altitude)</td>
+<td style="text-align: left;">46</td>
+<td style="text-align: left;">14</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">FMS selected altitude</td>
+<td style="text-align: left;">47–58</td>
+<td style="text-align: left;">15–26</td>
+<td style="text-align: left;">12</td>
+</tr>
+<tr>
+<td style="text-align: left;">  Range: <span>[</span>0,
+65520<span>]</span> ft</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">  LSB: 16 ft</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">Status (for barometric press setting)</td>
+<td style="text-align: left;">59</td>
+<td style="text-align: left;">27</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">Barometric pressure setting</td>
+<td style="text-align: left;">60–71</td>
+<td style="text-align: left;">28–39</td>
+<td style="text-align: left;">12</td>
+</tr>
+<tr>
+<td style="text-align: left;">  Note: actual value minus 800 mb</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">  Range: <span>[</span>0,
+410<span>]</span> mb</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">  LSB: 0.1 mb</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">Reserved (all zeros)</td>
+<td style="text-align: left;">72–79</td>
+<td style="text-align: left;">40–47</td>
+<td style="text-align: left;">8</td>
+</tr>
+<tr>
+<td style="text-align: left;">Status of MCP/FCU mode</td>
+<td style="text-align: left;">80</td>
+<td style="text-align: left;">48</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">VNAV mode</td>
+<td style="text-align: left;">81</td>
+<td style="text-align: left;">49</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">Alt hold mode</td>
+<td style="text-align: left;">82</td>
+<td style="text-align: left;">50</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">Approach mode</td>
+<td style="text-align: left;">83</td>
+<td style="text-align: left;">51</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">Reserved (all zeros)</td>
+<td style="text-align: left;">84–85</td>
+<td style="text-align: left;">52–53</td>
+<td style="text-align: left;">2</td>
+</tr>
+<tr>
+<td style="text-align: left;">Status of target altitude source</td>
+<td style="text-align: left;">86</td>
+<td style="text-align: left;">54</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">Target altitude source</td>
+<td style="text-align: left;">87–88</td>
+<td style="text-align: left;">55–56</td>
+<td style="text-align: left;">2</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Two different types of selected altitude fields are included in the
+message. Values in the <em>MCP/FCU selected altitude</em> field are from
+the mode control panel or flight control unit. These are often inputs
+from the pilot. Values in <em>FMS selected altitude</em> field are
+derived from the flight management system controlling the vertical
+profile, which often does not come from manual input. In practice, FMS
+selected altitude values are often empty or unusable. When it is
+presented, the value is mostly the same as MCP/FCU selected
+altitude.</p>
+<p>The <em>barometric pressure setting</em> value is the actual pressure
+in millibars (mb) subtracted by a constant of 800. If the actual value
+is below 800 mb (or above 1209 mb), the corresponding status bit (MB:27)
+is set to <code>0</code>.</p>
+<p>The last two bits in the MB field show the source of the target
+altitude. They have the following meaning:</p>
+<pre><code>  00: Unknown source
+  01: Aircraft altitude
+  10: FCU/MCP selected altitude
+  11: FMS selected altitude</code></pre>
+<p>Figure <a href="#fig:bds40_example" data-reference-type="ref"
+data-reference="fig:bds40_example">1.1</a> illustrates an example of how
+to decode a BDS 4,0 message.</p>
+<figure id="fig:bds40_example">
+<img src="../../figures/mode_s/bds40_example.png" />
+<figcaption>BDS 4,0 decoding example</figcaption>
+</figure>
+<div class="notebox">
+<p><span>Try it out</span> Using pyModeS, we can decode information of
+BDS 4,0 messages as:</p>
+<pre><code>import pyModeS as pms
+
+msg = &quot;A8001EBCAEE57730A80106DE1344&quot;
+
+pms.commb.selalt40fms(msg)
+# 24000, FMS selected altitude (ft)
+
+pms.commb.selalt40mcp(msg)
+# 24000, MCP selected altitude (ft)
+
+pms.commb.p40baro(msg)
+# 1013.2, pressure (mb)</code></pre>
+</div>
+<h2 id="track-and-turn-report-bds-50">Track and turn report (BDS
+5,0)</h2>
+<p>The track and turn report is designed to provide parameters to
+describe aircraft turns. In this type of message, roll angle, track
+angle, and track rate are provided. It also includes the ground speed
+and true airspeed (TAS) of the aircraft.</p>
+<p>Table <a href="#tb:bds50" data-reference-type="ref"
+data-reference="tb:bds50">1.2</a> shows the structure of the
+message.</p>
+<div id="tb:bds50">
+<table>
+<caption>Track and turn report (BDS 5,0), MB field</caption>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>FIELD</strong></th>
+<th style="text-align: left;"><strong>MSG</strong></th>
+<th style="text-align: left;"><strong>MB</strong></th>
+<th style="text-align: left;"><strong>BITS</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Status (for roll angle)</td>
+<td style="text-align: left;">33</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">Sign</td>
+<td style="text-align: left;">34</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">Roll angle</td>
+<td style="text-align: left;">35–43</td>
+<td style="text-align: left;">3–11</td>
+<td style="text-align: left;">9</td>
+</tr>
+<tr>
+<td style="text-align: left;">  Range: <span>[</span>-90,
++90<span>]</span> degrees</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">  LSB: 45/256 degrees</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">Status (for track angle)</td>
+<td style="text-align: left;">44</td>
+<td style="text-align: left;">12</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">Sign</td>
+<td style="text-align: left;">45</td>
+<td style="text-align: left;">13</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">True track angle</td>
+<td style="text-align: left;">46–55</td>
+<td style="text-align: left;">14–23</td>
+<td style="text-align: left;">10</td>
+</tr>
+<tr>
+<td style="text-align: left;">  Range: <span>[</span>-180,
+180<span>]</span> degrees</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">  LSB: 90/512 degrees</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">Status (for ground speed)</td>
+<td style="text-align: left;">56</td>
+<td style="text-align: left;">24</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">Ground speed</td>
+<td style="text-align: left;">57–66</td>
+<td style="text-align: left;">25–34</td>
+<td style="text-align: left;">10</td>
+</tr>
+<tr>
+<td style="text-align: left;">  Range: <span>[</span>0,
+2046<span>]</span> kt</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">  LSB: 2 kt</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">Status (for track angle rate)</td>
+<td style="text-align: left;">67</td>
+<td style="text-align: left;">35</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">Sign</td>
+<td style="text-align: left;">68</td>
+<td style="text-align: left;">36</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">Track angle rate</td>
+<td style="text-align: left;">69–77</td>
+<td style="text-align: left;">37–45</td>
+<td style="text-align: left;">9</td>
+</tr>
+<tr>
+<td style="text-align: left;">  Range: <span>[</span>-16,
+16<span>]</span> degrees/second</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">  LSB: 8/256 degrees/second</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">Status (for true airspeed)</td>
+<td style="text-align: left;">78</td>
+<td style="text-align: left;">46</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">True airspeed</td>
+<td style="text-align: left;">79–88</td>
+<td style="text-align: left;">47–56</td>
+<td style="text-align: left;">10</td>
+</tr>
+<tr>
+<td style="text-align: left;">  Range: <span>[</span>0,
+2046<span>]</span> kt</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">  LSB: 2 kt</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>In this message, three signed values are shown, which are roll angle,
+track angle, and track angle rate. Two’s complement coding (see section
+<a href="#sec:two_complement" data-reference-type="ref"
+data-reference="sec:two_complement">[sec:two_complement]</a>) should be
+used to calculate these values.</p>
+<p>The following Figure <a href="#fig:bds50_example"
+data-reference-type="ref" data-reference="fig:bds50_example">1.2</a>
+shows an example of decoding a BDS 5,0 message.</p>
+<figure id="fig:bds50_example">
+<img src="../../figures/mode_s/bds50_example.png" />
+<figcaption>BDS 5,0 decoding example</figcaption>
+</figure>
+<div class="notebox">
+<p><span>Try it out</span> Using pyModeS, we can decode information of
+BDS 5,0 messages as:</p>
+<pre><code>import pyModeS as pms
+
+msg = &quot;A80006ACF9363D3BBF9CE98F1E1D&quot;
+
+pms.commb.roll50(msg)   # -9.7, roll angle (deg)
+pms.commb.trk50(msg)    # 140.273, track angle (deg)
+pms.commb.rtrk50(msg)   # -0.406, track angle rate (deg/s)
+pms.commb.gs50(msg)     # 476, ground speed (kt)
+pms.commb.tas50(msg)    # 466, TAS (kt)
+</code></pre>
+</div>
+<h2 id="heading-and-speed-report-bds-60">Heading and speed report (BDS
+6,0)</h2>
+<p>The heading and speed report is designed to downlink various airspeed
+and vertical rate to air traffic controllers. In this message, indicated
+airspeed (IAS), Mach number, barometric altitude rate, inertial vertical
+velocity, and the magnetic heading of the aircraft are provided. Table
+<a href="#tb:bds60" data-reference-type="ref"
+data-reference="tb:bds60">1.3</a> shows the structure of the
+message.</p>
+<div id="tb:bds60">
+<table>
+<caption>Heading and speed report (BDS 6,0), MB field</caption>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>FIELD</strong></th>
+<th style="text-align: left;"><strong>MSG</strong></th>
+<th style="text-align: left;"><strong>MB</strong></th>
+<th style="text-align: left;"><strong>BITS</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Status (for magnetic heading)</td>
+<td style="text-align: left;">33</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">Sign</td>
+<td style="text-align: left;">34</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">Magnetic heading</td>
+<td style="text-align: left;">35–44</td>
+<td style="text-align: left;">3–12</td>
+<td style="text-align: left;">10</td>
+</tr>
+<tr>
+<td style="text-align: left;">Range: <span>[</span>-180,
++180<span>]</span> degrees</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">LSB: 90/512 degrees</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">Status (for indicated airspeed)</td>
+<td style="text-align: left;">45</td>
+<td style="text-align: left;">13</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">Indicated airspeed</td>
+<td style="text-align: left;">46–55</td>
+<td style="text-align: left;">14–23</td>
+<td style="text-align: left;">10</td>
+</tr>
+<tr>
+<td style="text-align: left;">Range: <span>[</span>0, 1023<span>]</span>
+kt</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">LSB: 1 kt</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">Status (for Mach number)</td>
+<td style="text-align: left;">56</td>
+<td style="text-align: left;">24</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">Mach number</td>
+<td style="text-align: left;">57–66</td>
+<td style="text-align: left;">25–34</td>
+<td style="text-align: left;">10</td>
+</tr>
+<tr>
+<td style="text-align: left;">Range: <span>[</span>0,
+4.092<span>]</span></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">LSB: 0.004</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">Status (for barometric altitude rate)</td>
+<td style="text-align: left;">67</td>
+<td style="text-align: left;">35</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">Sign</td>
+<td style="text-align: left;">68</td>
+<td style="text-align: left;">36</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">Barometric altitude rate</td>
+<td style="text-align: left;">69–77</td>
+<td style="text-align: left;">37–45</td>
+<td style="text-align: left;">9</td>
+</tr>
+<tr>
+<td style="text-align: left;">Range: <span>[</span>-16384,
++16352<span>]</span> ft/min</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">LSB: 32 ft/min</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">Status (for inertial vertical
+velocity)</td>
+<td style="text-align: left;">78</td>
+<td style="text-align: left;">46</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">Sign</td>
+<td style="text-align: left;">79</td>
+<td style="text-align: left;">47</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">Inertial vertical velocity</td>
+<td style="text-align: left;">80–88</td>
+<td style="text-align: left;">48–56</td>
+<td style="text-align: left;">9</td>
+</tr>
+<tr>
+<td style="text-align: left;">Range: <span>[</span>-16384,
++16352<span>]</span> ft/min</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">LSB: 32 ft/min</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>In this message, there are a few signed values, such as heading and
+two vertical rates. Two’s complement coding (see section <a
+href="#sec:two_complement" data-reference-type="ref"
+data-reference="sec:two_complement">[sec:two_complement]</a>) should be
+used to calculate these values.</p>
+<p>The magnetic heading is the aircraft’s heading with respect to the
+magnetic North, which can be different from the true north (for example,
+used for the track angle from ADS-B and BDS 5,0). Often, an aircraft
+obtains the magnetic heading by adding its true North heading with the
+magnetic declination from a world magnetic model, such as <span
+class="citation" data-cites="chulliat2015">[Chulliat et al.
+2015]</span>. It is worth noting that the true North heading is not
+necessarily the same as the track angle due to the influence of
+wind.</p>
+<p>In the heading and speed report, two different kinds of vertical
+rates are reported. Barometric altitude rates are only derived from
+barometer measurements. Since the source data from air data system is
+not filtered, significant noise is contained in these values. In
+contrast, inertial vertical velocities are values provided by
+navigational equipment from different sources including the flight
+management computer. According to <span class="citation"
+data-cites="icao9688">[ICAO 2004]</span>, data sources with different
+levels of priorities are defined for these two values, which are listed
+in Table <a href="#tb:vertical_rate_source" data-reference-type="ref"
+data-reference="tb:vertical_rate_source">1.4</a>.</p>
+<div id="tb:vertical_rate_source">
+<table>
+<caption>Data sources for two vertical rates in heading and speed
+report</caption>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Parameter</strong></th>
+<th style="text-align: left;"><strong>Input Data Source
+Priorities</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Barometric altitude rate</td>
+<td style="text-align: left;">1. Air Data System</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">2. Inertial Reference System/Flight
+Management System</td>
+</tr>
+<tr>
+<td style="text-align: left;">Inertial vertical velocity</td>
+<td style="text-align: left;">1. Flight Management Computer / GNSS
+integrated</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">2. Flight Management Computer
+(General)</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">3. Inertial Reference System/Flight
+Management System</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Figure <a href="#fig:bds60_example" data-reference-type="ref"
+data-reference="fig:bds60_example">1.3</a> illustrates an example on how
+to decode a BDS 6,0 message.</p>
+<figure id="fig:bds60_example">
+<img src="../../figures/mode_s/bds60_example.png" />
+<figcaption>BDS 6,0 decoding example</figcaption>
+</figure>
+<div class="notebox">
+<p><span>Try it out</span> Using pyModeS, we can decode information of
+BDS 6,0 messages as:</p>
+<pre><code>import pyModeS as pms
+
+msg = &quot;A80004AAA74A072BFDEFC1D5CB4F&quot;
+
+pms.commb.hdg60(msg)      # 110.391, heading (deg)
+pms.commb.ias60(msg)      # 259, ISA (kt)
+pms.commb.mach60(msg)     # 0.7, Mach (-)
+pms.commb.vr60baro(msg)   # -2144, baro vertical rate (ft/min)
+pms.commb.vr60ins(msg)    # -2016, INS vertical rate (ft/min)</code></pre>
+</div>
+<div id="refs" class="references csl-bib-body hanging-indent"
+role="list">
+<div id="ref-chulliat2015" class="csl-entry" role="listitem">
+<span class="smallcaps">Chulliat, A., Macmillan, S., Alken, P., et
+al.</span> 2015. The US/UK world magnetic model for 2015-2020.
+</div>
+<div id="ref-icao9688" class="csl-entry" role="listitem">
+<span class="smallcaps">ICAO</span>. 2004. <em><span
+class="nocase">Manual on Mode S Specific Services, 2nd
+Edition</span></em>. International Civil Aviation Organization.
+</div>
+</div>
+
+<footer class="mastfoot">
+  <div class="text-right">
+    <p> © Copyright 2021 <a href="https://junzis.com">Junzi Sun</a>. Build with LaTeX, Pandoc, and GitHub</p>
+  </div>
+</footer>
+
+</div>
+</div>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-74700456-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-74700456-1');
+</script>
+
+</body>
+</html>

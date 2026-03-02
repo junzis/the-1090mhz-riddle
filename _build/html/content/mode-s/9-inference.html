@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+  <meta name="author" content="Junzi Sun">
+
+
+  <title>The 1090MHz Riddle</title>
+  <style type="text/css">code{white-space: pre;}</style>
+
+
+
+  <link rel="stylesheet" href="../../bootstrap.min.css">
+  <link rel="stylesheet" href="../../style.css">
+
+  <script
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet"> 
+
+<script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js"
+  integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+" crossorigin="anonymous">
+</script>
+
+</head>
+<body>
+
+<div class="container">
+
+<div class="d-flex flex-row align-items-end">
+	<div>
+		<h1 class="title">The 1090 Megahertz Riddle <span class="h5">(second edition)</span></h1>
+		<div class="subtitle">A Guide to Decoding Mode S and ADS-B Signals</div>
+	</div>
+	<div class='ml-auto chapter-nav'>
+    <div class="author">By: <strong>Junzi Sun</strong> (<a href="http://junzis.com">junzis.com</a>)</div>
+	</div>
+</div>
+
+<hr>
+
+<div class="row">
+<div class="col-md-4 col-lg-3">
+<nav>
+  <a href="../../index.html" type="button"
+      class="btn btn-sm btn-outline-info btn-light">
+      <i class="fas fa-home"></i> Home
+  </a>
+
+  <br>
+
+  <a href="../../book-the_1090mhz_riddle-junzi_sun.pdf"
+      type="button" class="btn btn-sm btn-outline-info">
+    <i class="far fa-file-pdf"></i> Download PDF book
+  </a>
+
+  <br>
+
+  <a href="../../index.html#cite-this-book" type="button"
+      class="btn btn-sm btn-outline-info btn-light">
+    <i class="fas fa-quote-left"></i> Cite this book
+  </a>
+
+  <br>
+
+  <a href="http://mode-s.org" type="button"
+      class="btn btn-sm btn-outline-dark btn-light">
+    <i class="fas fa-angle-double-left"></i> mode-s.org
+  </a>
+
+  <hr>
+
+  <h1>Book chapters</h1>
+  <ul>
+    <li><a href="../../misc/preface.html">0. Preface</a></li>
+    <li><a href="../../content/introduction.html">1. Introduction</a></li>
+    <li><a href="../../content/quickstart.html">2. Quick start</a></li>
+    <li>ADS-B</li>
+    <ul>
+      <li><a href="../../content/ads-b/1-basics.html">3. ADS-B basics</a></li>
+      <li><a href="../../content/ads-b/2-identification.html">4. Aircraft Identification</a></li>
+      <li><a href="../../content/ads-b/3-airborne-position.html">5. Airborne Position</a></li>
+      <li><a href="../../content/ads-b/4-surface-position.html">6. Surface Position</a></li>
+      <li><a href="../../content/ads-b/5-airborne-velocity.html">7. Airborne Velocity</a></li>
+      <li><a href="../../content/ads-b/6-operation-status.html">8. Operation Status</a></li>
+      <li><a href="../../content/ads-b/7-uncertainty.html">9. Uncertainty</a></li>
+      <li><a href="../../content/ads-b/8-error-control.html">10. Error Control</a></li>
+    </ul>
+    <li>Mode S</li>
+    <ul>
+      <li><a href="../../content/mode-s/1-basics.html">11. Mode S basics</a></li>
+      <li><a href="../../content/mode-s/2-allcall.html">12. All-call reply</a></li>
+      <li><a href="../../content/mode-s/3-surveillance.html">13. Surveillance reply</a></li>
+      <li><a href="../../content/mode-s/4-acas.html">14. ACAS</a></li>
+      <li><a href="../../content/mode-s/5-commb.html">15. Comm-B replies</a></li>
+      <li><a href="../../content/mode-s/6-els.html">16. Elementary surveillance</a></li>
+      <li><a href="../../content/mode-s/7-ehs.html">17. Enhanced surveillance</a></li>
+      <li><a href="../../content/mode-s/8-meteo.html">18. Meteorological services</a></li>
+      <li><a href="../../content/mode-s/9-inference.html">19. BDS code inference</a></li>
+    </ul>
+    <li><a href="../../content/conclusion.html">20. Conclusion</a></li>
+    <li>Related</li>
+    <ul>
+      <li><a href="../../misc/about.html">About the author</a></li>
+      <li><a href="../../misc/ack.html">Acknowledgements</a></li>
+    </ul>
+  </ul>
+</nav>
+
+<hr>
+<nav id="TOC">
+<h1>In this page</h1>
+<ul>
+<li><a href="#chap:bds_infer" id="toc-chap:bds_infer">Inferencing of BDS
+codes</a>
+<ul>
+<li><a href="#bds-codes-identification-logics"
+id="toc-bds-codes-identification-logics">BDS codes identification
+logics</a></li>
+<li><a href="#identification-of-bsd-50-and-60"
+id="toc-identification-of-bsd-50-and-60">Identification of BSD 5,0 and
+6,0</a></li>
+<li><a href="#decoding-examples" id="toc-decoding-examples">Decoding
+examples</a></li>
+</ul></li>
+</ul>
+</nav>
+
+</div>
+
+
+<div class="col-md-8 col-lg-9 maintext">
+
+<div class="float-right">
+  <a href="https://github.com/junzis/the-1090mhz-riddle/edit/master/content/mode-s/9-inference.tex"
+    class='btn btn-sm btn-outline-dark'> <i class="fas fa-edit"></i> Recommend edits</a>
+</div>
+
+<h1 id="chap:bds_infer">Inferencing of BDS codes</h1>
+<p>In Chapter <a href="#chap:comm-b" data-reference-type="ref"
+data-reference="chap:comm-b">[chap:comm-b]</a>, we discussed the basic
+structure and protocols of Mode S Comm-B messages. Each message type is
+identified by an 8-bit Comm-B Data Selector (BDS) code, which is only
+transmitted in the uplink message but not included in the downlink
+message. As third parties observing the replies to Mode S surveillance
+interrogations, we must first determine the BDS code before decoding the
+content of any Comm-B messages.</p>
+<h2 id="bds-codes-identification-logics">BDS codes identification
+logics</h2>
+<p>Each Mode S message has a predefined structure and variables. For
+almost all common Comm-B message types, there are rules for certain
+bits. For example, these bits are:</p>
+<ul>
+<li><p>Reserved bits: These are bits in the different message types that
+are reserved for future use. They all have to be zeros. If any of the
+bits is not zero, the possibility of a certain BDS code should be ruled
+out.</p></li>
+<li><p>Status bits: Some fields in Comm-B messages have their
+corresponding status bits. When a status bit is set to zero, all bits in
+the field must be zero. If the field contains non-zero bits, the
+possibility of a certain BDS code can be ruled out.</p></li>
+<li><p>Value rules: Different fields in the messages also have different
+physical ranges. For example, the Mach number in BDS 6,0 should not be
+higher than 1, and the temperature value in BDS 4,4 should be between
+-80<span class="math inline">\(^\circ\)</span>C and 60<span
+class="math inline">\(^\circ\)</span>C. These constants can then be used
+to exclude certain BDS codes.</p></li>
+</ul>
+<p>Tables <a href="#tb:bds_rule_els" data-reference-type="ref"
+data-reference="tb:bds_rule_els">1.1</a>, <a href="#tb:bds_rule_ehs"
+data-reference-type="ref" data-reference="tb:bds_rule_ehs">1.2</a>, and
+<a href="#tb:bds_rule_mrar" data-reference-type="ref"
+data-reference="tb:bds_rule_mrar">1.3</a> show the rules for identifying
+different types of ELS, EHS, and meteorological messages.</p>
+<div id="tb:bds_rule_els">
+<table>
+<caption>Heuristic identification logic for ELS</caption>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>BDS</strong></th>
+<th style="text-align: left;"><strong>MB bits</strong></th>
+<th style="text-align: left;"><strong>Parameter</strong></th>
+<th style="text-align: left;"><strong>Rules</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">1,0</td>
+<td style="text-align: left;">1–8</td>
+<td style="text-align: left;">BDS code</td>
+<td style="text-align: left;">Equal to <code>0001 0000</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><span>2-4</span></td>
+<td style="text-align: left;">10–14</td>
+<td style="text-align: left;">Reserved</td>
+<td style="text-align: left;">All zeros</td>
+</tr>
+<tr>
+<td style="text-align: left;">1,7</td>
+<td style="text-align: left;">7</td>
+<td style="text-align: left;">BDS 2,0 enabled</td>
+<td style="text-align: left;">Equal to <code>1</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><span>2-4</span></td>
+<td style="text-align: left;">29–56</td>
+<td style="text-align: left;">Reserved</td>
+<td style="text-align: left;">All zeros</td>
+</tr>
+<tr>
+<td style="text-align: left;">2,0</td>
+<td style="text-align: left;">1–8</td>
+<td style="text-align: left;">BDS code</td>
+<td style="text-align: left;">Equal to <code>0010 0000</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><span>2-4</span></td>
+<td style="text-align: left;">9–56</td>
+<td style="text-align: left;">Callsign</td>
+<td style="text-align: left;">Only contains 0–9, A–Z, or space</td>
+</tr>
+<tr>
+<td style="text-align: left;">3,0</td>
+<td style="text-align: left;">1–8</td>
+<td style="text-align: left;">BDS code</td>
+<td style="text-align: left;">Equal to <code>0011 0000</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><span>2-4</span></td>
+<td style="text-align: left;">29–30</td>
+<td style="text-align: left;">Threat type</td>
+<td style="text-align: left;">Not equal to <code>11</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><span>2-4</span></td>
+<td style="text-align: left;">16–22</td>
+<td style="text-align: left;">ACAS</td>
+<td style="text-align: left;">less than 48</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="tb:bds_rule_ehs">
+<table>
+<caption>Heuristic identification logic for EHS</caption>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>BDS</strong></th>
+<th style="text-align: left;"><strong>MB bits</strong></th>
+<th style="text-align: left;"><strong>Parameter</strong></th>
+<th style="text-align: left;"><strong>Rules</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">4,0</td>
+<td style="text-align: left;">1 : 2–13</td>
+<td style="text-align: left;">MCP/FCU selected altitude</td>
+<td style="text-align: left;">Status consistent</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span>2-4</span></td>
+<td style="text-align: left;">14 : 15–26</td>
+<td style="text-align: left;">FMS selected altitude</td>
+<td style="text-align: left;">Status consistent</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span>2-4</span></td>
+<td style="text-align: left;">27 : 28–39</td>
+<td style="text-align: left;">Barometric pressure</td>
+<td style="text-align: left;">Status consistent</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span>2-4</span></td>
+<td style="text-align: left;">40 - 47</td>
+<td style="text-align: left;">Reserved</td>
+<td style="text-align: left;">All zeros</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span>2-4</span></td>
+<td style="text-align: left;">52 - 53</td>
+<td style="text-align: left;">Reserved</td>
+<td style="text-align: left;">All zeros</td>
+</tr>
+<tr>
+<td style="text-align: left;">5,0</td>
+<td style="text-align: left;">1 : 2–11</td>
+<td style="text-align: left;">Roll angle</td>
+<td style="text-align: left;">Status consistent</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Between -50 and 50 degrees</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span>2-4</span></td>
+<td style="text-align: left;">12 : 13–23</td>
+<td style="text-align: left;">True track angle</td>
+<td style="text-align: left;">Status consistent</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span>2-4</span></td>
+<td style="text-align: left;">24 : 25–34</td>
+<td style="text-align: left;">Ground speed</td>
+<td style="text-align: left;">Status consistent</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Between 0 and 600 kt</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span>2-4</span></td>
+<td style="text-align: left;">35 : 36–45</td>
+<td style="text-align: left;">Track angle rate</td>
+<td style="text-align: left;">Status consistent</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span>2-4</span></td>
+<td style="text-align: left;">45 : 46–56</td>
+<td style="text-align: left;">True airspeed</td>
+<td style="text-align: left;">Status consistent</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Between 0 and 500 kt</td>
+</tr>
+<tr>
+<td style="text-align: left;">6,0</td>
+<td style="text-align: left;">1 : 2–12</td>
+<td style="text-align: left;">Magnetic heading</td>
+<td style="text-align: left;">Status consistent</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span>2-4</span></td>
+<td style="text-align: left;">13 : 14–23</td>
+<td style="text-align: left;">Indicated airspeed</td>
+<td style="text-align: left;">Status consistent</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Between 0 and 500 kt</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span>2-4</span></td>
+<td style="text-align: left;">24 : 25–34</td>
+<td style="text-align: left;">Mach number</td>
+<td style="text-align: left;">Status consistent</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Between 0 and 1</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span>2-4</span></td>
+<td style="text-align: left;">35 : 36–45</td>
+<td style="text-align: left;">Barometric vertical rate</td>
+<td style="text-align: left;">Status consistent</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Between -6000 and 6000 fpm</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span>2-4</span></td>
+<td style="text-align: left;">46 : 47–56</td>
+<td style="text-align: left;">Inertial vertical rate</td>
+<td style="text-align: left;">Status consistent</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Between -6000 and 6000 fpm</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="tb:bds_rule_mrar">
+<table>
+<caption>Heuristic identification logic for MRAR and MHR</caption>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>BDS</strong></th>
+<th style="text-align: left;"><strong>MB bits</strong></th>
+<th style="text-align: left;"><strong>Parameter</strong></th>
+<th style="text-align: left;"><strong>Rules</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">4,4</td>
+<td style="text-align: left;">1–4</td>
+<td style="text-align: left;">FOM</td>
+<td style="text-align: left;">Less than 5</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span>2-4</span></td>
+<td style="text-align: left;">5 : 6–23</td>
+<td style="text-align: left;">Wind speed / direction</td>
+<td style="text-align: left;">Status consistent</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">speed less than 250 kt</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span>2-4</span></td>
+<td style="text-align: left;">24–34</td>
+<td style="text-align: left;">Static air temperature</td>
+<td style="text-align: left;">Between -80 and 60<span
+class="math inline">\(^\circ\)</span>C</td>
+</tr>
+<tr>
+<td style="text-align: left;">4,5</td>
+<td style="text-align: left;">1 : 2–3</td>
+<td style="text-align: left;">Turbulence</td>
+<td style="text-align: left;">Status consistent</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span>2-4</span></td>
+<td style="text-align: left;">4 : 5–6</td>
+<td style="text-align: left;">Wind shear</td>
+<td style="text-align: left;">Status consistent</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span>2-4</span></td>
+<td style="text-align: left;">7 : 8–9</td>
+<td style="text-align: left;">Microburst</td>
+<td style="text-align: left;">Status consistent</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span>2-4</span></td>
+<td style="text-align: left;">10 : 11–12</td>
+<td style="text-align: left;">Icing</td>
+<td style="text-align: left;">Status consistent</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span>2-4</span></td>
+<td style="text-align: left;">13 : 14–15</td>
+<td style="text-align: left;">Wake vortex</td>
+<td style="text-align: left;">Status consistent</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span>2-4</span></td>
+<td style="text-align: left;">16 : 17–26</td>
+<td style="text-align: left;">Static air temperature</td>
+<td style="text-align: left;">Status consistent</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Between -80 and 60<span
+class="math inline">\(^\circ\)</span>C</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span>2-4</span></td>
+<td style="text-align: left;">27 : 28–28</td>
+<td style="text-align: left;">Static pressure</td>
+<td style="text-align: left;">Status consistent</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span>2-4</span></td>
+<td style="text-align: left;">39 : 40–51</td>
+<td style="text-align: left;">Radio height</td>
+<td style="text-align: left;">Status consistent</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span>2-4</span></td>
+<td style="text-align: left;">52–56</td>
+<td style="text-align: left;">Reserved</td>
+<td style="text-align: left;">All zeros</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="identification-of-bsd-50-and-60">Identification of BSD 5,0 and
+6,0</h2>
+<p>Of all the previously mentioned message types, BDS 5,0 and BDS 6,0
+are the two message types that share the most similar structures. From
+Table <a href="#tb:bds_rule_ehs" data-reference-type="ref"
+data-reference="tb:bds_rule_ehs">1.2</a>, we can see the differences are
+in bit 12/13 and bit 45/46 of BDS 5,0 and BDS 6,0. This similarity can
+cause a number of messages to be identified as both BDS 5,0 and 6,0
+messages.</p>
+<p>In order to distinguish between these two messages, we need to
+utilize the information contained in the messages. BDS 5,0 and BDS 6,0
+both contain aircraft speed information. We can design the additional
+check using the following logic:</p>
+<ul>
+<li><p>Assuming the message is BDS 5,0, compare the difference between
+the ground speed and true airspeed. The difference should not be too
+large. Empirically, this threshold can be set at approximately 200 kt to
+include possible wind speed.</p></li>
+<li><p>Assuming the message is BDS 6,0, convert the Mach number to
+calibrated airspeed based on altitude code under ISA condition <span
+class="citation" data-cites="young2017">[Young 2017]</span>. The
+difference between calibrated airspeed and indicated airspeed should not
+be too large.</p></li>
+</ul>
+<p>If the previous logic does not eliminate one of the two
+possibilities, we need to make use of the information collected in ADS-B
+(if available) to verify the information. ADS-B data from the same
+aircraft can be used as a reference, to check whether the speed from the
+assumed message type agrees with the ground speed from ADS-B. The
+details of this process is described in <span class="citation"
+data-cites="sun2019pymodes">[Sun et al. 2019]</span>. Wind information
+can also be taken into consideration to make the identification more
+accurate.</p>
+<h2 id="decoding-examples">Decoding examples</h2>
+<p>The basic BDS code identification logic is relatively simple. It
+checks all criteria from all message types and decides whether all but
+one BDS code can be eliminated. In this example section, we are only
+going to show how a message with both possibilities of BDS 5,0 and BDS
+6,0 can be identified.</p>
+<p>Figure <a href="#fig:bds_bds_infer_example_1"
+data-reference-type="ref"
+data-reference="fig:bds_bds_infer_example_1">1.1</a> shows the
+identification of a DF=20 message.</p>
+<figure id="fig:bds_bds_infer_example_1">
+<img src="../../figures/mode_s/bds_infer_example_1.png" />
+<figcaption>Identification of BDS code, DF=20</figcaption>
+</figure>
+<p>We see that BDS 6,0 is identified since the difference between the
+ground speed and airspeed is too high in the BDS 5,0 assumption.</p>
+<p>Figure <a href="#fig:bds_bds_infer_example_2"
+data-reference-type="ref"
+data-reference="fig:bds_bds_infer_example_2">1.2</a> shows the
+identification of a DF=21 message. In DF=21 messages, the altitude code
+is not included. Thus, we have to rely on other information, such as
+speed and track angle from ADS-B to validate the BDS code. The
+assumption about it being BDS 5,0 corroborates the speed information
+from ADS-B.</p>
+<figure id="fig:bds_bds_infer_example_2">
+<img src="../../figures/mode_s/bds_infer_example_2.png" />
+<figcaption>Identification of BDS code, DF=21</figcaption>
+</figure>
+<div class="notebox">
+<p><span>Try it out</span> Using pyModeS, we can infer the BDS code of a
+message as:</p>
+<pre><code>import pyModeS as pms
+
+msg1 = &quot;A0001838E519F33160240142D7FA&quot;
+bds1 = pms.bds.infer(msg1)
+
+msg2 = &quot;A8001EBCFFFB23286004A73F6A5B&quot;
+bds2 = pms.bds.infer(msg2) </code></pre>
+<p>The first BDS code should be BDS60. The second message has the
+possibility of being either BDS50 or BDS60, we can further infer the
+type based on ADS-B information:</p>
+<pre><code>bds2 = pms.bds.is50or60(msg2, 320, 250, 14000)</code></pre>
+<p>The final BDS code should be BDS50.</p>
+</div>
+<div id="refs" class="references csl-bib-body hanging-indent"
+role="list">
+<div id="ref-sun2019pymodes" class="csl-entry" role="listitem">
+<span class="smallcaps">Sun, J., Vû, H., Ellerbroek, J., and Hoekstra,
+J.M.</span> 2019. <a
+href="https://doi.org/10.1109/TITS.2019.2914770">Pymodes: Decoding mode
+s surveillance data for open air transportation research</a>. <em>IEEE
+Transactions on Intelligent Transportation Systems</em>.
+</div>
+<div id="ref-young2017" class="csl-entry" role="listitem">
+<span class="smallcaps">Young, T.M.</span> 2017. <em><span
+class="nocase">Performance of the Jet Transport Airplane: Analysis
+Methods, Flight Operations, and Regulations</span></em>. John Wiley
+<span>&amp;</span> Sons.
+</div>
+</div>
+
+<footer class="mastfoot">
+  <div class="text-right">
+    <p> © Copyright 2021 <a href="https://junzis.com">Junzi Sun</a>. Build with LaTeX, Pandoc, and GitHub</p>
+  </div>
+</footer>
+
+</div>
+</div>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-74700456-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-74700456-1');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+  <meta name="author" content="Junzi Sun">
+
+
+  <title>The 1090MHz Riddle</title>
+  <style type="text/css">code{white-space: pre;}</style>
+
+
+
+  <link rel="stylesheet" href="../../bootstrap.min.css">
+  <link rel="stylesheet" href="../../style.css">
+
+  <script
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet"> 
+
+<script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js"
+  integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+" crossorigin="anonymous">
+</script>
+
+</head>
+<body>
+
+<div class="container">
+
+<div class="d-flex flex-row align-items-end">
+	<div>
+		<h1 class="title">The 1090 Megahertz Riddle <span class="h5">(second edition)</span></h1>
+		<div class="subtitle">A Guide to Decoding Mode S and ADS-B Signals</div>
+	</div>
+	<div class='ml-auto chapter-nav'>
+    <div class="author">By: <strong>Junzi Sun</strong> (<a href="http://junzis.com">junzis.com</a>)</div>
+	</div>
+</div>
+
+<hr>
+
+<div class="row">
+<div class="col-md-4 col-lg-3">
+<nav>
+  <a href="../../index.html" type="button"
+      class="btn btn-sm btn-outline-info btn-light">
+      <i class="fas fa-home"></i> Home
+  </a>
+
+  <br>
+
+  <a href="../../book-the_1090mhz_riddle-junzi_sun.pdf"
+      type="button" class="btn btn-sm btn-outline-info">
+    <i class="far fa-file-pdf"></i> Download PDF book
+  </a>
+
+  <br>
+
+  <a href="../../index.html#cite-this-book" type="button"
+      class="btn btn-sm btn-outline-info btn-light">
+    <i class="fas fa-quote-left"></i> Cite this book
+  </a>
+
+  <br>
+
+  <a href="http://mode-s.org" type="button"
+      class="btn btn-sm btn-outline-dark btn-light">
+    <i class="fas fa-angle-double-left"></i> mode-s.org
+  </a>
+
+  <hr>
+
+  <h1>Book chapters</h1>
+  <ul>
+    <li><a href="../../misc/preface.html">0. Preface</a></li>
+    <li><a href="../../content/introduction.html">1. Introduction</a></li>
+    <li><a href="../../content/quickstart.html">2. Quick start</a></li>
+    <li>ADS-B</li>
+    <ul>
+      <li><a href="../../content/ads-b/1-basics.html">3. ADS-B basics</a></li>
+      <li><a href="../../content/ads-b/2-identification.html">4. Aircraft Identification</a></li>
+      <li><a href="../../content/ads-b/3-airborne-position.html">5. Airborne Position</a></li>
+      <li><a href="../../content/ads-b/4-surface-position.html">6. Surface Position</a></li>
+      <li><a href="../../content/ads-b/5-airborne-velocity.html">7. Airborne Velocity</a></li>
+      <li><a href="../../content/ads-b/6-operation-status.html">8. Operation Status</a></li>
+      <li><a href="../../content/ads-b/7-uncertainty.html">9. Uncertainty</a></li>
+      <li><a href="../../content/ads-b/8-error-control.html">10. Error Control</a></li>
+    </ul>
+    <li>Mode S</li>
+    <ul>
+      <li><a href="../../content/mode-s/1-basics.html">11. Mode S basics</a></li>
+      <li><a href="../../content/mode-s/2-allcall.html">12. All-call reply</a></li>
+      <li><a href="../../content/mode-s/3-surveillance.html">13. Surveillance reply</a></li>
+      <li><a href="../../content/mode-s/4-acas.html">14. ACAS</a></li>
+      <li><a href="../../content/mode-s/5-commb.html">15. Comm-B replies</a></li>
+      <li><a href="../../content/mode-s/6-els.html">16. Elementary surveillance</a></li>
+      <li><a href="../../content/mode-s/7-ehs.html">17. Enhanced surveillance</a></li>
+      <li><a href="../../content/mode-s/8-meteo.html">18. Meteorological services</a></li>
+      <li><a href="../../content/mode-s/9-inference.html">19. BDS code inference</a></li>
+    </ul>
+    <li><a href="../../content/conclusion.html">20. Conclusion</a></li>
+    <li>Related</li>
+    <ul>
+      <li><a href="../../misc/about.html">About the author</a></li>
+      <li><a href="../../misc/ack.html">Acknowledgements</a></li>
+    </ul>
+  </ul>
+</nav>
+
+<hr>
+<nav id="TOC">
+<h1>In this page</h1>
+<ul>
+<li><a href="#chap:mode_s_basics" id="toc-chap:mode_s_basics">Basics of
+Mode S services</a>
+<ul>
+<li><a href="#mode-s-message-structures"
+id="toc-mode-s-message-structures">Mode S message structures</a></li>
+<li><a href="#sec:parity" id="toc-sec:parity">Parity</a></li>
+<li><a href="#icao-address-recovery" id="toc-icao-address-recovery">ICAO
+address recovery</a></li>
+<li><a href="#sec:two_complement" id="toc-sec:two_complement">Two’s
+complement coding</a></li>
+</ul></li>
+</ul>
+</nav>
+
+</div>
+
+
+<div class="col-md-8 col-lg-9 maintext">
+
+<div class="float-right">
+  <a href="https://github.com/junzis/the-1090mhz-riddle/edit/master/content/mode-s/1-basics.tex"
+    class='btn btn-sm btn-outline-dark'> <i class="fas fa-edit"></i> Recommend edits</a>
+</div>
+
+<h1 id="chap:mode_s_basics">Basics of Mode S services</h1>
+<p>In Chapter <a href="#chap:intro" data-reference-type="ref"
+data-reference="chap:intro">[chap:intro]</a>, an overview of different
+Mode S services is given. Most of the services except the extended
+squitter are interrogations based, which means information is only
+transmitted upon request. The request, also known as ‘<em>uplink</em>’,
+is transmitted using 1030 MHz radio frequency. The reply
+(‘<em>downlink</em>’) signals are all transmitted using the 1090 MHz
+radio frequency. Hence, all Mode S downlink messages can be intercepted
+using the same setup as ADS-B.</p>
+<p>In the following chapters of this book, we are going to explain the
+interrogation based Mode S services in four groups, specifically:</p>
+<ol>
+<li><p>All-call reply (DF 11)</p></li>
+<li><p>ACAS short and long replies (DF 0/16)</p></li>
+<li><p>Altitude and identity replies (DF 4/5)</p></li>
+<li><p>Comm-B, with altitude and identity replies (DF 20/21)</p>
+<ol>
+<li><p>Mode S elementary surveillance (ELS)</p></li>
+<li><p>Mode S enhanced surveillance (EHS)</p></li>
+<li><p>Meteorological information</p></li>
+</ol></li>
+</ol>
+<p>In this chapter, we discuss some of the common aspects regarding the
+decoding of Mode S messages. First of all, the structure of Mode S
+services is reviewed. Then, Mode S parity and ICAO address recovery are
+discussed. Finally, some common terminologies related to Comm-B messages
+are explained.</p>
+<h2 id="mode-s-message-structures">Mode S message structures</h2>
+<p>Based on Figure <a href="#fig:mode_s_uplink_pulses"
+data-reference-type="ref"
+data-reference="fig:mode_s_uplink_pulses">[fig:mode_s_uplink_pulses]</a>
+from the introduction chapter, we see that there are two types of Mode S
+messages in terms of message length. Table <a href="#tb:mode_s_formats"
+data-reference-type="ref"
+data-reference="tb:mode_s_formats">[tb:mode_s_formats]</a> indicates
+that among the current 11 different downlink formats, four are short
+messages consisting of 56 bits. The other seven are long messages with
+112 bits. All formats share the same structure of a header consisting of
+5 bits of format code and 24 bits parity at the end, as shown in the
+Figure <a href="#fig:modes_msg_structures" data-reference-type="ref"
+data-reference="fig:modes_msg_structures">1.1</a>.</p>
+<figure id="fig:modes_msg_structures">
+
+<figcaption>The structures of Mode S short and long
+messages</figcaption>
+</figure>
+<h2 id="sec:parity">Parity</h2>
+<p>Mode S uses three types of parity. The first one is simply the CRC
+remainder, which is used for ADS-B in the extended squitter (see Chapter
+<a href="#chap:adsb_parity" data-reference-type="ref"
+data-reference="chap:adsb_parity">[chap:adsb_parity]</a>). The other two
+types of parities are Address Parity (AP) and Data Parity (DP). These
+different parities can be calculated as follows:</p>
+<p>1) <em>Parity</em>: Let <span class="math inline">\(x^{i}\)</span>
+represent each bit of the message and <span
+class="math inline">\(M(x)\)</span> represent the polynomial
+corresponding Mode S message, the parity <span
+class="math inline">\(P(x)\)</span> can thus be calculated as the CRC
+remainder:</p>
+<p><span class="math display">\[\label{eq:crc}
+  \begin{split}
+    M(x) &amp;= \sum_{i=0}^{87~\mathrm{or}~32} a_i x^i , \quad a_i \in
+(0, 1)\\
+    P(x) &amp;= M(x) ~ \% ~ G(x)
+  \end{split}\]</span></p>
+<p>For an extended squitter message, <span
+class="math inline">\(P(x)\)</span> is directly transmitted as the
+parity in the last 24 bits of the message. Errors can be detected by
+performing the same computation process at the receiving side when
+received parity differs from this newly computed remainder.</p>
+<p>2) <em>Address Parity</em>: However, for other types of Mode S
+messages, Address Parity is generated by overlaying the normal CRC
+remainder with the 24-bit transponder ICAO address. Thus, the final
+parity included in the message is not <span
+class="math inline">\(P(x)\)</span>, but a new parity <span
+class="math inline">\(P_A(x)\)</span>:</p>
+<p><span class="math display">\[P_A(x) = P(x) + A(x)\]</span></p>
+<p>where <span class="math inline">\(A(x)\)</span> is the polynomial
+representing the ICAO address of the transponder.</p>
+<p>3) <em>Data Parity</em>: For some of the Downlink Format 20 and 21
+Mode S messages, upon request of the SSR interrogation, another overlay
+with the Comm-B Data Selector (BDS) number is performed <span
+class="citation" data-cites="gertz1984">[Gertz 1984]</span>. In this
+case, the Data Parity, is included in the last 24 bits of the Mode S
+message and transmitted.</p>
+<p>When DP is in use, the parity is overlaid with the modified ICAO
+address, Modified AA (MA). The MA is calculated as the polynomial
+addition of ICAO address and BDS code (with 16 bits of zeros appended
+after), for example:</p>
+<pre><code>ICAO:         DD33AA      1101 1101 0011 0011 1010 1010
+
+                                      XOR
+
+BDS 4,4       440000      0100 0100 0000 0000 0000 0000
+-------------------------------------------------------
+Modified AA   9933AA      1001 1001 0011 0011 1010 1010</code></pre>
+<p>Denoting the modified address as <span
+class="math inline">\(P_\mathrm{MA}(x)\)</span> and the Data Parity as
+<span class="math inline">\(P_D(x)\)</span>, the calculation of <span
+class="math inline">\(P_D(x)\)</span> is:</p>
+<p><span class="math display">\[\begin{split}
+    P_D(x) &amp;= P(x) + P_\mathrm{MA}(x) \\
+     &amp;= P(x) + A(x) + D(x)
+  \end{split}\]</span></p>
+<p>where <span class="math inline">\(D(x)\)</span> is the polynomial
+representing the BDS code of the Mode S Comm-B message.</p>
+<h2 id="icao-address-recovery">ICAO address recovery</h2>
+<p>Since the interrogations are not known, information such as the
+transponder address is not known to third party receivers. The lack of
+such information makes error detection difficult.</p>
+<p>For AP, the message parity field is produced by overlaying the direct
+parity with the transponder address. Hence, in order to recover the ICAO
+address, we can simply overlay the received parity (AP) with the parity
+calculated again from the payload data:</p>
+<p><span class="math display">\[A&#39;(x) = P_A(x) + P(x)\]</span></p>
+<p>where <span class="math inline">\(P_A(x)\)</span> is the last 24-bit
+(assuming Address Parity) for the received message.</p>
+<p>In order to demonstrate how to recover an ICAO address, we use the
+following example message:</p>
+<pre><code>Message:      A0001838CA380031440000F24177
+------------------------------------------
+Payload:      A0001838CA380031440000
+------------------------------------------
+Parity (AP):                        F24177</code></pre>
+<p>Figure <a href="#fig:icao_revover" data-reference-type="ref"
+data-reference="fig:icao_revover">1.2</a> illustrates the ICAO address
+recovering process. We first use the Mode S CRC algorithm to compute the
+remainder (parity) from only the payload data
+<code>A0001838CA380031440000</code>. The remainder is found to be
+<code>CE2CA7</code>. Then, by performing the polynomial addition (XOR
+for bitwise operation) with the actual parity included in the message,
+the ICAO address can be computed as <code>3C6DD0</code>.</p>
+<figure id="fig:icao_revover">
+
+<figcaption>The ICAO address recovery logic</figcaption>
+</figure>
+<p>For the cases of Data Parity, it is still possible to recover the
+transponder address using a similar process. However, we need to overlay
+again the previous result with the BDS code, assuming that the BDS code
+can be identified from the data:</p>
+<p><span class="math display">\[A&#39;(x) = P_D(x) + P(x) +
+D(x)\]</span></p>
+<p>where <span class="math inline">\(P_D(x)\)</span> is the last 24-bit
+(assuming Data Parity) for the received message.</p>
+<p>It is worth noting that in either case, the resulting <span
+class="math inline">\(A&#39;(x)\)</span> is the same as the actual
+transponder address (<span class="math inline">\(A(x)\)</span>) only if
+no error has occurred during the transmission. If the message is
+corrupted, the obtained address will be different from the actual
+one.</p>
+<p>By combining with ICAO addresses obtained in ADS-B and other
+information independently decoded from Mode S messages, this process can
+also be used for detecting Mode S errors as a third party observer. This
+method is described in <span class="citation"
+data-cites="sun2019pymodes">[Sun et al. 2019]</span>.</p>
+<div class="notebox">
+<p><span>Try it out</span> Using pyModeS, we can obtain the ICAO address
+as:</p>
+<pre><code>import pyModeS as pms
+
+msg = &quot;A0001838CA380031440000F24177&quot;
+pms.icao(msg)</code></pre>
+<p>Output:</p>
+<pre><code>3C6DD0</code></pre>
+</div>
+<h2 id="sec:two_complement">Two’s complement coding</h2>
+<p>Two’s complement coding is used for representing negative numbers in
+some Mode S messages, for example, heading and vertical rates in BDS 5,0
+and BDS 6,0 messages. Every parameter in Mode S using two’s complement
+coding include a 1-bit sign and n-bit value.</p>
+<p>1) If the sign bit is <code>0</code>, the result is simply the
+decimal representation of the value bits.</p>
+<p>For example, we have the following representation of a signed
+parameter:</p>
+<pre><code> sign    value
+------------------
+  0    111010011</code></pre>
+<p>The result is the decimal representation of the last nine value bits,
+which is <code>467</code>.</p>
+<p>2) If the sign bit is <code>1</code>, we first calculate the decimal
+representation of the value bits (<span
+class="math inline">\(x\)</span>) and then calculate the negative value
+as:</p>
+<p><span class="math display">\[x - 2^n\]</span></p>
+<p>For example, if we changed the signed bit in the previous example to
+<code>1</code>, as follows:</p>
+<pre><code> sign    value
+------------------
+  1    111010011</code></pre>
+<p>since the sign bit is <code>1</code> and there are <code>9</code>
+value bits, the final value is calculated as: <span
+class="math display">\[467 - 2^9 = -45\]</span></p>
+<div id="refs" class="references csl-bib-body hanging-indent"
+role="list">
+<div id="ref-gertz1984" class="csl-entry" role="listitem">
+<span class="smallcaps">Gertz, J.L.</span> 1984. <em>Fundamentals of
+mode s parity coding</em>. Massachusetts Institute of Technology,
+Lincoln Laboratory.
+</div>
+<div id="ref-sun2019pymodes" class="csl-entry" role="listitem">
+<span class="smallcaps">Sun, J., Vû, H., Ellerbroek, J., and Hoekstra,
+J.M.</span> 2019. <a
+href="https://doi.org/10.1109/TITS.2019.2914770">Pymodes: Decoding mode
+s surveillance data for open air transportation research</a>. <em>IEEE
+Transactions on Intelligent Transportation Systems</em>.
+</div>
+</div>
+
+<footer class="mastfoot">
+  <div class="text-right">
+    <p> © Copyright 2021 <a href="https://junzis.com">Junzi Sun</a>. Build with LaTeX, Pandoc, and GitHub</p>
+  </div>
+</footer>
+
+</div>
+</div>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-74700456-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-74700456-1');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+  <meta name="author" content="Junzi Sun">
+
+
+  <title>The 1090MHz Riddle</title>
+  <style type="text/css">code{white-space: pre;}</style>
+
+
+
+  <link rel="stylesheet" href="../bootstrap.min.css">
+  <link rel="stylesheet" href="../style.css">
+
+  <script
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet"> 
+
+<script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js"
+  integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+" crossorigin="anonymous">
+</script>
+
+</head>
+<body>
+
+<div class="container">
+
+<div class="d-flex flex-row align-items-end">
+	<div>
+		<h1 class="title">The 1090 Megahertz Riddle <span class="h5">(second edition)</span></h1>
+		<div class="subtitle">A Guide to Decoding Mode S and ADS-B Signals</div>
+	</div>
+	<div class='ml-auto chapter-nav'>
+    <div class="author">By: <strong>Junzi Sun</strong> (<a href="http://junzis.com">junzis.com</a>)</div>
+	</div>
+</div>
+
+<hr>
+
+<div class="row">
+<div class="col-md-4 col-lg-3">
+<nav>
+  <a href="../index.html" type="button"
+      class="btn btn-sm btn-outline-info btn-light">
+      <i class="fas fa-home"></i> Home
+  </a>
+
+  <br>
+
+  <a href="../book-the_1090mhz_riddle-junzi_sun.pdf"
+      type="button" class="btn btn-sm btn-outline-info">
+    <i class="far fa-file-pdf"></i> Download PDF book
+  </a>
+
+  <br>
+
+  <a href="../index.html#cite-this-book" type="button"
+      class="btn btn-sm btn-outline-info btn-light">
+    <i class="fas fa-quote-left"></i> Cite this book
+  </a>
+
+  <br>
+
+  <a href="http://mode-s.org" type="button"
+      class="btn btn-sm btn-outline-dark btn-light">
+    <i class="fas fa-angle-double-left"></i> mode-s.org
+  </a>
+
+  <hr>
+
+  <h1>Book chapters</h1>
+  <ul>
+    <li><a href="../misc/preface.html">0. Preface</a></li>
+    <li><a href="../content/introduction.html">1. Introduction</a></li>
+    <li><a href="../content/quickstart.html">2. Quick start</a></li>
+    <li>ADS-B</li>
+    <ul>
+      <li><a href="../content/ads-b/1-basics.html">3. ADS-B basics</a></li>
+      <li><a href="../content/ads-b/2-identification.html">4. Aircraft Identification</a></li>
+      <li><a href="../content/ads-b/3-airborne-position.html">5. Airborne Position</a></li>
+      <li><a href="../content/ads-b/4-surface-position.html">6. Surface Position</a></li>
+      <li><a href="../content/ads-b/5-airborne-velocity.html">7. Airborne Velocity</a></li>
+      <li><a href="../content/ads-b/6-operation-status.html">8. Operation Status</a></li>
+      <li><a href="../content/ads-b/7-uncertainty.html">9. Uncertainty</a></li>
+      <li><a href="../content/ads-b/8-error-control.html">10. Error Control</a></li>
+    </ul>
+    <li>Mode S</li>
+    <ul>
+      <li><a href="../content/mode-s/1-basics.html">11. Mode S basics</a></li>
+      <li><a href="../content/mode-s/2-allcall.html">12. All-call reply</a></li>
+      <li><a href="../content/mode-s/3-surveillance.html">13. Surveillance reply</a></li>
+      <li><a href="../content/mode-s/4-acas.html">14. ACAS</a></li>
+      <li><a href="../content/mode-s/5-commb.html">15. Comm-B replies</a></li>
+      <li><a href="../content/mode-s/6-els.html">16. Elementary surveillance</a></li>
+      <li><a href="../content/mode-s/7-ehs.html">17. Enhanced surveillance</a></li>
+      <li><a href="../content/mode-s/8-meteo.html">18. Meteorological services</a></li>
+      <li><a href="../content/mode-s/9-inference.html">19. BDS code inference</a></li>
+    </ul>
+    <li><a href="../content/conclusion.html">20. Conclusion</a></li>
+    <li>Related</li>
+    <ul>
+      <li><a href="../misc/about.html">About the author</a></li>
+      <li><a href="../misc/ack.html">Acknowledgements</a></li>
+    </ul>
+  </ul>
+</nav>
+
+<hr>
+<nav id="TOC">
+<h1>In this page</h1>
+<ul>
+<li><a href="#chap:intro" id="toc-chap:intro">Introduction</a>
+<ul>
+<li><a href="#background-the-death-ray-that-saves-lives"
+id="toc-background-the-death-ray-that-saves-lives">Background: The
+“death ray” that saves lives</a></li>
+<li><a href="#the-primary-radar" id="toc-the-primary-radar">The primary
+radar</a></li>
+<li><a href="#the-secondary-radar" id="toc-the-secondary-radar">The
+secondary radar</a></li>
+<li><a href="#mode-s" id="toc-mode-s">Mode S</a>
+<ul>
+<li><a href="#mode-s-interrogations"
+id="toc-mode-s-interrogations">Mode S interrogations</a></li>
+<li><a href="#mode-s-replies" id="toc-mode-s-replies">Mode S
+replies</a></li>
+<li><a href="#compatibility-with-mode-ac"
+id="toc-compatibility-with-mode-ac">Compatibility with Mode A/C</a></li>
+<li><a href="#mode-s-format" id="toc-mode-s-format">Mode S
+format</a></li>
+</ul></li>
+<li><a href="#ads-b" id="toc-ads-b">ADS-B</a></li>
+<li><a href="#other-mode-s-services"
+id="toc-other-mode-s-services">Other Mode S services</a></li>
+<li><a href="#summary" id="toc-summary">Summary</a></li>
+</ul></li>
+</ul>
+</nav>
+
+</div>
+
+
+<div class="col-md-8 col-lg-9 maintext">
+
+<div class="float-right">
+  <a href="https://github.com/junzis/the-1090mhz-riddle/edit/master/content/introduction.tex"
+    class='btn btn-sm btn-outline-dark'> <i class="fas fa-edit"></i> Recommend edits</a>
+</div>
+
+<h1 id="chap:intro">Introduction</h1>
+<h2 id="background-the-death-ray-that-saves-lives">Background: The
+“death ray” that saves lives</h2>
+<p>Like many modern technologies such as computers, the internet, and
+GPS whose origins can be traced back to the military, aviation radar is
+no exception.</p>
+<p>The fundamental theory of radar started in late 19th century. Since
+the 1860s, when the electromagnetic theory was discovered by James Clerk
+Maxwell, the foundation for many science and technology fields was laid
+out. In the late 19th century, Heinrich Hertz, who proved the existence
+of electromagnetic waves, also confirmed that metals could reflect radio
+waves. In the first decades of the 20th century, several systems for
+using radio waves to provide short-range directional information of
+objects were developed. German inventor Christian Hülsmeyer is often
+considered as the first person to use radio waves to detect metal
+objects in 1904.</p>
+<p>However, not until the Second World War, was the concept of <em>RAdio
+Detection And Ranging</em> (RADAR) developed. The technology was
+simultaneously researched by both major Allies and Axis countries.
+However, the United Kingdom led the race in developing a functional
+radar system.</p>
+<p>Originally, British Air Ministry officials, who were concerned about
+falling behind the technology race with the Germans, advised physicist
+Robert Watson Watt to propose a set of abstract technical challenges to
+his colleague Skip Wilkins:</p>
+<blockquote>
+<p>"Suppose, just suppose, that you had eight pints [3.8 kg] of water,
+3,000 ft [1 km] above the ground. And suppose that water was at 98<span
+class="math inline">\(^\circ\)</span>F [37<span
+class="math inline">\(^\circ\)</span>C], and you wanted to heat it to
+105<span class="math inline">\(^\circ\)</span>F [41<span
+class="math inline">\(^\circ\)</span>C]. How much radio frequency power
+would you require, from a distance of 5 km?"</p>
+</blockquote>
+<p>Both scientists understood very well that the average adult human has
+17 kg blood and a critical body temperature of 41<span
+class="math inline">\(^\circ\)</span>C. This represented an idea of the
+<em>death ray</em> that could be used to disable enemy aircraft
+pilots.</p>
+<p>Without even developing such a system, they figured out that the
+power requirement was far beyond practice at that time. However, they
+realized an opportunity for funding a different project. Given the
+amount of power that can be transmitted, it was possible to detect the
+reflection of aircraft, and, thus calculate the position of aircraft.
+This proposal was approved by the air ministry. Later on, this
+technology was developed and shared with Americans during the war. After
+that, the widespread usage of RADAR (which later became radar) had
+begun.</p>
+<p>After the war ended, radar became more and more important for civil
+aviation. With the rapid growth of commercial flights, it developed into
+a prominent technology for aircraft surveillance in the aviation
+industry.</p>
+<h2 id="the-primary-radar">The primary radar</h2>
+<p>Aircraft surveillance in the early days relied only on, what is known
+today as, the primary surveillance radar (PSR). The concept of PSR is
+fairly simple. It is a rotating radio transponder with a directional
+antenna. Commonly, the radar transmits a one-microsecond pulse for every
+one millisecond and listens to the reflections from the airplanes. The
+position of the aircraft is measured by the distance and angle to the
+radar. The distance is known as the <em>slant distance</em>, which is
+the line-of-sight distance between an aircraft and the radar. It can be
+calculated by measuring the time difference between the original signal
+and the reflection received, since the speed of the radio wave (speed of
+light) is known. The azimuth angle<a href="#fn1" class="footnote-ref"
+id="fnref1" role="doc-noteref"><sup>1</sup></a> of the aircraft is
+determined by the rotation angle of the radar. By processing radar
+signals, technologies like phase filter and Doppler filter can be used
+to filter out moving targets like aircraft and remove static objects,
+such as mountains, buildings, and other obstacles.</p>
+<p>The slant distance of an aircraft does not always correspond to the
+horizontal distance to the radar. This is because all points having the
+same slant distance are located on a sphere that has the radius equal to
+the distance. Since the civil radar usually does not provide elevation
+information on the target, it is not possible to accurately convert the
+slant distance to the horizontal distance. Historically, it is
+sufficient to use primary radar for separating airplanes without
+considering these altitude differences. However, other systems have to
+be in place to provide air traffic controllers more accurate positions
+of the aircraft.</p>
+<h2 id="the-secondary-radar">The secondary radar</h2>
+<p>The secondary surveillance radar (SSR), also known as the air traffic
+control radar beacon system (ATCRBS), was designed to provide air
+traffic controllers more information than what is provided by the
+primary radar. The secondary radar can be installed separately or
+installed on top of the primary radar. It uses a different radio
+frequency to actively interrogate the aircraft and receive information
+transmitted by the aircraft.</p>
+<p>The SSR transmits interrogations using the 1030 MHz radio frequency
+and the aircraft transponder transmits replies using the 1090 MHz radio
+frequency. In the early design of SSR, two civilian communication
+protocols (Mode A and Mode C) were introduced. Mode A and Mode C
+respectively allow the SSR to continuously interrogate the identity
+(squawk code) and the altitude of an aircraft. The squawk code in Mode A
+is a unique 4-octal digit code given by air traffic controllers to
+aircraft in their flight information region for identification. The
+altitude in Mode C refers to the barometric altitude obtained from the
+aircraft’s air data system.</p>
+<p>Although Mode A and Mode C provide additional information to air
+traffic controllers, they present several design challenges <span
+class="citation" data-cites="icao1983">[ICAO 1983]</span>. The secondary
+surveillance radar initiates Mode A and C interrogations with two
+different pulse patterns, which are shown in Figure <a
+href="#fig:mode_ac_uplink_pulses" data-reference-type="ref"
+data-reference="fig:mode_ac_uplink_pulses">1.1</a>.</p>
+<figure id="fig:mode_ac_uplink_pulses">
+<img src="../figures/intro/mode_ac_uplink_pulses.png" />
+<figcaption>Mode A/C interrogation pulses</figcaption>
+</figure>
+<p>The pulses are about 0.8 μs wide. P1 and P3 are the two main pulses
+sent by the directional antenna. They are separated by 8 μs and 21 μs,
+respectively for Mode A and C. P2 is a pulse emitted through the
+omnidirectional antenna right after P1. Pulse P2 is introduced for
+sidelobe suppression <span class="citation"
+data-cites="orlando1989">[Orlando 1989]</span>. When the power of P2 is
+higher than P1, the interrogation is likely from the side lobes of the
+directional antenna and should be ignored by the aircraft. This is can
+happen when the aircraft is close to the radar.</p>
+<p>Figure <a href="#fig:mode_ac_downlink_pulses"
+data-reference-type="ref"
+data-reference="fig:mode_ac_downlink_pulses">1.2</a> shows an example of
+a Mode A/C reply. Each reply consists of two persistent pulses, F1 and
+F2, separated by 20.3 μs. Within this period, either the identity code
+or the altitude code is encoded using 13 pulses of 0.45 μs. The pulses
+are separated by gaps of 1 μs. The pulse at the center serves as a
+verification pulse and is always absent. The presence or absence of any
+of the other 12 pulses represents a 1 or 0 bit. When required by air
+traffic controllers for identification purposes, a special purpose
+identification (SPI) may follow F2 after two absent pulses.</p>
+<figure id="fig:mode_ac_downlink_pulses">
+<img src="../figures/intro/mode_ac_downlink_pulses.png" />
+<figcaption>Mode A/C reply pulses</figcaption>
+</figure>
+<p>The response type (A or C) cannot be identified based on the reply
+signal itself. The SSR determines the content based on the
+synchronization with interrogations. This design of ATCRBS works
+sufficiently well with low-density air traffic, but it cannot
+efficiently cope with higher flight densities since all aircraft replies
+are transmitted on the same frequency. When several aircraft are in the
+same direction of the radar beam, reply signals can overlap and
+introduce errors for decoding. This is known as synchronous
+garbling.</p>
+<p>When there are multiple secondary radars in the vicinity, replies
+originated by other radars may be considered as valid responses of one
+radar, which in turn, causes errors and confusion. This syndrome is
+called <em>FRUIT</em> (False Replies Unsynchronized In Time).</p>
+<p>Though some of the garbling and the FRUIT problems can be mitigated
+with the reduction of interrogation frequency and improvements in signal
+processing ability, the information transmitted in Mode A and Mode C is
+still very limited. The number of identity codes available in Mode A
+communication is limited to a maximum of 4096 (<span
+class="math inline">\(8^4\)</span> given the 4 octal digits) unique
+codes, which poses another clear limitation.</p>
+<p>Hence, more advanced communication protocols needed to be developed
+to acquire more information from a large number of aircraft.</p>
+<h2 id="mode-s">Mode S</h2>
+<p>Mode S (Mode Select Beacon System) was designed by Lincoln Laboratory
+at Massachusetts Institute of Technology in the 1970s. Based on
+different iterations of hardware and software design in the 1980s, the
+implementation of Mode S in air traffic control began in the 1990s.
+Since then, Mode S has become one of the main sources for aircraft
+surveillance.</p>
+<p>The main characteristic of Mode S is its selective interrogation,
+which allows the SSR to interrogate different information from different
+aircraft separately. By using selective interrogation, it largely
+mitigated the problem of garbling in Mode A/C and thus greatly improved
+the capacity of the communication channel.</p>
+<p>Unlike the limited number (4096) of unique identification codes in
+Mode A communication, the Mode S transponder is identified by a 24-bit
+transponder code, which can support up to 16,777,216 (<span
+class="math inline">\(2^{24}\)</span>) unique addresses. In addition to
+these two major advantages, the Mode S protocol introduced many
+different types of information that could be interrogated and
+downlinked.</p>
+<h3 id="mode-s-interrogations">Mode S interrogations</h3>
+<p>The Mode S uplink signal contains parameters that indicate which
+information is desired by the air traffic controller. There are two
+types of Mode S interrogations, which are shown in Figure <a
+href="#fig:mode_s_uplink_pulses" data-reference-type="ref"
+data-reference="fig:mode_s_uplink_pulses">1.3</a>. The short
+interrogation has 56 bits of information contained in the data block,
+while the long interrogation contains 112 bits of information. The P2
+pulse acts as the sidelobe suppression for Mode A/C transponders so that
+they will ignore the rest of the interrogation pulses. Information in
+the Mode S interrogation data block uses the Differential Phase-Shift
+Keying (DPSK) modulation <span class="citation"
+data-cites="mazda2014">[Mazda 2014]</span>.</p>
+<figure id="fig:mode_s_uplink_pulses">
+<img src="../figures/intro/mode_s_uplink_pulses.png" />
+<figcaption>Mode S uplink pulses</figcaption>
+</figure>
+<h3 id="mode-s-replies">Mode S replies</h3>
+<p>There are two types of Mode S downlink signals, the short reply and
+the long reply, which correspond to the short and long interrogations
+from the SSR. For each microsecond, one bit is transmitted. All Mode S
+replies start with an 8 μs fixed preamble and continue with 56- or 112
+μs data block. The structure of the downlink message is shown in Figure
+<a href="#fig:mode_s_downlink_pulses" data-reference-type="ref"
+data-reference="fig:mode_s_downlink_pulses">1.4</a>.</p>
+<figure id="fig:mode_s_downlink_pulses">
+<img src="../figures/intro/mode_s_downlink_pulses.png" />
+<figcaption>An example of Mode S reply message</figcaption>
+</figure>
+<p>The 16-bit fixed preamble can be represented as
+<code>1010000101000000</code> in binary. The information contained in
+the data block is modulated using the Pulse Position Modulation (PPM),
+which is a type of amplitude modulation. In PPM, the <code>1</code> bit
+is represented by a 0.5 μs of pulse followed by a 0.5 μs flat signal.
+The <code>0</code> bit is reversed compared to the <code>1</code> bit,
+which is represented by a 0.5 μs flat signal and followed by a 0.5 μs
+pulse.</p>
+<div class="notebox">
+<p><span>Note</span> Mode S uplink and downlink signals use different
+modulation methods. The uplink uses phase modulation, while the downlink
+uses amplitude modulation. Phase modulation requires slightly more
+complicated hardware implementation but has a better performance in
+terms of error tolerance.</p>
+</div>
+<h3 id="compatibility-with-mode-ac">Compatibility with Mode A/C</h3>
+<p>Similar to Mode A/C, Mode S SSR can send <em>All-Call</em>
+interrogations to all aircraft in the vicinity. The All-Call
+interrogation is designed to be compatible with Mode A/C transponders.
+Figure <a href="#fig:mode_s_all_call" data-reference-type="ref"
+data-reference="fig:mode_s_all_call">1.5</a> shows the pulses of an
+All-Call interrogation. There are 8 or 21 μs between P1 and P3, which is
+the same as Mode A/C. P4 is a wider pulse lasting for 1.6 μs.</p>
+<figure id="fig:mode_s_all_call">
+<img src="../figures/intro/mode_acs_all_call.png" />
+<figcaption>Mode A/C/S All-Call interrogation</figcaption>
+</figure>
+<p>When a Mode A/C transponder receives this interrogation, the last
+pulse P4 is ignored. Hence, a normal Mode A or Mode C reply is
+transmitted. A Mode S transponder would detect P4, and thus, produce a
+Mode S All-Call reply. The Mode A/C/S All-Call reply is designed for SSR
+to identify which aircraft are in the vicinity, including Mode A/C only
+aircraft.</p>
+<p>This is one of the several different interrogation pulse patterns
+from a Mode A/C compatible Mode S radar. In addition, Mode S SSRs can
+perform both Mode A/C and Mode S interrogations.</p>
+<div class="notebox">
+<p><span>Note</span> The Mode A/C/S All-Call is being phased out, as new
+transponders stop replying to this type of interrogations. It is common
+for Mode S SSR makes use of Mode S only All-Call interrogation with the
+standard Mode S uplink (format 11) as shown in Figure <a
+href="#fig:mode_s_uplink_pulses" data-reference-type="ref"
+data-reference="fig:mode_s_uplink_pulses">1.3</a>.</p>
+</div>
+<h3 id="mode-s-format">Mode S format</h3>
+<p>The Mode S communication protocol is designed to handle different
+types of uplink and downlink message formats. The first five bits of the
+message define the uplink format (UF) or downlink format (DF) number of
+the message. Based on the UF/DF number, different structures of the data
+block are presented. Table <a href="#tb:mode_s_formats"
+data-reference-type="ref" data-reference="tb:mode_s_formats">1.1</a>
+shows all available Mode S formats. Currently, 11 Mode S formats are
+being used. Numbers not in this table are reserved for future use.</p>
+<div id="tb:mode_s_formats">
+<table>
+<caption>Mode S uplink and downlink formats</caption>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>UF/DF</strong></th>
+<th style="text-align: left;"><strong>Bits</strong></th>
+<th style="text-align: left;"><strong>Uplink type</strong></th>
+<th style="text-align: left;"><strong>Downlink type</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">56</td>
+<td style="text-align: left;">Short air-air surveillance (ACAS)</td>
+<td style="text-align: left;">Short air-air surveillance (ACAS)</td>
+</tr>
+<tr>
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">56</td>
+<td style="text-align: left;">Surveillance, altitude request</td>
+<td style="text-align: left;">Surveillance, altitude reply</td>
+</tr>
+<tr>
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">56</td>
+<td style="text-align: left;">Surveillance, identity request</td>
+<td style="text-align: left;">Surveillance, identity reply</td>
+</tr>
+<tr>
+<td style="text-align: left;">11</td>
+<td style="text-align: left;">56</td>
+<td style="text-align: left;">Mode S All-Call</td>
+<td style="text-align: left;">All-Call reply</td>
+</tr>
+<tr>
+<td style="text-align: left;">16</td>
+<td style="text-align: left;">112</td>
+<td style="text-align: left;">Long air-air surveillance (ACAS)</td>
+<td style="text-align: left;">Long air-air surveillance (ACAS)</td>
+</tr>
+<tr>
+<td style="text-align: left;">17</td>
+<td style="text-align: left;">112</td>
+<td style="text-align: left;">-</td>
+<td style="text-align: left;">Extended squitter</td>
+</tr>
+<tr>
+<td style="text-align: left;">18</td>
+<td style="text-align: left;">112</td>
+<td style="text-align: left;">-</td>
+<td style="text-align: left;">Extended squitter/non transponder</td>
+</tr>
+<tr>
+<td style="text-align: left;">19</td>
+<td style="text-align: left;">112</td>
+<td style="text-align: left;">-</td>
+<td style="text-align: left;">Military extended squitter</td>
+</tr>
+<tr>
+<td style="text-align: left;">20</td>
+<td style="text-align: left;">112</td>
+<td style="text-align: left;">Comm-A, altitude request</td>
+<td style="text-align: left;">Comm-B, altitude reply</td>
+</tr>
+<tr>
+<td style="text-align: left;">21</td>
+<td style="text-align: left;">112</td>
+<td style="text-align: left;">Comm-A, identity request</td>
+<td style="text-align: left;">Comm-B, identity reply</td>
+</tr>
+<tr>
+<td style="text-align: left;">24</td>
+<td style="text-align: left;">112</td>
+<td style="text-align: left;">Comm-C (ELM)</td>
+<td style="text-align: left;">Comm-D (ELM)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="notebox">
+<p><span>Note</span> Format number 24 is an exception. It is identified
+using only the first two bits, which must be <code>11</code> in binary.
+All following bits are used for encoding other information.</p>
+</div>
+<p>We can see that the short 56-bit data block is used to encode
+messages with format numbers from 0 to 11. Messages with format numbers
+above 16 are encoded with the long 112-bit data block. Among all uplink
+formats, UF 17, 18, and 19 are not used. This is because the
+corresponding downlink messages (extended squitter messages) are
+designed to be broadcast automatically without the need for SSR
+interrogations.</p>
+<p>One of the most common applications for the extended squitter is the
+Automatic Dependent Surveillance-Broadcast service, which is commonly
+known as ADS-B.</p>
+<h2 id="ads-b">ADS-B</h2>
+<p>Automatic Dependent Surveillance-Broadcast (ADS-B) is a surveillance
+technology designed to allow aircraft to broadcast their flight state
+periodically without the need for interrogation. The word
+<em>automatic</em> refers to the fact that no inputs from controllers or
+pilots are required. The word <em>dependent</em> indicates this
+technology depends on information from other onboard systems, such as
+air data systems and navigation systems. ADS-B only become possible
+because of Global Navigation Satellite Systems (GNSS), such as Global
+Positioning System (GPS), which is the first GNSS system made available
+for civil usage by the USA after the Korean Air Lines Flight 007
+accident in 1983.</p>
+<p>Common aircraft state parameters included in ADS-B are position,
+altitude, and speed. The position is determined by GNSS and air data
+systems. The velocity is derived from the GNSS position and the inertial
+measurement system. The altitude information includes both barometric
+altitude and GNSS altitude. The barometric altitude is provided by the
+air data system. In addition to these primary state parameters, ADS-B
+also allows other information to be broadcast, for example, aircraft
+call-sign, accuracy indicators, integrity indicators, and operational
+status.</p>
+<p>It is worth emphasizing that ADS-B is a broadcast-based surveillance
+system. Unlike other types of Mode S surveillance, no surveillance
+interrogation is required. The decoding of ADS-B messages is also easier
+than other Mode S messages because the message type and structure are
+clear for each individual message.</p>
+<p>Different types of ADS-B messages are identified by Type Codes. The
+structures of these messages are all defined in ICAO documents, such as
+in <span class="citation" data-cites="icao9871v1">[ICAO 2008]</span> and
+<span class="citation" data-cites="rtca2011mops">[RTCA 2011]</span>. In
+Part I of this book, we will explain how these different types of ADS-B
+messages can be decoded.</p>
+<div class="notebox">
+<p><span>Note</span> In this book, ADS-B only refers to the ADS-B
+standard implemented through Mode S extended squitter. Originally, there
+were three candidates to build ADS-B: Mode S Extended Squitter, VHF Data
+Link - Mode 4 (VDL4), and Universal Access Transceiver (UAT). Different
+specifications are designed for these frequency channels <span
+class="citation" data-cites="rtca2011mops rtca2002uat">[RTCA 2011; RTCA
+2002]</span>. However, the Mode S extended squitter implementation of
+ADS-B is the most adopted one among all candidates. UAT is only
+partially implemented in some countries like the USA, while VDL4 did not
+go beyond the testing phase.</p>
+</div>
+<h2 id="other-mode-s-services">Other Mode S services</h2>
+<p>The most common data format number used in Mode S for information
+downlink are 4, 5, 20, and 21. Format 4 and 5 are short messages
+designed to acquire aircraft altitude and identity (similar to Mode A/C
+messages). Downlink messages with format 20 or 21, as known as Comm-B
+messages, contain other information desired by air traffic controllers,
+in addition to altitude and identity.</p>
+<p>In theory, up to 255 different message types are supported by the
+Mode S Comm-B. A new parameter, Comm-B Data Selector (BDS), is designed
+to identify which additional information is included in Mode S messages.
+It functions similarly to the Type Code of ADS-B message. In practice,
+not all 255 BDS codes are defined or used.</p>
+<p>A subgroup of these codes is commonly interrogated by surveillance
+radars. By combining different BDS codes into groups, several Mode S
+services are defined. The two most used services are Mode S Elementary
+Surveillance (ELS) and Mode S Enhanced Surveillance (EHS) <span
+class="citation" data-cites="grappel2008">[Grappel et al. 2008]</span>.
+For example, in the European airspace, aircraft above a certain takeoff
+weight category are required to have these capabilities enabled.</p>
+<p>The Mode S Elementary Surveillance consists of four BDS codes (10,
+17, 20, and 30). It provides basic information such as Mode S
+capabilities and identification (callsign), in addition to the altitude
+or identity (squawk code) information.</p>
+<p>The Mode S Enhanced Surveillance consists of three BDS codes (40, 50,
+and 60). It provides much more additional information on aircraft
+states, such as selected altitudes, true airspeed, indicated airspeed,
+Mach number, bank angle, and turn rate.</p>
+<p>In addition to the common ELS and EHS, the meteorological routine air
+report (MRAR), and the meteorological hazard report (MHR) are also
+interrogated in some controlled airspaces. These reports provide
+weather-related information such as wind and temperature that are
+measured by the aircraft sensors. Another important service, Airborne
+Collision Avoidance System (ACAS), also uses the Mode S transponder for
+communication. All these services will be explained in details in this
+book.</p>
+<h2 id="summary">Summary</h2>
+<p>Figure <a href="#fig:mode_s_services" data-reference-type="ref"
+data-reference="fig:mode_s_services">1.6</a> illustrates all
+aforementioned Mode S services and their relationships with different
+Mode S downlink formats. This book covers all Mode S messages except
+DF19 and DF24 from this figure.</p>
+<figure id="fig:mode_s_services">
+<img src="../figures/intro/mode_s_services.png" />
+<figcaption>Relationship between Mode S downlink formats and different
+services</figcaption>
+</figure>
+<p>In the rest of this book, the details of these services are discussed
+in separate chapters. In Chapter 2 (the rest of part I), common hardware
+and software setups are shown. In Chapters 3 to 10 (part II), the focus
+is on ADS-B messages. Detailed guides on how to decode different types
+of messages are presented. In Chapters 11 to 19 (part III), the focus is
+on Mode S ELS, EHS, and meteorological services. Accordingly, the
+decoding and inference of the messages are provided.</p>
+<div id="refs" class="references csl-bib-body hanging-indent"
+role="list">
+<div id="ref-grappel2008" class="csl-entry" role="listitem">
+<span class="smallcaps">Grappel, R.D., Harris, G.S., Kozar, M.J., and
+Wiken, R.T.</span> 2008. Elementary surveillance (ELS) and enhanced
+surveillance (EHS) validation via mode s secondary radar surveillance.
+<em>Project Report ATC-337, Lincoln Lab., MIT</em>.
+</div>
+<div id="ref-icao1983" class="csl-entry" role="listitem">
+<span class="smallcaps">ICAO</span>. 1983. <em>Secondary surveillance
+radar mode s advisory circular</em>. International Civil Aviation
+Organization.
+</div>
+<div id="ref-icao9871v1" class="csl-entry" role="listitem">
+<span class="smallcaps">ICAO</span>. 2008. <em>Technical provisions for
+mode s services and extended squitter</em>. International Civil Aviation
+Organization.
+</div>
+<div id="ref-mazda2014" class="csl-entry" role="listitem">
+<span class="smallcaps">Mazda, F.</span> 2014. <em>Telecommunications
+engineer’s reference book</em>. Butterworth-Heinemann.
+</div>
+<div id="ref-orlando1989" class="csl-entry" role="listitem">
+<span class="smallcaps">Orlando, V.A.</span> 1989. The mode s beacon
+radar system. <em>The Lincoln Laboratory Journal</em> <em>2</em>, 3,
+345–362.
+</div>
+<div id="ref-rtca2002uat" class="csl-entry" role="listitem">
+<span class="smallcaps">RTCA</span>. 2002. Minimum operational
+performance standards for universal access transceiver (UAT) automatic
+dependent surveillance–broadcast. <em>RTCA DO-282A</em>.
+</div>
+<div id="ref-rtca2011mops" class="csl-entry" role="listitem">
+<span class="smallcaps">RTCA</span>. 2011. Minimum operational
+performance standards for 1090MHz extended squitter automatic dependent
+surveillance-broadcast (ADS-b) and traffic information
+services-broadcast (TIS-b)[j]. <em>RTCA DO-260B</em> <em>1</em>, 1,
+1365–1372.
+</div>
+</div>
+<section id="footnotes" class="footnotes footnotes-end-of-document"
+role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Azimuth angle is the horizontal angle measured clockwise
+to the north of the observer.<a href="#fnref1" class="footnote-back"
+role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+<footer class="mastfoot">
+  <div class="text-right">
+    <p> © Copyright 2021 <a href="https://junzis.com">Junzi Sun</a>. Build with LaTeX, Pandoc, and GitHub</p>
+  </div>
+</footer>
+
+</div>
+</div>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-74700456-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-74700456-1');
+</script>
+
+</body>
+</html>

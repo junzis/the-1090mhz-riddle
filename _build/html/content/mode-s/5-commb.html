@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+  <meta name="author" content="Junzi Sun">
+
+
+  <title>The 1090MHz Riddle</title>
+  <style type="text/css">code{white-space: pre;}</style>
+
+
+
+  <link rel="stylesheet" href="../../bootstrap.min.css">
+  <link rel="stylesheet" href="../../style.css">
+
+
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet"> 
+
+<script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js"
+  integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+" crossorigin="anonymous">
+</script>
+
+</head>
+<body>
+
+<div class="container">
+
+<div class="d-flex flex-row align-items-end">
+	<div>
+		<h1 class="title">The 1090 Megahertz Riddle <span class="h5">(second edition)</span></h1>
+		<div class="subtitle">A Guide to Decoding Mode S and ADS-B Signals</div>
+	</div>
+	<div class='ml-auto chapter-nav'>
+    <div class="author">By: <strong>Junzi Sun</strong> (<a href="http://junzis.com">junzis.com</a>)</div>
+	</div>
+</div>
+
+<hr>
+
+<div class="row">
+<div class="col-md-4 col-lg-3">
+<nav>
+  <a href="../../index.html" type="button"
+      class="btn btn-sm btn-outline-info btn-light">
+      <i class="fas fa-home"></i> Home
+  </a>
+
+  <br>
+
+  <a href="../../book-the_1090mhz_riddle-junzi_sun.pdf"
+      type="button" class="btn btn-sm btn-outline-info">
+    <i class="far fa-file-pdf"></i> Download PDF book
+  </a>
+
+  <br>
+
+  <a href="../../index.html#cite-this-book" type="button"
+      class="btn btn-sm btn-outline-info btn-light">
+    <i class="fas fa-quote-left"></i> Cite this book
+  </a>
+
+  <br>
+
+  <a href="http://mode-s.org" type="button"
+      class="btn btn-sm btn-outline-dark btn-light">
+    <i class="fas fa-angle-double-left"></i> mode-s.org
+  </a>
+
+  <hr>
+
+  <h1>Book chapters</h1>
+  <ul>
+    <li><a href="../../misc/preface.html">0. Preface</a></li>
+    <li><a href="../../content/introduction.html">1. Introduction</a></li>
+    <li><a href="../../content/quickstart.html">2. Quick start</a></li>
+    <li>ADS-B</li>
+    <ul>
+      <li><a href="../../content/ads-b/1-basics.html">3. ADS-B basics</a></li>
+      <li><a href="../../content/ads-b/2-identification.html">4. Aircraft Identification</a></li>
+      <li><a href="../../content/ads-b/3-airborne-position.html">5. Airborne Position</a></li>
+      <li><a href="../../content/ads-b/4-surface-position.html">6. Surface Position</a></li>
+      <li><a href="../../content/ads-b/5-airborne-velocity.html">7. Airborne Velocity</a></li>
+      <li><a href="../../content/ads-b/6-operation-status.html">8. Operation Status</a></li>
+      <li><a href="../../content/ads-b/7-uncertainty.html">9. Uncertainty</a></li>
+      <li><a href="../../content/ads-b/8-error-control.html">10. Error Control</a></li>
+    </ul>
+    <li>Mode S</li>
+    <ul>
+      <li><a href="../../content/mode-s/1-basics.html">11. Mode S basics</a></li>
+      <li><a href="../../content/mode-s/2-allcall.html">12. All-call reply</a></li>
+      <li><a href="../../content/mode-s/3-surveillance.html">13. Surveillance reply</a></li>
+      <li><a href="../../content/mode-s/4-acas.html">14. ACAS</a></li>
+      <li><a href="../../content/mode-s/5-commb.html">15. Comm-B replies</a></li>
+      <li><a href="../../content/mode-s/6-els.html">16. Elementary surveillance</a></li>
+      <li><a href="../../content/mode-s/7-ehs.html">17. Enhanced surveillance</a></li>
+      <li><a href="../../content/mode-s/8-meteo.html">18. Meteorological services</a></li>
+      <li><a href="../../content/mode-s/9-inference.html">19. BDS code inference</a></li>
+    </ul>
+    <li><a href="../../content/conclusion.html">20. Conclusion</a></li>
+    <li>Related</li>
+    <ul>
+      <li><a href="../../misc/about.html">About the author</a></li>
+      <li><a href="../../misc/ack.html">Acknowledgements</a></li>
+    </ul>
+  </ul>
+</nav>
+
+<hr>
+<nav id="TOC">
+<h1>In this page</h1>
+<ul>
+<li><a href="#chap:comm-b" id="toc-chap:comm-b">Comm-B</a>
+<ul>
+<li><a href="#structure" id="toc-structure">Structure</a></li>
+<li><a href="#bds" id="toc-bds">BDS</a></li>
+</ul></li>
+</ul>
+</nav>
+
+</div>
+
+
+<div class="col-md-8 col-lg-9 maintext">
+
+<div class="float-right">
+  <a href="https://github.com/junzis/the-1090mhz-riddle/edit/master/content/mode-s/5-commb.tex"
+    class='btn btn-sm btn-outline-dark'> <i class="fas fa-edit"></i> Recommend edits</a>
+</div>
+
+<h1 id="chap:comm-b">Comm-B</h1>
+<p>Comm-B messages count for a large portion of the Mode S selective
+interrogation responses. The message can have a downlink format of
+either 20 or 21, depending on whether the aircraft identity code or
+altitude code is included in the message.</p>
+<p>Comm-B protocol supports many different types of messages (up to
+255). Several important surveillance services utilize some of the Comm-B
+message types (see Figure <a href="#fig:mode_s_services"
+data-reference-type="ref"
+data-reference="fig:mode_s_services">[fig:mode_s_services]</a> from
+Chapter <a href="#chap:intro" data-reference-type="ref"
+data-reference="chap:intro">[chap:intro]</a>). In this book, we are
+mainly interested in three types of services, which are Mode S
+Elementary Surveillance (ELS), Mode S Enhanced Surveillance (EHS), and
+Meteorological information. By decoding these messages, we can discover
+some additional information of an aircraft.</p>
+<h2 id="structure">Structure</h2>
+<p>Comm-B messages have similar structures as surveillance replies
+(DF=4/5). The structures are shown in the Tables <a
+href="#tb:df_20_structure" data-reference-type="ref"
+data-reference="tb:df_20_structure">1.1</a> and <a
+href="#tb:df_21_structure" data-reference-type="ref"
+data-reference="tb:df_21_structure">1.2</a>.</p>
+<div id="tb:df_20_structure">
+<table>
+<caption>Comm-B, altitude reply (DF=20)</caption>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>FIELD</strong></th>
+<th style="text-align: left;"><strong></strong></th>
+<th style="text-align: left;"><strong>MSG</strong></th>
+<th style="text-align: left;"><strong>BITS</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Downlink format</td>
+<td style="text-align: left;">DF</td>
+<td style="text-align: left;">1–5</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr>
+<td style="text-align: left;">Flight status</td>
+<td style="text-align: left;">FS</td>
+<td style="text-align: left;">6–8</td>
+<td style="text-align: left;">3</td>
+</tr>
+<tr>
+<td style="text-align: left;">Downlink request</td>
+<td style="text-align: left;">DR</td>
+<td style="text-align: left;">9–13</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr>
+<td style="text-align: left;">Utility message</td>
+<td style="text-align: left;">UM</td>
+<td style="text-align: left;">14–19</td>
+<td style="text-align: left;">6</td>
+</tr>
+<tr>
+<td style="text-align: left;">Altitude code</td>
+<td style="text-align: left;">AC</td>
+<td style="text-align: left;">20–32</td>
+<td style="text-align: left;">13</td>
+</tr>
+<tr>
+<td style="text-align: left;">Message, Comm-B</td>
+<td style="text-align: left;">MB</td>
+<td style="text-align: left;">33–88</td>
+<td style="text-align: left;">56</td>
+</tr>
+<tr>
+<td style="text-align: left;">Parity</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">89–112</td>
+<td style="text-align: left;">24</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="tb:df_21_structure">
+<table>
+<caption>Comm-B, identity reply (DF=21)</caption>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>FIELD</strong></th>
+<th style="text-align: left;"><strong></strong></th>
+<th style="text-align: left;"><strong>MSG</strong></th>
+<th style="text-align: left;"><strong>BITS</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Downlink format</td>
+<td style="text-align: left;">DF</td>
+<td style="text-align: left;">1–5</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr>
+<td style="text-align: left;">Flight status</td>
+<td style="text-align: left;">FS</td>
+<td style="text-align: left;">6–8</td>
+<td style="text-align: left;">3</td>
+</tr>
+<tr>
+<td style="text-align: left;">Downlink request</td>
+<td style="text-align: left;">DR</td>
+<td style="text-align: left;">9–13</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr>
+<td style="text-align: left;">Utility message</td>
+<td style="text-align: left;">UM</td>
+<td style="text-align: left;">14–19</td>
+<td style="text-align: left;">6</td>
+</tr>
+<tr>
+<td style="text-align: left;">Identity code</td>
+<td style="text-align: left;">ID</td>
+<td style="text-align: left;">20–32</td>
+<td style="text-align: left;">13</td>
+</tr>
+<tr>
+<td style="text-align: left;">Message, Comm-B</td>
+<td style="text-align: left;">MB</td>
+<td style="text-align: left;">33–88</td>
+<td style="text-align: left;">56</td>
+</tr>
+<tr>
+<td style="text-align: left;">Parity</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">89–112</td>
+<td style="text-align: left;">24</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The definitions of these common fields are the same as surveillance
+replies in Chapter <a href="#chap:surv_reply" data-reference-type="ref"
+data-reference="chap:surv_reply">[chap:surv_reply]</a>. In addition,
+depending on the request in the uplink, either address parity or data
+parity (see Chapter <a href="#chap:mode_s_basics"
+data-reference-type="ref"
+data-reference="chap:mode_s_basics">[chap:mode_s_basics]</a>) can be
+included in the downlink message.</p>
+<h2 id="bds">BDS</h2>
+<p>Comm-B Data Selector (BDS) is an 8-bit code that determines which
+information to be included in the MB fields. It is often shown as a
+2-digit hexadecimal, for example, <code>4,0</code> or <code>0,A</code>.
+We can make a comparison between the BDS code and Type Code used in
+ADS-B. They both help to identify which structure shall be used to
+decode the message, except that the BDS code is only included in the
+uplink (Comm-A). For Comm-B messages, BDS codes are not always
+included.</p>
+<p>Without knowing the BDS code of the downlink message, the information
+contained in the MB field cannot be decoded. Fortunately, there are
+methods available that can be used to infer the BDS code for most of the
+messages and decode them. In later Chapter <a href="#chap:bds_infer"
+data-reference-type="ref"
+data-reference="chap:bds_infer">[chap:bds_infer]</a>, the inference
+process will be explained.</p>
+<p>The following is the list of BDS codes for messages that will be
+discussed in detail in the different chapters.</p>
+<ul>
+<li><p>BDS 1,0 - Data link capability report</p></li>
+<li><p>BDS 1,7 - Common usage GICB capability report</p></li>
+<li><p>BDS 2,0 - Aircraft identification</p></li>
+<li><p>BDS 3,0 - ACAS active resolution advisory</p></li>
+<li><p>BDS 4,0 - Selected vertical intention</p></li>
+<li><p>BDS 5,0 - Track and turn report</p></li>
+<li><p>BDS 6,0 - Heading and speed report</p></li>
+<li><p>BDS 4,4 - Meteorological routine air report</p></li>
+<li><p>BDS 4,5 - Meteorological hazard report</p></li>
+</ul>
+<p>Here, the first four BDS codes (<code>1,0</code>, <code>1,7</code>,
+<code>2,0</code>, <code>3,0</code>) belong to the ELS service, the next
+three ones (<code>4,0</code>, <code>5,0</code>, <code>6,0</code>) belong
+to the EHS services, and the last two codes (<code>4,4</code>,
+<code>4,5</code>) report meteorological information. All ELS, EHS and
+meteorological services are discussed in the following chapters.</p>
+<p>It is also worth noting that even ADS-B messages belong to Mode S
+extended squitter, they are still assigned with BDS codes. The list of
+BDS codes for these ADS-B messages are:</p>
+<ul>
+<li><p>BDS 0,5 - Extended squitter airborne position</p></li>
+<li><p>BDS 0,6 - Extended squitter surface position</p></li>
+<li><p>BDS 0,7 - Extended squitter status</p></li>
+<li><p>BDS 0,8 - Extended squitter identification and category</p></li>
+<li><p>BDS 0,9 - Extended squitter airborne velocity
+information</p></li>
+</ul>
+
+<footer class="mastfoot">
+  <div class="text-right">
+    <p> © Copyright 2021 <a href="https://junzis.com">Junzi Sun</a>. Build with LaTeX, Pandoc, and GitHub</p>
+  </div>
+</footer>
+
+</div>
+</div>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-74700456-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-74700456-1');
+</script>
+
+</body>
+</html>

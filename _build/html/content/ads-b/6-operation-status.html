@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+  <meta name="author" content="Junzi Sun">
+
+
+  <title>The 1090MHz Riddle</title>
+  <style type="text/css">code{white-space: pre;}</style>
+
+
+
+  <link rel="stylesheet" href="../../bootstrap.min.css">
+  <link rel="stylesheet" href="../../style.css">
+
+
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet"> 
+
+<script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js"
+  integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+" crossorigin="anonymous">
+</script>
+
+</head>
+<body>
+
+<div class="container">
+
+<div class="d-flex flex-row align-items-end">
+	<div>
+		<h1 class="title">The 1090 Megahertz Riddle <span class="h5">(second edition)</span></h1>
+		<div class="subtitle">A Guide to Decoding Mode S and ADS-B Signals</div>
+	</div>
+	<div class='ml-auto chapter-nav'>
+    <div class="author">By: <strong>Junzi Sun</strong> (<a href="http://junzis.com">junzis.com</a>)</div>
+	</div>
+</div>
+
+<hr>
+
+<div class="row">
+<div class="col-md-4 col-lg-3">
+<nav>
+  <a href="../../index.html" type="button"
+      class="btn btn-sm btn-outline-info btn-light">
+      <i class="fas fa-home"></i> Home
+  </a>
+
+  <br>
+
+  <a href="../../book-the_1090mhz_riddle-junzi_sun.pdf"
+      type="button" class="btn btn-sm btn-outline-info">
+    <i class="far fa-file-pdf"></i> Download PDF book
+  </a>
+
+  <br>
+
+  <a href="../../index.html#cite-this-book" type="button"
+      class="btn btn-sm btn-outline-info btn-light">
+    <i class="fas fa-quote-left"></i> Cite this book
+  </a>
+
+  <br>
+
+  <a href="http://mode-s.org" type="button"
+      class="btn btn-sm btn-outline-dark btn-light">
+    <i class="fas fa-angle-double-left"></i> mode-s.org
+  </a>
+
+  <hr>
+
+  <h1>Book chapters</h1>
+  <ul>
+    <li><a href="../../misc/preface.html">0. Preface</a></li>
+    <li><a href="../../content/introduction.html">1. Introduction</a></li>
+    <li><a href="../../content/quickstart.html">2. Quick start</a></li>
+    <li>ADS-B</li>
+    <ul>
+      <li><a href="../../content/ads-b/1-basics.html">3. ADS-B basics</a></li>
+      <li><a href="../../content/ads-b/2-identification.html">4. Aircraft Identification</a></li>
+      <li><a href="../../content/ads-b/3-airborne-position.html">5. Airborne Position</a></li>
+      <li><a href="../../content/ads-b/4-surface-position.html">6. Surface Position</a></li>
+      <li><a href="../../content/ads-b/5-airborne-velocity.html">7. Airborne Velocity</a></li>
+      <li><a href="../../content/ads-b/6-operation-status.html">8. Operation Status</a></li>
+      <li><a href="../../content/ads-b/7-uncertainty.html">9. Uncertainty</a></li>
+      <li><a href="../../content/ads-b/8-error-control.html">10. Error Control</a></li>
+    </ul>
+    <li>Mode S</li>
+    <ul>
+      <li><a href="../../content/mode-s/1-basics.html">11. Mode S basics</a></li>
+      <li><a href="../../content/mode-s/2-allcall.html">12. All-call reply</a></li>
+      <li><a href="../../content/mode-s/3-surveillance.html">13. Surveillance reply</a></li>
+      <li><a href="../../content/mode-s/4-acas.html">14. ACAS</a></li>
+      <li><a href="../../content/mode-s/5-commb.html">15. Comm-B replies</a></li>
+      <li><a href="../../content/mode-s/6-els.html">16. Elementary surveillance</a></li>
+      <li><a href="../../content/mode-s/7-ehs.html">17. Enhanced surveillance</a></li>
+      <li><a href="../../content/mode-s/8-meteo.html">18. Meteorological services</a></li>
+      <li><a href="../../content/mode-s/9-inference.html">19. BDS code inference</a></li>
+    </ul>
+    <li><a href="../../content/conclusion.html">20. Conclusion</a></li>
+    <li>Related</li>
+    <ul>
+      <li><a href="../../misc/about.html">About the author</a></li>
+      <li><a href="../../misc/ack.html">Acknowledgements</a></li>
+    </ul>
+  </ul>
+</nav>
+
+<hr>
+<nav id="TOC">
+<h1>In this page</h1>
+<ul>
+<li><a href="#aircraft-operation-status"
+id="toc-aircraft-operation-status">Aircraft operation status</a>
+<ul>
+<li><a href="#version-0" id="toc-version-0">Version 0</a></li>
+<li><a href="#version-1" id="toc-version-1">Version 1</a></li>
+<li><a href="#version-2" id="toc-version-2">Version 2</a></li>
+</ul></li>
+</ul>
+</nav>
+
+</div>
+
+
+<div class="col-md-8 col-lg-9 maintext">
+
+<div class="float-right">
+  <a href="https://github.com/junzis/the-1090mhz-riddle/edit/master/content/ads-b/6-operation-status.tex"
+    class='btn btn-sm btn-outline-dark'> <i class="fas fa-edit"></i> Recommend edits</a>
+</div>
+
+<h1 id="aircraft-operation-status">Aircraft operation status</h1>
+<p>The aircraft operational status message is designed to provide
+various information on an aircraft. It is transmitted with Type Code 31
+(<code>TC=31</code>). The structures of this message type differ
+significantly over different ADS-B versions. The message has been
+defined in all ADS-B versions. But in practice, it is not implemented in
+ADS-B version 0. From version 1 onward, the operational status includes
+more information, such as ADS-B version, accuracy, and integrity
+indicators.</p>
+<h2 id="version-0">Version 0</h2>
+<p>In version 0, the structure of the message is shown in Table <a
+href="#tb:adsb-operational-status-v0" data-reference-type="ref"
+data-reference="tb:adsb-operational-status-v0">1.1</a>. Two main blocks
+contain the status information, which includes operational capabilities
+(16 bits) and operational status (16 bits). Each block contains four
+parameters, and each parameter is encoded with 4 bits.</p>
+<div id="tb:adsb-operational-status-v0">
+<table>
+<caption>Aircraft operational status (Version 0)</caption>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>FIELD</strong></th>
+<th style="text-align: center;"></th>
+<th style="text-align: center;"><strong>MSG</strong></th>
+<th style="text-align: center;"><strong>ME</strong></th>
+<th style="text-align: center;"><strong>BITS</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Type code = 31 (Binary: 11111)</td>
+<td style="text-align: center;">TC</td>
+<td style="text-align: center;">33–37</td>
+<td style="text-align: center;">1–5</td>
+<td style="text-align: center;">5</td>
+</tr>
+<tr>
+<td style="text-align: left;">Sub-type code = 0 (Binary: 000)</td>
+<td style="text-align: center;">ST</td>
+<td style="text-align: center;">38–40</td>
+<td style="text-align: center;">6–8</td>
+<td style="text-align: center;">3</td>
+</tr>
+<tr>
+<td style="text-align: left;">Enroute operational capabilities</td>
+<td style="text-align: center;">CC4</td>
+<td style="text-align: center;">41–44</td>
+<td style="text-align: center;">9–12</td>
+<td style="text-align: center;">4</td>
+</tr>
+<tr>
+<td style="text-align: left;">Terminal area operational
+capabilities</td>
+<td style="text-align: center;">CC3</td>
+<td style="text-align: center;">45–48</td>
+<td style="text-align: center;">13–16</td>
+<td style="text-align: center;">4</td>
+</tr>
+<tr>
+<td style="text-align: left;">Approach/landing operational
+capabilities</td>
+<td style="text-align: center;">CC2</td>
+<td style="text-align: center;">49–52</td>
+<td style="text-align: center;">17–21</td>
+<td style="text-align: center;">4</td>
+</tr>
+<tr>
+<td style="text-align: left;">Surface operational capabilities</td>
+<td style="text-align: center;">CC1</td>
+<td style="text-align: center;">53–56</td>
+<td style="text-align: center;">22–24</td>
+<td style="text-align: center;">4</td>
+</tr>
+<tr>
+<td style="text-align: left;">Enroute operational status</td>
+<td style="text-align: center;">OM4</td>
+<td style="text-align: center;">57–60</td>
+<td style="text-align: center;">25–28</td>
+<td style="text-align: center;">4</td>
+</tr>
+<tr>
+<td style="text-align: left;">Terminal area operational status</td>
+<td style="text-align: center;">OM3</td>
+<td style="text-align: center;">61–64</td>
+<td style="text-align: center;">29–32</td>
+<td style="text-align: center;">4</td>
+</tr>
+<tr>
+<td style="text-align: left;">Approach/landing operational status</td>
+<td style="text-align: center;">OM2</td>
+<td style="text-align: center;">65–68</td>
+<td style="text-align: center;">33–36</td>
+<td style="text-align: center;">4</td>
+</tr>
+<tr>
+<td style="text-align: left;">Surface operational status</td>
+<td style="text-align: center;">OM1</td>
+<td style="text-align: center;">69–72</td>
+<td style="text-align: center;">36–39</td>
+<td style="text-align: center;">4</td>
+</tr>
+<tr>
+<td style="text-align: left;">Reserved</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">73–88</td>
+<td style="text-align: center;">41–56</td>
+<td style="text-align: center;">16</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>However, even though all the parameter fields are defined, all
+<code>CC</code> and bits are reserved in the third and fourth blocks
+according to <span class="citation" data-cites="icao9871v1">[ICAO
+2008]</span>, which eventually made the definitions unusable for version
+0 transponders. As version 0 transponders do not transmit any operation
+status messages, the absence of TC=31 messages can help identify
+transponder version 0, which is discussed in Chapter <a
+href="#chap:adsb-basic" data-reference-type="ref"
+data-reference="chap:adsb-basic">[chap:adsb-basic]</a>.</p>
+<h2 id="version-1">Version 1</h2>
+<p>From version 1 onward, the operational status report is implemented
+and broadcast by the transponder. Table <a
+href="#tb:adsb-operational-status-v1" data-reference-type="ref"
+data-reference="tb:adsb-operational-status-v1">1.2</a> lists the
+structure of operational message in version 1.</p>
+<div id="tb:adsb-operational-status-v1">
+<table>
+<caption>Aircraft operational status (Version 1)</caption>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>FIELD</strong></th>
+<th style="text-align: center;"></th>
+<th style="text-align: center;"><strong>MSG</strong></th>
+<th style="text-align: center;"><strong>ME</strong></th>
+<th style="text-align: center;"><strong>BITS</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Type code = 31</strong> (Binary:
+11111)</td>
+<td style="text-align: center;">TC</td>
+<td style="text-align: center;">33–37</td>
+<td style="text-align: center;">1–5</td>
+<td style="text-align: center;">5</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Sub-type code</strong></td>
+<td style="text-align: center;">ST</td>
+<td style="text-align: center;">38–40</td>
+<td style="text-align: center;">6–8</td>
+<td style="text-align: center;">3</td>
+</tr>
+<tr>
+<td style="text-align: left;">0: airborne, 1: surface, 2–7:
+reserved</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Capacity class codes</strong></td>
+<td style="text-align: center;">CC</td>
+<td style="text-align: center;">41–56</td>
+<td style="text-align: center;">9–24</td>
+<td style="text-align: center;">16</td>
+</tr>
+<tr>
+<td style="text-align: left;">ST=0: Airborne capacity class codes (16
+bits)</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">ST=1: Surface capacity codes (12
+bits)</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">+ Length/width code (4 bits)</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Operational mode
+codes</strong></td>
+<td style="text-align: center;">OM</td>
+<td style="text-align: center;">57–72</td>
+<td style="text-align: center;">25–40</td>
+<td style="text-align: center;">16</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>ADS-B version number</strong></td>
+<td style="text-align: center;">Ver</td>
+<td style="text-align: center;">73–75</td>
+<td style="text-align: center;">41–43</td>
+<td style="text-align: center;">3</td>
+</tr>
+<tr>
+<td style="text-align: left;">0: Comply with DOC 9871, Appendix A</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">1: Comply with DOC 9871, Appendix B</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">2–7: Reserved</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>NIC supplement</strong></td>
+<td style="text-align: center;">NICs</td>
+<td style="text-align: center;">76</td>
+<td style="text-align: center;">44</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Navigational accuracy category -
+position</strong></td>
+<td style="text-align: center;">NACp</td>
+<td style="text-align: center;">77–80</td>
+<td style="text-align: center;">45–48</td>
+<td style="text-align: center;">4</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>ST=0: Barometric altitude
+quality</strong></td>
+<td style="text-align: center;">BAQ</td>
+<td style="text-align: center;">81–82</td>
+<td style="text-align: center;">49–50</td>
+<td style="text-align: center;">2</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>ST=1: Reserved</strong></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Surveillance integrity
+level</strong></td>
+<td style="text-align: center;">SIL</td>
+<td style="text-align: center;">83–84</td>
+<td style="text-align: center;">51–52</td>
+<td style="text-align: center;">2</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>ST=0: Barometric altitude
+integrity</strong></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">85</td>
+<td style="text-align: center;">53</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>ST=1: Track angle or
+heading</strong></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Horizontal reference
+direction</strong></td>
+<td style="text-align: center;">HRD</td>
+<td style="text-align: center;">86</td>
+<td style="text-align: center;">54</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Reserved</strong></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">87–88</td>
+<td style="text-align: center;">55–56</td>
+<td style="text-align: center;">2</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Bits 73 to 86, which are unused in the previous version, are now
+defined with new parameters. These parameters include ADS-B version
+number and various indicators related to the accuracy of the state
+measurements broadcast by the aircraft in other types of ADS-B
+messages.</p>
+<p>It is worth noting that the definition of sub-types for some fields
+allow us to differentiate between airborne status messages and surface
+status messages.</p>
+<h2 id="version-2">Version 2</h2>
+<p>Compared to the previous update, the changes in the operational
+status report from version 1 to 2 are minimal. Several fields are
+renamed and a SIL supplement bit is added to bit-87. The structure is
+shown in Table <a href="#tb:adsb-operational-status-v2"
+data-reference-type="ref"
+data-reference="tb:adsb-operational-status-v2">1.3</a>.</p>
+<div id="tb:adsb-operational-status-v2">
+<table>
+<caption>Aircraft operational status (Version 2)</caption>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>FIELD</strong></th>
+<th style="text-align: center;"></th>
+<th style="text-align: center;"><strong>MSG</strong></th>
+<th style="text-align: center;"><strong>ME</strong></th>
+<th style="text-align: center;"><strong>BITS</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Type code = 31</strong> (Binary:
+11111)</td>
+<td style="text-align: center;">TC</td>
+<td style="text-align: center;">33–37</td>
+<td style="text-align: center;">1–5</td>
+<td style="text-align: center;">5</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Sub-type code</strong></td>
+<td style="text-align: center;">ST</td>
+<td style="text-align: center;">38–40</td>
+<td style="text-align: center;">6–8</td>
+<td style="text-align: center;">3</td>
+</tr>
+<tr>
+<td style="text-align: left;">0: Airborne status message</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">1: Surface status message</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Capacity class codes</strong></td>
+<td style="text-align: center;">CC</td>
+<td style="text-align: center;">41–56</td>
+<td style="text-align: center;">9–24</td>
+<td style="text-align: center;">16</td>
+</tr>
+<tr>
+<td style="text-align: left;">ST=0: Airborne capacity class codes (16
+bits)</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">ST=1: Surface capacity codes (12
+bits)</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">+ Length/width code (4 bits)</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Operational mode
+codes</strong></td>
+<td style="text-align: center;">OM</td>
+<td style="text-align: center;">57–72</td>
+<td style="text-align: center;">25–40</td>
+<td style="text-align: center;">16</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>ST=0: Airborne operational mode
+codes</strong></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>ST=1: Surface operational mode
+codes</strong></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>ADS-B version number</strong></td>
+<td style="text-align: center;">Ver</td>
+<td style="text-align: center;">73–75</td>
+<td style="text-align: center;">41–43</td>
+<td style="text-align: center;">3</td>
+</tr>
+<tr>
+<td style="text-align: left;">0: Comply with DOC 9871, Appendix A</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">1: Comply with DOC 9871, Appendix B</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">2: Comply with DOC 9871, Appendix C</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">3–7: Reserved</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>NIC supplement - A</strong></td>
+<td style="text-align: center;">NICa</td>
+<td style="text-align: center;">76</td>
+<td style="text-align: center;">44</td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Navigational accuracy category -
+position</strong></td>
+<td style="text-align: center;">NACp</td>
+<td style="text-align: center;">77–80</td>
+<td style="text-align: center;">45–48</td>
+<td style="text-align: center;">4</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>ST=0: Geometric vertical
+accuracy</strong></td>
+<td style="text-align: center;">GVA</td>
+<td style="text-align: center;">81–82</td>
+<td style="text-align: center;">49–50</td>
+<td style="text-align: center;">2</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>ST=1: Reserved</strong></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Source integrity
+level</strong></td>
+<td style="text-align: center;">SIL</td>
+<td style="text-align: center;">83–84</td>
+<td style="text-align: center;">51–52</td>
+<td style="text-align: center;">2</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>ST=0: Barometric altitude
+integrity</strong></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">85</td>
+<td style="text-align: center;">53</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>ST=1: Track angle or
+heading</strong></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Horizontal reference
+direction</strong></td>
+<td style="text-align: center;">HRD</td>
+<td style="text-align: center;">86</td>
+<td style="text-align: center;">54</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>SIL supplement</strong></td>
+<td style="text-align: center;">SILs</td>
+<td style="text-align: center;">87</td>
+<td style="text-align: center;">55</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Reserved</strong></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">88</td>
+<td style="text-align: center;">56</td>
+<td style="text-align: center;">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="refs" class="references csl-bib-body hanging-indent"
+role="list">
+<div id="ref-icao9871v1" class="csl-entry" role="listitem">
+<span class="smallcaps">ICAO</span>. 2008. <em>Technical provisions for
+mode s services and extended squitter</em>. International Civil Aviation
+Organization.
+</div>
+</div>
+
+<footer class="mastfoot">
+  <div class="text-right">
+    <p> © Copyright 2021 <a href="https://junzis.com">Junzi Sun</a>. Build with LaTeX, Pandoc, and GitHub</p>
+  </div>
+</footer>
+
+</div>
+</div>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-74700456-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-74700456-1');
+</script>
+
+</body>
+</html>

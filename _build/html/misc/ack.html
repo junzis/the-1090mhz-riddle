@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+  <meta name="author" content="Junzi Sun">
+
+
+  <title>The 1090MHz Riddle</title>
+  <style type="text/css">code{white-space: pre;}</style>
+
+
+
+  <link rel="stylesheet" href="../bootstrap.min.css">
+  <link rel="stylesheet" href="../style.css">
+
+
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet"> 
+
+<script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js"
+  integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+" crossorigin="anonymous">
+</script>
+
+</head>
+<body>
+
+<div class="container">
+
+<div class="d-flex flex-row align-items-end">
+	<div>
+		<h1 class="title">The 1090 Megahertz Riddle <span class="h5">(second edition)</span></h1>
+		<div class="subtitle">A Guide to Decoding Mode S and ADS-B Signals</div>
+	</div>
+	<div class='ml-auto chapter-nav'>
+    <div class="author">By: <strong>Junzi Sun</strong> (<a href="http://junzis.com">junzis.com</a>)</div>
+	</div>
+</div>
+
+<hr>
+
+<div class="row">
+<div class="col-md-4 col-lg-3">
+<nav>
+  <a href="../index.html" type="button"
+      class="btn btn-sm btn-outline-info btn-light">
+      <i class="fas fa-home"></i> Home
+  </a>
+
+  <br>
+
+  <a href="../book-the_1090mhz_riddle-junzi_sun.pdf"
+      type="button" class="btn btn-sm btn-outline-info">
+    <i class="far fa-file-pdf"></i> Download PDF book
+  </a>
+
+  <br>
+
+  <a href="../index.html#cite-this-book" type="button"
+      class="btn btn-sm btn-outline-info btn-light">
+    <i class="fas fa-quote-left"></i> Cite this book
+  </a>
+
+  <br>
+
+  <a href="http://mode-s.org" type="button"
+      class="btn btn-sm btn-outline-dark btn-light">
+    <i class="fas fa-angle-double-left"></i> mode-s.org
+  </a>
+
+  <hr>
+
+  <h1>Book chapters</h1>
+  <ul>
+    <li><a href="../misc/preface.html">0. Preface</a></li>
+    <li><a href="../content/introduction.html">1. Introduction</a></li>
+    <li><a href="../content/quickstart.html">2. Quick start</a></li>
+    <li>ADS-B</li>
+    <ul>
+      <li><a href="../content/ads-b/1-basics.html">3. ADS-B basics</a></li>
+      <li><a href="../content/ads-b/2-identification.html">4. Aircraft Identification</a></li>
+      <li><a href="../content/ads-b/3-airborne-position.html">5. Airborne Position</a></li>
+      <li><a href="../content/ads-b/4-surface-position.html">6. Surface Position</a></li>
+      <li><a href="../content/ads-b/5-airborne-velocity.html">7. Airborne Velocity</a></li>
+      <li><a href="../content/ads-b/6-operation-status.html">8. Operation Status</a></li>
+      <li><a href="../content/ads-b/7-uncertainty.html">9. Uncertainty</a></li>
+      <li><a href="../content/ads-b/8-error-control.html">10. Error Control</a></li>
+    </ul>
+    <li>Mode S</li>
+    <ul>
+      <li><a href="../content/mode-s/1-basics.html">11. Mode S basics</a></li>
+      <li><a href="../content/mode-s/2-allcall.html">12. All-call reply</a></li>
+      <li><a href="../content/mode-s/3-surveillance.html">13. Surveillance reply</a></li>
+      <li><a href="../content/mode-s/4-acas.html">14. ACAS</a></li>
+      <li><a href="../content/mode-s/5-commb.html">15. Comm-B replies</a></li>
+      <li><a href="../content/mode-s/6-els.html">16. Elementary surveillance</a></li>
+      <li><a href="../content/mode-s/7-ehs.html">17. Enhanced surveillance</a></li>
+      <li><a href="../content/mode-s/8-meteo.html">18. Meteorological services</a></li>
+      <li><a href="../content/mode-s/9-inference.html">19. BDS code inference</a></li>
+    </ul>
+    <li><a href="../content/conclusion.html">20. Conclusion</a></li>
+    <li>Related</li>
+    <ul>
+      <li><a href="../misc/about.html">About the author</a></li>
+      <li><a href="../misc/ack.html">Acknowledgements</a></li>
+    </ul>
+  </ul>
+</nav>
+
+<hr>
+<nav id="TOC">
+<h1>In this page</h1>
+<ul>
+<li><a href="#acknowledgments"
+id="toc-acknowledgments">Acknowledgments</a></li>
+</ul>
+</nav>
+
+</div>
+
+
+<div class="col-md-8 col-lg-9 maintext">
+
+<div class="float-right">
+  <a href="https://github.com/junzis/the-1090mhz-riddle/edit/master/misc/ack.tex"
+    class='btn btn-sm btn-outline-dark'> <i class="fas fa-edit"></i> Recommend edits</a>
+</div>
+
+<h1 class="unnumbered" id="acknowledgments">Acknowledgments</h1>
+<p>I could not have completed this book without the support of my wife,
+Marie. She proofread every word in this book and gave valuable input on
+its content. I want to thank my parents for their encouragement of my
+curiosity and scientific endeavors since childhood. My sons, William and
+Vincent, make my life and research more joyful, especially when I see
+they are curious and enthusiastic to see me testing antennas, receivers,
+and hardware.</p>
+<p>Navigating through the mountain of information in different ICAO
+documents is complicated. I am grateful to have met Huy Vû and
+supervised his master thesis project. He was able to find almost any
+needed information regarding Mode S, which was a great help for this
+book and the pyModeS library. He is now a data analyst at <em>LVNL</em>,
+the Dutch air traffic control, and we still work together on interesting
+research topics.</p>
+<p>In the summer of 2017, I received an email from a researcher from
+<em>ONERA</em>, the French aerospace research institute, who wanted to
+meet me for a coffee to discuss Mode S. That coffee discussion with
+Xavier Olive has turned into a fruitful collaboration. I want to say
+thanks to Xavier for his input on Mode S, ADS-B, and all other related
+and unrelated discussions.</p>
+<p>Before the notion of this book ever existed, I was a new PhD student
+at TU Delft’s CNS/ATM research group. I would like to thank Jacco
+Hoekstra and Joost Ellerbroek, who were my promotors and provided me
+with great support for all my PhD research topics. I am also extremely
+happy to have been able to continue working with them as a colleague
+since 2019. I would also like to extend my thanks to the Dean of our
+faculty, Henri Werij, for his consistent support and for offering me the
+opportunity to continue my research at the faculty.</p>
+<p>My research often relies on Mode S and ADS-B data from regions beyond
+the coverage of our antenna in Delft. This is only possible with the
+help of crowd-sourced networks. I want to thank Martin Strohmeier from
+<em>OpenSky network</em>, Sean Atkinson from <em>FlightRadar24</em>, and
+James Stanford from <em>ADS-B Exchange</em> for sharing their data with
+me for different research projects over the past years.</p>
+<p>The manual was an open-access book from the beginning. I heartily
+appreciate all the GitHub contributors who made suggestions and edits
+for this book and pyModeS library.<a href="#fn1" class="footnote-ref"
+id="fnref1" role="doc-noteref"><sup>1</sup></a> Since I decided to
+publish this book with TU Delft OPEN Publishing, our publishing officer,
+Frédérique Belliard, has been extremely helpful in making this book a
+reality. Finally, I would also like to thank Petr Jonas, Xavier Olive,
+and Enrico Spinielli for their comprehensive peer reviews that led to
+the successful completion of this book.</p>
+<section id="footnotes" class="footnotes footnotes-end-of-document"
+role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1"><p>The most up-to-date list of contributors can be found
+at:<br />
+https://github.com/junzis/the-1090mhz-riddle/graphs/contributors<br />
+https://github.com/junzis/pyModeS/graphs/contributors<a href="#fnref1"
+class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+<footer class="mastfoot">
+  <div class="text-right">
+    <p> © Copyright 2021 <a href="https://junzis.com">Junzi Sun</a>. Build with LaTeX, Pandoc, and GitHub</p>
+  </div>
+</footer>
+
+</div>
+</div>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-74700456-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-74700456-1');
+</script>
+
+</body>
+</html>

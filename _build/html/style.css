@@ -1,0 +1,214 @@
+body {
+  font-family: 'Roboto Slab', serif !important;
+  padding-top: 20px;
+}
+
+footer{
+  padding: 15px;
+  border-top: 1px dashed #ccc;
+}
+
+.title{
+  margin-bottom: 0px;
+}
+
+.subtitle{
+  margin-top: 5px;
+  font-size: 160%;
+}
+
+.author{
+  margin-bottom: 10px;
+}
+
+.references div{
+  margin-left: 5px;
+  padding-left: 5px;
+  border-left: 3px solid #eee;
+}
+
+.references div:hover {
+  background: #eee;
+}
+
+nav .btn{
+  margin: 5px auto;
+}
+
+nav ul {
+  padding-left: 20px;
+  font-size: 95%;
+}
+
+nav h1 {
+  font-size: 24px;
+}
+
+pre {
+  background: #f5f5f5;
+  padding: 10px;
+  line-height: 1.15 !important;
+  font-size: 80% !important;
+}
+
+code {
+  background: #f5f5f5;
+  color: #000;
+  padding: 0 3px;
+}
+
+pre > code{
+  padding: 0 !important;
+}
+
+.maintext h1 {
+  font-size: 2em;
+  margin-top: 0.2em;
+  border-bottom: 1px dashed #ddd;
+  padding-bottom: 5px;
+}
+
+.maintext h2{
+  font-size: 1.7em;
+  margin-top: 1em;
+}
+
+.maintext h3 {
+  font-size: 1.5em;
+  margin-top: 1em;
+}
+
+table {
+  margin: 20px auto;
+  border: 1px solid #aaa;
+  font-size: 90%;
+  min-width: 70%;
+}
+
+table thead {
+  background: #f3f3f3;
+}
+
+table caption{
+  text-align: center;
+}
+
+/* table tr {
+  border-bottom: 1px dashed #aaa;
+} */
+
+table th {
+  padding: 3px 6px;
+  border-bottom: 2px solid #aaa;
+}
+
+table td {
+  padding: 3px 6px;
+}
+
+table tr.even {
+  background: #fbfbfb;
+}
+
+table tr:hover{
+  background: #eee;
+}
+
+figure > img,
+p > img {
+  max-width: 95%;
+  padding: 10px 0;
+  border: 1px solid #ddd;
+  margin: 10px auto;
+}
+
+figure {
+  margin: 20px 0;
+  text-align: center;
+}
+
+figcaption {
+  margin: 10px 0;
+  color: #6c757d;
+}
+
+
+
+li > p {
+  margin-bottom: 3px;
+}
+
+/* Heading numbering */
+body {
+  counter-reset: h2counter;
+
+}
+h1 {
+  counter-reset: h2counter;
+}
+h2 {
+  counter-reset: h3counter;
+}
+
+h2:before {
+  content: counter(h2counter) ".\0000a0\0000a0";
+  counter-increment: h2counter;
+}
+h3:before {
+  content: counter(h2counter) "." counter(h3counter) ".\0000a0\0000a0";
+  counter-increment: h3counter;
+}
+
+
+img.cover{
+  width: 35%;
+  padding: 0;
+  float:right;
+}
+
+.citation {
+  background-color: #eee;
+  font-style: italic;
+  font-size: 0.9em;
+}
+
+.references::before{
+  content: "References in this page:";
+  display: block;
+  height: 30px;
+  font-size: 1.1em;
+  font-weight: bold;
+}
+
+.csl-bib-body {
+  font-size: 0.8em;
+}
+
+.csl-entry {
+  margin-bottom: 10px;
+  padding-left: 5px;
+  border-left: 5px solid #eee;
+}
+
+.csl-entry:hover {
+  background: #eee;
+}
+
+.notebox {
+  padding: 0.5em 1em;
+  background: #EBF7F8;
+  font-size: 0.9em;
+  margin-bottom: 1em;
+}
+
+.notebox p {
+  margin: 1em 0;
+}
+
+.notebox p span {
+  font-weight: bold;
+}
+
+.notebox p span::after {
+  content: ":";
+}

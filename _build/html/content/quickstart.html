@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+  <meta name="author" content="Junzi Sun">
+
+
+  <title>The 1090MHz Riddle</title>
+  <style type="text/css">code{white-space: pre;}</style>
+
+
+
+  <link rel="stylesheet" href="../bootstrap.min.css">
+  <link rel="stylesheet" href="../style.css">
+
+  <script
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet"> 
+
+<script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js"
+  integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+" crossorigin="anonymous">
+</script>
+
+</head>
+<body>
+
+<div class="container">
+
+<div class="d-flex flex-row align-items-end">
+	<div>
+		<h1 class="title">The 1090 Megahertz Riddle <span class="h5">(second edition)</span></h1>
+		<div class="subtitle">A Guide to Decoding Mode S and ADS-B Signals</div>
+	</div>
+	<div class='ml-auto chapter-nav'>
+    <div class="author">By: <strong>Junzi Sun</strong> (<a href="http://junzis.com">junzis.com</a>)</div>
+	</div>
+</div>
+
+<hr>
+
+<div class="row">
+<div class="col-md-4 col-lg-3">
+<nav>
+  <a href="../index.html" type="button"
+      class="btn btn-sm btn-outline-info btn-light">
+      <i class="fas fa-home"></i> Home
+  </a>
+
+  <br>
+
+  <a href="../book-the_1090mhz_riddle-junzi_sun.pdf"
+      type="button" class="btn btn-sm btn-outline-info">
+    <i class="far fa-file-pdf"></i> Download PDF book
+  </a>
+
+  <br>
+
+  <a href="../index.html#cite-this-book" type="button"
+      class="btn btn-sm btn-outline-info btn-light">
+    <i class="fas fa-quote-left"></i> Cite this book
+  </a>
+
+  <br>
+
+  <a href="http://mode-s.org" type="button"
+      class="btn btn-sm btn-outline-dark btn-light">
+    <i class="fas fa-angle-double-left"></i> mode-s.org
+  </a>
+
+  <hr>
+
+  <h1>Book chapters</h1>
+  <ul>
+    <li><a href="../misc/preface.html">0. Preface</a></li>
+    <li><a href="../content/introduction.html">1. Introduction</a></li>
+    <li><a href="../content/quickstart.html">2. Quick start</a></li>
+    <li>ADS-B</li>
+    <ul>
+      <li><a href="../content/ads-b/1-basics.html">3. ADS-B basics</a></li>
+      <li><a href="../content/ads-b/2-identification.html">4. Aircraft Identification</a></li>
+      <li><a href="../content/ads-b/3-airborne-position.html">5. Airborne Position</a></li>
+      <li><a href="../content/ads-b/4-surface-position.html">6. Surface Position</a></li>
+      <li><a href="../content/ads-b/5-airborne-velocity.html">7. Airborne Velocity</a></li>
+      <li><a href="../content/ads-b/6-operation-status.html">8. Operation Status</a></li>
+      <li><a href="../content/ads-b/7-uncertainty.html">9. Uncertainty</a></li>
+      <li><a href="../content/ads-b/8-error-control.html">10. Error Control</a></li>
+    </ul>
+    <li>Mode S</li>
+    <ul>
+      <li><a href="../content/mode-s/1-basics.html">11. Mode S basics</a></li>
+      <li><a href="../content/mode-s/2-allcall.html">12. All-call reply</a></li>
+      <li><a href="../content/mode-s/3-surveillance.html">13. Surveillance reply</a></li>
+      <li><a href="../content/mode-s/4-acas.html">14. ACAS</a></li>
+      <li><a href="../content/mode-s/5-commb.html">15. Comm-B replies</a></li>
+      <li><a href="../content/mode-s/6-els.html">16. Elementary surveillance</a></li>
+      <li><a href="../content/mode-s/7-ehs.html">17. Enhanced surveillance</a></li>
+      <li><a href="../content/mode-s/8-meteo.html">18. Meteorological services</a></li>
+      <li><a href="../content/mode-s/9-inference.html">19. BDS code inference</a></li>
+    </ul>
+    <li><a href="../content/conclusion.html">20. Conclusion</a></li>
+    <li>Related</li>
+    <ul>
+      <li><a href="../misc/about.html">About the author</a></li>
+      <li><a href="../misc/ack.html">Acknowledgements</a></li>
+    </ul>
+  </ul>
+</nav>
+
+<hr>
+<nav id="TOC">
+<h1>In this page</h1>
+<ul>
+<li><a href="#chap:quickstart" id="toc-chap:quickstart">Quick Start:
+Hardware and Software to Receive Mode S Signals</a>
+<ul>
+<li><a href="#range" id="toc-range">Range</a></li>
+<li><a href="#antenna" id="toc-antenna">Antenna</a></li>
+<li><a href="#receiver" id="toc-receiver">Receiver</a></li>
+<li><a href="#software-tools" id="toc-software-tools">Software tools</a>
+<ul>
+<li><a href="#dump1090" id="toc-dump1090">dump1090</a></li>
+<li><a href="#pymodes" id="toc-pymodes">pyModeS</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+
+</div>
+
+
+<div class="col-md-8 col-lg-9 maintext">
+
+<div class="float-right">
+  <a href="https://github.com/junzis/the-1090mhz-riddle/edit/master/content/quickstart.tex"
+    class='btn btn-sm btn-outline-dark'> <i class="fas fa-edit"></i> Recommend edits</a>
+</div>
+
+<h1 id="chap:quickstart">Quick Start: Hardware and Software to Receive
+Mode S Signals</h1>
+<p>Chapter 1 introduced several fundamental concepts about Mode S
+communication. This chapter focuses on the practical aspects of
+acquiring Mode S data, specifically, how to receive and obtain messages
+that are transmitted in Mode S downlink communications. Mode S signals
+are transmitted using 1090 MHz radio waves. Hence, the receiver and
+antenna have to be designed to work with this frequency. Nowadays, all
+necessary components required to obtain the Mode S data can be easily
+made with low-cost off-the-shelf components. Several open-source
+software tools are available to support the extraction and decoding of
+data from Mode S signals. In this chapter, we explain how to set up a
+functional hardware and software system to receive Mode S data.</p>
+<h2 id="range">Range</h2>
+<p>Since Mode S uses L band signals that follow the line-of-sight
+propagation, any obstructions between the transmitter and receiver can
+cause a significant amount of signals to be blocked. Assuming that no
+obstacle exists between the aircraft and the receiver, and the
+transmitter has a sufficient amount of power, the maximum range of the
+receiver is determined by the curvature of the earth. Figure <a
+href="#fig:max_range" data-reference-type="ref"
+data-reference="fig:max_range">1.1</a> illustrates how the maximum range
+of the receiver can be obtained.</p>
+<figure id="fig:max_range">
+<img src="../figures/quickstart/max_range.png" />
+<figcaption>Maximum receiver range</figcaption>
+</figure>
+<p>Knowing the altitude of the receiver antenna, it is possible to
+determine the maximum range (<span class="math inline">\(d\)</span>) of
+a Mode S receiver as:</p>
+<p><span class="math display">\[\begin{aligned}
+  d &amp;= (\alpha_r + \alpha_t) R \\
+  &amp; = \left( \arccos \frac{R}{R+h_r} + \arccos \frac{R}{R+h_t}
+\right) R
+\end{aligned}\]</span></p>
+<p>where <span class="math inline">\(R\)</span> is the radius of the
+earth, while <span class="math inline">\(h_t\)</span> and <span
+class="math inline">\(h_r\)</span> are the height of the aircraft and
+receiver above the sea level. Using this equation, we can calculate the
+maximum receiving range for aircraft flying at different altitudes.
+Figure <a href="#fig:max_range_curve" data-reference-type="ref"
+data-reference="fig:max_range_curve">1.2</a> shows the maximum range
+curves calculated using several receiver heights.</p>
+<figure id="fig:max_range_curve">
+<img src="../figures/quickstart/max_range_curve.png" />
+<figcaption>Maximum receiver range curve</figcaption>
+</figure>
+<p>It should be noted that this figure shows the maximum radio range due
+to the curvature of the Earth. However, in real-life applications,
+Mode S signal follows the Friis transmission model, which states that
+the maximum distance also depends on the power of the transmitter, as
+well as the directivities of the transmission and receiving antennas.
+When considering these factors, the actual radio range for the receiver
+is typically lower than the theoretical values shown in the previous
+figure.</p>
+<h2 id="antenna">Antenna</h2>
+<p>In principle, any antenna designed for the radio frequency around 1
+GHz can be used for receiving Mode S signals. A large variety of
+commercial off-the-shelf antennas can be found nowadays.</p>
+<p>However, it is not difficult to design your own antenna. The carrier
+frequency of Mode S is 1090 MHz, which corresponds to the wavelength of
+27.5 centimeters. In order to have an antenna that is tuned to this
+specific frequency, one can design the antenna simply using a piece of a
+conductor (metal wire) and a coaxial feeder cable. Figure <a
+href="#fig:antennas" data-reference-type="ref"
+data-reference="fig:antennas">1.3</a> shows a few common antenna
+designs.</p>
+<figure id="fig:antennas">
+<img src="../figures/quickstart/antennas.png" />
+<figcaption>Common antenna designs</figcaption>
+</figure>
+<p>The monopole antenna and the dipole antenna both are half-wavelength
+(<span class="math inline">\(\lambda/2\)</span>) antennas with a total
+conductor length of 13.75 cm. The ground plane antenna is a
+quarter-wavelength (<span class="math inline">\(\lambda/4\)</span>)
+antenna, where the main pole is 6.875 cm.</p>
+<p>All these previous antennas are omnidirectional. Some time is also
+desirable to make use of directional antennas (such a Yagi antenna), for
+example, to receive messages coming from the airport direction with a
+higher receiving gain.</p>
+<p>For a remote installation where the antenna is far from the receiver
+(i.e., long coaxial cable between the antenna and receiver), the
+high-frequency signal of Mode S can attenuate quickly. When the signal
+has arrived at the receiver end, the signal-to-noise ratio can become
+quite high. To overcome this limitation, an active antenna may be
+used.</p>
+<p>The active antenna (see Figure <a href="#fig:biastee_active_antenna"
+data-reference-type="ref"
+data-reference="fig:biastee_active_antenna">1.4</a>) has a low-noise
+amplifier integrated on the antenna side. Sometimes, it also includes a
+band-pass filter that is designed for 1090 MHz. The active antenna
+requires additional powering. Power is commonly supplied through a
+bias-tee device connected at the receiver end, which is on the left-hand
+side of the diagram. On the right-hand side, the radio frequency is
+mixed with the DC component, which allows the electronic circuit to be
+powered close to the receiver end.</p>
+<figure id="fig:biastee_active_antenna">
+<embed
+src="../figures/quickstart/biastee_active_antenna.pdf" />
+<figcaption>Diagram of an active antenna powered through a
+bias-tee</figcaption>
+</figure>
+<h2 id="receiver">Receiver</h2>
+<p>Many modern Mode S receivers are built using software-defined radio
+(SDR). An SDR usually can be tuned to a wide range of radio frequencies.
+The user can conveniently select the center frequency of the receiver
+and the sampling rate, as well as define the bandwidth of the onboard
+low-pass filter if it is supported.</p>
+<p>For receiving ADS-B (and other types of Mode S message), a RTL-SDR is
+the most common type of low-cost receiver to choose. Many different
+brands of RTL-SDR receivers exist; they are often built with the Realtek
+RTL2832U chipset. It can work with radio frequencies from 24 to 1766
+MHz. The maximum sampling rate is 2.8 million samples per second (MSPS).
+Given that a Mode S bit consists of a pulse cycle of 0.5 μs (see Figure
+<a href="#fig:mode_s_uplink_pulses" data-reference-type="ref"
+data-reference="fig:mode_s_uplink_pulses">[fig:mode_s_uplink_pulses]</a>),
+the minimum SDR sampling rate required for Mode S is 2 MSPS. RLT-SDR
+devices just barely manage to meet this requirement.</p>
+<div class="notebox">
+<p><span>Note</span> The maximum frequency range of RTL-SDR can be from
+0 to 2220 MHz. However, the sensitivity drops off significantly outside
+the 24 – 1766 MHz range. The sampling rate can actually go up to a
+maximum of 3.2 million samples per second, but some samples may be
+dropped at this sampling rate. So, it is not stable.</p>
+</div>
+<p>SDRs that offer a higher performance also exist. They often support a
+larger frequency range with higher sampling rates. Some offer multiple
+transmitting (TX) and receiving (RX) channels. Table <a href="#tb:sdr"
+data-reference-type="ref" data-reference="tb:sdr">1.1</a> lists a few
+examples of common SDR devices. The performance of RTL-SDR is listed as
+a comparison.</p>
+<div id="tb:sdr">
+<table>
+<caption>Examples of common software defined radio devices</caption>
+<thead>
+<tr>
+<th style="text-align: left;"></th>
+<th style="text-align: left;"><strong>RTL-SDR</strong></th>
+<th style="text-align: left;"><strong>AirSpy R2</strong></th>
+<th style="text-align: left;"><strong>HackRF 1</strong></th>
+<th style="text-align: left;"><strong>LimeSDR</strong></th>
+<th style="text-align: left;"><strong>BladeRF 2</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Frequency (from)</strong></td>
+<td style="text-align: left;">24 MHz</td>
+<td style="text-align: left;">24 MHz</td>
+<td style="text-align: left;">1 MHz</td>
+<td style="text-align: left;">100 KHz</td>
+<td style="text-align: left;">47 MHz</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Frequency (to)</strong></td>
+<td style="text-align: left;">1766 MHz</td>
+<td style="text-align: left;">1700 MHz</td>
+<td style="text-align: left;">6000 MHz</td>
+<td style="text-align: left;">3800 MHz</td>
+<td style="text-align: left;">6000 MHz</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Max sample rate</strong></td>
+<td style="text-align: left;">2.8 MSPS</td>
+<td style="text-align: left;">10 MSPS</td>
+<td style="text-align: left;">20 MSPS</td>
+<td style="text-align: left;">61.44 MSPS</td>
+<td style="text-align: left;">61.44 MSPS</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>RX channels</strong></td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">2</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>TX channels</strong></td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">2</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Open hardware</strong></td>
+<td style="text-align: left;">No</td>
+<td style="text-align: left;">Partially</td>
+<td style="text-align: left;">Full</td>
+<td style="text-align: left;">Full</td>
+<td style="text-align: left;">Partially</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="software-tools">Software tools</h2>
+<p>Several software tools are available to work with some of these SDR
+devices and decode Mode S and ADS-B signals directly. In this section,
+we explain how to use two open-source tools, which are
+<code>dump1090</code> and <code>pyModeS</code>.</p>
+<h3 id="dump1090">dump1090</h3>
+<p><code>dump1090</code> is the most well-known open-source Mode S
+decoder currently available. The software is written in C programming
+language and was originally developed by Salvatore Sanfilippo <a
+href="#fn1" class="footnote-ref" id="fnref1"
+role="doc-noteref"><sup>1</sup></a> under the BSD-3-Clause license.</p>
+<p>Since its release in 2013, the repository has been forked and
+extended intensively on GitHub, creating more than 900 forks so far.
+Many of the branched versions contain different variations, such as
+support for additional hardware, additional decoded Mode S messages, and
+additional output format. Currently, one of the most comprehensive forks
+is the repository maintained by FlightAware.<a href="#fn2"
+class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> The
+following examples will be based on the FlightAware version of
+<code>dump1090</code>, using a Debian-based Linux system.</p>
+<h4 id="installation-of-dump1090">Installation of dump1090</h4>
+<p>The latest version of <code>dump1090</code> source code can be
+downloaded as follows:</p>
+<pre><code>$ git clone https://github.com/flightaware/dump1090.git</code></pre>
+<p>Before compiling the code, following dependencies must be
+installed:</p>
+<pre><code>sudo apt-get install build-essential debhelper librtlsdr-dev \
+  pkg-config dh-systemd libncurses5-dev libbladerf-dev</code></pre>
+<p>Next, we can compile the source code as:</p>
+<pre><code>$ cd dump1090
+$ make</code></pre>
+<p>It is worth noting that the FlightAware version of
+<code>dump1090</code> supports both RTL-SDR and BladeRF devices by
+default.</p>
+<h4 id="default-usage-of-dump1090">Default usage of dump1090</h4>
+<p>Once it is compiled and the RTL-SDR receiver is connected, we can run
+the following command to start receiving and decoding signals:</p>
+<pre><code>$ ./dump1090</code></pre>
+<p>With the default option, Mode S messages and decoded information are
+displayed in the terminal. For example:</p>
+<pre><code>*8d451dbd9905b5018004005979c5;
+CRC: 000000
+RSSI: -20.6 dBFS
+Score: 1800
+Time: 9214131.08us
+DF:17 AA:451DBD CA:5 ME:9905B501800400
+ Extended Squitter Airborne velocity over ground, subsonic (19/1)
+  ICAO Address:  451DBD (Mode S / ADS-B)
+  Air/Ground:    airborne
+  Ground track   271.4
+  Groundspeed:   436.1 kt
+  Geom rate:     0 ft/min
+  NACv:          0</code></pre>
+<h4 id="raw-mode-s-messages">Raw Mode S messages</h4>
+<p>If we only want to display the raw messages, the <code>—-raw</code>
+option can be provided, as follows:</p>
+<pre><code>$ ./dump1090 --raw</code></pre>
+<p>In this case, the terminal output will only contain the raw messages,
+for example:</p>
+<pre><code>*5d4074358ad00c;
+*8d407435990dbd01900484f66c3c;
+*8d40743558af828cd326fe0c2fe9;
+*a80011b1e0da112fe0140060939f;
+*a00015b8c2680030a80000318667;
+*5d4074358ad030;
+*5d4074358ad030;</code></pre>
+<h4 id="interactive-mode">Interactive mode</h4>
+<p><code>dump1090</code> can also provide a live view of all aircraft
+seen by the receiver through the use of the <code>—-interactive</code>
+option:</p>
+<pre><code>$ ./dump1090 --interactive</code></pre>
+<p>An example of the terminal output is shown in Figure <a
+href="#fig:dump1090" data-reference-type="ref"
+data-reference="fig:dump1090">1.5</a>.</p>
+<figure id="fig:dump1090">
+<img src="../figures/quickstart/dump1090.png" />
+<figcaption>Example of a dump1090 interactive output</figcaption>
+</figure>
+<h3 id="pymodes">pyModeS</h3>
+<p><code>pyModeS</code> is an open-source Mode S decoder project that I
+started in 2015. It is a library that was originally designed to focus
+on lower level inference and decoding of individual raw Mode S messages.
+Later on, hardware support and live decoding were added, which made it
+more akin to <code>dump1090</code> of late.</p>
+<div class="notebox">
+<p><span>Note</span> Some technical terms related to ADS-B and Mode S
+are used in this section. They will be explained in detail in later
+chapters.</p>
+</div>
+<h4 id="installation-of-pymodes">Installation of pyModeS</h4>
+<p>As a Python library, it is possible to install the most recent stable
+version of <code>pyModeS</code> as:</p>
+<pre><code>pip install --upgrade pyModeS</code></pre>
+<p>The latest development version for the GitHub can be installed
+as:</p>
+<pre><code>pip install --upgrade git+https://github.com/junzis/pyModeS</code></pre>
+<h4 id="live-traffic-view">Live traffic view</h4>
+<p><code>pyModeS</code> provides the possibility to view live traffic
+through the <code>modeslive</code> command. The usage of this command is
+shown as follows:</p>
+<pre><code>$ modeslive [-h] --source SOURCE [--connect SERVER PORT DATAYPE]
+            [--latlon LAT LON] [--show-uncertainty] [--dumpto DUMPTO]
+
+arguments:
+ -h, --help            Show this help message and exit
+ --source SOURCE       Choose data source, &quot;rtlsdr&quot; or &quot;net&quot;
+ --connect SERVER PORT DATATYPE
+                       Define server, port and data type. Supported data
+                       types are: [&#39;raw&#39;, &#39;beast&#39;, &#39;skysense&#39;]
+ --latlon LAT LON      Receiver latitude and longitude, needed for the surface
+                       position, default none
+ --show-uncertainty    Display uncertainty values, default off
+ --dumpto DUMPTO       Folder to dump decoded output, default none</code></pre>
+<p>When an RTL-SDR device is connected, the following command can be
+used to display live traffic:</p>
+<pre><code>$ modeslive --source rtlsdr</code></pre>
+<p>Data source can also be supplied through the network (for example,
+from <code>dump1090</code> TCP output stream) as:</p>
+<pre><code>$ dump1090 --net --quiet
+$ modeslive --source net --connect localhost 30002 raw</code></pre>
+<p>An example of the live view is shown in Figure <a
+href="#fig:modeslive" data-reference-type="ref"
+data-reference="fig:modeslive">1.6</a>.</p>
+<figure id="fig:modeslive">
+<img src="../figures/quickstart/modeslive.png" />
+<figcaption>Example of a live view of <code>modeslive</code> from
+<code>pyModeS</code></figcaption>
+</figure>
+<p>Real-time flight states are shown, including, for example, ICAO
+transponder code, call sign, position, altitude, ground speed, true
+airspeed, indicated airspeed, Mach number, rate of climb, track angle,
+and heading.</p>
+<h4 id="programming-interface">Programming interface</h4>
+<p>Since <code>pyModeS</code> is originally designed as a library aimed
+for research, and thanks to the use of Python programming language, one
+can easily make use of its low-level decoding functionalities.</p>
+<p>For example, core functions of <code>pyModeS</code> can be used to
+decode Downlink Format, ICAO address, ADS-B Type Code, as well as to
+perform parity check:</p>
+<pre><code>import pyModeS as pms
+
+pms.df(msg)         # Downlink Format
+pms.icao(msg)       # Infer the ICAO address from the message
+pms.crc(msg)        # Perform parity check
+pms.typecode(msg)   # Obtain ADS-B message Type Code</code></pre>
+<p>ADS-B related functions allow information such as identity, position,
+and velocities to be decoded. For example:</p>
+<pre><code># position messages
+pms.adsb.position(msg_even, msg_odd, t_even, t_odd)
+pms.adsb.altitude(msg)
+
+# velocity messages
+pms.adsb.velocity(msg)</code></pre>
+<p>There are also a number of functions designed to infer and decode
+Mode S downlink messages. For example:</p>
+<pre><code>pms.common.altcode(msg)   # Mode S altitude code (DF=4/20)
+pms.common.idcode(msg)    # Mode S squawk code (DF=5/21)
+pms.bds.infer(msg)        # Infer Modes S BDS code</code></pre>
+<p>Once a Mode S message type is identified, type specific functions can
+be used to decode corresponding parameters.</p>
+<pre><code># BDS 4,0
+pms.commb.selalt40mcp(msg)  # MCP/FCU selected altitude (ft)
+pms.commb.selalt40fms(msg)  # FMS selected altitude (ft)
+pms.commb.p40baro(msg)      # Barometric pressure setting (mb)
+
+# BDS 5,0
+pms.commb.roll50(msg)       # Roll angle (deg)
+pms.commb.trk50(msg)        # True track angle (deg)
+pms.commb.gs50(msg)         # Ground speed (kt)
+pms.commb.rtrk50(msg)       # Track angle rate (deg/sec)
+pms.commb.tas50(msg)        # True airspeed (kt)
+
+# BDS 6,0
+pms.commb.hdg60(msg)        # Magnetic heading (deg)
+pms.commb.ias60(msg)        # Indicated airspeed (kt)
+pms.commb.mach60(msg)       # Mach number (-)
+pms.commb.vr60baro(msg)     # Barometric altitude rate (ft/min)
+pms.commb.vr60ins(msg)      # Inertial vertical speed (ft/min)</code></pre>
+<p>These are some commonly used functions related to Mode S decoding. A
+complete list of the APIs can be found in the <code>pyModeS</code>
+library API documentation.</p>
+<p>These functionalities may seem complicated at this moment. In the
+rest of this book, I will explain all the details related to the
+decoding of these ADS-B and Mode S messages. Throughout the rest of
+chapters, I will make use of <code>pyModeS</code> to demonstrate the
+decoding.</p>
+<section id="footnotes" class="footnotes footnotes-end-of-document"
+role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1"><p>https://github.com/antirez/dump1090<a href="#fnref1"
+class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>https://github.com/flightaware/dump1090<a href="#fnref2"
+class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+<footer class="mastfoot">
+  <div class="text-right">
+    <p> © Copyright 2021 <a href="https://junzis.com">Junzi Sun</a>. Build with LaTeX, Pandoc, and GitHub</p>
+  </div>
+</footer>
+
+</div>
+</div>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-74700456-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-74700456-1');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+  <meta name="author" content="Junzi Sun">
+
+
+  <title>The 1090MHz Riddle</title>
+  <style type="text/css">code{white-space: pre;}</style>
+
+
+
+  <link rel="stylesheet" href="../../bootstrap.min.css">
+  <link rel="stylesheet" href="../../style.css">
+
+  <script
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet"> 
+
+<script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js"
+  integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+" crossorigin="anonymous">
+</script>
+
+</head>
+<body>
+
+<div class="container">
+
+<div class="d-flex flex-row align-items-end">
+	<div>
+		<h1 class="title">The 1090 Megahertz Riddle <span class="h5">(second edition)</span></h1>
+		<div class="subtitle">A Guide to Decoding Mode S and ADS-B Signals</div>
+	</div>
+	<div class='ml-auto chapter-nav'>
+    <div class="author">By: <strong>Junzi Sun</strong> (<a href="http://junzis.com">junzis.com</a>)</div>
+	</div>
+</div>
+
+<hr>
+
+<div class="row">
+<div class="col-md-4 col-lg-3">
+<nav>
+  <a href="../../index.html" type="button"
+      class="btn btn-sm btn-outline-info btn-light">
+      <i class="fas fa-home"></i> Home
+  </a>
+
+  <br>
+
+  <a href="../../book-the_1090mhz_riddle-junzi_sun.pdf"
+      type="button" class="btn btn-sm btn-outline-info">
+    <i class="far fa-file-pdf"></i> Download PDF book
+  </a>
+
+  <br>
+
+  <a href="../../index.html#cite-this-book" type="button"
+      class="btn btn-sm btn-outline-info btn-light">
+    <i class="fas fa-quote-left"></i> Cite this book
+  </a>
+
+  <br>
+
+  <a href="http://mode-s.org" type="button"
+      class="btn btn-sm btn-outline-dark btn-light">
+    <i class="fas fa-angle-double-left"></i> mode-s.org
+  </a>
+
+  <hr>
+
+  <h1>Book chapters</h1>
+  <ul>
+    <li><a href="../../misc/preface.html">0. Preface</a></li>
+    <li><a href="../../content/introduction.html">1. Introduction</a></li>
+    <li><a href="../../content/quickstart.html">2. Quick start</a></li>
+    <li>ADS-B</li>
+    <ul>
+      <li><a href="../../content/ads-b/1-basics.html">3. ADS-B basics</a></li>
+      <li><a href="../../content/ads-b/2-identification.html">4. Aircraft Identification</a></li>
+      <li><a href="../../content/ads-b/3-airborne-position.html">5. Airborne Position</a></li>
+      <li><a href="../../content/ads-b/4-surface-position.html">6. Surface Position</a></li>
+      <li><a href="../../content/ads-b/5-airborne-velocity.html">7. Airborne Velocity</a></li>
+      <li><a href="../../content/ads-b/6-operation-status.html">8. Operation Status</a></li>
+      <li><a href="../../content/ads-b/7-uncertainty.html">9. Uncertainty</a></li>
+      <li><a href="../../content/ads-b/8-error-control.html">10. Error Control</a></li>
+    </ul>
+    <li>Mode S</li>
+    <ul>
+      <li><a href="../../content/mode-s/1-basics.html">11. Mode S basics</a></li>
+      <li><a href="../../content/mode-s/2-allcall.html">12. All-call reply</a></li>
+      <li><a href="../../content/mode-s/3-surveillance.html">13. Surveillance reply</a></li>
+      <li><a href="../../content/mode-s/4-acas.html">14. ACAS</a></li>
+      <li><a href="../../content/mode-s/5-commb.html">15. Comm-B replies</a></li>
+      <li><a href="../../content/mode-s/6-els.html">16. Elementary surveillance</a></li>
+      <li><a href="../../content/mode-s/7-ehs.html">17. Enhanced surveillance</a></li>
+      <li><a href="../../content/mode-s/8-meteo.html">18. Meteorological services</a></li>
+      <li><a href="../../content/mode-s/9-inference.html">19. BDS code inference</a></li>
+    </ul>
+    <li><a href="../../content/conclusion.html">20. Conclusion</a></li>
+    <li>Related</li>
+    <ul>
+      <li><a href="../../misc/about.html">About the author</a></li>
+      <li><a href="../../misc/ack.html">Acknowledgements</a></li>
+    </ul>
+  </ul>
+</nav>
+
+<hr>
+<nav id="TOC">
+<h1>In this page</h1>
+<ul>
+<li><a href="#mode-s-meteorological-services"
+id="toc-mode-s-meteorological-services">Mode S meteorological
+services</a>
+<ul>
+<li><a href="#meteorological-routine-air-report-bds-44"
+id="toc-meteorological-routine-air-report-bds-44">Meteorological routine
+air report (BDS 4,4)</a></li>
+<li><a href="#meteorological-hazard-report-bds-45"
+id="toc-meteorological-hazard-report-bds-45">Meteorological hazard
+report (BDS 4,5)</a></li>
+</ul></li>
+</ul>
+</nav>
+
+</div>
+
+
+<div class="col-md-8 col-lg-9 maintext">
+
+<div class="float-right">
+  <a href="https://github.com/junzis/the-1090mhz-riddle/edit/master/content/mode-s/8-meteo.tex"
+    class='btn btn-sm btn-outline-dark'> <i class="fas fa-edit"></i> Recommend edits</a>
+</div>
+
+<h1 id="mode-s-meteorological-services">Mode S meteorological
+services</h1>
+<p>In the current Mode S design, two message formats are used for
+aircraft to communicate meteorological conditions. These messages are
+meteorological routine air report (MRAR) and meteorological hazard
+report (MHR). In this chapter, we focus on explaining the information
+contained in these two types of messages.</p>
+<h2 id="meteorological-routine-air-report-bds-44">Meteorological routine
+air report (BDS 4,4)</h2>
+<p>In MRAR messages, information on wind, air temperature, pressure, and
+humidity is transmitted. The structure of the message is shown in Table
+<a href="#tb:bds44" data-reference-type="ref"
+data-reference="tb:bds44">1.1</a>.</p>
+<div id="tb:bds44">
+<table>
+<caption>Meteorological routine air report (BDS 4,4), MB field</caption>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>FIELD</strong></th>
+<th style="text-align: left;"><strong>MSG</strong></th>
+<th style="text-align: left;"><strong>MB</strong></th>
+<th style="text-align: left;"><strong>BITS</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Figure of merit / source</td>
+<td style="text-align: left;">33–36</td>
+<td style="text-align: left;">1–4</td>
+<td style="text-align: left;">4</td>
+</tr>
+<tr>
+<td style="text-align: left;">Status (for wind)</td>
+<td style="text-align: left;">37</td>
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">Wind speed</td>
+<td style="text-align: left;">38–46</td>
+<td style="text-align: left;">6–14</td>
+<td style="text-align: left;">9</td>
+</tr>
+<tr>
+<td style="text-align: left;">  Range: <span>[</span>0,
+511<span>]</span> knots</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">  LSB: 1 knots</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">Wind direction</td>
+<td style="text-align: left;">47–55</td>
+<td style="text-align: left;">15–23</td>
+<td style="text-align: left;">9</td>
+</tr>
+<tr>
+<td style="text-align: left;">  Range: <span>[</span>0,
+360<span>]</span> degrees</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">  LSB: 180/256 degrees</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">Sign (for temperature)</td>
+<td style="text-align: left;">56</td>
+<td style="text-align: left;">24</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">Static air temperature</td>
+<td style="text-align: left;">57–66</td>
+<td style="text-align: left;">25–34</td>
+<td style="text-align: left;">10</td>
+</tr>
+<tr>
+<td style="text-align: left;">  Range: <span>[</span>-128,
++128<span>]</span> <span class="math inline">\(^\circ\)</span>C</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">  LSB: 0.25 <span
+class="math inline">\(^\circ\)</span>C</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">Status (for pressure)</td>
+<td style="text-align: left;">67</td>
+<td style="text-align: left;">35</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">Average static pressure</td>
+<td style="text-align: left;">68–78</td>
+<td style="text-align: left;">36–46</td>
+<td style="text-align: left;">11</td>
+</tr>
+<tr>
+<td style="text-align: left;">  Range: <span>[</span>0,
+2048<span>]</span> hPa</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">  LSB: 1 hPa</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">Status (for turbulence)</td>
+<td style="text-align: left;">79</td>
+<td style="text-align: left;">47</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">Turbulence</td>
+<td style="text-align: left;">80–81</td>
+<td style="text-align: left;">48–49</td>
+<td style="text-align: left;">2</td>
+</tr>
+<tr>
+<td style="text-align: left;">Status (for humidity)</td>
+<td style="text-align: left;">82</td>
+<td style="text-align: left;">50</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">Humidity</td>
+<td style="text-align: left;">83–88</td>
+<td style="text-align: left;">51–56</td>
+<td style="text-align: left;">6</td>
+</tr>
+<tr>
+<td style="text-align: left;">  Range: <span>[</span>0%,
+100%<span>]</span></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">  LSB: 100/64 %</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The first field of the message defines the figure of merit
+(FOM)/source of the information. The values indicate the following:</p>
+<ul>
+<li><p>0: Invalid</p></li>
+<li><p>1: Inertial system (INS)</p></li>
+<li><p>2: Global Navigation Satellite System (GNSS)</p></li>
+<li><p>3: Distance measuring equipment-based navigation
+(DME/DME)</p></li>
+<li><p>4: Very High Frequency omnidirectional range/distance measuring
+equipment based navigation (VOR/DME)</p></li>
+<li><p>5–15: Reserved</p></li>
+</ul>
+<p>For static air temperature, the encoded value can be negative. Hence,
+two’s complement coding (see section <a href="#sec:two_complement"
+data-reference-type="ref"
+data-reference="sec:two_complement">[sec:two_complement]</a>) is used
+for encoding the value. The actual maximum range of temperature is from
+-80 <span class="math inline">\(^\circ\)</span>C to +60 <span
+class="math inline">\(^\circ\)</span>C.</p>
+<p>It is also worth pointing out a discrepancy in the design. The
+temperature is encoded using 10 bits, where the least significant bit
+value should have been 0.125<span class="math inline">\(^\circ\)</span>.
+However, according to the official document <span class="citation"
+data-cites="icao9871v1">[ICAO 2008]</span>, the LSB value is 0.25<span
+class="math inline">\(^\circ\)</span>. ICAO is planning to update this
+to 0.125<span class="math inline">\(^\circ\)</span> in the future.
+However, most current implementations still use 0.25<span
+class="math inline">\(^\circ\)</span>.</p>
+<p>Figure <a href="#fig:bds44_example" data-reference-type="ref"
+data-reference="fig:bds44_example">1.1</a> shows the decoding of an MRAR
+example message.</p>
+<figure id="fig:bds44_example">
+<img src="../../figures/mode_s/bds44_example.png" />
+<figcaption>Meteorological routine air report (BDS 4,4) decoding
+example</figcaption>
+</figure>
+<div class="notebox">
+<p><span>Try it out</span> Using pyModeS, we can decode information of
+BDS 4,4 messages as:</p>
+<pre><code>import pyModeS as pms
+
+msg = &quot;A0001692185BD5CF400000DFC696&quot;
+
+pms.commb.wind44(msg)   # (22, 344.5)
+pms.commb.temp44(msg)   # (-48.75, -24.375)
+pms.commb.p44(msg)      # None
+pms.commb.hum44(msg)    # None</code></pre>
+</div>
+<h2 id="meteorological-hazard-report-bds-45">Meteorological hazard
+report (BDS 4,5)</h2>
+<p>In MHR messages, different hazard condition levels are reported, such
+as turbulence, wind shear, microburst, icing, and wake vortex. It also
+includes temperature, pressure, and radio height. Table <a
+href="#tb:bds45" data-reference-type="ref"
+data-reference="tb:bds45">1.2</a> shows the structure of the MHR
+message.</p>
+<p>It is worth noting that during real flights, MHR messages are much
+rarer than MRAR messages. Based on the tests I conducted, whenever MRAR
+messages are detected, most of the them only contain temperature
+information.</p>
+<div id="tb:bds45">
+<table>
+<caption>Meteorological hazard report (BDS 4,5), MB field</caption>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>FIELD</strong></th>
+<th style="text-align: left;"><strong>MSG</strong></th>
+<th style="text-align: left;"><strong>MB</strong></th>
+<th style="text-align: left;"><strong>BITS</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Status (for turbulence)</td>
+<td style="text-align: left;">33</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">Turbulence</td>
+<td style="text-align: left;">34–35</td>
+<td style="text-align: left;">2–3</td>
+<td style="text-align: left;">2</td>
+</tr>
+<tr>
+<td style="text-align: left;">Status (for wind shear)</td>
+<td style="text-align: left;">36</td>
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">Wind shear</td>
+<td style="text-align: left;">37–38</td>
+<td style="text-align: left;">5–6</td>
+<td style="text-align: left;">2</td>
+</tr>
+<tr>
+<td style="text-align: left;">Status (for microburst)</td>
+<td style="text-align: left;">39</td>
+<td style="text-align: left;">7</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">Microburst</td>
+<td style="text-align: left;">40–41</td>
+<td style="text-align: left;">8–9</td>
+<td style="text-align: left;">2</td>
+</tr>
+<tr>
+<td style="text-align: left;">Status (for icing)</td>
+<td style="text-align: left;">42</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">Icing</td>
+<td style="text-align: left;">43–44</td>
+<td style="text-align: left;">11–12</td>
+<td style="text-align: left;">2</td>
+</tr>
+<tr>
+<td style="text-align: left;">Status (for wake vortex)</td>
+<td style="text-align: left;">45</td>
+<td style="text-align: left;">13</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">Wake vortex</td>
+<td style="text-align: left;">46–47</td>
+<td style="text-align: left;">14–15</td>
+<td style="text-align: left;">2</td>
+</tr>
+<tr>
+<td style="text-align: left;">Status (for temperature)</td>
+<td style="text-align: left;">48</td>
+<td style="text-align: left;">16</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">Sign (for temperature)</td>
+<td style="text-align: left;">49</td>
+<td style="text-align: left;">17</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">Static air temperature</td>
+<td style="text-align: left;">50–58</td>
+<td style="text-align: left;">18–26</td>
+<td style="text-align: left;">9</td>
+</tr>
+<tr>
+<td style="text-align: left;">  Range: <span>[</span>-128,
++128<span>]</span> <span class="math inline">\(^\circ\)</span>C</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">  LSB: 0.25 <span
+class="math inline">\(^\circ\)</span>C</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">Status (for pressure)</td>
+<td style="text-align: left;">59</td>
+<td style="text-align: left;">27</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">Average static pressure</td>
+<td style="text-align: left;">60–70</td>
+<td style="text-align: left;">28–38</td>
+<td style="text-align: left;">11</td>
+</tr>
+<tr>
+<td style="text-align: left;">  Range: <span>[</span>0,
+2048<span>]</span> hPa</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">  LSB: 1 hPa</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">Status (for height)</td>
+<td style="text-align: left;">71</td>
+<td style="text-align: left;">39</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">Radio height</td>
+<td style="text-align: left;">72–83</td>
+<td style="text-align: left;">40–51</td>
+<td style="text-align: left;">12</td>
+</tr>
+<tr>
+<td style="text-align: left;">  Range: <span>[</span>0, 65
+528<span>]</span> ft</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">  LSB: 16 ft</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">Reserved</td>
+<td style="text-align: left;">84–88</td>
+<td style="text-align: left;">52–56</td>
+<td style="text-align: left;">5</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The levels for turbulence, wind shear, microburst, icing, and wake
+vortex are encoded as follows:</p>
+<ul>
+<li><p><code>00</code>: NIL</p></li>
+<li><p><code>01</code>: LIGHT</p></li>
+<li><p><code>10</code>: MODERATE</p></li>
+<li><p><code>11</code>: SEVERE</p></li>
+</ul>
+<p>As is the case for MRAR messages, the actual range of the temperature
+is from -80 <span class="math inline">\(^\circ\)</span>C to +60 <span
+class="math inline">\(^\circ\)</span>C, and it is encoded using the
+two’s complement coding.</p>
+<p>Figure <a href="#fig:bds45_example" data-reference-type="ref"
+data-reference="fig:bds45_example">1.2</a> shows the decoding of an
+example message. Note that in this example, only the air temperature
+information is included. None of the hazard conditions is reported.</p>
+<figure id="fig:bds45_example">
+<img src="../../figures/mode_s/bds45_example.png" />
+<figcaption>Meteorological hazard report (BDS 4,5) decoding
+example</figcaption>
+</figure>
+<div class="notebox">
+<p><span>Note</span> The availability of BDS 4,4 messages is quite low.
+Very few aircraft’s transponders have these capabilities enabled. BDS
+4,5 messages are even rarer. When such a message is transmitted, it is
+very common that the information in many fields is not available.</p>
+</div>
+<div id="refs" class="references csl-bib-body hanging-indent"
+role="list">
+<div id="ref-icao9871v1" class="csl-entry" role="listitem">
+<span class="smallcaps">ICAO</span>. 2008. <em>Technical provisions for
+mode s services and extended squitter</em>. International Civil Aviation
+Organization.
+</div>
+</div>
+
+<footer class="mastfoot">
+  <div class="text-right">
+    <p> © Copyright 2021 <a href="https://junzis.com">Junzi Sun</a>. Build with LaTeX, Pandoc, and GitHub</p>
+  </div>
+</footer>
+
+</div>
+</div>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-74700456-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-74700456-1');
+</script>
+
+</body>
+</html>

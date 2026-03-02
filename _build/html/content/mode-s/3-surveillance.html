@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+  <meta name="author" content="Junzi Sun">
+
+
+  <title>The 1090MHz Riddle</title>
+  <style type="text/css">code{white-space: pre;}</style>
+
+
+
+  <link rel="stylesheet" href="../../bootstrap.min.css">
+  <link rel="stylesheet" href="../../style.css">
+
+  <script
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet"> 
+
+<script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js"
+  integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+" crossorigin="anonymous">
+</script>
+
+</head>
+<body>
+
+<div class="container">
+
+<div class="d-flex flex-row align-items-end">
+	<div>
+		<h1 class="title">The 1090 Megahertz Riddle <span class="h5">(second edition)</span></h1>
+		<div class="subtitle">A Guide to Decoding Mode S and ADS-B Signals</div>
+	</div>
+	<div class='ml-auto chapter-nav'>
+    <div class="author">By: <strong>Junzi Sun</strong> (<a href="http://junzis.com">junzis.com</a>)</div>
+	</div>
+</div>
+
+<hr>
+
+<div class="row">
+<div class="col-md-4 col-lg-3">
+<nav>
+  <a href="../../index.html" type="button"
+      class="btn btn-sm btn-outline-info btn-light">
+      <i class="fas fa-home"></i> Home
+  </a>
+
+  <br>
+
+  <a href="../../book-the_1090mhz_riddle-junzi_sun.pdf"
+      type="button" class="btn btn-sm btn-outline-info">
+    <i class="far fa-file-pdf"></i> Download PDF book
+  </a>
+
+  <br>
+
+  <a href="../../index.html#cite-this-book" type="button"
+      class="btn btn-sm btn-outline-info btn-light">
+    <i class="fas fa-quote-left"></i> Cite this book
+  </a>
+
+  <br>
+
+  <a href="http://mode-s.org" type="button"
+      class="btn btn-sm btn-outline-dark btn-light">
+    <i class="fas fa-angle-double-left"></i> mode-s.org
+  </a>
+
+  <hr>
+
+  <h1>Book chapters</h1>
+  <ul>
+    <li><a href="../../misc/preface.html">0. Preface</a></li>
+    <li><a href="../../content/introduction.html">1. Introduction</a></li>
+    <li><a href="../../content/quickstart.html">2. Quick start</a></li>
+    <li>ADS-B</li>
+    <ul>
+      <li><a href="../../content/ads-b/1-basics.html">3. ADS-B basics</a></li>
+      <li><a href="../../content/ads-b/2-identification.html">4. Aircraft Identification</a></li>
+      <li><a href="../../content/ads-b/3-airborne-position.html">5. Airborne Position</a></li>
+      <li><a href="../../content/ads-b/4-surface-position.html">6. Surface Position</a></li>
+      <li><a href="../../content/ads-b/5-airborne-velocity.html">7. Airborne Velocity</a></li>
+      <li><a href="../../content/ads-b/6-operation-status.html">8. Operation Status</a></li>
+      <li><a href="../../content/ads-b/7-uncertainty.html">9. Uncertainty</a></li>
+      <li><a href="../../content/ads-b/8-error-control.html">10. Error Control</a></li>
+    </ul>
+    <li>Mode S</li>
+    <ul>
+      <li><a href="../../content/mode-s/1-basics.html">11. Mode S basics</a></li>
+      <li><a href="../../content/mode-s/2-allcall.html">12. All-call reply</a></li>
+      <li><a href="../../content/mode-s/3-surveillance.html">13. Surveillance reply</a></li>
+      <li><a href="../../content/mode-s/4-acas.html">14. ACAS</a></li>
+      <li><a href="../../content/mode-s/5-commb.html">15. Comm-B replies</a></li>
+      <li><a href="../../content/mode-s/6-els.html">16. Elementary surveillance</a></li>
+      <li><a href="../../content/mode-s/7-ehs.html">17. Enhanced surveillance</a></li>
+      <li><a href="../../content/mode-s/8-meteo.html">18. Meteorological services</a></li>
+      <li><a href="../../content/mode-s/9-inference.html">19. BDS code inference</a></li>
+    </ul>
+    <li><a href="../../content/conclusion.html">20. Conclusion</a></li>
+    <li>Related</li>
+    <ul>
+      <li><a href="../../misc/about.html">About the author</a></li>
+      <li><a href="../../misc/ack.html">Acknowledgements</a></li>
+    </ul>
+  </ul>
+</nav>
+
+<hr>
+<nav id="TOC">
+<h1>In this page</h1>
+<ul>
+<li><a href="#chap:surv_reply" id="toc-chap:surv_reply">Surveillance
+replies</a>
+<ul>
+<li><a href="#message-structure" id="toc-message-structure">Message
+structure</a></li>
+<li><a href="#sec:alt_code" id="toc-sec:alt_code">Altitude code</a></li>
+<li><a href="#sec:id_code" id="toc-sec:id_code">Identity code</a></li>
+</ul></li>
+</ul>
+</nav>
+
+</div>
+
+
+<div class="col-md-8 col-lg-9 maintext">
+
+<div class="float-right">
+  <a href="https://github.com/junzis/the-1090mhz-riddle/edit/master/content/mode-s/3-surveillance.tex"
+    class='btn btn-sm btn-outline-dark'> <i class="fas fa-edit"></i> Recommend edits</a>
+</div>
+
+<h1 id="chap:surv_reply">Surveillance replies</h1>
+<p>Surveillance replies consist of short messages (56 bits) that respond
+to the selective interrogations of the secondary surveillance radar
+based on the 24-bit transponder addresses of the aircraft. Two types of
+information are transmitted: altitude (DF=4) and identity (DF=5).</p>
+<h2 id="message-structure">Message structure</h2>
+<p>The structure of altitude and identity surveillance replies are
+similar, as shown in Tables <a href="#tb:df_4_structure"
+data-reference-type="ref" data-reference="tb:df_4_structure">1.1</a> and
+<a href="#tb:df_5_structure" data-reference-type="ref"
+data-reference="tb:df_5_structure">1.2</a>. The main difference is that
+bits 20 to 32 are used to encode either the altitude or the squawk
+code.</p>
+<div id="tb:df_4_structure">
+<table>
+<caption>Surveillance altitude reply (DF=4)</caption>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>FIELD</strong></th>
+<th style="text-align: left;"><strong></strong></th>
+<th style="text-align: left;"><strong>MSG</strong></th>
+<th style="text-align: left;"><strong>BITS</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Downlink format</td>
+<td style="text-align: left;">DF</td>
+<td style="text-align: left;">1–5</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr>
+<td style="text-align: left;">Flight status</td>
+<td style="text-align: left;">FS</td>
+<td style="text-align: left;">6–8</td>
+<td style="text-align: left;">3</td>
+</tr>
+<tr>
+<td style="text-align: left;">Downlink request</td>
+<td style="text-align: left;">DR</td>
+<td style="text-align: left;">9–13</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr>
+<td style="text-align: left;">Utility message</td>
+<td style="text-align: left;">UM</td>
+<td style="text-align: left;">14–19</td>
+<td style="text-align: left;">6</td>
+</tr>
+<tr>
+<td style="text-align: left;">Altitude code</td>
+<td style="text-align: left;">AC</td>
+<td style="text-align: left;">20–32</td>
+<td style="text-align: left;">13</td>
+</tr>
+<tr>
+<td style="text-align: left;">Address parity</td>
+<td style="text-align: left;">AP</td>
+<td style="text-align: left;">33–56</td>
+<td style="text-align: left;">24</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="tb:df_5_structure">
+<table>
+<caption>Surveillance identity reply (DF=5)</caption>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>FIELD</strong></th>
+<th style="text-align: left;"><strong></strong></th>
+<th style="text-align: left;"><strong>MSG</strong></th>
+<th style="text-align: left;"><strong>BITS</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Downlink format</td>
+<td style="text-align: left;">DF</td>
+<td style="text-align: left;">1–5</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr>
+<td style="text-align: left;">Flight status</td>
+<td style="text-align: left;">FS</td>
+<td style="text-align: left;">6–8</td>
+<td style="text-align: left;">3</td>
+</tr>
+<tr>
+<td style="text-align: left;">Downlink request</td>
+<td style="text-align: left;">DR</td>
+<td style="text-align: left;">9–13</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr>
+<td style="text-align: left;">Utility message</td>
+<td style="text-align: left;">UM</td>
+<td style="text-align: left;">14–19</td>
+<td style="text-align: left;">6</td>
+</tr>
+<tr>
+<td style="text-align: left;">Identity code</td>
+<td style="text-align: left;">ID</td>
+<td style="text-align: left;">20–32</td>
+<td style="text-align: left;">13</td>
+</tr>
+<tr>
+<td style="text-align: left;">Address parity</td>
+<td style="text-align: left;">AP</td>
+<td style="text-align: left;">33–56</td>
+<td style="text-align: left;">24</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The definitions of the common fields are:</p>
+<ul>
+<li><p><em>Flight status (FS)</em>: 3 bits, shows status of alert,
+special position pulse (SPI, in Mode A only) and aircraft status
+(airborne or on-ground). The field is interpreted as:</p>
+<blockquote>
+<p><code>000</code>: no alert, no SPI, aircraft is airborne<br />
+<code>001</code>: no alert, no SPI, aircraft is on-ground<br />
+<code>010</code>: alert, no SPI, aircraft is airborne<br />
+<code>011</code>: alert, no SPI, aircraft is on-ground<br />
+<code>100</code>: alert, SPI, aircraft is airborne or on-ground<br />
+<code>101</code>: no alert, SPI, aircraft is airborne or on-ground<br />
+<code>110</code>: reserved<br />
+<code>111</code>: not assigned</p>
+</blockquote></li>
+<li><p><em>Downlink request (DR)</em>: 5 bits, contains the type of
+request. In surveillance replies, only values 0, 1, 4, and 5 are used.
+The field can be decoded as:</p>
+<blockquote>
+<p><code>00000</code>: no downlink request<br />
+<code>00001</code>: request to send Comm-B message<br />
+<code>00100</code>: Comm-B broadcast message 1 available<br />
+<code>00101</code>: Comm-B broadcast message 2 available</p>
+</blockquote></li>
+<li><p><em>Utility message (UM)</em>: 6 bits, contains transponder
+communication status information.</p>
+<ul>
+<li><p>IIS: The first 4 bits of UM indicate the interrogator identifier
+code.</p></li>
+<li><p>IDS: The last 2 bits indicate the type of reservation made by the
+interrogator.</p>
+<blockquote>
+<p><code>00</code>: no information<br />
+<code>01</code>: IIS contains Comm-B interrogator identifier code<br />
+<code>10</code>: IIS contains Comm-C interrogator identifier code<br />
+<code>11</code>: IIS contains Comm-D interrogator identifier code<br />
+</p>
+</blockquote></li>
+</ul></li>
+</ul>
+<h2 id="sec:alt_code">Altitude code</h2>
+<p>The 13-bit altitude code can be encoded in 25 feet increments, 100
+feet increments, or in metric unit of meters. The 7th bit (MSG bit 28)
+is defined as the M bit. When the M bit is set to <code>0</code>, the
+9th bit (MSG bit 30) is defined as the Q bit.</p>
+<p>The decoding rules are as follows:</p>
+<ul>
+<li><p>When all bits are set to <code>0</code>, altitude information is
+not available or invalid.</p></li>
+<li><p>When M=1, removing the M bit, the remaining 12 bits represent the
+altitude in meters.</p></li>
+<li><p>When M=0 and Q=1, removing the M and Q bits, the remaining 11
+bits encode the altitude with 25 feet increments. Denote <span
+class="math inline">\(N\)</span> as the decimal value of the remaining
+11 bits. The altitude is calculated as <span class="math inline">\(25
+\times N - 1000\)</span> feet.</p></li>
+<li><p>When M=0 and Q=0, the remaining bits are defined as follows:</p>
+<pre><code>                                M        Q
++----+----+----+----+----+----+---+----+---+----+----+----+----+
+| C1 | A1 | C2 | A2 | C4 | A4 | 0 | B1 | 0 | B2 | D2 | B4 | D4 |
++----+----+----+----+----+----+---+----+---+----+----+----+----+</code></pre>
+<p>This structure corresponds to the Mode C altitude reply. This
+structure is used to encode altitudes above 50187.5 feet.</p></li>
+</ul>
+<div class="notebox">
+<p><span>Try it out</span> Using pyModeS, we can calculate the altitude
+code as:</p>
+<pre><code>import pyModeS as pms
+
+msg = &quot;2000171806A983&quot;
+altitude = pms.altcode(msg)  # 36000 (ft)</code></pre>
+</div>
+<h2 id="sec:id_code">Identity code</h2>
+<p>The 13-bit identity code encodes the 4 octal digit squawk code (from
+<code>0000</code> to <code>7777</code>). The structure of this field is
+shown as follows:</p>
+<pre><code>+----+----+----+----+----+----+---+----+----+----+----+----+----+
+| C1 | A1 | C2 | A2 | C4 | A4 | X | B1 | D1 | B2 | D2 | B4 | D4 |
++----+----+----+----+----+----+---+----+----+----+----+----+----+</code></pre>
+<p>The binary representation of the octal digit is:</p>
+<pre><code>A4 A2 A1 | B4 B2 B1 | C4 C2 C1 | D4 D2 D1</code></pre>
+<p>Next, we will use an example to explain the decoding of the identity
+code. The example message is:</p>
+<pre><code>MSG HEX: 2A00516D492B80
+MSG BIN: 00101 01000000000010 1000101101101 010010010010101110000000
+         [DF=5]              [identity code]</code></pre>
+<p>The binary identity code can be interpreted as follows:</p>
+<pre><code>C1 A1 C2 A2 C4 A4  X  B1 D1 B2 D2 B4 D4
+1  0  0  0  1  0   1   1  0  1  1  0  1</code></pre>
+<p>Rearranging the bits, we have three groups of binaries:</p>
+<pre><code>A4 A2 A1 | B4 B2 B1 | C4 C2 C1 | D4 D2 D1
+0  0  0  | 0  1  1  | 1  0  1  | 1  1  0</code></pre>
+<p>Finally, the four octal digit squawk code can be decoded from the
+binary groups as:</p>
+<pre><code>0 3 5 6</code></pre>
+<div class="notebox">
+<p><span>Try it out</span> Using pyModeS, we can calculate the squawk
+code as:</p>
+<pre><code>import pyModeS as pms
+
+msg = &quot;2A00516D492B80&quot;
+squawk = pms.idcode(msg)  # 0356</code></pre>
+</div>
+
+<footer class="mastfoot">
+  <div class="text-right">
+    <p> © Copyright 2021 <a href="https://junzis.com">Junzi Sun</a>. Build with LaTeX, Pandoc, and GitHub</p>
+  </div>
+</footer>
+
+</div>
+</div>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-74700456-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-74700456-1');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+  <meta name="author" content="Junzi Sun">
+
+
+  <title>The 1090MHz Riddle</title>
+  <style type="text/css">code{white-space: pre;}</style>
+
+
+
+  <link rel="stylesheet" href="../bootstrap.min.css">
+  <link rel="stylesheet" href="../style.css">
+
+
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet"> 
+
+<script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js"
+  integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+" crossorigin="anonymous">
+</script>
+
+</head>
+<body>
+
+<div class="container">
+
+<div class="d-flex flex-row align-items-end">
+	<div>
+		<h1 class="title">The 1090 Megahertz Riddle <span class="h5">(second edition)</span></h1>
+		<div class="subtitle">A Guide to Decoding Mode S and ADS-B Signals</div>
+	</div>
+	<div class='ml-auto chapter-nav'>
+    <div class="author">By: <strong>Junzi Sun</strong> (<a href="http://junzis.com">junzis.com</a>)</div>
+	</div>
+</div>
+
+<hr>
+
+<div class="row">
+<div class="col-md-4 col-lg-3">
+<nav>
+  <a href="../index.html" type="button"
+      class="btn btn-sm btn-outline-info btn-light">
+      <i class="fas fa-home"></i> Home
+  </a>
+
+  <br>
+
+  <a href="../book-the_1090mhz_riddle-junzi_sun.pdf"
+      type="button" class="btn btn-sm btn-outline-info">
+    <i class="far fa-file-pdf"></i> Download PDF book
+  </a>
+
+  <br>
+
+  <a href="../index.html#cite-this-book" type="button"
+      class="btn btn-sm btn-outline-info btn-light">
+    <i class="fas fa-quote-left"></i> Cite this book
+  </a>
+
+  <br>
+
+  <a href="http://mode-s.org" type="button"
+      class="btn btn-sm btn-outline-dark btn-light">
+    <i class="fas fa-angle-double-left"></i> mode-s.org
+  </a>
+
+  <hr>
+
+  <h1>Book chapters</h1>
+  <ul>
+    <li><a href="../misc/preface.html">0. Preface</a></li>
+    <li><a href="../content/introduction.html">1. Introduction</a></li>
+    <li><a href="../content/quickstart.html">2. Quick start</a></li>
+    <li>ADS-B</li>
+    <ul>
+      <li><a href="../content/ads-b/1-basics.html">3. ADS-B basics</a></li>
+      <li><a href="../content/ads-b/2-identification.html">4. Aircraft Identification</a></li>
+      <li><a href="../content/ads-b/3-airborne-position.html">5. Airborne Position</a></li>
+      <li><a href="../content/ads-b/4-surface-position.html">6. Surface Position</a></li>
+      <li><a href="../content/ads-b/5-airborne-velocity.html">7. Airborne Velocity</a></li>
+      <li><a href="../content/ads-b/6-operation-status.html">8. Operation Status</a></li>
+      <li><a href="../content/ads-b/7-uncertainty.html">9. Uncertainty</a></li>
+      <li><a href="../content/ads-b/8-error-control.html">10. Error Control</a></li>
+    </ul>
+    <li>Mode S</li>
+    <ul>
+      <li><a href="../content/mode-s/1-basics.html">11. Mode S basics</a></li>
+      <li><a href="../content/mode-s/2-allcall.html">12. All-call reply</a></li>
+      <li><a href="../content/mode-s/3-surveillance.html">13. Surveillance reply</a></li>
+      <li><a href="../content/mode-s/4-acas.html">14. ACAS</a></li>
+      <li><a href="../content/mode-s/5-commb.html">15. Comm-B replies</a></li>
+      <li><a href="../content/mode-s/6-els.html">16. Elementary surveillance</a></li>
+      <li><a href="../content/mode-s/7-ehs.html">17. Enhanced surveillance</a></li>
+      <li><a href="../content/mode-s/8-meteo.html">18. Meteorological services</a></li>
+      <li><a href="../content/mode-s/9-inference.html">19. BDS code inference</a></li>
+    </ul>
+    <li><a href="../content/conclusion.html">20. Conclusion</a></li>
+    <li>Related</li>
+    <ul>
+      <li><a href="../misc/about.html">About the author</a></li>
+      <li><a href="../misc/ack.html">Acknowledgements</a></li>
+    </ul>
+  </ul>
+</nav>
+
+<hr>
+<nav id="TOC">
+<h1>In this page</h1>
+<ul>
+<li><a href="#summary-and-beyond" id="toc-summary-and-beyond">Summary
+and beyond</a>
+<ul>
+<li><a href="#summary" id="toc-summary">Summary</a></li>
+<li><a href="#crowd-sourced-networks"
+id="toc-crowd-sourced-networks">Crowd-sourced networks</a></li>
+<li><a href="#additional-data" id="toc-additional-data">Additional
+data</a></li>
+<li><a href="#congestion" id="toc-congestion">Congestion</a></li>
+<li><a href="#the-future-of-mode-s-and-ads-b"
+id="toc-the-future-of-mode-s-and-ads-b">The Future of Mode S and
+ADS-B</a></li>
+</ul></li>
+</ul>
+</nav>
+
+</div>
+
+
+<div class="col-md-8 col-lg-9 maintext">
+
+<div class="float-right">
+  <a href="https://github.com/junzis/the-1090mhz-riddle/edit/master/content/conclusion.tex"
+    class='btn btn-sm btn-outline-dark'> <i class="fas fa-edit"></i> Recommend edits</a>
+</div>
+
+<h1 id="summary-and-beyond">Summary and beyond</h1>
+<h2 id="summary">Summary</h2>
+<p>I started the book by introducing the most fundamental knowledge on
+modern radar technologies, establishing the technical background of
+Mode S and ADS-B signals, and describing the hardware and software for
+receiving these signals. By the end of Part 1, I demonstrated how to set
+up a basic system, including the antenna, software-defined radio, and
+software tools. One thing worth noting is that I only illustrated the
+process of setting up two open-source tools under a Linux operation
+system, but they can certainly be used under other different operating
+systems.</p>
+<p>The main focus of the book (Parts 2 and 3) has been to explain the
+detailed structures of all ADS-B and common Mode S downlink messages, as
+well as to illustrate the decoding process with step-by-step examples
+when necessary. I tried to cover as many fields as possible in these
+messages. However, there may be certain fields that lack detailed
+explanation. The ICAO Annex Volume IV and ICAO Doc 9871 are always two
+excellent sources to find out more information on Mode S-related
+topics.</p>
+<p>In Part 2, I first introduced the basics of ADS-B, such as message
+structure, types, and different ADS-B versions. Then, I explained the
+structures and decoding processes for all ADS-B messages, including
+identification and category, airborne position, surface position,
+airborne velocity, and aircraft operation status. I also talked about
+parameters like uncertainties, accuracies, and integrities of ADS-B
+positions and velocities. Finally, in Part 2, I described the error
+control mechanism of ADS-B messages, which can be used to detect corrupt
+messages and with potential to correct them.</p>
+<p>In Part 3, I focused on the decoding of other types of Mode S
+messages. After explaining the basics of Mode S, I discussed all-call
+replies, surveillance replies, ACAS messages, and Comm-B messages. These
+are messages transmitted in different Mode S downlink formats, with
+Comm-B downlink containing the most information. In theory, it supports
+up to 256 message types (not all are used currently). Within Comm-B
+communication, some subsets of messages are commonly used by air traffic
+controllers. Then, I continued with the decoding of nine message types
+in three groups of Mode S services, which are Mode S elementary
+surveillance, Mode S enhanced surveillance, and Mode S meteorological
+services. As the third party receiver, the difficulty of decoding Comm-B
+messages is that the types cannot be easily identified like ADS-B
+messages. So, in the last chapter of this part, I discussed the
+important aspect of how to infer Comm-B types from downlink
+messages.</p>
+<h2 id="crowd-sourced-networks">Crowd-sourced networks</h2>
+<p>In Chapter 2, I talked about the coverage of ADS-B receivers. Even
+with the perfect visibility, one receiver can only cover a maximum area
+of around 400 km radius, due to the curvature of the Earth. The coverage
+is further reduced when the antenna is not free of obstacles like
+buildings and mountains.</p>
+<p>To cover full flight trajectories for a larger area, a group of
+receivers needs to be deployed. Furthermore, to have coverage over the
+entire continent (or multiple continents), an even larger network of
+receivers is needed. Easy access to low-cost software-defined radios
+make crowd-sourced ADS-B networks a reality nowadays.</p>
+<p>A crowd-sourced network usually consists of a large group of
+enthusiasts who are voluntarily feeding their receiver data to a central
+server (or cluster of servers) on the internet owned by an entity. The
+owner of the service can be a commercial company or a non-profit
+organization. These companies often provide free premium user accounts
+to contributors in return for their data. Some companies also provide
+free receivers for users to host in areas with less coverage. In such
+cases, they often make agreements with receiver hosts to maintain and
+keep the receiver online as much as possible. Table <a
+href="#tb:adsb_networks" data-reference-type="ref"
+data-reference="tb:adsb_networks">1.1</a> lists several ADS-B
+networks.</p>
+<div class="threeparttable">
+<div id="tb:adsb_networks">
+<table>
+<caption>A short list of ADS-B receiver networks</caption>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Name</strong></th>
+<th style="text-align: left;"><strong>Type</strong></th>
+<th style="text-align: left;"><strong>Founded</strong></th>
+<th style="text-align: left;"><strong>Number of receivers</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">FlightAware</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">2005</td>
+<td style="text-align: left;">30,000+</td>
+</tr>
+<tr>
+<td style="text-align: left;">FlightRadar24</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">2006</td>
+<td style="text-align: left;">25,000+</td>
+</tr>
+<tr>
+<td style="text-align: left;">RadarBox24</td>
+<td style="text-align: left;">Commercial</td>
+<td style="text-align: left;">2007</td>
+<td style="text-align: left;">15,000+</td>
+</tr>
+<tr>
+<td style="text-align: left;">OpenSky network</td>
+<td style="text-align: left;">Non-profit/research</td>
+<td style="text-align: left;">2013</td>
+<td style="text-align: left;">3,500+</td>
+</tr>
+<tr>
+<td style="text-align: left;">ADS-B Exchange</td>
+<td style="text-align: left;">Non-profit</td>
+<td style="text-align: left;">2016</td>
+<td style="text-align: left;">5,000+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="tablenotes">
+<p>Number of receivers obtained from each company’s website, as of
+January 2021.</p>
+</div>
+</div>
+<p>Another advantage of having a network of receivers is that it can be
+used to locate aircraft or validate their locations using
+multilateration <span class="citation" data-cites="kaune2012">[Kaune et
+al. 2012]</span>, and this capability can be applied to any Mode A/C/S
+signals transmitted by aircraft. This technique has been used by many
+receiver networks. It is specifically useful to locate aircraft that are
+not equipped with ADS-B compliant transponders.</p>
+<p><span><strong>OpenSky network</strong></span></p>
+<p>Among these crowd-sourced networks, the OpenSky network <a
+href="#fn1" class="footnote-ref" id="fnref1"
+role="doc-noteref"><sup>1</sup></a> is one of the most well-known
+research networks in the air transportation research community. It is a
+crowd-sourced network that includes volunteers and researchers around
+the world. Currently, it has good coverage over Europe and a large part
+of North America. Figure <a href="#fig:opensky_coverage"
+data-reference-type="ref" data-reference="fig:opensky_coverage">1.1</a>
+shows a recent current global coverage of the OpenSky network.</p>
+<figure id="fig:opensky_coverage">
+<img src="../figures/conclusion/opensky.png" />
+<figcaption>Coverage of OpenSky network, as of November
+2020</figcaption>
+</figure>
+<p>The OpenSky network provides users free and unlimited access to its
+data for non-commercial purposes <span class="citation"
+data-cites="schafer2014opensky">[Schäfer et al. 2014]</span>. It is
+possible to access its live ADS-B traffic data through a web API. Access
+to historical data is also possible through its Impala shell. However,
+the user must request this permission first. I also wrote a Python
+library,<a href="#fn2" class="footnote-ref" id="fnref2"
+role="doc-noteref"><sup>2</sup></a> which facilitates the access and
+decoding of raw Mode S messages from the OpenSky historical database
+using its Impala interface <span class="citation"
+data-cites="sun2019pyopensky">[Sun and Hoekstra 2019]</span>. Another
+tool, <em>traffic</em>, can also be used to access the OpenSky
+historical database <span class="citation" data-cites="olive2019">[Olive
+2019]</span>.</p>
+<p>If you are setting up a receiver or have an existing receiver, I
+strongly encourage you to consider sharing your Mode S feed with the
+OpenSky network to increase coverage and to support open flight data for
+researchers. Guides on how to feed data to OpenSky can be found on its
+website.<a href="#fn3" class="footnote-ref" id="fnref3"
+role="doc-noteref"><sup>3</sup></a></p>
+<h2 id="additional-data">Additional data</h2>
+<p>For many air traffic-related studies, researchers frequently require
+information that is not transmitted in ADS-B and Mode S. One of the
+first things researchers often need is an aircraft database that can map
+the transponder address from ADS-B or Mode S to aircraft registration
+and aircraft type.</p>
+<p>A few countries, including the United States, make this information
+publicly available for download. However, a large part of this
+information is not officially available or behind paywalls. There are
+many different sources of aircraft data that are maintained by hobbyists
+and volunteers on the internet. One of the most comprehensive databases
+for aircraft is also maintained by OpenSky network. A curated list of
+data sources can be found on the <em>Open Aviation Data</em> website.<a
+href="#fn4" class="footnote-ref" id="fnref4"
+role="doc-noteref"><sup>4</sup></a>.</p>
+<p>On this website, a few other common data sources are listed too,
+including, for example, aircraft performance database, engine emission
+data, and weather data. All these data sources are available for public
+use.</p>
+<h2 id="congestion">Congestion</h2>
+<p>In the first chapter of this book, I discussed all types of signals
+that are transmitted over the 1090 MHz frequency. They include Mode A,
+Mode C, and Mode S. Due to the mix of different types of transponders
+from a wide range of aircraft including both commercial and general
+aviation, all these modes of surveillance are still in use nowadays. In
+addition to the increasing number of operational aircraft, the frequency
+congestion can be quite a serious issue during the daytime in busy
+airspace.</p>
+<p>In a recent study <span class="citation" data-cites="sun2020rf">[Sun
+and Hoekstra 2020]</span>, with the focus on Dutch airspace, a very high
+rate of corrupted ADS-B signals during the daytime was found. Figure <a
+href="#fig:adsb_corruption" data-reference-type="ref"
+data-reference="fig:adsb_corruption">1.2</a> illustrates the severity of
+the frequency congestion during one day of radio frequency testing.</p>
+<figure id="fig:adsb_corruption">
+<img src="../figures/conclusion/adsb_corruption.png" />
+<figcaption>Corruption detected in ADS-B messages during a 24-hour
+period on 29 January, 2020 for Dutch airspace.</figcaption>
+</figure>
+<p>Even though this test is conducted in a limited area, high congestion
+of the 1090 MHz radio frequency applies to other busy airspaces. The
+situation is especially serious in Europe, where the air traffic density
+is quite high during daytime operations. The mix of all different modes
+of surveillance (A/C/S) combined with the continuously increasing air
+traffic makes the channel busier.</p>
+<h2 id="the-future-of-mode-s-and-ads-b">The Future of Mode S and
+ADS-B</h2>
+<p>Reducing radio frequency congestion is one important area for future
+research. Some potential solutions to help us mitigate this problem in
+the future include, for example:</p>
+<ul>
+<li><p>Reduce and phase out Mode A and Mode C surveillance;</p></li>
+<li><p>Balance Mode S interrogations among different surveillance
+radars;</p></li>
+<li><p>Migrate interrogation based surveillance to broadcast (like
+ADS-B);</p></li>
+<li><p>Introduce more error resistant modulation and channel coding
+methods;</p></li>
+<li><p>Make use of alternative frequencies.</p></li>
+</ul>
+<p>Another issue is the global coverage of ADS-B. Currently, it is still
+difficult to fully track aircraft over the oceans, due to the lack of
+ground stations. One trend is to make use of satellites for receiving
+and relaying ADS-B messages transmitted by planes to ground stations
+<span class="citation" data-cites="noschese2011">[Noschese et al.
+2011]</span>. Companies like Aireon and Spire have launched satellites
+that can receive ADS-B signals and make the data available
+commercially.</p>
+<p>It is still challenging for satellites to handle signals with a low
+signal to noise ratio given their high orbits, as well as the high
+signal garbling rates caused by their large coverage. Furthermore, a
+large quantity of oceanic ADS-B data is located behind paywalls, which
+makes it hard for researchers to take advantage of space-based ADS-B
+data.</p>
+<p>To this end, how to help researchers access higher-quality open
+surveillance data over a larger geographic scope, is a question that
+remains for me, you, and the entire research community to answer.</p>
+<div id="refs" class="references csl-bib-body hanging-indent"
+role="list">
+<div id="ref-kaune2012" class="csl-entry" role="listitem">
+<span class="smallcaps">Kaune, R., Steffes, C., Rau, S., Konle, W., and
+Pagel, J.</span> 2012. Wide area multilateration using ADS-b transponder
+signals. <em>Information fusion (FUSION), 2012 15th international
+conference on</em>, IEEE, 727–734.
+</div>
+<div id="ref-noschese2011" class="csl-entry" role="listitem">
+<span class="smallcaps">Noschese, P., Porfili, S., and Di Girolamo,
+S.</span> 2011. Ads-b via iridium next satellites. <em>Digital
+communications-enhanced surveillance of aircraft and vehicles
+(TIWDC/ESAV), 2011 tyrrhenian international workshop on</em>, IEEE,
+213–218.
+</div>
+<div id="ref-olive2019" class="csl-entry" role="listitem">
+<span class="smallcaps">Olive, X.</span> 2019. <a
+href="https://doi.org/10.21105/joss.01518">Traffic, a toolbox for
+processing and analysing air traffic data</a>. <em>Journal of Open
+Source Software</em> <em>4</em>, 39, 1518.
+</div>
+<div id="ref-schafer2014opensky" class="csl-entry" role="listitem">
+<span class="smallcaps">Schäfer, M., Strohmeier, M., Lenders, V.,
+Martinovic, I., and Wilhelm, M.</span> 2014. Bringing up OpenSky: A
+large-scale ADS-b sensor network for research. <em>IPSN-14 proceedings
+of the 13th international symposium on information processing in sensor
+networks</em>, IEEE, 83–94.
+</div>
+<div id="ref-sun2019pyopensky" class="csl-entry" role="listitem">
+<span class="smallcaps">Sun, J. and Hoekstra, J.</span> 2019. <a
+href="https://doi.org/10.29007/mmsb">Integrating pyModeS and OpenSky
+historical database</a>. <em>Proceedings of the 7th OpenSky workshop
+2019</em>.
+</div>
+<div id="ref-sun2020rf" class="csl-entry" role="listitem">
+<span class="smallcaps">Sun, J. and Hoekstra, J.</span> 2020. Analyzing
+aircraft surveillance signal quality at the 1090 megahertz radio
+frequency. <em>Proceedings of the 9th international conference for
+research in air transportation</em>.
+</div>
+</div>
+<section id="footnotes" class="footnotes footnotes-end-of-document"
+role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1"><p>https://opensky-network.org<a href="#fnref1"
+class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>https://github.com/junzis/pyopensky<a href="#fnref2"
+class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li
+id="fn3"><p>https://opensky-network.org/contribute/improve-coverage<a
+href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>https://atmdata.github.io/sources/<a href="#fnref4"
+class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+<footer class="mastfoot">
+  <div class="text-right">
+    <p> © Copyright 2021 <a href="https://junzis.com">Junzi Sun</a>. Build with LaTeX, Pandoc, and GitHub</p>
+  </div>
+</footer>
+
+</div>
+</div>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-74700456-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-74700456-1');
+</script>
+
+</body>
+</html>

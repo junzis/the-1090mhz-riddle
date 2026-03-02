@@ -1,0 +1,1339 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+  <meta name="author" content="Junzi Sun">
+
+
+  <title>The 1090MHz Riddle</title>
+  <style type="text/css">code{white-space: pre;}</style>
+
+
+
+  <link rel="stylesheet" href="../../bootstrap.min.css">
+  <link rel="stylesheet" href="../../style.css">
+
+  <script
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet"> 
+
+<script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js"
+  integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+" crossorigin="anonymous">
+</script>
+
+</head>
+<body>
+
+<div class="container">
+
+<div class="d-flex flex-row align-items-end">
+	<div>
+		<h1 class="title">The 1090 Megahertz Riddle <span class="h5">(second edition)</span></h1>
+		<div class="subtitle">A Guide to Decoding Mode S and ADS-B Signals</div>
+	</div>
+	<div class='ml-auto chapter-nav'>
+    <div class="author">By: <strong>Junzi Sun</strong> (<a href="http://junzis.com">junzis.com</a>)</div>
+	</div>
+</div>
+
+<hr>
+
+<div class="row">
+<div class="col-md-4 col-lg-3">
+<nav>
+  <a href="../../index.html" type="button"
+      class="btn btn-sm btn-outline-info btn-light">
+      <i class="fas fa-home"></i> Home
+  </a>
+
+  <br>
+
+  <a href="../../book-the_1090mhz_riddle-junzi_sun.pdf"
+      type="button" class="btn btn-sm btn-outline-info">
+    <i class="far fa-file-pdf"></i> Download PDF book
+  </a>
+
+  <br>
+
+  <a href="../../index.html#cite-this-book" type="button"
+      class="btn btn-sm btn-outline-info btn-light">
+    <i class="fas fa-quote-left"></i> Cite this book
+  </a>
+
+  <br>
+
+  <a href="http://mode-s.org" type="button"
+      class="btn btn-sm btn-outline-dark btn-light">
+    <i class="fas fa-angle-double-left"></i> mode-s.org
+  </a>
+
+  <hr>
+
+  <h1>Book chapters</h1>
+  <ul>
+    <li><a href="../../misc/preface.html">0. Preface</a></li>
+    <li><a href="../../content/introduction.html">1. Introduction</a></li>
+    <li><a href="../../content/quickstart.html">2. Quick start</a></li>
+    <li>ADS-B</li>
+    <ul>
+      <li><a href="../../content/ads-b/1-basics.html">3. ADS-B basics</a></li>
+      <li><a href="../../content/ads-b/2-identification.html">4. Aircraft Identification</a></li>
+      <li><a href="../../content/ads-b/3-airborne-position.html">5. Airborne Position</a></li>
+      <li><a href="../../content/ads-b/4-surface-position.html">6. Surface Position</a></li>
+      <li><a href="../../content/ads-b/5-airborne-velocity.html">7. Airborne Velocity</a></li>
+      <li><a href="../../content/ads-b/6-operation-status.html">8. Operation Status</a></li>
+      <li><a href="../../content/ads-b/7-uncertainty.html">9. Uncertainty</a></li>
+      <li><a href="../../content/ads-b/8-error-control.html">10. Error Control</a></li>
+    </ul>
+    <li>Mode S</li>
+    <ul>
+      <li><a href="../../content/mode-s/1-basics.html">11. Mode S basics</a></li>
+      <li><a href="../../content/mode-s/2-allcall.html">12. All-call reply</a></li>
+      <li><a href="../../content/mode-s/3-surveillance.html">13. Surveillance reply</a></li>
+      <li><a href="../../content/mode-s/4-acas.html">14. ACAS</a></li>
+      <li><a href="../../content/mode-s/5-commb.html">15. Comm-B replies</a></li>
+      <li><a href="../../content/mode-s/6-els.html">16. Elementary surveillance</a></li>
+      <li><a href="../../content/mode-s/7-ehs.html">17. Enhanced surveillance</a></li>
+      <li><a href="../../content/mode-s/8-meteo.html">18. Meteorological services</a></li>
+      <li><a href="../../content/mode-s/9-inference.html">19. BDS code inference</a></li>
+    </ul>
+    <li><a href="../../content/conclusion.html">20. Conclusion</a></li>
+    <li>Related</li>
+    <ul>
+      <li><a href="../../misc/about.html">About the author</a></li>
+      <li><a href="../../misc/ack.html">Acknowledgements</a></li>
+    </ul>
+  </ul>
+</nav>
+
+<hr>
+<nav id="TOC">
+<h1>In this page</h1>
+<ul>
+<li><a href="#chap:uncertainty" id="toc-chap:uncertainty">Uncertainties
+in ADS-B</a>
+<ul>
+<li><a href="#terminology" id="toc-terminology">Terminology</a></li>
+<li><a href="#version-0" id="toc-version-0">Version 0</a>
+<ul>
+<li><a href="#navigation-uncertainty-category---position-nucp"
+id="toc-navigation-uncertainty-category---position-nucp">Navigation
+uncertainty category - position (NUCp)</a></li>
+<li><a href="#navigation-uncertainty-category---rate-nucr"
+id="toc-navigation-uncertainty-category---rate-nucr">Navigation
+uncertainty category - rate (NUCr)</a></li>
+</ul></li>
+<li><a href="#version-1" id="toc-version-1">Version 1</a>
+<ul>
+<li><a href="#navigation-integrity-category-nic"
+id="toc-navigation-integrity-category-nic">Navigation integrity category
+(NIC)</a></li>
+<li><a href="#navigation-accuracy-category-position-nacp"
+id="toc-navigation-accuracy-category-position-nacp">Navigation accuracy
+category – position (NACp)</a></li>
+<li><a href="#navigation-accuracy-category-velocity-nacv"
+id="toc-navigation-accuracy-category-velocity-nacv">Navigation accuracy
+category – velocity (NACv)</a></li>
+<li><a href="#surveillance-integrity-level-sil"
+id="toc-surveillance-integrity-level-sil">Surveillance integrity level
+(SIL)</a></li>
+</ul></li>
+<li><a href="#version-2" id="toc-version-2">Version 2</a>
+<ul>
+<li><a href="#navigation-integrity-category-nic-1"
+id="toc-navigation-integrity-category-nic-1">Navigation integrity
+category (NIC)</a></li>
+<li><a href="#surveillance-integrity-level-sil-1"
+id="toc-surveillance-integrity-level-sil-1">Surveillance integrity level
+(SIL)</a></li>
+<li><a href="#nacp-and-nacv" id="toc-nacp-and-nacv">NACp and
+NACv</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+
+</div>
+
+
+<div class="col-md-8 col-lg-9 maintext">
+
+<div class="float-right">
+  <a href="https://github.com/junzis/the-1090mhz-riddle/edit/master/content/ads-b/7-uncertainty.tex"
+    class='btn btn-sm btn-outline-dark'> <i class="fas fa-edit"></i> Recommend edits</a>
+</div>
+
+<h1 id="chap:uncertainty">Uncertainties in ADS-B</h1>
+<p>There are many parameters in ADS-B that define the quality of data in
+the position and velocity reports. These parameters serve as accuracy
+and confidence indicators for aircraft position and speed information
+transmitted in ADS-B messages.</p>
+<p>With each evolution of the ADS-B versions, these parameters have been
+renamed and redefined. These updates complicate the understanding and
+analysis of uncertainties in ADS-B. This chapter is designed to give a
+better overview of the uncertainty indicators in different ADS-B
+versions, and it also gives a clear mapping between the indicators and
+actual uncertainty values.</p>
+<h2 id="terminology">Terminology</h2>
+<p>In general, there are three types of data quality indicators:</p>
+<ul>
+<li><p><strong>Uncertainty indicators</strong>: These indicators are
+introduced in the ADS-B version 0. Parameter values indicate that at
+least 95% of measurements are within the allowed uncertainty
+bounds.</p></li>
+<li><p><strong>Accuracy indicators</strong>: These indicators are first
+introduced in version 1 and are intended to be a drop-in replacement for
+uncertainty indicators in version 0. Parameter values also indicate that
+at least 95% of measurements are within the allowed accuracy
+bounds.</p></li>
+<li><p><strong>Integrity indicators</strong>: These indicators are also
+first introduced in version 1, replacing the uncertainty indicators from
+version 0.</p></li>
+</ul>
+<p>Commonly, two parameters are related to the position and velocity
+separately in each group of indicators. Table <a
+href="#tb:measurement-quality-indicators" data-reference-type="ref"
+data-reference="tb:measurement-quality-indicators">1.1</a> shows the six
+major uncertainty indicators related ADS-B versions and their value
+ranges.</p>
+<div id="tb:measurement-quality-indicators">
+<table>
+<caption>Data quality indicators</caption>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Indicator</strong></th>
+<th style="text-align: left;"><strong>Acronym</strong></th>
+<th style="text-align: left;"><strong>Version</strong></th>
+<th style="text-align: left;"><strong>Values</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Navigation uncertainty
+category–position</td>
+<td style="text-align: left;">NUCp</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0–9</td>
+</tr>
+<tr>
+<td style="text-align: left;">Navigation uncertainty category–rate
+(velocity)</td>
+<td style="text-align: left;">NUCr</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0–4</td>
+</tr>
+<tr>
+<td style="text-align: left;">Navigation accuracy category–position</td>
+<td style="text-align: left;">NACp</td>
+<td style="text-align: left;">1, 2</td>
+<td style="text-align: left;">0–11</td>
+</tr>
+<tr>
+<td style="text-align: left;">Navigation accuracy category–velocity</td>
+<td style="text-align: left;">NACv</td>
+<td style="text-align: left;">1, 2</td>
+<td style="text-align: left;">0–4</td>
+</tr>
+<tr>
+<td style="text-align: left;">Navigation integrity category</td>
+<td style="text-align: left;">NIC</td>
+<td style="text-align: left;">1, 2</td>
+<td style="text-align: left;">0–11</td>
+</tr>
+<tr>
+<td style="text-align: left;">Surveillance integrity level</td>
+<td style="text-align: left;">SIL</td>
+<td style="text-align: left;">1, 2</td>
+<td style="text-align: left;">0–3</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Each quality indicator also relates to a set of parameters that
+express the exact amount of uncertainties, errors, or probabilities.
+Table <a href="#tb:uncertainty-parameters" data-reference-type="ref"
+data-reference="tb:uncertainty-parameters">1.2</a> lists these
+parameters.</p>
+<div id="tb:uncertainty-parameters">
+<table>
+<caption>Parameters related with uncertainty, accuracy, and
+integrity</caption>
+<thead>
+<tr>
+<th style="text-align: left;"><strong></strong></th>
+<th style="text-align: left;"><strong>Parameter</strong></th>
+<th style="text-align: left;"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td rowspan="3" style="text-align: left;">NUCp (V0)</td>
+<td style="text-align: left;">Horizontal protection limit</td>
+<td style="text-align: left;">HPL</td>
+</tr>
+<tr>
+<td style="text-align: left;">95% containment radius on horizontal
+position error</td>
+<td style="text-align: left;">Rc/μ</td>
+</tr>
+<tr>
+<td style="text-align: left;">95% containment radius on vertical
+position error</td>
+<td style="text-align: left;">Rc/v</td>
+</tr>
+<tr>
+<td rowspan="2" style="text-align: left;">NUCr (V0)</td>
+<td style="text-align: left;">Horizontal velocity error (95%)</td>
+<td style="text-align: left;">HVE</td>
+</tr>
+<tr>
+<td style="text-align: left;">Vertical velocity error (95%)</td>
+<td style="text-align: left;">VVE</td>
+</tr>
+<tr>
+<td rowspan="2" style="text-align: left;">NACp (V1,2)</td>
+<td style="text-align: left;">Estimated position uncertainty (95%
+horizontal accuracy - p). a.k.a. horizontal figure of merit (HFOM) in
+GNSS</td>
+<td style="text-align: left;">EPU</td>
+</tr>
+<tr>
+<td style="text-align: left;">Vertical estimated position uncertainty
+(95% vertical accuracy - p). a.k.a. vertical figure of merit (VFOM) in
+GNSS</td>
+<td style="text-align: left;">VEPU</td>
+</tr>
+<tr>
+<td rowspan="2" style="text-align: left;">NACv (V1,2)</td>
+<td style="text-align: left;">Horizontal figure of merit (95% horizontal
+accuracy - v)</td>
+<td style="text-align: left;">HFOMr</td>
+</tr>
+<tr>
+<td style="text-align: left;">Vertical figure of merit (95% vertical
+accuracy - v)</td>
+<td style="text-align: left;">VFOMr</td>
+</tr>
+<tr>
+<td rowspan="2" style="text-align: left;">NIC (V1,2)</td>
+<td style="text-align: left;">Horizontal containment radius limit</td>
+<td style="text-align: left;">RC</td>
+</tr>
+<tr>
+<td style="text-align: left;">Vertical protection limit</td>
+<td style="text-align: left;">VPL</td>
+</tr>
+<tr>
+<td rowspan="2" style="text-align: left;">SIL (V1,2)</td>
+<td style="text-align: left;">Probability of exceeding horizontal
+containment radius</td>
+<td style="text-align: left;">P-RC</td>
+</tr>
+<tr>
+<td style="text-align: left;">Probability of exceeding vertical
+integrity containment region</td>
+<td style="text-align: left;">P-VPL</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>These parameters are identified by different bits from different
+messages. Due to the evolution of ADS-B versions, the definitions can
+also differ. In order to correctly obtain these parameters, the ADS-B
+transponder version must be identified. This can be based on the logic
+explained in Chapter <a href="#chap:adsb-basic"
+data-reference-type="ref"
+data-reference="chap:adsb-basic">[chap:adsb-basic]</a>.</p>
+<p>In the rest of this chapter, these parameters are explained in detail
+according to different ADS-B versions. The changes in the same
+parameters between different versions are also indicated.</p>
+<h2 id="version-0">Version 0</h2>
+<p>In ADS-B version 0, only uncertainties are defined. Two sets of
+parameters are related to the position and velocity (or rate)
+separately.</p>
+<h3 id="navigation-uncertainty-category---position-nucp">Navigation
+uncertainty category - position (NUCp)</h3>
+<p>NUCp is directly related to ADS-B Type Code with one-to-one mapping.
+The mapping between Type Code and NUCp in surface position messages and
+the two types of airborne position messages is shown in Table <a
+href="#tb:tc-nucp-mapping" data-reference-type="ref"
+data-reference="tb:tc-nucp-mapping">1.5</a>.</p>
+<div class="subtable">
+<p><span>0.7</span></p>
+<div id="tb:tc-nucp-mapping">
+<table>
+<caption>Mapping between TC and NUCp</caption>
+<thead>
+<tr>
+<th style="text-align: left;"></th>
+<th colspan="5" style="text-align: left;">Surface position</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">TC</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">6</td>
+<td style="text-align: left;">7</td>
+<td style="text-align: left;">8</td>
+</tr>
+<tr>
+<td style="text-align: left;">NUCp</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">9</td>
+<td style="text-align: left;">8</td>
+<td style="text-align: left;">7</td>
+<td style="text-align: left;">6</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="subtable">
+<p><span>0.7</span></p>
+<div id="tb:tc-nucp-mapping">
+<table>
+<caption>Mapping between TC and NUCp</caption>
+<thead>
+<tr>
+<th style="text-align: left;"></th>
+<th colspan="10" style="text-align: left;">Airborne position (Barometric
+altitude)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">TC</td>
+<td style="text-align: left;">9</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">11</td>
+<td style="text-align: left;">12</td>
+<td style="text-align: left;">13</td>
+<td style="text-align: left;">14</td>
+<td style="text-align: left;">15</td>
+<td style="text-align: left;">16</td>
+<td style="text-align: left;">17</td>
+<td style="text-align: left;">18</td>
+</tr>
+<tr>
+<td style="text-align: left;">NUCp</td>
+<td style="text-align: left;">9</td>
+<td style="text-align: left;">8</td>
+<td style="text-align: left;">7</td>
+<td style="text-align: left;">6</td>
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">3</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="subtable">
+<p><span>0.7</span></p>
+<div id="tb:tc-nucp-mapping">
+<table>
+<caption>Mapping between TC and NUCp</caption>
+<thead>
+<tr>
+<th style="text-align: left;"></th>
+<th colspan="3" style="text-align: left;">(GNSS altitude)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">TC</td>
+<td style="text-align: left;">20</td>
+<td style="text-align: left;">21</td>
+<td style="text-align: left;">22</td>
+</tr>
+<tr>
+<td style="text-align: left;">NUCp</td>
+<td style="text-align: left;">9</td>
+<td style="text-align: left;">8</td>
+<td style="text-align: left;">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>In general, a higher NUCp number (lower TC number) represents higher
+confidence in the position measurement. When dealing with position
+uncertainty, the horizontal protection limit (HPL), the containment
+radius on horizontal position error (denoted as Rc/μ), and the
+containment radius on vertical position error (denoted as Rc/v) are used
+to quantify the uncertainties. All values are shown in Table <a
+href="#tb:nucp-params" data-reference-type="ref"
+data-reference="tb:nucp-params">1.6</a>.</p>
+<div id="tb:nucp-params">
+<table>
+<caption>NUCp parameters and their values</caption>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>TC</strong></th>
+<th style="text-align: left;"><strong>NUCp</strong></th>
+<th style="text-align: left;"><strong>HPL</strong></th>
+<th style="text-align: left;"><strong>Rc/μ</strong></th>
+<th style="text-align: left;"><strong>Rc/v</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">N/A</td>
+</tr>
+<tr>
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">9</td>
+<td style="text-align: left;">&lt;7.5 m</td>
+<td style="text-align: left;">&lt;3 m</td>
+<td style="text-align: left;">N/A</td>
+</tr>
+<tr>
+<td style="text-align: left;">6</td>
+<td style="text-align: left;">8</td>
+<td style="text-align: left;">&lt;25 m</td>
+<td style="text-align: left;">&lt;10 m</td>
+<td style="text-align: left;">N/A</td>
+</tr>
+<tr>
+<td style="text-align: left;">7</td>
+<td style="text-align: left;">7</td>
+<td style="text-align: left;">&lt;0.1 NM (185 m)</td>
+<td style="text-align: left;">&lt;0.05 NM (93 m)</td>
+<td style="text-align: left;">N/A</td>
+</tr>
+<tr>
+<td style="text-align: left;">8</td>
+<td style="text-align: left;">6</td>
+<td style="text-align: left;">&gt;0.1 NM (185 m)</td>
+<td style="text-align: left;">&gt;0.05 NM (93 m)</td>
+<td style="text-align: left;">N/A</td>
+</tr>
+<tr>
+<td style="text-align: left;">9</td>
+<td style="text-align: left;">9</td>
+<td style="text-align: left;">&lt;7.5 m</td>
+<td style="text-align: left;">&lt;3 m</td>
+<td style="text-align: left;">N/A</td>
+</tr>
+<tr>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">8</td>
+<td style="text-align: left;">&lt;25 m</td>
+<td style="text-align: left;">&lt;10 m</td>
+<td style="text-align: left;">N/A</td>
+</tr>
+<tr>
+<td style="text-align: left;">11</td>
+<td style="text-align: left;">7</td>
+<td style="text-align: left;">&lt;0.1 NM (185 m)</td>
+<td style="text-align: left;">&lt;0.05 NM (93 m)</td>
+<td style="text-align: left;">N/A</td>
+</tr>
+<tr>
+<td style="text-align: left;">12</td>
+<td style="text-align: left;">6</td>
+<td style="text-align: left;">&lt;0.2 NM (370 m)</td>
+<td style="text-align: left;">&lt;0.1 NM (185 m)</td>
+<td style="text-align: left;">N/A</td>
+</tr>
+<tr>
+<td style="text-align: left;">13</td>
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">&lt;0.5 NM (926 m)</td>
+<td style="text-align: left;">&lt;0.25 NM (463 m)</td>
+<td style="text-align: left;">N/A</td>
+</tr>
+<tr>
+<td style="text-align: left;">14</td>
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">&lt;1 NM (1852 m)</td>
+<td style="text-align: left;">&lt;0.5 NM (926 m)</td>
+<td style="text-align: left;">N/A</td>
+</tr>
+<tr>
+<td style="text-align: left;">15</td>
+<td style="text-align: left;">3</td>
+<td style="text-align: left;">&lt;2 NM (3704 m)</td>
+<td style="text-align: left;">&lt;1 NM (1852 m)</td>
+<td style="text-align: left;">N/A</td>
+</tr>
+<tr>
+<td style="text-align: left;">16</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">&lt;10 NM (18520 m)</td>
+<td style="text-align: left;">&lt;5 NM (9260 m)</td>
+<td style="text-align: left;">N/A</td>
+</tr>
+<tr>
+<td style="text-align: left;">17</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">&lt;20 NM (37040 m)</td>
+<td style="text-align: left;">&lt;10 NM (18520 m)</td>
+<td style="text-align: left;">N/A</td>
+</tr>
+<tr>
+<td style="text-align: left;">18</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">&gt;20 NM (37040 m)</td>
+<td style="text-align: left;">&gt;10 NM (18520 m)</td>
+<td style="text-align: left;">N/A</td>
+</tr>
+<tr>
+<td style="text-align: left;">20</td>
+<td style="text-align: left;">9</td>
+<td style="text-align: left;">&lt;7.5 m</td>
+<td style="text-align: left;">&lt;3 m</td>
+<td style="text-align: left;">&lt;4 m</td>
+</tr>
+<tr>
+<td style="text-align: left;">21</td>
+<td style="text-align: left;">8</td>
+<td style="text-align: left;">&lt;25 m</td>
+<td style="text-align: left;">&lt;10 m</td>
+<td style="text-align: left;">&lt;15 m</td>
+</tr>
+<tr>
+<td style="text-align: left;">22</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">&gt;25 m</td>
+<td style="text-align: left;">&gt;10 m</td>
+<td style="text-align: left;">&gt;15 m</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>It is worth noting that, in the case of airborne position with GNSS
+height (TC=20–22), HPL, and Rc/μ are defined with slight differences
+compared to other types of position messages. In addition, the
+containment radius for the vertical position (Rc/v) is also defined in
+this message. This is possible because the altitude is obtained from
+GNSS sources.</p>
+<h3 id="navigation-uncertainty-category---rate-nucr">Navigation
+uncertainty category - rate (NUCr)</h3>
+<p>The Navigation Uncertainty Category - rate (NUCr) is used to indicate
+the uncertainty of the horizontal and vertical speeds. The bits
+representing NUCr can be found in the airborne velocity message (TC=19).
+The NUCr is located at message bits 43–45 (or ME bits 11–13), which
+defines the 95% of the error in horizontal and vertical speed as shown
+in Table <a href="#tb:nucr-params" data-reference-type="ref"
+data-reference="tb:nucr-params">1.7</a>.</p>
+<div id="tb:nucr-params">
+<table>
+<caption>NUCr parameters and their values</caption>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>NUCp</strong></th>
+<th style="text-align: left;"><strong>HVE (95%)</strong></th>
+<th style="text-align: left;"><strong>VVE (95%)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">N/A</td>
+</tr>
+<tr>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">&lt;10 m/s</td>
+<td style="text-align: left;">&lt;15.2 m/s (50 fps)</td>
+</tr>
+<tr>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">&lt;3 m/s</td>
+<td style="text-align: left;">&lt;4.5 m/s (15 fps)</td>
+</tr>
+<tr>
+<td style="text-align: left;">3</td>
+<td style="text-align: left;">&lt;1 m/s</td>
+<td style="text-align: left;">&lt;1.5 m/s (5 fps)</td>
+</tr>
+<tr>
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">&lt;0.3 m/s</td>
+<td style="text-align: left;">&lt;0.46 m/s (1.5 fps)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="version-1">Version 1</h2>
+<p>In ADS-B version 1, the uncertainty category is removed, replaced by
+the accuracy category and the integrity category. Both NUCp and NUCr
+from version 0 no longer exist in version 1. New indicators introduced
+in version 1 are NACp, NACv, NIC, and SIL.</p>
+<h3 id="navigation-integrity-category-nic">Navigation integrity category
+(NIC)</h3>
+<p>NIC is designed to replace NUCp from version 0, but with more levels
+included. Like NUCp in version 0, the Navigation Integrity Category
+(NIC) is related to the Type Code. However, Type Code and NIC no longer
+have a one-to-one mapping relationship. With more levels defined, a
+supplemental bit is required to distinguish two levels represented by
+some of the same Type Codes.</p>
+<p>The NIC Supplement bit (NICs) is introduced in the operation status
+messages (TC=31) and located at the message bit 76 (or ME bit 44). The
+relationship between TC, NIC, and Rc are listed in Table <a
+href="#tb:nic-params-v1" data-reference-type="ref"
+data-reference="tb:nic-params-v1">1.8</a>.</p>
+<div id="tb:nic-params-v1">
+<table>
+<caption>NIC parameters and their values (version 1)</caption>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>TC</strong></th>
+<th style="text-align: left;"><strong>NICs</strong></th>
+<th style="text-align: left;"><strong>NIC</strong></th>
+<th style="text-align: left;"><strong>RC</strong></th>
+<th style="text-align: left;"><strong>VPL</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">N/A</td>
+</tr>
+<tr>
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">11</td>
+<td style="text-align: left;">&lt;7.5 m</td>
+<td style="text-align: left;">N/A</td>
+</tr>
+<tr>
+<td style="text-align: left;">6</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">&lt;25 m</td>
+<td style="text-align: left;">N/A</td>
+</tr>
+<tr>
+<td style="text-align: left;">7</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">9</td>
+<td style="text-align: left;">&lt;75 m</td>
+<td style="text-align: left;">N/A</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span>2-5</span></td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">8</td>
+<td style="text-align: left;">&lt;0.1 NM (185 m)</td>
+<td style="text-align: left;">N/A</td>
+</tr>
+<tr>
+<td style="text-align: left;">8</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">&gt;0.1 NM or Unknown</td>
+<td style="text-align: left;">N/A</td>
+</tr>
+<tr>
+<td style="text-align: left;">9</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">11</td>
+<td style="text-align: left;">&lt;7.5 m</td>
+<td style="text-align: left;">&lt;11 m</td>
+</tr>
+<tr>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">&lt;25 m</td>
+<td style="text-align: left;">&lt;37.5 m</td>
+</tr>
+<tr>
+<td style="text-align: left;">11</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">9</td>
+<td style="text-align: left;">&lt;75 m</td>
+<td style="text-align: left;">&lt;112 m</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span>2-5</span></td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">8</td>
+<td style="text-align: left;">&lt;0.1 NM (185 m)</td>
+<td style="text-align: left;">N/A</td>
+</tr>
+<tr>
+<td style="text-align: left;">12</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">7</td>
+<td style="text-align: left;">&lt;0.2 NM (370 m)</td>
+<td style="text-align: left;">N/A</td>
+</tr>
+<tr>
+<td style="text-align: left;">13</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">6</td>
+<td style="text-align: left;">&lt;0.5 NM (926 m)</td>
+<td style="text-align: left;">N/A</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span>2-2</span></td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">&lt;0.6 NM (1111 m)</td>
+<td style="text-align: left;">N/A</td>
+</tr>
+<tr>
+<td style="text-align: left;">14</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">&lt;1.0 NM (1852 m)</td>
+<td style="text-align: left;">N/A</td>
+</tr>
+<tr>
+<td style="text-align: left;">15</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">&lt;2 NM (3704 m)</td>
+<td style="text-align: left;">N/A</td>
+</tr>
+<tr>
+<td style="text-align: left;">16</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">3</td>
+<td style="text-align: left;">&lt;4 NM (7408 m)</td>
+<td style="text-align: left;">N/A</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span>2-5</span></td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">&lt;8 NM (14.8 km)</td>
+<td style="text-align: left;">N/A</td>
+</tr>
+<tr>
+<td style="text-align: left;">17</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">&lt;20 NM (37.0 km)</td>
+<td style="text-align: left;">N/A</td>
+</tr>
+<tr>
+<td style="text-align: left;">18</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">&gt;20 NM or Unknown</td>
+<td style="text-align: left;">N/A</td>
+</tr>
+<tr>
+<td style="text-align: left;">20</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">11</td>
+<td style="text-align: left;">&lt;7.5 m</td>
+<td style="text-align: left;">&lt;11 m</td>
+</tr>
+<tr>
+<td style="text-align: left;">21</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">&lt;25 m</td>
+<td style="text-align: left;">&lt;37.5 m</td>
+</tr>
+<tr>
+<td style="text-align: left;">22</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">&gt;25 m</td>
+<td style="text-align: left;">&gt;112 m</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="navigation-accuracy-category-position-nacp">Navigation accuracy
+category – position (NACp)</h3>
+<p>NACp is introduced in ADS-B version 1 as a complementary indicator of
+NIC. The NACp can be obtained from the operational status message,
+message frame bits 77–80 (or ME bits 45–48).</p>
+<p>With NACp, the 95% horizontal and vertical accuracy bounds can be
+determined. They are the estimated position uncertainty (EPU) and the
+vertical estimated position uncertainty (VEPU), which are also known as
+the horizontal figure of merit (HFOM) and the vertical figure of merit
+(VFOM) in GNSS.</p>
+<p>EPU and Rc in NIC have the following relationship:</p>
+<p><span class="math display">\[\begin{split}
+    \mathrm{EPU} &amp;\approx \mathrm{Rc} / 2.5   \qquad  \text{for
+NACp} \ge 9 \\
+    \mathrm{EPU} &amp;\approx \mathrm{Rc} / 2.0  \qquad  \text{for NACp}
+&lt; 9
+  \end{split}\]</span></p>
+<p>NACp and its related parameter values are defined in Table <a
+href="#tb:nacp-params" data-reference-type="ref"
+data-reference="tb:nacp-params">1.9</a>.</p>
+<div id="tb:nacp-params">
+<table>
+<caption>NACp parameters and their values</caption>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>NACp</strong></th>
+<th style="text-align: left;"><strong>EPU (or HFOM)</strong></th>
+<th style="text-align: left;"><strong>VEPU (or VFOM)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">11</td>
+<td style="text-align: left;">&lt;3 m</td>
+<td style="text-align: left;">&lt;4 m</td>
+</tr>
+<tr>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">&lt;10 m</td>
+<td style="text-align: left;">&lt;15 m</td>
+</tr>
+<tr>
+<td style="text-align: left;">9</td>
+<td style="text-align: left;">&lt;30 m</td>
+<td style="text-align: left;">&lt;45 m</td>
+</tr>
+<tr>
+<td style="text-align: left;">8</td>
+<td style="text-align: left;">&lt;0.05 NM (93 m)</td>
+<td style="text-align: left;">N/A</td>
+</tr>
+<tr>
+<td style="text-align: left;">7</td>
+<td style="text-align: left;">&lt;0.1 NM (185 m)</td>
+<td style="text-align: left;">N/A</td>
+</tr>
+<tr>
+<td style="text-align: left;">6</td>
+<td style="text-align: left;">&lt;0.3 NM (556 m)</td>
+<td style="text-align: left;">N/A</td>
+</tr>
+<tr>
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">&lt;0.5 NM (926 m)</td>
+<td style="text-align: left;">N/A</td>
+</tr>
+<tr>
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">&lt;1.0 NM (1852 m)</td>
+<td style="text-align: left;">N/A</td>
+</tr>
+<tr>
+<td style="text-align: left;">3</td>
+<td style="text-align: left;">&lt;2 NM (3704 m)</td>
+<td style="text-align: left;">N/A</td>
+</tr>
+<tr>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">&lt;4 NM (7408 m)</td>
+<td style="text-align: left;">N/A</td>
+</tr>
+<tr>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">&lt;10 NM (18520 m)</td>
+<td style="text-align: left;">N/A</td>
+</tr>
+<tr>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">&gt;10 NM or Unknown</td>
+<td style="text-align: left;">N/A</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="navigation-accuracy-category-velocity-nacv">Navigation accuracy
+category – velocity (NACv)</h3>
+<p>NACv is introduced in version 1 to replace the NUCv from version 0.
+The bits are located at the same location and have the same definitions
+of values. These bits are contained in airborne velocity message (TC=19)
+message bits 43–45 (or ME bits 11–13). It defines the 95% of the errors
+in horizontal and vertical speeds. The detailed definitions of the
+Horizontal Figure of Merit for rate (HFOMr) and Vertical Figure of Merit
+for rate (HFOMr) are shown in Table <a href="#tb:nacv-params"
+data-reference-type="ref" data-reference="tb:nacv-params">1.10</a>.</p>
+<div id="tb:nacv-params">
+<table>
+<caption>NACv parameters and their values</caption>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>NACv</strong></th>
+<th style="text-align: left;"><strong>HFOMr</strong></th>
+<th style="text-align: left;"><strong>VFOMr</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">N/A</td>
+</tr>
+<tr>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">&lt;10 m/s</td>
+<td style="text-align: left;">&lt;15.2 m/s (50 fps)</td>
+</tr>
+<tr>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">&lt;3 m/s</td>
+<td style="text-align: left;">&lt;4.5 m/s (15 fps)</td>
+</tr>
+<tr>
+<td style="text-align: left;">3</td>
+<td style="text-align: left;">&lt;1 m/s</td>
+<td style="text-align: left;">&lt;1.5 m/s (5 fps)</td>
+</tr>
+<tr>
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">&lt;0.3 m/s</td>
+<td style="text-align: left;">&lt;0.46 m/s (1.5 fps)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="surveillance-integrity-level-sil">Surveillance integrity level
+(SIL)</h3>
+<p>SIL is introduced in version 1 and used to indicate the probability
+of measurements exceeding the containment radius. The SIL value can also
+be found in the operational status message (TC=31), message bits 83–84
+(or ME bits 51–52)</p>
+<p>Each SIL value corresponds to two probabilities that describe the
+horizontal (P-RC) and vertical (P-VPL) components respectively. The
+definitions are as follows:</p>
+<div id="tb:sil-params">
+<table>
+<caption>SIL parameters and their values</caption>
+<thead>
+<tr>
+<th style="text-align: left;">SIL</th>
+<th style="text-align: left;">P-RC</th>
+<th style="text-align: left;">P-VPL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">unknown</td>
+<td style="text-align: left;">unknown</td>
+</tr>
+<tr>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;"><span class="math inline">\(&lt; 1 \times
+10^{-3}\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(&lt; 1 \times
+10^{-3}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;"><span class="math inline">\(&lt; 1 \times
+10^{-5}\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(&lt; 1 \times
+10^{-5}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">3</td>
+<td style="text-align: left;"><span class="math inline">\(&lt; 1 \times
+10^{-7}\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(&lt; 2 \times
+10^{-7}\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The unit for P-RCu and P-VPL can be per flight hour or per sample,
+except when SIL=3, the unit for P-VPL becomes per 150 seconds per
+sample.</p>
+<h2 id="version-2">Version 2</h2>
+<p>There are fewer changes between version 1 and version 2 when compared
+to the earlier update. The major changes are the further refined NIC
+levels and minor updates of SIL parameters.</p>
+<h3 id="navigation-integrity-category-nic-1">Navigation integrity
+category (NIC)</h3>
+<p>In version 2, NIC levels can be obtained with three additional
+supplement bits named NIC supplement bit A (NICa), NIC supplement bit B
+(NICb), and NIC supplement bit C (NICc). These bits can be found as
+follows:</p>
+<ul>
+<li><p>NICa is located in the operational status message (TC=31)
+(message bit 76 or ME bit 44), which is the same as in ADS-B version
+1.</p></li>
+<li><p>NICb is located in the airborne position message (TC=9–18),
+message bit 40 or ME bit 8), where the Single Antenna Flag was located
+in previous ADS-B versions.</p></li>
+<li><p>NICc is also located in the operational status message (TC=31)
+(message bit 52 or ME bit 20).</p></li>
+</ul>
+<p>With these supplemental bits and the Type Code, the NIC value in
+version 2 can be calculated. NIC values and their related Rc values are
+shown in Table <a href="#tb:nic-params-v2" data-reference-type="ref"
+data-reference="tb:nic-params-v2">1.12</a>.</p>
+<div id="tb:nic-params-v2">
+<table>
+<caption>NIC parameters and their values (version 2)</caption>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>TC</strong></th>
+<th style="text-align: left;"><strong>NICa</strong></th>
+<th style="text-align: left;"><strong>NICb</strong></th>
+<th style="text-align: left;"><strong>NICc</strong></th>
+<th style="text-align: left;"><strong>NIC</strong></th>
+<th style="text-align: left;"><strong>Rc</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">11</td>
+<td style="text-align: left;">&lt;7.5 m</td>
+</tr>
+<tr>
+<td style="text-align: left;">6</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">&lt;25 m</td>
+</tr>
+<tr>
+<td style="text-align: left;">7</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">9</td>
+<td style="text-align: left;">&lt;75 m</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span>2-6</span></td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">8</td>
+<td style="text-align: left;">&lt;0.1 NM (185 m)</td>
+</tr>
+<tr>
+<td style="text-align: left;">8</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">7</td>
+<td style="text-align: left;">&lt;0.2 NM (370 m)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span>2-6</span></td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">6</td>
+<td style="text-align: left;">&lt;0.3 NM (556 m)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span>2-4</span></td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">&lt;0.6 NM (1111 m)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span>2-6</span></td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">&gt;0.6 NM or unknown</td>
+</tr>
+<tr>
+<td style="text-align: left;">9</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">11</td>
+<td style="text-align: left;">&lt;7.5 m</td>
+</tr>
+<tr>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">&lt;25 m</td>
+</tr>
+<tr>
+<td style="text-align: left;">11</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">9</td>
+<td style="text-align: left;">&lt;75 m</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span>2-6</span></td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">8</td>
+<td style="text-align: left;">&lt;0.1 NM (185 m)</td>
+</tr>
+<tr>
+<td style="text-align: left;">12</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">7</td>
+<td style="text-align: left;">&lt;0.2 NM (370 m)</td>
+</tr>
+<tr>
+<td style="text-align: left;">13</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">6</td>
+<td style="text-align: left;">&lt;0.3 NM (556 m)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span>2-4</span></td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">N/A</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">&lt;0.5 NM (926 m)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span>2-4</span></td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">N/A</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">&lt;0.6 NM (1111 m)</td>
+</tr>
+<tr>
+<td style="text-align: left;">14</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">&lt;1.0 NM (1852 m)</td>
+</tr>
+<tr>
+<td style="text-align: left;">15</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">&lt;2 NM (3704 m)</td>
+</tr>
+<tr>
+<td style="text-align: left;">16</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">3</td>
+<td style="text-align: left;">&lt;4 NM (7408 m)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span>2-6</span></td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">&lt;8 NM (14.8 km)</td>
+</tr>
+<tr>
+<td style="text-align: left;">17</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">&lt;20 NM (37.0 km)</td>
+</tr>
+<tr>
+<td style="text-align: left;">18</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">&gt;20 NM or unknown</td>
+</tr>
+<tr>
+<td style="text-align: left;">20</td>
+<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">11</td>
+<td style="text-align: left;">&lt;7.5 m</td>
+</tr>
+<tr>
+<td style="text-align: left;">21</td>
+<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">&lt;25 m</td>
+</tr>
+<tr>
+<td style="text-align: left;">22</td>
+<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">&gt;25 m</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="surveillance-integrity-level-sil-1">Surveillance integrity level
+(SIL)</h3>
+<p>In version 2, an additional SIL supplement bit (SILs) is introduced
+to better distinguish whether the value has the unit of per flight hour
+or per sample. The SILs bit can also be found in the operational status
+message, message bit 87 (or ME bit 55). The definitions are:</p>
+<ul>
+<li><p>SILs=0: probability is <em>per hour</em> based</p></li>
+<li><p>SILs=1: probability is <em>per sample</em> based</p></li>
+</ul>
+<p>The values related to SIL remain the same as shown in Table <a
+href="#tb:sil-params" data-reference-type="ref"
+data-reference="tb:sil-params">1.11</a>.</p>
+<h3 id="nacp-and-nacv">NACp and NACv</h3>
+<p>NACp and NACv in version 2 remain the same as in version 1. Related
+parameters and definitions can be found in the previous Table <a
+href="#tb:nacp-params" data-reference-type="ref"
+data-reference="tb:nacp-params">1.9</a> and Table <a
+href="#tb:nacv-params" data-reference-type="ref"
+data-reference="tb:nacv-params">1.10</a>, respectively.</p>
+
+<footer class="mastfoot">
+  <div class="text-right">
+    <p> © Copyright 2021 <a href="https://junzis.com">Junzi Sun</a>. Build with LaTeX, Pandoc, and GitHub</p>
+  </div>
+</footer>
+
+</div>
+</div>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-74700456-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-74700456-1');
+</script>
+
+</body>
+</html>
