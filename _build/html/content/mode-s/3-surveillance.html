@@ -308,13 +308,31 @@ bits encode the altitude with 25 feet increments. Denote <span
 class="math inline">\(N\)</span> as the decimal value of the remaining
 11 bits. The altitude is calculated as <span class="math inline">\(25
 \times N - 1000\)</span> feet.</p></li>
-<li><p>When M=0 and Q=0, the remaining bits are defined as follows:</p>
+<li><p>When M=0 and Q=0, the altitude is encoded in 100 feet increments
+using the Gillham code, a reflected Gray-code variant that matches the
+output of legacy pressure altimeters <span class="citation"
+data-cites="icaoA10V4">[ICAO 2002]</span>. This is a distinct encoding
+standard, not an indicator of high altitude. The 13 bits are defined as
+follows:</p>
 <pre><code>                                M        Q
 +----+----+----+----+----+----+---+----+---+----+----+----+----+
 | C1 | A1 | C2 | A2 | C4 | A4 | 0 | B1 | 0 | B2 | D2 | B4 | D4 |
 +----+----+----+----+----+----+---+----+---+----+----+----+----+</code></pre>
-<p>This structure corresponds to the Mode C altitude reply. This
-structure is used to encode altitudes above 50187.5 feet.</p></li>
+<p>Following DO-260, the non-M, non-Q bits are rearranged into the
+sequence <code>D2 D4 A1 A2 A4 B1 B2 B4 C1 C2 C4</code>. Per ICAO
+Annex 10 Volume IV, the first eight bits are decoded as a Gillham-coded
+500-foot count <span class="math inline">\(N_{500}\)</span> and the last
+three bits as a 100-foot count <span
+class="math inline">\(N_{100}\)</span>. Values of <span
+class="math inline">\(N_{100} \in \{0, 5, 6\}\)</span> are invalid;
+<span class="math inline">\(N_{100}=7\)</span> is remapped to <span
+class="math inline">\(5\)</span>; when <span
+class="math inline">\(N_{500}\)</span> is odd, <span
+class="math inline">\(N_{100}\)</span> is replaced by <span
+class="math inline">\(6 - N_{100}\)</span>. The altitude in feet is
+then:</p>
+<p><span class="math display">\[h = 500 \, N_{500} + 100 \, N_{100} -
+1300 \quad \text{(ft)}\]</span></p></li>
 </ul>
 <div class="notebox">
 <p><span>Try it out</span> Using pyModeS, we can calculate the altitude
@@ -354,6 +372,14 @@ code as:</p>
 
 msg = &quot;2A00516D492B80&quot;
 squawk = pms.idcode(msg)  # 0356</code></pre>
+</div>
+<div id="refs" class="references csl-bib-body hanging-indent"
+role="list">
+<div id="ref-icaoA10V4" class="csl-entry" role="listitem">
+<span class="smallcaps">ICAO</span>. 2002. <em>Annex 10 to the
+convention on international civil aviation, aeronautical
+telecommunications</em>. International Civil Aviation Organization.
+</div>
 </div>
 
 <footer class="mastfoot">

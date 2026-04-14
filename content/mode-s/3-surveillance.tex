@@ -103,7 +103,7 @@ The decoding rules are as follows:
 
   \item When M=0 and Q=1, removing the M and Q bits, the remaining 11 bits encode the altitude with 25 feet increments. Denote $N$ as the decimal value of the remaining 11 bits. The altitude is calculated as $25 \times N - 1000$ feet.
 
-  \item When M=0 and Q=0, the remaining bits are defined as follows:
+  \item When M=0 and Q=0, the altitude is encoded in 100 feet increments using the Gillham code, a reflected Gray-code variant that matches the output of legacy pressure altimeters \cite{icaoA10V4}. This is a distinct encoding standard, not an indicator of high altitude. The 13 bits are defined as follows:
 
 \begin{verbatim}
                                 M        Q
@@ -112,7 +112,11 @@ The decoding rules are as follows:
 +----+----+----+----+----+----+---+----+---+----+----+----+----+
 \end{verbatim}
 
-  This structure corresponds to the Mode~C altitude reply. This structure is used to encode altitudes above 50187.5 feet.
+  Following DO-260, the non-M, non-Q bits are rearranged into the sequence \texttt{D2 D4 A1 A2 A4 B1 B2 B4 C1 C2 C4}. Per ICAO Annex~10 Volume IV, the first eight bits are decoded as a Gillham-coded 500-foot count $N_{500}$ and the last three bits as a 100-foot count $N_{100}$. Values of $N_{100} \in \{0, 5, 6\}$ are invalid; $N_{100}=7$ is remapped to $5$; when $N_{500}$ is odd, $N_{100}$ is replaced by $6 - N_{100}$. The altitude in feet is then:
+
+\begin{equation}
+  h = 500 \, N_{500} + 100 \, N_{100} - 1300 \quad \text{(ft)}
+\end{equation}
 
 \end{itemize}
 
