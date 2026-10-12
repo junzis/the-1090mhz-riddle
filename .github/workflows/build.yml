@@ -1,0 +1,36 @@
+name: Build book
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  html:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends pandoc imagemagick
+      - name: Allow ImageMagick PDF reads (figure conversion)
+        run: |
+          for f in /etc/ImageMagick-6/policy.xml /etc/ImageMagick-7/policy.xml; do
+            if [ -f "$f" ]; then
+              sudo sed -i 's/rights="none" pattern="PDF"/rights="read|write" pattern="PDF"/' "$f"
+            fi
+          done
+      - name: Create build directories
+        run: mkdir -p _build/html _build/pdf
+      - name: Build HTML
+        run: bash tex2html.sh
+      - name: Check output
+        run: test -f _build/html/index.html && test -f _build/html/content/ads-b/5-airborne-velocity.html
+      - name: Upload HTML site
+        uses: actions/upload-artifact@v7
+        with:
+          name: book-html
+          path: _build/html
